@@ -1,0 +1,17 @@
+{
+  "name": "tree-sitter-nu",
+  "version": "0.0.1",
+  "description": "nu-lang",
+  "main": "bindings/node",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "The Nushell Contributors",
+  "license": "MIT",
+  "dependencies": {
+    "nan": "^2.16.0"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.20.7"
+  }
+}
