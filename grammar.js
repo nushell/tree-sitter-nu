@@ -28,14 +28,16 @@ const PRECEDENCE = {
 };
 
 const SPECIAL_CHARACTERS = [
-    "'", '"', '`', '@',
-    '{', '}',
-    '\\[', '\\]',
-    '(', ')',
-    '\\', '\\s',
-    '$', ';', '.', '|',
-    '#',
-    '\\-',
+    "'", '"', '`',  // supported quotes
+    '@', // custom completion
+    '{', '}', // braces
+    '\\[', '\\]', // brackets
+    '(', ')', // parentheses
+    '\\', // backslash
+    '$',  // dollar sign
+    ';', // semicolon
+    '|', // pipe
+    '#', // hash
 ];
 
 const OPERATOR_PRECEDENCE = [
@@ -75,10 +77,6 @@ const OPERATOR_PRECEDENCE = [
 module.exports = grammar({
     name: 'nu',
 
-    // rules: {
-    //   // TODO: add the actual grammar rules
-    //   source_file: $ => 'hello'
-    // }
     rules: {
         source_file: $ => repeat($._definition),
 
@@ -312,12 +310,12 @@ module.exports = grammar({
             repeat(seq(token.immediate('.'), choice($.identifier, $.number_literal)))
         ),
 
-        operator: $ => choice(...OPERATOR_PREC.map(([operator, _]) => {
+        operator: $ => choice(...OPERATOR_PRECEDENCE.map(([operator, _]) => {
             return seq(operator)
         })),
 
         binary_expression: $ => {
-            return choice(...OPERATOR_PREC.map(([operator, precedence]) => {
+            return choice(...OPERATOR_PRECEDENCE.map(([operator, precedence]) => {
                 return prec.left(precedence, seq(
                     field('left', $._expression),
                     field('operator', operator),
