@@ -1,4 +1,7 @@
+// Precedence with the highest number has the highest precedence.
+// Taken from nushell
 const PRECEDENCE = {
+    RANGE: 110,
     POW: 100,
     MULTIPLY: 95,
     DIVIDE: 95,
@@ -40,6 +43,7 @@ const SPECIAL_CHARACTERS = [
     '#', // hash
 ];
 
+// Mapping operators to prcedence names. Taken from nushell with a few additions.
 const OPERATOR_PRECEDENCE = [
     ['==', PRECEDENCE.EQUAL],
     ['!=', PRECEDENCE.NOT_EQUAL],
@@ -74,116 +78,54 @@ const OPERATOR_PRECEDENCE = [
     ['**', PRECEDENCE.POW],
 ];
 
+
 module.exports = grammar({
     name: 'nu',
 
+    conflicts: $ => [
+        [$.block, $.expression_statement]
+    ],
+
     rules: {
-        source_file: $ => repeat($._definition),
 
-        _statements: $ => seq(
-            repeat(seq(
-                $._statement,
-                $._line_terminator
-            )),
-            $._statement,
-            optional($._line_terminator)
-        ),
+        source_file: $ => repeat($.custom_command),
 
-        _statement: $ => choice(
-            $.variable_declaration,
-            $.env_export,
-            $.function_definition,
-            $.alias,
-            $.if_statement,
-            $._expression,
-            // A record entry is not a 'real' statement, but treating it as such
-            // makes life much easier
-            repeat1(seq($.record_entry, optional(",")))
-        ),
-
-        variable_declaration: $ => seq(
-            'let',
-            choice(field('name', $.identifier), $.number_literal),
-            '=',
-            field('value', $._expression),
-        ),
-
-        _definition: $ => choice(
-            $.function_definition
-            // TODO: other kinds of definitions
-        ),
-
-        def_open_chars: $ => choice(
-            '[',
-            '(',
-        ),
-        def_close_chars: $ => choice(
-            ']',
-            ')',
-        ),
-        def_type_separator: $ => choice(
-            ':',
-        ),
-        _line_terminator: $ => choice(
+        // How lines can end
+        line_terminator: $ => choice(
             '\n',
             '\r',
             '\r\n',
             '|',
             ';'
         ),
-        signature: $ => seq(
-            choice('[', '('),
-            repeat(
-                seq(
-                    choice(
-                        $.parameter,
-                        $.flag,
-                        $.rest
-                    ),
-                    optional(',')
-                )
-            ),
-            choice(']', ')')
-        ),
-        parameter: $ => seq(
-            $.identifier,
-            optional(seq(':', $.type)),
-            optional('?'),
-            optional($.default_parameter_assignment),
-        ),
-        flag: $ => seq(
-            $.flag_name,
-            optional(
-                seq('(', $.flag_shorthand_name, ')')
-            ),
-            optional(seq(':', $.type)),
-            optional($.default_parameter_assignment),
-        ),
-        flag_name: $ => /--[a-zA-Z_]+[a-zA-Z_0-9]*/,
-        flag_shorthand_name: $ => /-[a-zA-Z0-9]/,
-        rest: $ => seq(
-            '...rest',
-            optional(seq(':', $.type)),
-        ),
-        default_parameter_assignment: $ => seq(
-            choice(
-                seq("=", $._cmd_expr),
-                seq("@", $.identifier))
-        ),
-        function_definition: $ => seq(
-            optional('export'),
-            'def',
-            field('custom_command_name', choice($.identifier, $.string)),
+
+        // Custom command definition
+        custom_command: $ => seq(
             $.signature,
-            $.block
+            prec(1, $.block),
+            ),
+
+        // Custom command signature
+        signature: $ => seq(
+            'def',
+            field('custom_command_name', $.identifier),
+            choice('[', '('),
+            repeat($.parameter),
+            choice(']', ')'),
         ),
 
-        parameter_list: $ => seq(
-            '(',
-            // TODO: parameters
-            ')'
+        // identifier: $ => /[[:alpha:]_\-][a-zA-Z0-9_\-]*/,
+        identifier: $ => /[_\p{XID_Start}][_\p{XID_Continue}]*/,
+
+        parameter: $ => seq(
+            // optional($.mutable_specifier),
+            field('pattern', $.identifier),
+            optional('?'),
+            optional(seq(':', field('type', $.type))),
+            optional(','),
         ),
 
+        // nushell types, taken from parser.rs fn parse_type()
         type: $ => choice(
             "int",
             "float",
@@ -200,133 +142,229 @@ module.exports = grammar({
             "binary",
         ),
 
-        string: $ => seq(optional('$'), choice(
-            seq(
-                '"',
-                token(prec(-1, /[^"]*/)),
-                '"'
-            ),
-            seq(
-                '\'',
-                token(prec(-1, /([^']|)*/)),
-                '\''
-            ),
-            seq(
-                '`',
-                token(prec(-1, /[^`]*/)),
-                '`'
-            ),
-        )),
-
-        number_literal: $ => /[\d]+(\.[\d]+)?/,
-
-        value_path: $ => seq(
-            '$',
-            choice($.identifier, $.number_literal),
-            repeat(seq(token.immediate('.'), choice($.identifier, $.number_literal)))
-        ),
-
-        file_path: $ => choice(
-            // '-', //previous pwd (conflicts with operator)
-            /[^\S\r\n]\.\.|\s\.[^\S\r\n]/, //Expect ws before .|.. and after (but exclude newline)
-            /(([\w\-\.~]+\/)*)([\w\-\.~]+)\.\w+/, //filepath must end with <.file_ending> for now
-        ),
-
-        flag_arg: $ => /-?-[a-zA-Z_]+[a-zA-Z_0-9\-]*/,
-
-        range: $ => seq(
-            field('from', $.number_literal),
-            '..',
-            field('to', $.number_literal),
-        ),
-
-        word: $ => token(prec(-1, repeat1(choice(
-            noneOf(...SPECIAL_CHARACTERS),
-            seq('\\', noneOf('\\s'))
-        )))),
-
-        // In LR(1) its undecidable whether `{ ident ... }` is a record or block
-        // backtracking is not allowed in ts. Therefore we have a catch both rule
-        record_or_block: $ => seq(
-            '{',
-            optional($.block_args),
-            optional($._statements),
-            '}'
-        ),
-
         block: $ => seq(
             '{',
-            optional($.block_args),
-            optional($._statements),
+            repeat($._statement),
+            optional($._expression),
             '}'
-        ),
-
-        block_args: $ => seq(
-            '|',
-            repeat(seq(field("block_param", $.identifier), optional(','))),
-            '|',
         ),
 
         _statement: $ => choice(
-            $._expression
-            // TODO: other kinds of statements
+            $.expression_statement,
+            $._declaration_statement
+        ),
+
+        expression_statement: $ => choice(
+            seq($._expression, 
+                optional(';')
+            ),
+            prec(1, $._expression_ending_with_block)
         ),
 
         _expression: $ => choice(
+            $._expression_except_range,
+            $.range_expression,
+        ),
+
+
+        _expression_except_range: $ => choice(
+            // $.unary_expression,
+            // $.reference_expression,
+            // $.try_expression,
+            // $.binary_expression,
+            // $.assignment_expression,
+            // $.compound_assignment_expr,
+            // $.type_cast_expression,
+            // $.call_expression,
+            // $.return_expression,
+            // $.yield_expression,
+            // $._literal,
+            prec.left($.identifier),
+            // alias(choice(...primitive_types), $.identifier),
+            // prec.left($._reserved_identifier),
+            // $.self,
+            // $.scoped_identifier,
+            // $.generic_function,
+            // $.await_expression,
+            // $.field_expression,
+            // $.array_expression,
+            // $.tuple_expression,
+            // prec(1, $.macro_invocation),
+            // $.unit_expression,
+            // $.break_expression,
+            // $.continue_expression,
+            // $.index_expression,
+            $.metavariable,
+            // $.closure_expression,
+            // $.parenthesized_expression,
+            // $.struct_expression,
+            // $._expression_ending_with_block,
+        ),
+
+        metavariable: $ => /\$[a-zA-Z_]\w*/,
+
+        range_expression: $ => prec.left(PRECEDENCE.RANGE, choice(
+            seq($._expression, choice('..', '...', '..='), $._expression),
+            seq($._expression, '..'),
+            seq('..', $._expression),
+            '..'
+        )),
+
+        _expression_ending_with_block: $ => choice(
+            // $.unsafe_block,
+            // $.async_block,
+            $.block,
+            // $.if_expression,
+            // $.if_let_expression,
+            // $.match_expression,
+            // $.while_expression,
+            // $.while_let_expression,
+            // $.loop_expression,
+            // $.for_expression,
+            // $.const_block
+        ),
+
+        _declaration_statement: $ => choice(
+            // $.const_item,
+            // $.macro_invocation,
+            // $.macro_definition,
+            // $.empty_statement,
+            // $.attribute_item,
+            // $.inner_attribute_item,
+            // $.mod_item,
+            // $.foreign_mod_item,
+            // $.struct_item,
+            // $.union_item,
+            // $.enum_item,
+            // $.type_item,
+            // $.function_item,
+            // $.function_signature_item,
+            // $.impl_item,
+            // $.trait_item,
+            // $.associated_type,
+            $.let_declaration,
+            // $.use_declaration,
+            // $.extern_crate_declaration,
+            // $.static_item
+        ),
+
+        let_declaration: $ => seq(
+            'let',
+            optional($.mutable_specifier),
+            field('pattern', $._pattern),
+            optional(seq(
+                ':',
+                field('type', $._type)
+            )),
+            optional(seq(
+                '=',
+                field('value', $._expression)
+            )),
+            optional(';')
+        ),
+
+        mutable_specifier: $ => 'mut',
+
+        _pattern: $ => choice(
+            // $._literal_pattern,
+            // alias(choice(...primitive_types), $.identifier),
             $.identifier,
+            // $.scoped_identifier,
+            // $.tuple_pattern,
+            // $.tuple_struct_pattern,
+            // $.struct_pattern,
+            // $.ref_pattern,
+            // $.slice_pattern,
+            // $.captured_pattern,
+            // $.reference_pattern,
+            // $.remaining_field_pattern,
+            $.mut_pattern,
+            $.range_pattern,
+            // $.or_pattern,
+            // $.const_block,
+            // $.macro_invocation,
+            '_'
         ),
 
-        table: $ => seq(
-            '[', $.array, ';', repeat($.array), ']'
+        mut_pattern: $ => prec(-1, seq(
+            $.mutable_specifier,
+            $._pattern
+        )),
+
+        range_pattern: $ => seq(
+            choice(
+                $._literal_pattern,
+                $._path,
+            ),
+            choice('...', '..='),
+            choice(
+                $._literal_pattern,
+                $._path,
+            ),
         ),
 
-        array: $ => seq(
-            '[', repeat(seq($._expression, optional(','))), ']'
+        _literal_pattern: $ => choice(
+            $.string_literal,
+            // $.raw_string_literal,
+            // $.char_literal,
+            $.boolean_literal,
+            // $.integer_literal,
+            // $.float_literal,
+            // $.negative_literal,
         ),
 
-        _cmd_expr: $ => choice(
+        string_literal: $ => seq(
+            alias(/b?"/, '"'),
+            repeat(choice(
+                $.escape_sequence,
+                // $._string_content
+            )),
+            token.immediate('"')
+        ),
+
+        escape_sequence: $ => token.immediate(
+            seq('\\',
+                choice(
+                    /[^xu]/,
+                    /u[0-9a-fA-F]{4}/,
+                    /u{[0-9a-fA-F]+}/,
+                    /x[0-9a-fA-F]{2}/
+                )
+            )
+        ),
+
+        boolean_literal: $ => choice('true', 'false'),
+
+        _type: $ => choice(
+            // $.abstract_type,
+            // $.reference_type,
+            $.metavariable,
+            // $.pointer_type,
+            // $.generic_type,
+            // $.scoped_type_identifier,
+            // $.tuple_type,
+            // $.unit_type,
+            // $.array_type,
+            // $.function_type,
+            $._type_identifier,
+            // $.macro_invocation,
+            // $.empty_type,
+            // $.dynamic_type,
+            // $.bounded_type,
+            // alias(choice(...primitive_types), $.primitive_type)
+        ),
+
+        _type_identifier: $ => alias($.identifier, $.type_identifier),
+
+        _path: $ => choice(
+            // $.self,
+            // alias(choice(...primitive_types), $.identifier),
+            $.metavariable,
+            // $.super,
+            // $.crate,
             $.identifier,
-            $.number_literal,
-            $.string,
-            $.value_path,
-            $.file_path, // TODO
-            $.flag_arg,
-            $.range,
-            $.record_or_block,
-            // $.operator,
-            $.cmd_invocation,
-            $.table,
-            $.array,
-            $.binary_expression,
-            $.word,
+            // $.scoped_identifier,
+            // $._reserved_identifier,
         ),
-
-        identifier: $ => /[a-zA-Z_][a-zA-Z0-9_\-]*/,
-
-        cmd_invocation: $ => seq(
-            '(',
-            $._statements,
-            ')',
-            repeat(seq(token.immediate('.'), choice($.identifier, $.number_literal)))
-        ),
-
-        operator: $ => choice(...OPERATOR_PRECEDENCE.map(([operator, _]) => {
-            return seq(operator)
-        })),
-
-        binary_expression: $ => {
-            return choice(...OPERATOR_PRECEDENCE.map(([operator, precedence]) => {
-                return prec.left(precedence, seq(
-                    field('left', $._expression),
-                    field('operator', operator),
-                    field('right', $._expression)
-                ))
-            }));
-        },
     }
 });
-
-function noneOf(...characters) {
-    const negatedString = characters.map(c => c == '\\' ? '\\\\' : c).join('')
-    return new RegExp('[^' + negatedString + ']')
-}
