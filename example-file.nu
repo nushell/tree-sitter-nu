@@ -1,3 +1,3 @@
-def foo [x: int] {
+def somecommand [x: int] {
     echo $x
 }
