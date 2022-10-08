@@ -477,7 +477,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "custom_command_signature"
+          "name": "custom_command"
         },
         {
           "type": "SYMBOL",
