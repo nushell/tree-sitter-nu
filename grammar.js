@@ -28,6 +28,7 @@ const PRECEDENCE = {
     BIT_OR: 60,
     AND: 50,
     OR: 40,
+    ASSIGN: 0,
 };
 
 const SPECIAL_CHARACTERS = [
@@ -85,10 +86,29 @@ module.exports = grammar({
     conflicts: $ => [
         [$.block, $.expression_statement]
     ],
+    
+    extras: $ => [/\s/, $.line_comment,],// $.block_comment],
 
     rules: {
 
-        source_file: $ => repeat($.custom_command),
+        //robi since she was conceived in Nairobi, Kenya
+
+        // source_file: $ => repeat($.custom_command),
+        source_file: $ => repeat($._statement),
+
+        _statement: $ => choice(
+            $.expression_statement,
+            $._declaration_statement
+        ),
+
+        comment: $ => choice(
+            $.line_comment,
+            // $.block_comment
+        ),
+
+        line_comment: $ => token(seq(
+            '#',
+        )),
 
         // How lines can end
         line_terminator: $ => choice(
@@ -101,12 +121,12 @@ module.exports = grammar({
 
         // Custom command definition
         custom_command: $ => seq(
-            $.signature,
+            $.custom_command_signature,
             prec(1, $.block),
             ),
 
         // Custom command signature
-        signature: $ => seq(
+        custom_command_signature: $ => seq(
             'def',
             field('custom_command_name', $.identifier),
             choice('[', '('),
@@ -149,15 +169,9 @@ module.exports = grammar({
             '}'
         ),
 
-        _statement: $ => choice(
-            $.expression_statement,
-            $._declaration_statement
-        ),
 
         expression_statement: $ => choice(
-            seq($._expression, 
-                optional(';')
-            ),
+            seq($._expression, optional(';')),
             prec(1, $._expression_ending_with_block)
         ),
 
@@ -166,19 +180,18 @@ module.exports = grammar({
             $.range_expression,
         ),
 
-
         _expression_except_range: $ => choice(
             // $.unary_expression,
             // $.reference_expression,
             // $.try_expression,
             // $.binary_expression,
-            // $.assignment_expression,
+            $.assignment_expression,
             // $.compound_assignment_expr,
             // $.type_cast_expression,
             // $.call_expression,
             // $.return_expression,
             // $.yield_expression,
-            // $._literal,
+            $._literal,
             prec.left($.identifier),
             // alias(choice(...primitive_types), $.identifier),
             // prec.left($._reserved_identifier),
@@ -202,6 +215,12 @@ module.exports = grammar({
         ),
 
         metavariable: $ => /\$[a-zA-Z_]\w*/,
+
+        assignment_expression: $ => prec.left(PRECEDENCE.ASSIGN, seq(
+            field('left', $._expression),
+            '=',
+            field('right', $._expression)
+        )),
 
         range_expression: $ => prec.left(PRECEDENCE.RANGE, choice(
             seq($._expression, choice('..', '...', '..='), $._expression),
@@ -239,6 +258,7 @@ module.exports = grammar({
             // $.type_item,
             // $.function_item,
             // $.function_signature_item,
+            $.custom_command_signature,
             // $.impl_item,
             // $.trait_item,
             // $.associated_type,
@@ -256,17 +276,21 @@ module.exports = grammar({
                 ':',
                 field('type', $._type)
             )),
-            optional(seq(
+            // optional(seq(
+            //     '=',
+            //     field('value', $._expression)
+            // )),
+            seq(
                 '=',
                 field('value', $._expression)
-            )),
-            optional(';')
+            ),
+           optional(';')
         ),
 
         mutable_specifier: $ => 'mut',
 
         _pattern: $ => choice(
-            // $._literal_pattern,
+            $._literal_pattern,
             // alias(choice(...primitive_types), $.identifier),
             $.identifier,
             // $.scoped_identifier,
@@ -306,11 +330,20 @@ module.exports = grammar({
         _literal_pattern: $ => choice(
             $.string_literal,
             // $.raw_string_literal,
-            // $.char_literal,
+            $.char_literal,
             $.boolean_literal,
-            // $.integer_literal,
+            $.integer_literal,
             // $.float_literal,
-            // $.negative_literal,
+            $.negative_literal,
+        ),
+
+        _literal: $ => choice(
+            $.string_literal,
+            // $.raw_string_literal,
+            $.char_literal,
+            $.boolean_literal,
+            $.integer_literal,
+            // $.float_literal,
         ),
 
         string_literal: $ => seq(
@@ -321,6 +354,33 @@ module.exports = grammar({
             )),
             token.immediate('"')
         ),
+
+        integer_literal: $ => token(seq(
+            choice(
+                /[0-9][0-9_]*/,
+                /0x[0-9a-fA-F_]+/,
+                /0b[01_]+/,
+                /0o[0-7_]+/
+            ),
+            // optional(choice(...numeric_types))
+        )),
+
+        negative_literal: $ => seq('-', choice($.integer_literal)),// $.float_literal)),
+
+        char_literal: $ => token(seq(
+            // optional('b'),
+            '\'',
+            optional(choice(
+                seq('\\', choice(
+                    /[^xu]/,
+                    /u[0-9a-fA-F]{4}/,
+                    /u{[0-9a-fA-F]+}/,
+                    /x[0-9a-fA-F]{2}/
+                )),
+                /[^\\']/
+            )),
+            '\''
+        )),
 
         escape_sequence: $ => token.immediate(
             seq('\\',
