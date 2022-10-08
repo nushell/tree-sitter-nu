@@ -102,7 +102,7 @@
           "named": true
         },
         {
-          "type": "custom_command_signature",
+          "type": "custom_command",
           "named": true
         },
         {
@@ -140,6 +140,25 @@
     "type": "boolean_literal",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "custom_command",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "custom_command_signature",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "custom_command_signature",
@@ -503,7 +522,7 @@
       "required": false,
       "types": [
         {
-          "type": "custom_command_signature",
+          "type": "custom_command",
           "named": true
         },
         {
