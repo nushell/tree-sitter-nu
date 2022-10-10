@@ -14,7 +14,8 @@ How-To - taken from https://tree-sitter.github.io/tree-sitter/creating-parsers
 
 
 ## Further reading
-https://rfdonnelly.github.io/posts/using-tree-sitter-parsers-in-rust/
-https://deepsource.io/blog/lightweight-linting/
-https://github.com/tree-sitter/tree-sitter/issues/418
+
+- https://rfdonnelly.github.io/posts/using-tree-sitter-parsers-in-rust/
+- https://deepsource.io/blog/lightweight-linting/
+- https://github.com/tree-sitter/tree-sitter/issues/418
 
