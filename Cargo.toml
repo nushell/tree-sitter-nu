@@ -19,6 +19,14 @@ include = [
 [lib]
 path = "bindings/rust/lib.rs"
 
+# [[bin]]
+# name = "ts-test"
+# path = "src/main.rs"
+
+[dev-dependencies]
+tree-sitter = "0.20.3"
+cc = "1.0"
+
 [dependencies]
 tree-sitter = "~0.20.3"
 
