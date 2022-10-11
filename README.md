@@ -13,21 +13,21 @@ This is an experiment to see if we can create a good parser for nu-lang.
 
 ## How-To - taken from [here](https://tree-sitter.github.io/tree-sitter/creating-parsers)
 
-1. cargo install tree-sitter-cli
+1. `cargo install tree-sitter-cli`
 2. make sure nodejs and npm is installed (you may have to do npm install - see docs above)
-3. tree-sitter generate
-4. tree-sitter parse example-file.nu
+3. `tree-sitter generate`
+4. `tree-sitter parse example-file.nu`
 
 ## Examples with rust
 
 1. main.rs
-2. cargo run --example main
+2. `cargo run --example main`
 
 ## Testing
 
-1. Add a file to test/corpus/<filename>.txt
+1. Add a file to test/corpus/descriptive_test_name.txt
 2. Use the `custom_command_1.txt` as a guide
-3. run `tree-sitter test -f 'custom command 1' and evaluate the results
+3. run `tree-sitter test -f 'custom command 1'` and evaluate the results
 4. More information can be found [here](https://tree-sitter.github.io/tree-sitter/creating-parsers#command-test)
 
 ## Tips
