@@ -1,0 +1,22 @@
+==================
+custom command 1
+==================
+
+def somecommand [x: int] {
+    echo $x
+}
+
+---
+
+(source_file
+    (custom_command
+    (custom_command_signature
+        custom_command_name: (identifier)
+        (parameter
+        pattern: (identifier)
+        type: (type)))
+    (block
+        (expression_statement
+        (identifier))
+        (expression_statement
+        (metavariable)))))
