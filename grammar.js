@@ -1,4 +1,3 @@
-// Precedence with the highest number has the highest precedence.
 // Taken from nushell as precendent names
 const PRECEDENCE = {
     RANGE: 110,
@@ -91,9 +90,6 @@ module.exports = grammar({
 
     rules: {
 
-        //robi since she was conceived in Nairobi, Kenya
-
-        // source_file: $ => repeat($.custom_command),
         source_file: $ => repeat($._statement),
 
         _statement: $ => choice(
