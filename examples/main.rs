@@ -7,9 +7,10 @@ fn main() {
     let mut parser = Parser::new();
     parser.set_language(nu_lang).unwrap();
     let parse_tree = parser.parse(&src, None).unwrap();
+    println!("\nTree Walk 1");
+    print_tree(&parse_tree);
+    println!("\nTree Walk 2");
     let mut tree_cursor = parse_tree.walk();
-    println!("Tree Walk");
-
     walk_tree(&mut tree_cursor, src);
     println!("\n{}", parse_tree.root_node().to_sexp());
 
@@ -25,6 +26,27 @@ fn main() {
     // let mut query_cursor = QueryCursor::new();
     // let all_matches = query_cursor.matches(&query, parse_tree.root_node(), src.as_bytes());
     // println!("matches: {:?}", all_matches.count());
+}
+
+pub fn print_tree(tree: &tree_sitter::Tree) {
+    let mut cursor = tree.walk();
+    print_cursor(&mut cursor, 0);
+}
+
+fn print_cursor(cursor: &mut TreeCursor, depth: usize) {
+    loop {
+        let node = cursor.node();
+        println!("{}{:#?}", "  ".repeat(depth), node);
+
+        if cursor.goto_first_child() {
+            print_cursor(cursor, depth + 1);
+            cursor.goto_parent();
+        }
+
+        if !cursor.goto_next_sibling() {
+            break;
+        }
+    }
 }
 
 fn walk_tree(cursor: &mut TreeCursor, source: &str) {
