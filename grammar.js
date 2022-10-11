@@ -1,5 +1,5 @@
 // Precedence with the highest number has the highest precedence.
-// Taken from nushell
+// Taken from nushell as precendent names
 const PRECEDENCE = {
     RANGE: 110,
     POW: 100,
@@ -86,7 +86,7 @@ module.exports = grammar({
     conflicts: $ => [
         [$.block, $.expression_statement]
     ],
-    
+
     extras: $ => [/\s/, $.line_comment,],// $.block_comment],
 
     rules: {
