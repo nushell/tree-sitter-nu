@@ -102,10 +102,10 @@ module.exports = grammar({
             // $.block_comment
         ),
 
-        line_comment: $ => token(seq(
+        line_comment: $ => token(prec(-1, seq(
             '#',
             /.*/,
-        )),
+        ))),
 
         // How lines can end
         line_terminator: $ => choice(
@@ -345,12 +345,12 @@ module.exports = grammar({
         ),
 
         string_literal: $ => seq(
-            alias(/b?"/, '"'),
+            token('"'),
             repeat(choice(
                 $.escape_sequence,
-                // $._string_content
+                /[^\\]/,
             )),
-            token.immediate('"')
+            token('"')
         ),
 
         integer_literal: $ => token(seq(
