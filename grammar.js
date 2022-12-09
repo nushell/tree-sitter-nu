@@ -104,6 +104,7 @@ module.exports = grammar({
 
         line_comment: $ => token(seq(
             '#',
+            /.*/,
         )),
 
         // How lines can end
