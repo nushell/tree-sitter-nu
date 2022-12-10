@@ -344,13 +344,35 @@ module.exports = grammar({
             // $.float_literal,
         ),
 
-        string_literal: $ => seq(
+        _double_quoted_string_literal: $ => seq(
             token('"'),
             repeat(choice(
                 $.escape_sequence,
                 /[^\\]/,
             )),
             token('"')
+        ),
+
+        _single_quoted_string_literal: $ => seq(
+            token("'"),
+            repeat(
+                /[^']/,
+            ),
+            token("'")
+        ),
+
+        _backticked_quoted_string_literal: $ => seq(
+            token('`'),
+            repeat(
+                /[^`]/,
+            ),
+            token('`')
+        ),
+
+        string_literal: $ => choice(
+            $._double_quoted_string_literal,
+            $._single_quoted_string_literal,
+            $._backticked_quoted_string_literal,
         ),
 
         integer_literal: $ => token(seq(
