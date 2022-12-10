@@ -1,0 +1,61 @@
+==================
+string literal
+==================
+
+let sq_plain = 'string'
+
+let sq_hashtag = '#hashtag'
+
+let sq_trailing_whitespace = 'space   '
+
+let bt_plain = `string`
+
+let bt_hashtag = `#hashtag`
+
+let bt_trailing_whitespace = `space   `
+
+let dq_plain = "string"
+
+let dq_hashtag = "#hashtag"
+
+let dq_trailing_whitespace = "space   "
+
+let dq_escape_sequence = "\nNext line"
+
+---
+
+(source_file
+
+    (let_declaration
+        (identifier)
+        (string_literal))
+    (let_declaration
+        (identifier)
+        (string_literal))
+    (let_declaration
+        (identifier)
+        (string_literal))
+
+    (let_declaration
+        (identifier)
+        (string_literal))
+    (let_declaration
+        (identifier)
+        (string_literal))
+    (let_declaration
+        (identifier)
+        (string_literal))
+
+    (let_declaration
+        (identifier)
+        (string_literal))
+    (let_declaration
+        (identifier)
+        (string_literal))
+    (let_declaration
+        (identifier)
+        (string_literal))
+    (let_declaration
+        (identifier)
+        (string_literal
+            (escape_sequence))))
