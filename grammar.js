@@ -404,11 +404,9 @@ module.exports = grammar({
 
         escape_sequence: $ => token.immediate(
             seq('\\',
-                choice(
-                    /[^xu]/,
+                choice( // nushell.sh/book/working_with_strings.html#double-quoted-strings
+                    /[bfrnt"'\/\\]/,
                     /u[0-9a-fA-F]{4}/,
-                    /u{[0-9a-fA-F]+}/,
-                    /x[0-9a-fA-F]{2}/
                 )
             )
         ),

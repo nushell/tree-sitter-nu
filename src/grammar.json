@@ -940,19 +940,11 @@
             "members": [
               {
                 "type": "PATTERN",
-                "value": "[^xu]"
+                "value": "[\"'\\\\\\/bfrnt]"
               },
               {
                 "type": "PATTERN",
                 "value": "u[0-9a-fA-F]{4}"
-              },
-              {
-                "type": "PATTERN",
-                "value": "u{[0-9a-fA-F]+}"
-              },
-              {
-                "type": "PATTERN",
-                "value": "x[0-9a-fA-F]{2}"
               }
             ]
           }
