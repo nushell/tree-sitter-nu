@@ -102,10 +102,10 @@ module.exports = grammar({
             // $.block_comment
         ),
 
-        line_comment: $ => token(seq(
+        line_comment: $ => token(prec(-1, seq(
             '#',
             /.*/,
-        )),
+        ))),
 
         // How lines can end
         line_terminator: $ => choice(
@@ -344,13 +344,35 @@ module.exports = grammar({
             // $.float_literal,
         ),
 
-        string_literal: $ => seq(
-            alias(/b?"/, '"'),
+        _double_quoted_string_literal: $ => seq(
+            token('"'),
             repeat(choice(
                 $.escape_sequence,
-                // $._string_content
+                /[^\\]/,
             )),
-            token.immediate('"')
+            token('"')
+        ),
+
+        _single_quoted_string_literal: $ => seq(
+            token("'"),
+            repeat(
+                /[^']/,
+            ),
+            token("'")
+        ),
+
+        _backticked_quoted_string_literal: $ => seq(
+            token('`'),
+            repeat(
+                /[^`]/,
+            ),
+            token('`')
+        ),
+
+        string_literal: $ => choice(
+            $._double_quoted_string_literal,
+            $._single_quoted_string_literal,
+            $._backticked_quoted_string_literal,
         ),
 
         integer_literal: $ => token(seq(
@@ -382,11 +404,9 @@ module.exports = grammar({
 
         escape_sequence: $ => token.immediate(
             seq('\\',
-                choice(
-                    /[^xu]/,
+                choice( // nushell.sh/book/working_with_strings.html#double-quoted-strings
+                    /[bfrnt"'\/\\]/,
                     /u[0-9a-fA-F]{4}/,
-                    /u{[0-9a-fA-F]+}/,
-                    /x[0-9a-fA-F]{2}/
                 )
             )
         ),
