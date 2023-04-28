@@ -2895,10 +2895,6 @@
             "named": false
           },
           {
-            "type": "record",
-            "named": false
-          },
-          {
             "type": "signature",
             "named": false
           },
@@ -2926,6 +2922,10 @@
         "types": [
           {
             "type": "list_type",
+            "named": true
+          },
+          {
+            "type": "record_type",
             "named": true
           }
         ]
@@ -3422,6 +3422,21 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "record_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
     }
   },
   {
