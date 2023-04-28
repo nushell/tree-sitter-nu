@@ -22,3 +22,6 @@ records. so currently, blocks are not parsed as values
 ![treesitter-nu.readme.4.png](resources/treesitter-nu.readme.4.png)
 
 here `2`, `-f`, `arg` will all be parsed as strings
+
+## installation guide
+- for *neovim* users, please have a look at [`installation/neovim.md`](installation/neovim.md)
