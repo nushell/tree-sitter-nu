@@ -241,6 +241,12 @@
         "list" @type.enum
         ["<" ">"] @punctuation.bracket
     )
+    (record_type
+         "record" @type.enum
+         (identifier)@variable.parameter 
+        ["," ":"] @punctuation.delimiter
+        ["<" ">"] @punctuation.bracket
+    )
 ] @type.builtin)
 
 (comment) @comment

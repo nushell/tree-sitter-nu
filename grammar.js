@@ -135,6 +135,7 @@ module.exports = grammar({
             PUNC().colon,
             field("type", choice(
                 $.list_type,
+                $.record_type,
                 FLAT_TYPES(),
             )),
             field("completion", optional($.param_cmd)),
@@ -144,6 +145,22 @@ module.exports = grammar({
             PUNC().eq,
             field("param_value", $._expression),
         ),
+
+        record_type: $ => prec(1, seq(
+            "record",
+            optional(seq(
+                token.immediate(BRACK().open_angle),
+                repeat(seq(
+                    $.identifier,
+                    optional(seq(
+                        PUNC().colon,
+                        token(FLAT_TYPES()),
+                    )),
+                    optional(PUNC().comma),
+                )),
+                BRACK().close_angle,
+            ))
+        )),
 
         list_type: $ => prec(1, seq(
             "list",
@@ -1156,7 +1173,7 @@ function FLAT_TYPES() {
         "datetime", "directory", "duration", "directory", "duration",
         "error", "expr", "float", "decimal", "filesize", "full-cell-path",
         "glob", "int", "import-pattern", "keyword", "math", "nothing",
-        "number", "one-of", "operator", "path", "range", "record", "signature",
+        "number", "one-of", "operator", "path", "range", "signature",
         "string", "table", "variable", "var-with-opt-type"
     ];
 
