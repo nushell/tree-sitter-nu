@@ -40,7 +40,7 @@ following snippet to install the hightlights file and enable the highlighting:
 let remote = "https://raw.githubusercontent.com/nushell/tree-sitter-nu/main/queries/"
 let local = (
     $env.XDG_DATA_HOME?
-    | default ($env.HOME | path join ".local" "state")
+    | default ($env.HOME | path join ".local" "share")
     | path join "nvim" "lazy" "nvim-treesitter" "queries" "nu"
 )
 
