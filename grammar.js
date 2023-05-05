@@ -43,12 +43,15 @@ module.exports = grammar({
 
         /// Top Level Items
 
-        _declaration: $ => choice(
-            $.decl_alias,
-            $.decl_def,
-            $.decl_export,
-            $.decl_extern,
-            $.decl_use,
+        _declaration: $ => seq(
+            choice(
+                $.decl_alias,
+                $.decl_def,
+                $.decl_export,
+                $.decl_extern,
+                $.decl_use,
+            ),
+            optional(PUNC().semicolon),
         ),
 
         decl_alias: $ => seq(
@@ -79,7 +82,7 @@ module.exports = grammar({
             field("signature", choice($.parameter_parens, $.parameter_bracks)),
         ),
 
-        decl_use: $ => prec.left(1, seq(
+        decl_use: $ => prec.right(1, seq(
             optional(MODIFIER().visibility),
             KEYWORD().use,
             field("module", choice(
