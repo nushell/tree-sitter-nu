@@ -47,7 +47,15 @@ let local = (
 let file = "highlights.scm"
 
 mkdir $local
-http get ([$remote $file] | str join "/") | save ($local | path join $file)
+
+[
+  highlights.scm
+  locals.scm
+  folds.scm
+  injections.scm
+] | each {|query|
+  http get ([$remote $query] | str join "/") | save ($local | path join $query)
+}
 ```
 
 [tree-sitter]: https://tree-sitter.github.io/tree-sitter/
