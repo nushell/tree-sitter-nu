@@ -6060,6 +6060,10 @@
               {
                 "type": "SYMBOL",
                 "name": "_statement"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_declaration"
               }
             ]
           }
@@ -6200,81 +6204,16 @@
           {
             "type": "SYMBOL",
             "name": "cmd_head_sub"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "cmd_prefix_head_sub"
           }
         ]
       }
     },
     "cmd_head_sub": {
       "type": "PREC_RIGHT",
-      "value": 3,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "FIELD",
-            "name": "head",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "STRING",
-                      "value": "^"
-                    },
-                    {
-                      "type": "BLANK"
-                    }
-                  ]
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "cmd_identifier"
-                }
-              ]
-            }
-          },
-          {
-            "type": "FIELD",
-            "name": "sub",
-            "content": {
-              "type": "SYMBOL",
-              "name": "cmd_identifier"
-            }
-          },
-          {
-            "type": "PREC_RIGHT",
-            "value": 10,
-            "content": {
-              "type": "REPEAT",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_cmd_arg"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "cmd_prefix_head_sub": {
-      "type": "PREC_RIGHT",
       "value": 2,
       "content": {
         "type": "SEQ",
         "members": [
-          {
-            "type": "FIELD",
-            "name": "prefix",
-            "content": {
-              "type": "SYMBOL",
-              "name": "cmd_identifier"
-            }
-          },
           {
             "type": "FIELD",
             "name": "head",
@@ -6387,7 +6326,7 @@
           "name": "flag",
           "content": {
             "type": "PREC_RIGHT",
-            "value": 8,
+            "value": 9,
             "content": {
               "type": "SYMBOL",
               "name": "_flag"
@@ -6399,10 +6338,22 @@
           "name": "arg",
           "content": {
             "type": "PREC_RIGHT",
-            "value": 9,
+            "value": 8,
             "content": {
               "type": "SYMBOL",
               "name": "_value"
+            }
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "arg",
+          "content": {
+            "type": "PREC_RIGHT",
+            "value": 8,
+            "content": {
+              "type": "SYMBOL",
+              "name": "val_range"
             }
           }
         },
@@ -6415,18 +6366,6 @@
             "content": {
               "type": "SYMBOL",
               "name": "expr_parenthesized"
-            }
-          }
-        },
-        {
-          "type": "FIELD",
-          "name": "arg",
-          "content": {
-            "type": "PREC_RIGHT",
-            "value": 6,
-            "content": {
-              "type": "SYMBOL",
-              "name": "val_range"
             }
           }
         },
@@ -6568,78 +6507,40 @@
       }
     },
     "short_flag": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "-"
-        },
-        {
-          "type": "FIELD",
-          "name": "name",
-          "content": {
-            "type": "IMMEDIATE_TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "[a-zA-Z0-9]+"
-            }
-          }
-        }
-      ]
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "-[_\\p{XID_Continue}]+"
+      }
     },
     "long_flag": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "--"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": "[_\\p{XID_Continue}]+"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        }
-      ]
-    },
-    "flag_value": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "="
-        },
-        {
-          "type": "FIELD",
-          "name": "value",
-          "content": {
-            "type": "CHOICE",
+      "type": "PREC_RIGHT",
+      "value": 10,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "--"
+          },
+          {
+            "type": "SEQ",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "val_string"
+                "type": "STRING",
+                "value": "--"
               },
               {
-                "type": "SYMBOL",
-                "name": "cmd_identifier"
-              },
-              {
-                "type": "PATTERN",
-                "value": "[0-9][0-9_]*"
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[_\\p{XID_Continue}]+"
+                }
               }
             ]
           }
-        }
-      ]
+        ]
+      }
     },
     "unquoted": {
       "type": "PREC_LEFT",
@@ -6648,7 +6549,7 @@
         "type": "TOKEN",
         "content": {
           "type": "PATTERN",
-          "value": "[^-\\$\\s\\n\\t\\r{}()\\[\\]\"`';][^\\s\\n\\t\\r{}()\\[\\]\"`';]+"
+          "value": "[^-$\\s\\n\\t\\r{}()\\[\\]\"`';][^\\s\\n\\t\\r{}()\\[\\]\"`';]+"
         }
       }
     },
