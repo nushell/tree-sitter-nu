@@ -7,6 +7,7 @@
     "export-env"
     "export"
     "extern"
+    "module"
 
     "let"
     "let-env"
@@ -99,6 +100,7 @@
 (val_bool) @constant.builtin
 (val_nothing) @constant.builtin
 (val_string) @string
+(val_date) @constant.number
 (inter_escape_sequence) @constant.character.escape
 (escape_sequence) @constant.character.escape
 (val_interpolated [
@@ -120,6 +122,7 @@
     "/"
     "mod"
     "//"
+    "++"
     "**"
     "=="
     "!="
@@ -142,6 +145,37 @@
     "starts-with"
     "ends-with"
 ] @operator )
+
+(where_command [
+    "+"
+    "-"
+    "*"
+    "/"
+    "mod"
+    "//"
+    "++"
+    "**"
+    "=="
+    "!="
+    "<"
+    "<="
+    ">"
+    ">="
+    "=~"
+    "!~"
+    "and"
+    "or"
+    "xor"
+    "bit-or"
+    "bit-xor"
+    "bit-and"
+    "bit-shl"
+    "bit-shr"
+    "in"
+    "not-in"
+    "starts-with"
+    "ends-with"
+] @operator)
 
 (assignment [
     "="
@@ -192,6 +226,8 @@
     "[" "]"
 ] @punctuation.bracket
 
+(val_record
+  (record_entry ":" @punctuation.delimiter))
 ;;; ---
 ;;; identifiers
 (param_rest
@@ -207,8 +243,6 @@
 
 (short_flag) @variable.parameter
 (long_flag) @variable.parameter
-
-(val_variable ["$"] @variable.parameter)
 
 (scope_pattern [(wild_card) @function])
 
@@ -226,27 +260,35 @@
     sub: (_) @function.method
 )
 
-(path) @variable.parameter
+"where" @function
 
+(path
+  ["." "?"] @punctuation.delimiter
+) @variable.parameter
+
+(val_variable 
+  "$" @variable.parameter
+  [
+   (identifier) @namespace
+   "in"
+   "nu"
+   "env"
+   "nothing"
+   ] @special
+)
 ;;; ---
 ;;; types
-(param_type [
-    "any" "binary" "block" "bool" "cell-path" "closure" "cond"
-    "datetime" "directory" "duration" "directory" "duration"
-    "error" "expr" "float" "decimal" "filesize" "full-cell-path"
-    "glob" "int" "import-pattern" "keyword" "math" "nothing"
-    "number" "one-of" "operator" "path" "range" "record" "signature"
-    "string" "table" "variable" "var-with-opt-type"
-    (list_type
-        "list" @type.enum
-        ["<" ">"] @punctuation.bracket
-    )
-    (record_type
-         "record" @type.enum
-         (identifier)@variable.parameter 
-        ["," ":"] @punctuation.delimiter
-        ["<" ">"] @punctuation.bracket
-    )
-] @type.builtin)
+(flat_type) @type.builtin
+(list_type
+    "list" @type.enum
+    ["<" ">"] @punctuation.bracket
+)
+(record_type
+    "record" @type.enum
+    "<" @punctuation.bracket
+    key: (_) @variable.parameter 
+    ["," ":"] @punctuation.delimiter
+    ">" @punctuation.bracket
+)
 
 (comment) @comment
