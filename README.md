@@ -13,13 +13,9 @@ records. so currently, blocks are not parsed as values
 
 ![treesitter-nu.readme.2.png](resources/treesitter-nu.readme.2.png)
 
-3. cellpaths with numbers
+3. command arguments are parsed as strings
 
 ![treesitter-nu.readme.3.png](resources/treesitter-nu.readme.3.png)
-
-4. command arguments are parsed as strings
-
-![treesitter-nu.readme.4.png](resources/treesitter-nu.readme.4.png)
 
 here `2`, `-f`, `arg` will all be parsed as strings
 
