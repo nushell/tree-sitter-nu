@@ -473,150 +473,6 @@
     }
   },
   {
-    "type": "cmd_prefix_head_sub",
-    "named": true,
-    "fields": {
-      "arg": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "val_binary",
-            "named": true
-          },
-          {
-            "type": "val_bool",
-            "named": true
-          },
-          {
-            "type": "val_closure",
-            "named": true
-          },
-          {
-            "type": "val_date",
-            "named": true
-          },
-          {
-            "type": "val_duration",
-            "named": true
-          },
-          {
-            "type": "val_filesize",
-            "named": true
-          },
-          {
-            "type": "val_interpolated",
-            "named": true
-          },
-          {
-            "type": "val_list",
-            "named": true
-          },
-          {
-            "type": "val_nothing",
-            "named": true
-          },
-          {
-            "type": "val_number",
-            "named": true
-          },
-          {
-            "type": "val_range",
-            "named": true
-          },
-          {
-            "type": "val_record",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          },
-          {
-            "type": "val_table",
-            "named": true
-          },
-          {
-            "type": "val_variable",
-            "named": true
-          }
-        ]
-      },
-      "arg_str": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
-      "flag": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "long_flag",
-            "named": true
-          },
-          {
-            "type": "short_flag",
-            "named": true
-          }
-        ]
-      },
-      "head": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "^",
-            "named": false
-          },
-          {
-            "type": "cmd_identifier",
-            "named": true
-          }
-        ]
-      },
-      "prefix": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          }
-        ]
-      },
-      "redir": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "redirection",
-            "named": true
-          }
-        ]
-      },
-      "sub": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "command",
     "named": true,
     "fields": {},
@@ -630,10 +486,6 @@
         },
         {
           "type": "cmd_head_sub",
-          "named": true
-        },
-        {
-          "type": "cmd_prefix_head_sub",
           "named": true
         }
       ]
@@ -3794,11 +3646,6 @@
     "fields": {}
   },
   {
-    "type": "short_flag",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "stmt_const",
     "named": true,
     "fields": {
@@ -4105,6 +3952,30 @@
         },
         {
           "type": "ctrl_while",
+          "named": true
+        },
+        {
+          "type": "decl_alias",
+          "named": true
+        },
+        {
+          "type": "decl_def",
+          "named": true
+        },
+        {
+          "type": "decl_export",
+          "named": true
+        },
+        {
+          "type": "decl_extern",
+          "named": true
+        },
+        {
+          "type": "decl_module",
+          "named": true
+        },
+        {
+          "type": "decl_use",
           "named": true
         },
         {
@@ -6044,6 +5915,10 @@
   {
     "type": "sec",
     "named": false
+  },
+  {
+    "type": "short_flag",
+    "named": true
   },
   {
     "type": "signature",

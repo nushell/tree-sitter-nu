@@ -872,7 +872,8 @@ module.exports = grammar({
             BRACK().open_brace,
             field("parameters", $.parameter_pipes),
             repeat(choice(
-                $._statement
+                $._statement,
+                $._declaration,
             )),
             BRACK().close_brace,
         ),
@@ -910,17 +911,9 @@ module.exports = grammar({
         command: $ => prec.right(10, choice(
             $.cmd_head,
             $.cmd_head_sub,
-            $.cmd_prefix_head_sub,
         )),
 
-        cmd_head_sub: $ => prec.right(3, seq(
-            field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
-            field("sub", $.cmd_identifier),
-            prec.right(10, repeat($._cmd_arg)),
-        )),
-
-        cmd_prefix_head_sub: $ => prec.right(2, seq(
-            field("prefix", $.cmd_identifier),
+        cmd_head_sub: $ => prec.right(2, seq(
             field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
             field("sub", $.cmd_identifier),
             prec.right(10, repeat($._cmd_arg)),
@@ -933,10 +926,10 @@ module.exports = grammar({
 
         _cmd_arg: $ => choice(
             field("redir", prec.right(10, $.redirection)),
-            field("flag", prec.right(8, $._flag)),
-            field("arg", prec.right(9, $._value)),
+            field("flag", prec.right(9, $._flag)),
+            field("arg", prec.right(8, $._value)),
+            field("arg", prec.right(8, $.val_range)),
             field("arg", prec.right(7, $.expr_parenthesized)),
-            field("arg", prec.right(6, $.val_range)),
             // lowest precedence to make it a last resort
             field("arg_str", alias($.unquoted, $.val_string)),
         ),
@@ -957,30 +950,18 @@ module.exports = grammar({
             $.long_flag,
         )),
 
-        short_flag: $ => seq(
-            "-",
-            field("name", token.immediate(/[a-zA-Z0-9]+/)),
-        ),
+        short_flag: $ => token(/-[_\p{XID_Continue}]+/),
 
-        long_flag: $ => seq(
+        long_flag: $ => prec.right(10, choice(
             "--",
-            optional(token.immediate(/[_\p{XID_Continue}]+/)),
-        ),
-
-        flag_value: $ => seq(
-            PUNC().eq,
-            field("value", choice(
-                $.val_string,
-                $.cmd_identifier,
-                /[0-9][0-9_]*/i,
-            )),
-        ),
+            seq("--", token.immediate(/[_\p{XID_Continue}]+/)),
+        )),
 
         // because this catches almost anything, we want to ensure it is
         // picked as the a last resort after everything else has failed. 
         // so we give it a ridiculously low precedence and place it at the
         // very end
-        unquoted: $ => prec.left(-69, token(/[^-\$\s\n\t\r{}()\[\]"`';][^\s\n\t\r{}()\[\]"`';]+/)),
+        unquoted: $ => prec.left(-69, token(/[^-$\s\n\t\r{}()\[\]"`';][^\s\n\t\r{}()\[\]"`';]+/)),
 
         /// Comments
 

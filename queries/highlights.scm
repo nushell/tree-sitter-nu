@@ -211,7 +211,6 @@
 ] @punctuation.delimiter
 
 (param_short_flag "-" @punctuation.delimiter)
-(short_flag "-" @punctuation.delimiter)
 (param_long_flag ["--"] @punctuation.delimiter)
 (long_flag ["--"] @punctuation.delimiter)
 (param_rest "..." @punctuation.delimiter)
@@ -248,13 +247,12 @@
 
 (cmd_identifier) @function
 
-(cmd_head_sub
+(cmd_head
     "^" @punctuation.delimiter
     head: (_) @function
-    sub: (_) @function.method
 )
-(cmd_prefix_head_sub
-    prefix: (_) @namespace
+
+(cmd_head_sub
     "^" @punctuation.delimiter
     head: (_) @function
     sub: (_) @function.method
