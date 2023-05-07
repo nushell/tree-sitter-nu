@@ -711,7 +711,7 @@ module.exports = grammar({
         // separating floats from integers does not end well
         // especially when it comes to incorporation with ranges.
         val_number: $ => choice(
-            /[+-]?([0-9]*[.])?[0-9]+([eE][-+]?\d+)?/,
+            /[+-]?([0-9]+[.])?[0-9]+([eE][-+]?\d+)?/,
             /0x[0-9a-fA-F_]+/,
             /0b[01_]+/,
             /0o[0-7_]+/,
@@ -893,7 +893,8 @@ module.exports = grammar({
             );
 
             const path = choice(
-                prec.right(1, token(/[^\s\n\t\r{}()\[\]"`'\?.,;]+/)),
+                prec.right(2, token(/[0-9]+/)),
+                // prec.right(1, token(/[^\d\s\n\t\r{}()\[\]"`'\?.,;]+/)),
                 quoted,
             );
 

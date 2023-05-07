@@ -5043,7 +5043,7 @@
       "members": [
         {
           "type": "PATTERN",
-          "value": "[+-]?([0-9]*[.])?[0-9]+([eE][-+]?\\d+)?"
+          "value": "[+-]?([0-9]+[.])?[0-9]+([eE][-+]?\\d+)?"
         },
         {
           "type": "PATTERN",
@@ -6112,12 +6112,12 @@
                 "members": [
                   {
                     "type": "PREC_RIGHT",
-                    "value": 1,
+                    "value": 2,
                     "content": {
                       "type": "TOKEN",
                       "content": {
                         "type": "PATTERN",
-                        "value": "[^\\s\\n\\t\\r{}()\\[\\]\"`'\\?.,;]+"
+                        "value": "[0-9]+"
                       }
                     }
                   },
@@ -6152,12 +6152,12 @@
                     "members": [
                       {
                         "type": "PREC_RIGHT",
-                        "value": 1,
+                        "value": 2,
                         "content": {
                           "type": "TOKEN",
                           "content": {
                             "type": "PATTERN",
-                            "value": "[^\\s\\n\\t\\r{}()\\[\\]\"`'\\?.,;]+"
+                            "value": "[0-9]+"
                           }
                         }
                       },
