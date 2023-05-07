@@ -6562,7 +6562,7 @@
         },
         {
           "type": "PATTERN",
-          "value": ".*"
+          "value": ".*\\n"
         }
       ]
     }

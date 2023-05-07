@@ -968,7 +968,7 @@ module.exports = grammar({
 
         comment: $ => seq(
             PUNC().hash,
-            /.*/,
+            /.*\n/,
         )
     },
 });
