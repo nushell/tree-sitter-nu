@@ -1,0 +1,36 @@
+{
+  "parser-directories": [
+    "<the path to the parent directory of your parser>"
+  ],
+  // You can change these colors to whatever you want
+  "theme": {
+    "comment": "#a89984",
+
+    "type.builtin": "#d79921",
+    "type.enum": "#b57614",
+
+    "constant": "#d3869b",
+    "string": "#98971a",
+
+    "variable": "#fbf1c7",
+    "variable.builtin": "#b16286",
+    "variable.parameter": "#458588",
+
+    "punctuation": "#fe8019",
+    "punctuation.delimiter": "#fe8019",
+    "punctuation.bracket": "#fe8019",
+    "punctuation.special": "#fe8019",
+
+    "keyword": "#cc241d",
+    "keyword.control.import": "#689d6a",
+    "keyword.storage.modifier": "#af3a03",
+
+    "operator": "#d65d0e",
+
+    "function": "#fabd2f",
+    "function.method": "#458588",
+    "namespace": "#fbf1c7",
+
+    "special": "#fb4934"
+  }
+}

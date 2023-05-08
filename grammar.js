@@ -20,7 +20,7 @@ module.exports = grammar({
             ))
         ),
 
-        shebang: $ => seq('#!', /.*/),
+        shebang: $ => seq('#!', /.*\n/),
 
         /// Identifiers
         // NOTE:
