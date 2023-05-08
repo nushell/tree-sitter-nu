@@ -41,3 +41,8 @@ export def "ts parse" [    # -> string
         tree-sitter parse $file
     }
 }
+
+# Generates a default config file and prints out its path
+export def "ts config" [] {
+    tree-sitter init-config
+}
