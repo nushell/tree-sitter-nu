@@ -74,6 +74,15 @@ a [`sample config file`][105] is provided to get you started.
 > ts hl ts.nu
 ```
 
+## using the parser from rust
+1. the code is located at [`exanples/main.rs`][106]
+2. run it with `cargo run --example main`
+
+## tips
+- A line in the grammar.js that begins with `$._blah` means that `blah` is anonymous and won't show up in the final syntax tree.
+- Most of the grammar how-to is found [here](https://tree-sitter.github.io/tree-sitter/creating-parsers#the-grammar-dsl)
+
+
 ## getting help
 
 if you need any help or have a question, ping me `(@1Kinoti)` on the
@@ -104,3 +113,4 @@ if you need any help or have a question, ping me `(@1Kinoti)` on the
 [103]: ./corpus/
 [104]: ./ts.nu
 [105]: ./resources/sample-config.json
+[106]: ./examples/main.rs
