@@ -19,7 +19,7 @@ for some implementations
 
 - [queries/][102] -> this directory contains [queries][005] which, among
 other things, help with syntax highlighting. to learn how to write queries,
-consider [this][005]
+consider [the official docs][005]
 
 - [corpus/][103] -> this directory contains tests for the parser. the tests
 roughly organized in directories with their nodes. add a file with a descriprive
@@ -27,12 +27,10 @@ name that should generally cover a node to the right folder and write the
 tests using the [special test syntax][006]
 
 ## hacking
-the [`ts.nu`][104] module wraps the [`tree-sitter cli`][002] and makes 
-the commands shorter. to use the module, run
-
+the [`ts.nu`][104] module wraps the [`tree-sitter cli`][002]. to use the module, run
 
 ```nu
-use ts.nu * 
+> use ts.nu * 
 ```
 
 - `ts gen`   -> wraps `tree-sitter generate`, use this after making changes
@@ -42,22 +40,26 @@ to the grammar to generate a new parser.
 can optionally supply a string to only run the tests that contain it
 
 ```nu
-ts test     # run all the tests
-ts test let # run all tests that contain 'let'
+> ts test     # run all the tests
+> ts test let # run all tests that contain 'let'
 ```
 
-- `ts parse` -> wraps `tree-sitter parse`, use this to parse (a) specific file(s)
-and print out their ASTs. 
-  - pass `--debug(-d)` to print the AST along with debug info
-  - pass `--stat(-s)` to only print a success or failure message
+- `ts parse` -> wraps `tree-sitter parse`, use this to parse a specific file
+and print out its AST. 
+  - pass `--debug` or `-d` to print the AST along with debug info
+  - pass `--stat` or `-s` to only print a success or failure message
 
 ```nu
-ts parse ts.nu
+> ts parse ts.nu
 ```
 
 - `ts hl`    -> wraps `tree-sitter highlight`, use this to syntax highlight
 a file and print the results. this requires some setup in order to tell `tree-sitter`
 what colors to apply to what node.
+
+> **Note**
+> You only have to do this once
+
 ```nu
 # generate the config file
 > ts config
@@ -68,11 +70,8 @@ what colors to apply to what node.
 
 a [`sample config file`][105] is provided to get you started.
 
-> **Note**
-> You only have to do this once
-
 ```
-ts hl ts.nu
+> ts hl ts.nu
 ```
 
 ## getting help
