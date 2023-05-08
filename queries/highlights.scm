@@ -289,4 +289,5 @@
     ">" @punctuation.bracket
 )
 
+(shebang) @comment
 (comment) @comment
