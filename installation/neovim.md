@@ -47,7 +47,7 @@ let local = (
 let file = "highlights.scm"
 
 mkdir $local
-http get ([$remote $file] | str join "/") | save ($local | path join $file)
+http get ([$remote $file] | str join "/") | save --force ($local | path join $file)
 ```
 
 [tree-sitter]: https://tree-sitter.github.io/tree-sitter/
