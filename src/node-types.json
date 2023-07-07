@@ -473,6 +473,32 @@
     }
   },
   {
+    "type": "collection_type",
+    "named": true,
+    "fields": {
+      "key": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "flat_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "command",
     "named": true,
     "fields": {},
@@ -2959,15 +2985,15 @@
         "required": true,
         "types": [
           {
+            "type": "collection_type",
+            "named": true
+          },
+          {
             "type": "flat_type",
             "named": true
           },
           {
             "type": "list_type",
-            "named": true
-          },
-          {
-            "type": "record_type",
             "named": true
           }
         ]
@@ -3468,32 +3494,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "record_type",
-    "named": true,
-    "fields": {
-      "key": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "flat_type",
-          "named": true
-        }
-      ]
     }
   },
   {
