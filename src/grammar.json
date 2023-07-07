@@ -48,7 +48,7 @@
         },
         {
           "type": "PATTERN",
-          "value": ".*"
+          "value": ".*\\n"
         }
       ]
     },
@@ -677,7 +677,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "record_type"
+                "name": "collection_type"
               },
               {
                 "type": "SYMBOL",
@@ -874,12 +874,21 @@
         ]
       }
     },
-    "record_type": {
+    "collection_type": {
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "record"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "record"
+            },
+            {
+              "type": "STRING",
+              "value": "table"
+            }
+          ]
         },
         {
           "type": "SEQ",
