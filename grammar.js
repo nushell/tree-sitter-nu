@@ -14,8 +14,7 @@ module.exports = grammar({
                 $._declaration,
                 // NOTE:
                 // in a script, this is not a legal top level item, this is
-                // only here to cover `config.nu` and `env.nu` which are what
-                // this parser will mostly be used for i think
+                // only here to cover `config.nu` and `env.nu`
                 prec(-1, $._statement),
             ))
         ),
@@ -155,7 +154,7 @@ module.exports = grammar({
             PUNC().colon,
             field("type", choice(
                 $.list_type,
-                $.record_type,
+                $.collection_type,
                 $.flat_type,
             )),
             field("completion", optional($.param_cmd)),
@@ -168,14 +167,14 @@ module.exports = grammar({
 
         flat_type: $ => field("flat_type", FLAT_TYPES()),
 
-        record_type: $ => {
+        collection_type: $ => {
             const key = field("key", choice(
                 $.identifier,
                 alias($.val_string, $.identifier),
             ));
 
             return seq(
-                "record",
+                choice("record", "table"),
                 seq(
                     token.immediate(BRACK().open_angle),
                     repeat(seq(

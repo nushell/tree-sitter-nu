@@ -281,8 +281,8 @@
     "list" @type.enum
     ["<" ">"] @punctuation.bracket
 )
-(record_type
-    "record" @type.enum
+(collection_type
+    ["record" "table"] @type.enum
     "<" @punctuation.bracket
     key: (_) @variable.parameter 
     ["," ":"] @punctuation.delimiter
