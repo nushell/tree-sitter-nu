@@ -892,8 +892,7 @@ module.exports = grammar({
             );
 
             const path = choice(
-                prec.right(2, token(/[0-9]+/)),
-                // prec.right(1, token(/[^\d\s\n\t\r{}()\[\]"`'\?.,;]+/)),
+                prec.right(2, token(/[0-9a-zA-Z]+/)),
                 quoted,
             );
 
