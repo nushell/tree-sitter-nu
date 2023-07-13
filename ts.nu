@@ -34,11 +34,11 @@ export def "ts parse" [    # -> string
 ] {
     clear
     if $debug {
-        tree-sitter parse $file -d
+        tree-sitter parse $glob -d
     } else if $stat {
-        tree-sitter parse $file -sq
+        tree-sitter parse $glob -sq
     } else {
-        tree-sitter parse $file
+        tree-sitter parse $glob
     }
 }
 
