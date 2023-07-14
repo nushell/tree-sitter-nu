@@ -4,6 +4,10 @@ target/
 
 /build/
 
+# Workspace Config
+.nvim/
+# .vscode/
+
 # MSVC compile output
 /parser.exp
 /parser.lib
