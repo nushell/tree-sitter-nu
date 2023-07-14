@@ -7,14 +7,17 @@ def list-tests-in-file [file: path] {
     open --raw $file
     | to text
     | lines
-    | do {|lines|
-        ($lines | skip 1)
-        | zip $lines
-        | zip ($lines | skip 2)
+    | do {|x|
+        ($x | skip 1)       # target line
+        | zip $x            # previous line of target line
+        | zip ($x | skip 2) # next line of target line
     } $in
-    | each {|groups| $groups | flatten}
-    | filter {|group| $group.1 =~ "=+$" and $group.2 =~ "=+$"}
-    | each {|group| $group.0}
+    | each {|group| $group | flatten}
+    | filter {|g|
+        # check for test title surroundings on previous and next line
+        $g.1 =~ "=+$" and $g.2 =~ "=+$"
+    }
+    | each {|g| $g.0}
 }
 
 def list-tests-in-dir [dir: path] {
