@@ -33,7 +33,7 @@ def list-tests-in-dir [dir: path] {
 }
 
 def "completion ts test" [] {
-    list-tests-in-dir ./corpus
+    list-tests-in-dir ./corpus | sort
 }
 
 
