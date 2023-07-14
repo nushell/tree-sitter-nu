@@ -3,6 +3,36 @@
 # # requirements
 # - tree-sitter cli
 
+def list-tests-in-file [file: path] {
+    open --raw $file
+    | to text
+    | lines
+    | do {|lines|
+        ($lines | skip 1)
+        | zip $lines
+        | zip ($lines | skip 2)
+    } $in
+    | each {|groups| $groups | flatten}
+    | filter {|group| $group.1 =~ "=+$" and $group.2 =~ "=+$"}
+    | each {|group| $group.0}
+}
+
+def list-tests-in-dir [dir: path] {
+    ls $dir
+    | each {|it|
+        if $it.type == "dir" {
+            list-tests-in-dir $it.name | flatten
+        } else if $it.type == "file" {
+            list-tests-in-file $it.name
+        }
+    }
+    | flatten
+}
+
+def "completion ts test" [] {
+    list-tests-in-dir ./corpus
+}
+
 
 # Generates a parser from the grammar
 export def "ts gen" [] {   # -> nothing
@@ -20,9 +50,15 @@ export def "ts hl" [       # -> string
 }
 
 # Runs all tests in the repo
-export def "ts test" [] {  # -> string
+export def "ts test" [    # -> string
+    test_name?: string@"completion ts test"     # specific test name to run
+] {
     clear
-    tree-sitter test
+    if ($test_name == null) {
+        tree-sitter test
+    } else {
+        tree-sitter test -f $test_name
+    }
 }
 
 # Parses the specified file(s) and prints their ASTs to
