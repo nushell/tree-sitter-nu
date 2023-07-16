@@ -50,15 +50,13 @@ $x ++= [1 2 3] | each {|x| $x + 8}
           (val_number)))
       (pipe_element
         (command
-          (cmd_head
-            (cmd_identifier)
-            (val_closure
-              (parameter_pipes
-                (parameter
-                  (identifier)))
-              (pipeline
-                (pipe_element
-                  (expr_binary
-                    (val_variable
-                      (identifier))
-                    (val_number)))))))))))
+          (cmd_identifier)
+          (val_closure
+            (parameter_pipes
+              (parameter
+                (identifier)))
+            (ERROR
+              (expr_binary
+                (val_variable
+                  (identifier))
+                (val_number)))))))))
