@@ -43,3 +43,37 @@ echo this
       (command
         (cmd_identifier)
         (val_string)))))
+
+=====
+pipe-003-crossing-too-much-lines
+=====
+
+echo this
+| split row "i"
+|
+|
+|
+| str join
+| print $in
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)
+        (val_string)))
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_variable)))))
