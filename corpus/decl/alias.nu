@@ -12,8 +12,7 @@ alias change-directory = cd
     (pipeline
       (pipe_element
         (command
-          (cmd_head
-            (cmd_identifier)))))))
+          (cmd_identifier))))))
 
 =====
 alias-002-semicolon
@@ -29,8 +28,7 @@ alias change-directory = cd;
     (pipeline
       (pipe_element
         (command
-          (cmd_head
-            (cmd_identifier)))))))
+          (cmd_identifier))))))
 
 =====
 alias-003-exported
@@ -46,5 +44,4 @@ export alias change-directory = cd;
     (pipeline
       (pipe_element
         (command
-          (cmd_head
-            (cmd_identifier)))))))
+          (cmd_identifier))))))

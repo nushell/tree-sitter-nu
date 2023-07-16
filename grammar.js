@@ -8,18 +8,40 @@ module.exports = grammar({
     rules: {
         /// File
 
+        /*
+         * To make tree-sitter "greedy" on consuming tokens, avoid using `repeat`
+         * at top rule.
+         *
+         * Instead of giving a rule that tree-sitter can repeat on, explictly
+         * write out terminator between rules to guide tree-sitter reads more.
+         *
+         * For example, `nu_script: $ => repeat($.pipeline)` will parse command
+         * call `str join` as "(nu_script (pipeline) (pipeline))".
+         * 
+         * Releated rule(s): _top_level_block
+         *
+         * Reference: https://github.com/tree-sitter/tree-sitter/issues/1139
+         */
         nu_script: $ => seq(
             optional($.shebang),
-            repeat(choice(
-                $._declaration,
-                // NOTE:
-                // in a script, this is not a legal top level item, this is
-                // only here to cover `config.nu` and `env.nu`
-                prec(-1, $._statement),
-            ))
+            optional($._top_level_block),
         ),
 
         shebang: $ => seq('#!', /.*\n/),
+
+        _top_level: $ => choice(
+            $._declaration,
+            $._statement,
+        ),
+
+        _top_level_block: $ => prec.right(seq(
+            $._top_level,
+            repeat(seq(
+                repeat1($._terminator),
+                $._top_level,
+            )),
+            repeat($._terminator),
+        )),
 
         /// Identifiers
         // NOTE:
@@ -41,23 +63,19 @@ module.exports = grammar({
         ),
 
         _terminator: $ => choice(
-            seq(PUNC().semicolon, '\n'),
             PUNC().semicolon,
             '\n',
         ),
 
         /// Top Level Items
 
-        _declaration: $ => seq(
-            choice(
-                $.decl_alias,
-                $.decl_def,
-                $.decl_export,
-                $.decl_extern,
-                $.decl_module,
-                $.decl_use,
-            ),
-            optional($._terminator),
+        _declaration: $ => choice(
+            $.decl_alias,
+            $.decl_def,
+            $.decl_export,
+            $.decl_extern,
+            $.decl_module,
+            $.decl_use,
         ),
 
         decl_alias: $ => seq(
@@ -228,28 +246,27 @@ module.exports = grammar({
 
         /// Statements
 
-        _statement: $ => seq(
-            choice(
-                $._control,
-                $._stmt_hide,
-                $._stmt_overlay,
-                $.stmt_let,
-                $.stmt_mut,
-                $.stmt_const,
-                $.stmt_register,
-                $.stmt_source,
-                $.assignment,
-                $.pipeline
-            ),
-            optional($._terminator),
+        _statement: $ => choice(
+            $._control,
+            $._stmt_hide,
+            $._stmt_overlay,
+            $.stmt_let,
+            $.stmt_mut,
+            $.stmt_const,
+            $.stmt_register,
+            $.stmt_source,
+            $.assignment,
+            $.pipeline
         ),
 
         /// Controls
 
-        _control: $ => choice(
-            $._ctrl_statement,
-            $._ctrl_expression,
-        ),
+        _control: $ => prec(
+            STATEMENT_PREC().control,
+            choice(
+                $._ctrl_statement,
+                $._ctrl_expression,
+            )),
 
         // control statements cannot be used in pipeline because they
         // do not return values
@@ -427,7 +444,7 @@ module.exports = grammar({
         _assignment_pattern: $ => seq(
             field("name", $._variable_name),
             PUNC().eq,
-            field("value", $.pipeline),
+            field("value", $._expression),
         ),
 
         /// Scope Statements
@@ -439,7 +456,10 @@ module.exports = grammar({
 
         stmt_register: $ => prec.left(-1, seq(
             KEYWORD().register,
-            field("plugin", choice(alias($.unquoted, $.val_string), $.val_variable)),
+            field("plugin", choice(
+                alias($.unquoted, $.val_string),
+                $.val_variable
+            )),
             field("signature", optional($.val_record)),
         )),
 
@@ -535,10 +555,7 @@ module.exports = grammar({
 
         block: $ => seq(
             BRACK().open_brace,
-            repeat(choice(
-                $._declaration,
-                $._statement,
-            )),
+            optional($._top_level_block),
             BRACK().close_brace,
         ),
 
@@ -549,20 +566,21 @@ module.exports = grammar({
 
         /// Pipeline
 
-        pipeline: $ => prec(-69, seq(
+        pipeline: $ => prec.right(seq(
             $.pipe_element,
             repeat(seq(
+                // optional('\n'),
                 PUNC().pipe,
-                $.pipe_element
+                $.pipe_element,
             )),
         )),
 
-        pipe_element: $ => prec(-1, choice(
+        pipe_element: $ => choice(
             prec.right(69, $._expression),
             $._ctrl_expression,
             $.where_command,
             $.command,
-        )),
+        ),
 
         // the where command has a unique argument pattern that breaks the
         // general command parsing, so we handle it separately
@@ -908,18 +926,7 @@ module.exports = grammar({
 
         /// Commands
 
-        command: $ => prec.right(10, choice(
-            $.cmd_head,
-            $.cmd_head_sub,
-        )),
-
-        cmd_head_sub: $ => prec.right(2, seq(
-            field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
-            field("sub", $.cmd_identifier),
-            prec.right(10, repeat($._cmd_arg)),
-        )),
-
-        cmd_head: $ => prec.right(1, seq(
+        command: $ => prec.right(10, seq(
             field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
             prec.right(10, repeat($._cmd_arg)),
         )),
@@ -1157,6 +1164,12 @@ function PREC() {
         xor: 3,
         or: 2,
         assignment: 1,
+    }
+}
+
+function STATEMENT_PREC() {
+    return {
+        control: 1,
     }
 }
 
