@@ -9,7 +9,9 @@ let x = 42
 (nu_script
   (stmt_let
     (identifier)
-    (val_number)))
+    (pipeline
+      (pipe_element
+        (val_number)))))
 
 =====
 let-002-semicolon
@@ -22,7 +24,9 @@ let x = 42;
 (nu_script
   (stmt_let
     (identifier)
-    (val_number)))
+    (pipeline
+      (pipe_element
+        (val_number)))))
 
 =====
 let-003-assignment-to-a-pipeline
@@ -30,17 +34,16 @@ let-003-assignment-to-a-pipeline
 
 let x = 42 | math sin
 
+
 -----
 
 (nu_script
   (stmt_let
     (identifier)
-    (val_number))
-  (pipeline
-    (pipe_element
-      (command
-        (MISSING cmd_identifier)))
-    (pipe_element
-      (command
-        (cmd_identifier)
-        (val_string)))))
+    (pipeline
+      (pipe_element
+        (val_number))
+      (pipe_element
+        (command
+          (cmd_identifier)
+          (val_string))))))
