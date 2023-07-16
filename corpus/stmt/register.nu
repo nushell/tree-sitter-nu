@@ -53,58 +53,58 @@ register ~/plugins/nu-plugin-math {
 -----
 
 (nu_script
-  (stmt_register
-    (val_string))
-  (pipeline
-    (pipe_element
-      (val_record
-        (record_entry
-          (val_string)
+      (stmt_register
+        (val_string))
+      (pipeline
+        (pipe_element
           (val_record
             (record_entry
               (val_string)
-              (val_string))
-            (record_entry
-              (val_string)
-              (val_string))
-            (record_entry
-              (val_string)
-              (val_string))
-            (record_entry
-              (val_string)
-              (val_string))
-            (record_entry
-              (val_string)
-              (val_string))
-            (record_entry
-              (val_string)
-              (val_list
-                (val_record
-                  (record_entry
-                    (val_string)
-                    (val_string))
-                  (record_entry
-                    (val_string)
-                    (val_string))
-                  (record_entry
-                    (val_string)
-                    (val_string))
-                  (record_entry
-                    (val_string)
-                    (val_string)))
-                (val_record
-                  (record_entry
-                    (val_string)
-                    (val_string))
-                  (record_entry
-                    (val_string)
-                    (val_string))
-                  (record_entry
-                    (val_string)
-                    (val_string))
-                  (record_entry
-                    (val_string)
-                    (val_string)))))))))))
+              (val_record
+                (record_entry
+                  (val_string)
+                  (val_string))
+                (record_entry
+                  (val_string)
+                  (val_string))
+                (record_entry
+                  (val_string)
+                  (val_string))
+                (record_entry
+                  (val_string)
+                  (val_string))
+                (record_entry
+                  (val_string)
+                  (val_string))
+                (record_entry
+                  (val_string)
+                  (val_list
+                    (val_record
+                      (record_entry
+                        (val_string)
+                        (val_string))
+                      (record_entry
+                        (val_string)
+                        (val_string))
+                      (record_entry
+                        (val_string)
+                        (val_string))
+                      (record_entry
+                        (val_string)
+                        (val_string)))
+                    (val_record
+                      (record_entry
+                        (val_string)
+                        (val_string))
+                      (record_entry
+                        (val_string)
+                        (val_string))
+                      (record_entry
+                        (val_string)
+                        (val_string))
+                      (record_entry
+                        (val_string)
+                        (val_string)))))))))))
 
 =====
 register-004-variable

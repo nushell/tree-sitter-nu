@@ -45,6 +45,5 @@ let x = 42 | math sin
         (val_number))
       (pipe_element
         (command
-          (cmd_head_sub
-            (cmd_identifier)
-            (cmd_identifier)))))))
+          (cmd_identifier)
+          (val_string))))))

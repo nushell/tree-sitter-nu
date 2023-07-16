@@ -247,15 +247,9 @@
 
 (cmd_identifier) @function
 
-(cmd_head
+(command
     "^" @punctuation.delimiter
     head: (_) @function
-)
-
-(cmd_head_sub
-    "^" @punctuation.delimiter
-    head: (_) @function
-    sub: (_) @function.method
 )
 
 "where" @function
