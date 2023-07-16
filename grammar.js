@@ -8,20 +8,6 @@ module.exports = grammar({
     rules: {
         /// File
 
-        /*
-         * To make tree-sitter "greedy" on consuming tokens, avoid using `repeat`
-         * at top rule.
-         *
-         * Instead of giving a rule that tree-sitter can repeat on, explictly
-         * write out terminator between rules to guide tree-sitter reads more.
-         *
-         * For example, `nu_script: $ => repeat($.pipeline)` will parse command
-         * call `str join` as "(nu_script (pipeline) (pipeline))".
-         * 
-         * Releated rule(s): _top_level_block
-         *
-         * Reference: https://github.com/tree-sitter/tree-sitter/issues/1139
-         */
         nu_script: $ => seq(
             optional($.shebang),
             optional($._top_level_block),
