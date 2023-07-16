@@ -26,12 +26,11 @@ export-env {
       (pipeline
         (pipe_element
           (command
-            (cmd_head
-              (cmd_identifier)
-              (val_record
-                (record_entry
-                  (identifier)
-                  (val_string))
-                (record_entry
-                  (identifier)
-                  (val_string))))))))))
+            (cmd_identifier)
+            (val_record
+              (record_entry
+                (identifier)
+                (val_string))
+              (record_entry
+                (identifier)
+                (val_string)))))))))
