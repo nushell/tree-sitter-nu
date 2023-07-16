@@ -618,7 +618,8 @@ module.exports = grammar({
                         // ensure the expression immediately follows the
                         // opening paren
                         token.immediate(BRACK().open_paren),
-                        inline_pipeline($, BRACK().close_paren),
+                        $._top_level_block,
+                        BRACK().close_paren
                     ),
                 ),
             );
