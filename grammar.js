@@ -430,7 +430,7 @@ module.exports = grammar({
         _assignment_pattern: $ => seq(
             field("name", $._variable_name),
             PUNC().eq,
-            field("value", $._expression),
+            field("value", $.pipeline),
         ),
 
         /// Scope Statements
