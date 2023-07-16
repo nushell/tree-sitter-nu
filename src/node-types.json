@@ -1895,7 +1895,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "cell_path",
@@ -1903,10 +1903,6 @@
         },
         {
           "type": "pipe_element",
-          "named": true
-        },
-        {
-          "type": "pipeline",
           "named": true
         }
       ]
@@ -1926,6 +1922,10 @@
         },
         {
           "type": "expr_unary",
+          "named": true
+        },
+        {
+          "type": "pipe_element",
           "named": true
         },
         {

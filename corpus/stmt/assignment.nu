@@ -55,9 +55,8 @@ $x ++= [1 2 3] | each {|x| $x + 8}
             (parameter_pipes
               (parameter
                 (identifier)))
-            (pipeline
-              (pipe_element
-                (expr_binary
-                  (val_variable
-                    (identifier))
-                  (val_number))))))))))
+            (ERROR
+              (expr_binary
+                (val_variable
+                  (identifier))
+                (val_number)))))))))

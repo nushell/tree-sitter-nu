@@ -34,14 +34,14 @@ module.exports = grammar({
             $._statement,
         ),
 
-        _top_level_block: $ => prec.right(seq(
-            $._top_level,
-            repeat(seq(
-                repeat1($._terminator),
+        _top_level_block: $ => seq(
+            prec.right(repeat(seq(
                 $._top_level,
-            )),
+                repeat($._terminator),
+            ))),
+            $._top_level,
             repeat($._terminator),
-        )),
+        ),
 
         /// Identifiers
         // NOTE:
@@ -566,14 +566,8 @@ module.exports = grammar({
 
         /// Pipeline
 
-        pipeline: $ => prec.right(seq(
-            $.pipe_element,
-            repeat(seq(
-                // optional('\n'),
-                PUNC().pipe,
-                $.pipe_element,
-            )),
-        )),
+
+        pipeline: $ => inline_pipeline($, $._terminator),
 
         pipe_element: $ => choice(
             prec.right(69, $._expression),
@@ -634,16 +628,12 @@ module.exports = grammar({
                 seq(OPR().not, after_not),
                 seq(
                     OPR().minus,
-                    alias(
-                        seq(
-                            // ensure the expression immediately follows the
-                            // opening paren
-                            token.immediate(BRACK().open_paren),
-                            $.pipeline,
-                            BRACK().close_paren
-                        ),
-                        $.expr_parenthesized
-                    )
+                    seq(
+                        // ensure the expression immediately follows the
+                        // opening paren
+                        token.immediate(BRACK().open_paren),
+                        inline_pipeline($, BRACK().close_paren),
+                    ),
                 ),
             );
         },
@@ -658,8 +648,7 @@ module.exports = grammar({
 
         expr_parenthesized: $ => seq(
             BRACK().open_paren,
-            optional($.pipeline),
-            BRACK().close_paren,
+            inline_pipeline($, BRACK().close_paren),
             optional($.cell_path),
         ),
 
@@ -926,10 +915,10 @@ module.exports = grammar({
 
         /// Commands
 
-        command: $ => prec.right(10, seq(
+        command: $ => seq(
             field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
-            prec.right(10, repeat($._cmd_arg)),
-        )),
+            repeat($._cmd_arg),
+        ),
 
         _cmd_arg: $ => choice(
             field("redir", prec.right(10, $.redirection)),
@@ -978,6 +967,19 @@ module.exports = grammar({
         )
     },
 });
+
+
+function inline_pipeline($, terminator) {
+    return prec.right(seq(
+        $.pipe_element,
+        prec.right(repeat(seq(
+            optional('\n'),
+            PUNC().pipe,
+            optional($.pipe_element),
+        ))),
+        terminator,
+    ))
+}
 
 /// nushell keywords
 function KEYWORD() {
