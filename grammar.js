@@ -77,6 +77,7 @@ module.exports = grammar({
             choice(KEYWORD().def, KEYWORD().def_env),
             field("name", $._command_name),
             field("parameters", choice($.parameter_parens, $.parameter_bracks)),
+            field("return_type", optional($.returns)),
             field("body", $.block),
         ),
 
@@ -85,12 +86,13 @@ module.exports = grammar({
             field("body", $.block),
         ),
 
-        decl_extern: $ => seq(
+        decl_extern: $ => prec.right(1, seq(
             optional(MODIFIER().visibility),
             KEYWORD().extern,
             field("name", $._command_name),
             field("signature", choice($.parameter_parens, $.parameter_bracks)),
-        ),
+            field("body", optional($.block)),
+        )),
 
         decl_module: $ => seq(
             optional(MODIFIER().visibility),
@@ -108,6 +110,27 @@ module.exports = grammar({
             )),
             optional(field("import_pattern", $.scope_pattern)),
         )),
+
+        /// Return types
+        returns: $ => seq(
+            PUNC().colon,
+            choice(
+                $._multiple_types,
+                $._one_type,
+            )
+        ),
+
+        _one_type: $ => seq(
+            $._type_annotation,
+            PUNC().thin_arrow,
+            $._type_annotation,
+        ),
+
+        _multiple_types: $ => seq(
+            BRACK().open_brack,
+            repeat(seq($._one_type, optional(PUNC().comma))),
+            BRACK().close_brack,
+        ),
 
         /// Parameters
 
@@ -156,11 +179,7 @@ module.exports = grammar({
 
         param_type: $ => seq(
             PUNC().colon,
-            field("type", choice(
-                $.list_type,
-                $.collection_type,
-                $.flat_type,
-            )),
+            $._type_annotation,
             field("completion", optional($.param_cmd)),
         ),
 
@@ -168,6 +187,12 @@ module.exports = grammar({
             PUNC().eq,
             field("param_value", $._expression),
         ),
+
+        _type_annotation: $ => field("type", choice(
+            $.list_type,
+            $.collection_type,
+            $.flat_type,
+        )),
 
         flat_type: $ => field("flat_type", FLAT_TYPES()),
 
@@ -372,11 +397,16 @@ module.exports = grammar({
         ),
 
         _match_or_pattern: $ => seq(
-            $._expression,
+            seq($._expression, optional($.match_guard)),
             repeat(seq(
                 PUNC().pipe,
                 $._expression,
             )),
+        ),
+
+        match_guard: $ => seq(
+            KEYWORD().if,
+            $._expression,
         ),
 
         _match_list_destructure_pattern: $ => prec(1, seq(
@@ -1051,6 +1081,7 @@ function PUNC() {
         caret: "^",
         dollar: "$",
         fat_arrow: "=>",
+        thin_arrow: "->",
         question: "?",
         underscore: "_",
 
