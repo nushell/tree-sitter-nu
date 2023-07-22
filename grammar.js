@@ -429,6 +429,7 @@ module.exports = grammar({
 
         _assignment_pattern: $ => seq(
             field("name", $._variable_name),
+            field("type", optional($.param_type)),
             PUNC().eq,
             field("value", $.pipeline),
         ),
