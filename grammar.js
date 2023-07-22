@@ -372,11 +372,16 @@ module.exports = grammar({
         ),
 
         _match_or_pattern: $ => seq(
-            $._expression,
+            seq($._expression, optional($.match_guard)),
             repeat(seq(
                 PUNC().pipe,
                 $._expression,
             )),
+        ),
+
+        match_guard: $ => seq(
+            KEYWORD().if,
+            $._expression,
         ),
 
         _match_list_destructure_pattern: $ => prec(1, seq(
