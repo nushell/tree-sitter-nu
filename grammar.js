@@ -85,12 +85,13 @@ module.exports = grammar({
             field("body", $.block),
         ),
 
-        decl_extern: $ => seq(
+        decl_extern: $ => prec.right(1, seq(
             optional(MODIFIER().visibility),
             KEYWORD().extern,
             field("name", $._command_name),
             field("signature", choice($.parameter_parens, $.parameter_bracks)),
-        ),
+            field("body", optional($.block)),
+        )),
 
         decl_module: $ => seq(
             optional(MODIFIER().visibility),
