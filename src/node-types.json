@@ -3520,6 +3520,16 @@
           }
         ]
       },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "param_type",
+            "named": true
+          }
+        ]
+      },
       "value": {
         "multiple": false,
         "required": true,
@@ -3570,6 +3580,16 @@
           }
         ]
       },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "param_type",
+            "named": true
+          }
+        ]
+      },
       "value": {
         "multiple": false,
         "required": true,
@@ -3616,6 +3636,16 @@
           },
           {
             "type": "val_variable",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "param_type",
             "named": true
           }
         ]
