@@ -36,3 +36,17 @@ export extern cargo []
   (decl_extern
     (cmd_identifier)
     (parameter_bracks)))
+
+=====
+extern-004-with-block
+=====
+
+export extern cargo [] {}
+
+-----
+
+(nu_script
+  (decl_extern
+    (cmd_identifier)
+    (parameter_bracks)
+    (block)))
