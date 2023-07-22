@@ -1233,6 +1233,16 @@
           }
         ]
       },
+      "return_type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "returns",
+            "named": true
+          }
+        ]
+      },
       "unquoted_name": {
         "multiple": false,
         "required": false,
@@ -3515,6 +3525,30 @@
     }
   },
   {
+    "type": "returns",
+    "named": true,
+    "fields": {
+      "type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "collection_type",
+            "named": true
+          },
+          {
+            "type": "flat_type",
+            "named": true
+          },
+          {
+            "type": "list_type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "scope_pattern",
     "named": true,
     "fields": {
@@ -5096,6 +5130,10 @@
   },
   {
     "type": "-=",
+    "named": false
+  },
+  {
+    "type": "->",
     "named": false
   },
   {
