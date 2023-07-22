@@ -1,1 +1,2 @@
-let x = $env.1
+def-env test []: [nothing -> string, nothing -> int] {}
+
