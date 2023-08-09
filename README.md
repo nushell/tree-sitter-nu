@@ -1,4 +1,4 @@
-# tree-sitter nu
+# Tree-sitter grammar for Nushell
 
 [**WIP**] [nushell](https://github.com/nushell/nushell) grammar for [tree-sitter](https://tree-sitter.github.io/tree-sitter/)
 
