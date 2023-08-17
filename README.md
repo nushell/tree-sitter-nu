@@ -13,6 +13,7 @@
 
 ## installation guide
 - for *neovim* users, please have a look at [`installation/neovim.md`](installation/neovim.md)
+- for *helix* users, please have a look at [`installation/helix.md`](installation/helix.md)
 
 ## contributing
 see [instructions](./CONTRIBUTING.md)
