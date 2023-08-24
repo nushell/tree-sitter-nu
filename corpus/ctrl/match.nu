@@ -22,6 +22,42 @@ match $x {
                 (val_variable
                   (identifier))
                 (val_number))))
-          (val_record))
+          (block))
         (default_arm
-          (val_record))))
+          (block))))
+
+====
+match-002-block
+====
+
+match $x {
+  {key: $val} => {$val | print}
+  _ => {{}}
+}
+
+-----
+
+(nu_script
+  (ctrl_match
+    (val_variable
+      (identifier))
+    (match_arm
+      (match_pattern
+        (val_record
+          (record_entry
+            (identifier)
+            (val_variable
+              (identifier)))))
+      (block
+        (pipeline
+          (pipe_element
+            (val_variable
+              (identifier)))
+          (pipe_element
+            (command
+              (cmd_identifier))))))
+    (default_arm
+      (block
+        (pipeline
+          (pipe_element
+            (val_record)))))))

@@ -9,6 +9,7 @@ module.exports = grammar({
         [$._declaration, $._declaration_last],
         [$._statement, $._statement_last],
         [$.pipeline, $.pipeline_last],
+        [$.block, $.val_record],
     ],
 
     rules: {
@@ -422,16 +423,22 @@ module.exports = grammar({
         match_arm: $ => seq(
             field("pattern", $.match_pattern),
             PUNC().fat_arrow,
-            field("expression", $._expression),
+            field("expression", $._match_expression),
             optional(PUNC().comma),
         ),
 
         default_arm: $ => seq(
             field("default_pattern", PUNC().underscore),
             PUNC().fat_arrow,
-            field("expression", $._expression),
+            field("expression", $._match_expression),
             optional(PUNC().comma),
         ),
+
+        _match_expression: $ => choice(
+            $._expression,
+            prec.dynamic(10, $.block),
+        ),
+        
         match_pattern: $ => choice(
             $._match_or_pattern,
             $._match_list_destructure_pattern,
