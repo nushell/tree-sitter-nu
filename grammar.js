@@ -5,6 +5,12 @@ module.exports = grammar({
 
     extras: $ => [/\s/, $.comment],
 
+    conflicts: $ => [
+        [$._declaration, $._declaration_last],
+        [$._statement, $._statement_last],
+        [$.pipeline, $.pipeline_last],
+    ],
+
     rules: {
         /// File
 
@@ -19,13 +25,18 @@ module.exports = grammar({
             $._declaration,
             $._statement,
         ),
+        
+        _top_level_last: $ => choice(
+            $._declaration_last,
+            $._statement_last,
+        ),
 
         _top_level_block: $ => seq(
             prec.right(repeat(seq(
                 $._top_level,
                 repeat($._terminator),
             ))),
-            $._top_level,
+            $._top_level_last,
             repeat($._terminator),
         ),
 
@@ -63,6 +74,15 @@ module.exports = grammar({
             $.decl_module,
             $.decl_use,
         ),
+        
+        _declaration_last: $ => choice(
+            alias($.decl_alias_last, $.decl_alias),
+            $.decl_def,
+            $.decl_export,
+            $.decl_extern,
+            $.decl_module,
+            $.decl_use,
+        ),
 
         decl_alias: $ => seq(
             optional(MODIFIER().visibility),
@@ -70,6 +90,14 @@ module.exports = grammar({
             field("name", $._command_name),
             PUNC().eq,
             field("value", $.pipeline),
+        ),
+        
+        decl_alias_last: $ => seq(
+            optional(MODIFIER().visibility),
+            KEYWORD().alias,
+            field("name", $._command_name),
+            PUNC().eq,
+            field("value", alias($.pipeline_last, $.pipeline)),
         ),
 
         decl_def: $ => seq(
@@ -270,6 +298,19 @@ module.exports = grammar({
             $.pipeline
         ),
 
+        _statement_last: $ => choice(
+            $._control,
+            $._stmt_hide,
+            $._stmt_overlay,
+            alias($.stmt_let_last, $.stmt_let),
+            alias($.stmt_mut_last, $.stmt_mut),
+            alias($.stmt_const_last, $.stmt_const),
+            $.stmt_register,
+            $.stmt_source,
+            alias($.assignment_last, $.assignment),
+            alias($.pipeline_last, $.pipeline),
+        ),
+        
         /// Controls
 
         _control: $ => prec(
@@ -464,6 +505,28 @@ module.exports = grammar({
             field("value", $.pipeline),
         ),
 
+        stmt_let_last: $ => prec.right(1, seq(
+            choice(KEYWORD().let, KEYWORD().let_env),
+            $._assignment_pattern_last,
+        )),
+
+        stmt_mut_last: $ => prec.right(1, seq(
+            KEYWORD().mut,
+            $._assignment_pattern_last,
+        )),
+
+        stmt_const_last: $ => prec.right(1, seq(
+            KEYWORD().const,
+            $._assignment_pattern_last,
+        )),
+
+        _assignment_pattern_last: $ => seq(
+            field("name", $._variable_name),
+            field("type", optional($.param_type)),
+            PUNC().eq,
+            field("value", alias($.pipeline_last, $.pipeline)),
+        ),
+        
         /// Scope Statements
 
         stmt_source: $ => seq(
@@ -568,6 +631,23 @@ module.exports = grammar({
             ));
         },
 
+        assignment_last: $ => {
+            const opr = [
+                PUNC().eq,
+                OPR().assign_add,
+                OPR().assign_sub,
+                OPR().assign_mul,
+                OPR().assign_div,
+                OPR().assign_append,
+            ];
+
+            return prec.left(PREC().assignment, seq(
+                field("lhs", $.val_variable),
+                field("opr", choice(...opr)),
+                field("rhs", alias($.pipeline_last, $.pipeline)),
+            ));
+        },
+        
         /// Block
 
         block: $ => seq(
@@ -585,6 +665,7 @@ module.exports = grammar({
 
 
         pipeline: $ => inline_pipeline($, $._terminator),
+        pipeline_last: $ => inline_pipeline($, optional($._terminator)),
 
         pipe_element: $ => choice(
             prec.right(69, $._expression),

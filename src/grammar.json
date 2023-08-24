@@ -57,6 +57,19 @@
         }
       ]
     },
+    "_top_level_last": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_declaration_last"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_statement_last"
+        }
+      ]
+    },
     "_top_level_block": {
       "type": "SEQ",
       "members": [
@@ -85,7 +98,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_top_level"
+          "name": "_top_level_last"
         },
         {
           "type": "REPEAT",
@@ -194,6 +207,40 @@
         }
       ]
     },
+    "_declaration_last": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "decl_alias_last"
+          },
+          "named": true,
+          "value": "decl_alias"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "decl_def"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "decl_export"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "decl_extern"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "decl_module"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "decl_use"
+        }
+      ]
+    },
     "decl_alias": {
       "type": "SEQ",
       "members": [
@@ -231,6 +278,52 @@
           "content": {
             "type": "SYMBOL",
             "name": "pipeline"
+          }
+        }
+      ]
+    },
+    "decl_alias_last": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "export"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "alias"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_command_name"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "FIELD",
+          "name": "value",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "pipeline_last"
+            },
+            "named": true,
+            "value": "pipeline"
           }
         }
       ]
@@ -1296,6 +1389,76 @@
         }
       ]
     },
+    "_statement_last": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_control"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_stmt_hide"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_stmt_overlay"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "stmt_let_last"
+          },
+          "named": true,
+          "value": "stmt_let"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "stmt_mut_last"
+          },
+          "named": true,
+          "value": "stmt_mut"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "stmt_const_last"
+          },
+          "named": true,
+          "value": "stmt_const"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "stmt_register"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "stmt_source"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "assignment_last"
+          },
+          "named": true,
+          "value": "assignment"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "pipeline_last"
+          },
+          "named": true,
+          "value": "pipeline"
+        }
+      ]
+    },
     "_control": {
       "type": "PREC",
       "value": 1,
@@ -2236,6 +2399,112 @@
         }
       ]
     },
+    "stmt_let_last": {
+      "type": "PREC_RIGHT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "let"
+              },
+              {
+                "type": "STRING",
+                "value": "let-env"
+              }
+            ]
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_assignment_pattern_last"
+          }
+        ]
+      }
+    },
+    "stmt_mut_last": {
+      "type": "PREC_RIGHT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "mut"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_assignment_pattern_last"
+          }
+        ]
+      }
+    },
+    "stmt_const_last": {
+      "type": "PREC_RIGHT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "const"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_assignment_pattern_last"
+          }
+        ]
+      }
+    },
+    "_assignment_pattern_last": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_variable_name"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "type",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "param_type"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "FIELD",
+          "name": "value",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "pipeline_last"
+            },
+            "named": true,
+            "value": "pipeline"
+          }
+        }
+      ]
+    },
     "stmt_source": {
       "type": "SEQ",
       "members": [
@@ -2665,6 +2934,69 @@
         ]
       }
     },
+    "assignment_last": {
+      "type": "PREC_LEFT",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "lhs",
+            "content": {
+              "type": "SYMBOL",
+              "name": "val_variable"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "opr",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "="
+                },
+                {
+                  "type": "STRING",
+                  "value": "+="
+                },
+                {
+                  "type": "STRING",
+                  "value": "-="
+                },
+                {
+                  "type": "STRING",
+                  "value": "*="
+                },
+                {
+                  "type": "STRING",
+                  "value": "/="
+                },
+                {
+                  "type": "STRING",
+                  "value": "++="
+                }
+              ]
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "rhs",
+            "content": {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "pipeline_last"
+              },
+              "named": true,
+              "value": "pipeline"
+            }
+          }
+        ]
+      }
+    },
     "block": {
       "type": "SEQ",
       "members": [
@@ -2756,6 +3088,71 @@
           {
             "type": "SYMBOL",
             "name": "_terminator"
+          }
+        ]
+      }
+    },
+    "pipeline_last": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "pipe_element"
+          },
+          {
+            "type": "PREC_RIGHT",
+            "value": 0,
+            "content": {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": "\n"
+                      },
+                      {
+                        "type": "BLANK"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "|"
+                  },
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "pipe_element"
+                      },
+                      {
+                        "type": "BLANK"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_terminator"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }
@@ -6776,7 +7173,20 @@
       "name": "comment"
     }
   ],
-  "conflicts": [],
+  "conflicts": [
+    [
+      "_declaration",
+      "_declaration_last"
+    ],
+    [
+      "_statement",
+      "_statement_last"
+    ],
+    [
+      "pipeline",
+      "pipeline_last"
+    ]
+  ],
   "precedences": [],
   "externals": [],
   "inline": [],
