@@ -2011,7 +2011,7 @@
           "name": "expression",
           "content": {
             "type": "SYMBOL",
-            "name": "_expression"
+            "name": "_match_expression"
           }
         },
         {
@@ -2048,7 +2048,7 @@
           "name": "expression",
           "content": {
             "type": "SYMBOL",
-            "name": "_expression"
+            "name": "_match_expression"
           }
         },
         {
@@ -2062,6 +2062,23 @@
               "type": "BLANK"
             }
           ]
+        }
+      ]
+    },
+    "_match_expression": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_expression"
+        },
+        {
+          "type": "PREC_DYNAMIC",
+          "value": 10,
+          "content": {
+            "type": "SYMBOL",
+            "name": "block"
+          }
         }
       ]
     },
@@ -7004,6 +7021,10 @@
     [
       "pipeline",
       "pipeline_last"
+    ],
+    [
+      "block",
+      "val_record"
     ]
   ],
   "precedences": [],
