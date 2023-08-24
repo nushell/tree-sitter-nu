@@ -10,9 +10,7 @@ $var = 42
   (assignment
     (val_variable
       (identifier))
-    (pipeline
-      (pipe_element
-        (val_number)))))
+    (val_number)))
 
 =====
 assignment-002-semicolon
@@ -26,15 +24,17 @@ $var += 69;
   (assignment
     (val_variable
       (identifier))
-    (pipeline
-      (pipe_element
-        (val_number)))))
+    (val_number)))
 
 =====
 assignment-003-assignment-to-a-pipeline
 =====
 
-$x ++= [1 2 3] | each {|x| $x + 8}
+$x += 1 | $in + 10
+# Note that rhs of ++= is not a pipeline, but only 1
+# currently nushell parses this as two statements 
+# $x ++= 1 and  $in + 10. Therefore you will get error
+# about adding int to nothing, and $x increased by one
 
 -----
 
@@ -42,21 +42,14 @@ $x ++= [1 2 3] | each {|x| $x + 8}
   (assignment
     (val_variable
       (identifier))
-    (pipeline
-      (pipe_element
-        (val_list
-          (val_number)
-          (val_number)
-          (val_number)))
-      (pipe_element
-        (command
-          (cmd_identifier)
-          (val_closure
-            (parameter_pipes
-              (parameter
-                (identifier)))
-            (ERROR
-              (expr_binary
-                (val_variable
-                  (identifier))
-                (val_number)))))))))
+        (val_number))
+    (ERROR)
+      (pipeline
+        (pipe_element
+          (expr_binary
+            (val_variable)
+            (val_number))))
+    (comment)
+    (comment)
+    (comment)
+    (comment))

@@ -307,7 +307,7 @@ module.exports = grammar({
             alias($.stmt_const_last, $.stmt_const),
             $.stmt_register,
             $.stmt_source,
-            alias($.assignment_last, $.assignment),
+            $.assignment,
             alias($.pipeline_last, $.pipeline),
         ),
         
@@ -627,24 +627,7 @@ module.exports = grammar({
             return prec.left(PREC().assignment, seq(
                 field("lhs", $.val_variable),
                 field("opr", choice(...opr)),
-                field("rhs", $.pipeline),
-            ));
-        },
-
-        assignment_last: $ => {
-            const opr = [
-                PUNC().eq,
-                OPR().assign_add,
-                OPR().assign_sub,
-                OPR().assign_mul,
-                OPR().assign_div,
-                OPR().assign_append,
-            ];
-
-            return prec.left(PREC().assignment, seq(
-                field("lhs", $.val_variable),
-                field("opr", choice(...opr)),
-                field("rhs", alias($.pipeline_last, $.pipeline)),
+                field("rhs", $._expression),
             ));
         },
         
@@ -730,7 +713,8 @@ module.exports = grammar({
                         // ensure the expression immediately follows the
                         // opening paren
                         token.immediate(BRACK().open_paren),
-                        inline_pipeline($, BRACK().close_paren),
+                        $._top_level_block,
+                        BRACK().close_paren,
                     ),
                 ),
             );
@@ -746,7 +730,8 @@ module.exports = grammar({
 
         expr_parenthesized: $ => seq(
             BRACK().open_paren,
-            inline_pipeline($, BRACK().close_paren),
+            $._top_level_block,
+            BRACK().close_paren,
             optional($.cell_path),
         ),
 
@@ -928,7 +913,7 @@ module.exports = grammar({
 
         expr_interpolated: $ => seq(
             BRACK().open_paren,
-            repeat($._statement),
+            $._top_level_block,
             BRACK().close_paren,
         ),
 
@@ -975,10 +960,7 @@ module.exports = grammar({
         val_closure: $ => seq(
             BRACK().open_brace,
             field("parameters", $.parameter_pipes),
-            repeat(choice(
-                $._statement,
-                $._declaration,
-            )),
+            $._top_level_block,
             BRACK().close_brace,
         ),
 
