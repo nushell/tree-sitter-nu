@@ -139,3 +139,35 @@ foo this is only for testing
         (val_string)
         (val_string)
         (val_string)))))
+
+====
+cmd-007-if-oneline
+====
+
+if $a { 0 } else { ls | print; ls | print; }
+
+-----
+
+(nu_script
+  (ctrl_if
+    (val_variable
+      (identifier))
+    (block
+      (pipeline
+        (pipe_element
+          (val_number))))
+    (block
+      (pipeline
+        (pipe_element
+          (command
+            (cmd_identifier)))
+        (pipe_element
+          (command
+            (cmd_identifier))))
+      (pipeline
+        (pipe_element
+          (command
+            (cmd_identifier)))
+        (pipe_element
+          (command
+            (cmd_identifier)))))))
