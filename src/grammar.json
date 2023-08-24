@@ -22,7 +22,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_top_level_block"
+              "name": "_block_body"
             },
             {
               "type": "BLANK"
@@ -44,7 +44,7 @@
         }
       ]
     },
-    "_top_level": {
+    "_block_body_statement": {
       "type": "CHOICE",
       "members": [
         {
@@ -57,7 +57,7 @@
         }
       ]
     },
-    "_top_level_last": {
+    "_block_body_statement_last": {
       "type": "CHOICE",
       "members": [
         {
@@ -70,7 +70,7 @@
         }
       ]
     },
-    "_top_level_block": {
+    "_block_body": {
       "type": "SEQ",
       "members": [
         {
@@ -83,7 +83,7 @@
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "_top_level"
+                  "name": "_block_body_statement"
                 },
                 {
                   "type": "REPEAT",
@@ -98,7 +98,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_top_level_last"
+          "name": "_block_body_statement_last"
         },
         {
           "type": "REPEAT",
@@ -2941,7 +2941,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_top_level_block"
+              "name": "_block_body"
             },
             {
               "type": "BLANK"
@@ -4695,7 +4695,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "_top_level_block"
+                  "name": "_block_body"
                 },
                 {
                   "type": "STRING",
@@ -5245,7 +5245,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_top_level_block"
+          "name": "_block_body"
         },
         {
           "type": "STRING",
@@ -6314,7 +6314,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_top_level_block"
+          "name": "_block_body"
         },
         {
           "type": "STRING",
@@ -6559,7 +6559,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_top_level_block"
+          "name": "_block_body"
         },
         {
           "type": "STRING",
