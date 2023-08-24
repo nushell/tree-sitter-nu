@@ -16,27 +16,27 @@ module.exports = grammar({
 
         nu_script: $ => seq(
             optional($.shebang),
-            optional($._top_level_block),
+            optional($._block_body),
         ),
 
         shebang: $ => seq('#!', /.*\n/),
 
-        _top_level: $ => choice(
+        _block_body_statement: $ => choice(
             $._declaration,
             $._statement,
         ),
         
-        _top_level_last: $ => choice(
+        _block_body_statement_last: $ => choice(
             $._declaration_last,
             $._statement_last,
         ),
 
-        _top_level_block: $ => seq(
+        _block_body: $ => seq(
             prec.right(repeat(seq(
-                $._top_level,
+                $._block_body_statement,
                 repeat($._terminator),
             ))),
-            $._top_level_last,
+            $._block_body_statement_last,
             repeat($._terminator),
         ),
 
@@ -635,7 +635,7 @@ module.exports = grammar({
 
         block: $ => seq(
             BRACK().open_brace,
-            optional($._top_level_block),
+            optional($._block_body),
             BRACK().close_brace,
         ),
 
@@ -713,7 +713,7 @@ module.exports = grammar({
                         // ensure the expression immediately follows the
                         // opening paren
                         token.immediate(BRACK().open_paren),
-                        $._top_level_block,
+                        $._block_body,
                         BRACK().close_paren,
                     ),
                 ),
@@ -730,7 +730,7 @@ module.exports = grammar({
 
         expr_parenthesized: $ => seq(
             BRACK().open_paren,
-            $._top_level_block,
+            $._block_body,
             BRACK().close_paren,
             optional($.cell_path),
         ),
@@ -913,7 +913,7 @@ module.exports = grammar({
 
         expr_interpolated: $ => seq(
             BRACK().open_paren,
-            $._top_level_block,
+            $._block_body,
             BRACK().close_paren,
         ),
 
@@ -960,7 +960,7 @@ module.exports = grammar({
         val_closure: $ => seq(
             BRACK().open_brace,
             field("parameters", $.parameter_pipes),
-            $._top_level_block,
+            $._block_body,
             BRACK().close_brace,
         ),
 
