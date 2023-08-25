@@ -6,9 +6,12 @@ module.exports = grammar({
     extras: $ => [/\s/, $.comment],
 
     conflicts: $ => [
+        [$._block_body],
         [$._declaration, $._declaration_last],
         [$._statement, $._statement_last],
         [$.pipeline, $.pipeline_last],
+        [$.pipe_element, $.pipe_element_last],
+        [$.command],
         [$.block, $.val_record],
     ],
 
@@ -537,15 +540,6 @@ module.exports = grammar({
             $.val_closure,
         ),
 
-        /// Pipeline
-
-
-        pipe_element: $ => choice(
-            prec.right(69, $._expression),
-            $._ctrl_expression,
-            $.where_command,
-            $.command,
-        ),
 
         // the where command has a unique argument pattern that breaks the
         // general command parsing, so we handle it separately
@@ -886,7 +880,7 @@ module.exports = grammar({
 
         command: $ => seq(
             field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
-            repeat($._cmd_arg),
+            prec.dynamic(10, repeat(seq(optional('\n'), $._cmd_arg))),
         ),
 
         _cmd_arg: $ => choice(
@@ -1025,15 +1019,31 @@ function block_body_rules(suffix, terminator) {
         ),
         
         
+        /// Pipeline
+
         ['pipeline' + suffix]: $ => prec.right(seq(
-            $.pipe_element,
-            prec.right(repeat(seq(
-                optional('\n'),
-                PUNC().pipe,
-                optional($.pipe_element),
-            ))),
+            repeat($.pipe_element),
+            alias($.pipe_element_last, $.pipe_element),
             terminator($),
-        ))
+        )),
+
+        pipe_element: $ => seq(
+            choice(
+                prec.right(69, $._expression),
+                $._ctrl_expression,
+                $.where_command,
+                $.command,
+            ),
+            optional('\n'),
+            PUNC().pipe,
+        ),
+        
+        pipe_element_last: $ => choice(
+            prec.right(69, $._expression),
+            $._ctrl_expression,
+            $.where_command,
+            $.command,
+        ),
     }
 }
 
