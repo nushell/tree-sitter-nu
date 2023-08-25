@@ -22,15 +22,8 @@ module.exports = grammar({
 
         shebang: $ => seq('#!', /.*\n/),
 
-        _block_body_statement: $ => choice(
-            $._declaration,
-            $._statement,
-        ),
-        
-        _block_body_statement_last: $ => choice(
-            $._declaration_last,
-            $._statement_last,
-        ),
+        ...block_body_rules('', $ => $._terminator),
+        ...block_body_rules('_last', $ => optional($._terminator)),
 
         _block_body: $ => seq(
             prec.right(repeat(seq(
@@ -66,40 +59,6 @@ module.exports = grammar({
         ),
 
         /// Top Level Items
-
-        _declaration: $ => choice(
-            $.decl_alias,
-            $.decl_def,
-            $.decl_export,
-            $.decl_extern,
-            $.decl_module,
-            $.decl_use,
-        ),
-        
-        _declaration_last: $ => choice(
-            alias($.decl_alias_last, $.decl_alias),
-            $.decl_def,
-            $.decl_export,
-            $.decl_extern,
-            $.decl_module,
-            $.decl_use,
-        ),
-
-        decl_alias: $ => seq(
-            optional(MODIFIER().visibility),
-            KEYWORD().alias,
-            field("name", $._command_name),
-            PUNC().eq,
-            field("value", $.pipeline),
-        ),
-        
-        decl_alias_last: $ => seq(
-            optional(MODIFIER().visibility),
-            KEYWORD().alias,
-            field("name", $._command_name),
-            PUNC().eq,
-            field("value", alias($.pipeline_last, $.pipeline)),
-        ),
 
         decl_def: $ => seq(
             optional(MODIFIER().visibility),
@@ -284,34 +243,6 @@ module.exports = grammar({
             field("name", token.immediate(/[a-zA-Z0-9]/)),
         ),
 
-        /// Statements
-
-        _statement: $ => choice(
-            $._control,
-            $._stmt_hide,
-            $._stmt_overlay,
-            $.stmt_let,
-            $.stmt_mut,
-            $.stmt_const,
-            $.stmt_register,
-            $.stmt_source,
-            $.assignment,
-            $.pipeline
-        ),
-
-        _statement_last: $ => choice(
-            $._control,
-            $._stmt_hide,
-            $._stmt_overlay,
-            alias($.stmt_let_last, $.stmt_let),
-            alias($.stmt_mut_last, $.stmt_mut),
-            alias($.stmt_const_last, $.stmt_const),
-            $.stmt_register,
-            $.stmt_source,
-            $.assignment,
-            alias($.pipeline_last, $.pipeline),
-        ),
-        
         /// Controls
 
         _control: $ => prec(
@@ -488,51 +419,6 @@ module.exports = grammar({
             KEYWORD().return,
         ),
 
-        /// Storage statements
-
-        stmt_let: $ => prec.right(1, seq(
-            choice(KEYWORD().let, KEYWORD().let_env),
-            $._assignment_pattern,
-        )),
-
-        stmt_mut: $ => prec.right(1, seq(
-            KEYWORD().mut,
-            $._assignment_pattern,
-        )),
-
-        stmt_const: $ => prec.right(1, seq(
-            KEYWORD().const,
-            $._assignment_pattern,
-        )),
-
-        _assignment_pattern: $ => seq(
-            field("name", $._variable_name),
-            field("type", optional($.param_type)),
-            PUNC().eq,
-            field("value", $.pipeline),
-        ),
-
-        stmt_let_last: $ => prec.right(1, seq(
-            choice(KEYWORD().let, KEYWORD().let_env),
-            $._assignment_pattern_last,
-        )),
-
-        stmt_mut_last: $ => prec.right(1, seq(
-            KEYWORD().mut,
-            $._assignment_pattern_last,
-        )),
-
-        stmt_const_last: $ => prec.right(1, seq(
-            KEYWORD().const,
-            $._assignment_pattern_last,
-        )),
-
-        _assignment_pattern_last: $ => seq(
-            field("name", $._variable_name),
-            field("type", optional($.param_type)),
-            PUNC().eq,
-            field("value", alias($.pipeline_last, $.pipeline)),
-        ),
         
         /// Scope Statements
 
@@ -653,9 +539,6 @@ module.exports = grammar({
 
         /// Pipeline
 
-
-        pipeline: $ => inline_pipeline($, $._terminator),
-        pipeline_last: $ => inline_pipeline($, optional($._terminator)),
 
         pipe_element: $ => choice(
             prec.right(69, $._expression),
@@ -1054,17 +937,104 @@ module.exports = grammar({
     },
 });
 
+/// To parse pipelines correctly grammar needs to know now pipeline may end.
+/// For example in following closure
+/// ```
+/// {|| 
+///   print qwe
+///   print rty
+/// }
+/// ```
+/// two print calls must be separated either by newline or ';', but last call
+/// may not be separated from closing bracket at all `{|| print qwe; print rty}`
+/// and in `()` blocks newlines are not considered statement terminators at all.
+/// To correctly parse these situations distinct rules for different types of
+/// statements are needed. These rules are differentiated by suffix, and only
+/// difference between them is terminator parameter used in pipeline rule that
+/// is terminating statements. This function automaticaly generates all rules
+/// for a given terminator and names them with specified suffix.
+function block_body_rules(suffix, terminator) {
+    function alias_for_suffix($, rule_name, suffix) {
+        if (suffix == '') {
+            return $[rule_name]
+        } else {
+            return alias($[rule_name + suffix], $[rule_name])
+        }
+    }
+    return {
+        ['_block_body_statement' + suffix]: $ => choice(
+            $['_declaration' + suffix],
+            $['_statement' + suffix],
+        ),
 
-function inline_pipeline($, terminator) {
-    return prec.right(seq(
-        $.pipe_element,
-        prec.right(repeat(seq(
-            optional('\n'),
-            PUNC().pipe,
-            optional($.pipe_element),
-        ))),
-        terminator,
-    ))
+        /// Declarations
+        ['_declaration' + suffix]: $ => choice(
+            alias_for_suffix($, 'decl_alias', suffix),
+            $.decl_def,
+            $.decl_export,
+            $.decl_extern,
+            $.decl_module,
+            $.decl_use,
+        ),
+
+        ['decl_alias' + suffix]: $ => seq(
+            optional(MODIFIER().visibility),
+            KEYWORD().alias,
+            field("name", $._command_name),
+            PUNC().eq,
+            field("value", alias_for_suffix($, 'pipeline', suffix)),
+        ),
+
+        /// Storage statements
+
+        ['stmt_let' + suffix]: $ => prec.right(1, seq(
+            choice(KEYWORD().let, KEYWORD().let_env),
+            $['_assignment_pattern' + suffix],
+        )),
+
+        ['stmt_mut' + suffix]: $ => prec.right(1, seq(
+            KEYWORD().mut,
+            $['_assignment_pattern' + suffix],
+        )),
+
+        ['stmt_const' + suffix]: $ => prec.right(1, seq(
+            KEYWORD().const,
+            $['_assignment_pattern' + suffix],
+        )),
+
+        ['_assignment_pattern' + suffix]: $ => seq(
+            field("name", $._variable_name),
+            field("type", optional($.param_type)),
+            PUNC().eq,
+            field("value", alias_for_suffix($, 'pipeline', suffix)),
+        ),
+
+        /// Statements
+
+        ['_statement' + suffix]: $ => choice(
+            $._control,
+            $._stmt_hide,
+            $._stmt_overlay,
+            $.stmt_register,
+            $.stmt_source,
+            $.assignment,
+            alias_for_suffix($, 'stmt_let', suffix),
+            alias_for_suffix($, 'stmt_mut', suffix),
+            alias_for_suffix($, 'stmt_const', suffix),
+            alias_for_suffix($, 'pipeline', suffix),
+        ),
+        
+        
+        ['pipeline' + suffix]: $ => prec.right(seq(
+            $.pipe_element,
+            prec.right(repeat(seq(
+                optional('\n'),
+                PUNC().pipe,
+                optional($.pipe_element),
+            ))),
+            terminator($),
+        ))
+    }
 }
 
 /// nushell keywords
