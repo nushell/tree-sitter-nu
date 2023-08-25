@@ -422,6 +422,28 @@ module.exports = grammar({
             KEYWORD().return,
         ),
 
+        /// Pipelines
+
+        pipe_element: $ => seq(
+            choice(
+                prec.right(69, $._expression),
+                $._ctrl_expression,
+                $.where_command,
+                $.command,
+            ),
+            // Allow for empty pipeline elements like `ls | | print`
+            repeat1(seq(
+                optional('\n'),
+                PUNC().pipe,
+            )),
+        ),
+        
+        pipe_element_last: $ => choice(
+            prec.right(69, $._expression),
+            $._ctrl_expression,
+            $.where_command,
+            $.command,
+        ),
         
         /// Scope Statements
 
@@ -955,6 +977,7 @@ function block_body_rules(suffix, terminator) {
             return alias($[rule_name + suffix], $[rule_name])
         }
     }
+
     return {
         ['_block_body_statement' + suffix]: $ => choice(
             $['_declaration' + suffix],
@@ -1026,27 +1049,6 @@ function block_body_rules(suffix, terminator) {
             alias($.pipe_element_last, $.pipe_element),
             terminator($),
         )),
-
-        pipe_element: $ => seq(
-            choice(
-                prec.right(69, $._expression),
-                $._ctrl_expression,
-                $.where_command,
-                $.command,
-            ),
-            // Allow for empty pipeline elements like `ls | | print`
-            repeat1(seq(
-                optional('\n'),
-                PUNC().pipe,
-            )),
-        ),
-        
-        pipe_element_last: $ => choice(
-            prec.right(69, $._expression),
-            $._ctrl_expression,
-            $.where_command,
-            $.command,
-        ),
     }
 }
 
