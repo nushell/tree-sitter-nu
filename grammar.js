@@ -1034,8 +1034,11 @@ function block_body_rules(suffix, terminator) {
                 $.where_command,
                 $.command,
             ),
-            optional('\n'),
-            PUNC().pipe,
+            // Allow for empty pipeline elements like `ls | | print`
+            repeat1(seq(
+                optional('\n'),
+                PUNC().pipe,
+            )),
         ),
         
         pipe_element_last: $ => choice(
