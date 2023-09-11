@@ -36,9 +36,10 @@ values-002-booleans
         (val_bool)
         (val_bool)
         (expr_parenthesized
-          (pipe_element
-            (expr_unary
-              (val_bool))))))))
+          (pipeline
+            (pipe_element
+              (expr_unary
+                (val_bool)))))))))
 
 =====
 values-003-nothing

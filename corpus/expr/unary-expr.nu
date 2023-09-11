@@ -28,8 +28,9 @@ expr-002-smoke-test
     (pipe_element
       (expr_binary
         (expr_unary
-          (pipe_element
-            (expr_binary
-              (val_number)
-              (val_number))))
+          (pipeline
+            (pipe_element
+              (expr_binary
+                (val_number)
+                (val_number)))))
         (val_number)))))
