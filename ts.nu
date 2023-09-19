@@ -21,7 +21,8 @@ def list-tests-in-file [file: path] {
 }
 
 def list-tests-in-dir [dir: path] {
-    ls $dir
+    cd $dir
+    | ls
     | each {|it|
         if $it.type == "dir" {
             list-tests-in-dir $it.name | flatten
