@@ -780,9 +780,9 @@ module.exports = grammar({
             $._inter_double_quotes,
         ),
 
-        escaped_interpolated_content: $ => token.immediate(prec(1, /[^"\\(]/)),
+        escaped_interpolated_content: $ => token.immediate(prec(1, /[^"\\(]+/)),
 
-        unescaped_interpolated_content: $ => token.immediate(prec(1, /[^'(]/)),
+        unescaped_interpolated_content: $ => token.immediate(prec(1, /[^'(]+/)),
 
         _inter_single_quotes: $ => seq(
             "$'",
