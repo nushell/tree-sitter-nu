@@ -6625,7 +6625,7 @@
                       "type": "TOKEN",
                       "content": {
                         "type": "PATTERN",
-                        "value": "[0-9a-zA-Z]+"
+                        "value": "[0-9a-zA-Z_-]+"
                       }
                     }
                   },
@@ -6665,7 +6665,7 @@
                           "type": "TOKEN",
                           "content": {
                             "type": "PATTERN",
-                            "value": "[0-9a-zA-Z]+"
+                            "value": "[0-9a-zA-Z_-]+"
                           }
                         }
                       },
