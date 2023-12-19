@@ -860,7 +860,7 @@ module.exports = grammar({
         $._str_back_ticks,
       );
 
-      const path = choice(prec.right(2, token(/[0-9a-zA-Z]+/)), quoted);
+      const path = choice(prec.right(2, token(/[0-9a-zA-Z_-]+/)), quoted);
 
       return seq(
         PUNC().dot,
