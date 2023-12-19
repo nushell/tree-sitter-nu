@@ -3,8 +3,8 @@ most sources have grammars for common languages (including nu!) built in.
 
 ### Using built-in helix grammars
 Version from master branch of helix or any release after (not including) 23.05
-will have this grammar and queries preinstalled. Hovewer due to rapid
-development pace of nushell they might be severly out of date.
+will have this grammar and queries preinstalled. However due to rapid
+development pace of nushell they might be severely out of date.
 
 ### Installing up to date grammar from this repo
 Following [official guide](https://docs.helix-editor.com/languages.html#tree-sitter-grammar-configuration)
@@ -16,7 +16,7 @@ name = "nu"
 source = { git = "https://github.com/nushell/tree-sitter-nu", rev = "<revision hash or main>" }
 ```
 
-Then downaload and install up-to-date grammar:
+Then download and install up-to-date grammar:
 ```nu
 hx -g fetch
 hx -g build

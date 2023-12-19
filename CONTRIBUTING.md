@@ -22,7 +22,7 @@ other things, help with syntax highlighting. to learn how to write queries,
 consider [the official docs][005]
 
 - [corpus/][103] -> this directory contains tests for the parser. the tests
-roughly organized in directories with their nodes. add a file with a descriprive
+roughly organized in directories with their nodes. add a file with a descriptive
 name that should generally cover a node to the right folder and write the
 tests using the [special test syntax][006]
 
@@ -75,7 +75,7 @@ a [`sample config file`][105] is provided to get you started.
 ```
 
 ## using the parser from rust
-1. the code is located at [`exanples/main.rs`][106]
+1. the code is located at [`examples/main.rs`][106]
 2. run it with `cargo run --example main`
 
 ## tips
