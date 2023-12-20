@@ -1,2 +1,3 @@
 # Example of a `.gitattributes` file which reclassifies `.nu` files as Nushell:
 *.nu linguist-language=Nushell
+* text=auto eol=lf
