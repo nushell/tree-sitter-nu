@@ -35,7 +35,7 @@ highlight groups with tree-sitter nodes. Run `:highlight` in neovim for a list
 of highlight groups.
 
 If you are using the `lazy` package manager for *neovim*, you can run the
-following snippet to install the hightlights file and enable the highlighting:
+following snippet to install the highlights file and enable the highlighting:
 ```nushell
 let remote = "https://raw.githubusercontent.com/nushell/tree-sitter-nu/main/queries/"
 let local = (
