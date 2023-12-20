@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v4.0.0
 
       - name: update npm and node-gyp
-      - run: npm install -g npm@latest
+        run: npm install -g npm@latest
 
       - name: install dependencies
         run: npm install
