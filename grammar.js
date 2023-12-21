@@ -995,7 +995,14 @@ function block_body_rules(suffix, terminator) {
       prec.right(1, seq(KEYWORD().mut, $["_assignment_pattern" + suffix])),
 
     ["stmt_const" + suffix]: ($) =>
-      prec.right(1, seq(KEYWORD().const, $["_assignment_pattern" + suffix])),
+      prec.right(
+        1,
+        seq(
+          optional(MODIFIER().visibility),
+          KEYWORD().const,
+          $["_assignment_pattern" + suffix],
+        ),
+      ),
 
     ["_assignment_pattern" + suffix]: ($) =>
       seq(

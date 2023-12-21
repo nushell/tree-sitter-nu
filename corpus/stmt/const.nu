@@ -47,3 +47,18 @@ const x = 42 | math sin
         (command
           (cmd_identifier)
           (val_string))))))
+
+=====
+const-004-exported
+=====
+
+export const x = 42
+
+----
+
+(nu_script
+  (stmt_const
+    (identifier)
+    (pipeline
+      (pipe_element
+        (val_number)))))
