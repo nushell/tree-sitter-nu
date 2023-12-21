@@ -945,7 +945,7 @@ module.exports = grammar({
 /// To correctly parse these situations distinct rules for different types of
 /// statements are needed. These rules are differentiated by suffix, and only
 /// difference between them is terminator parameter used in pipeline rule that
-/// is terminating statements. This function automaticaly generates all rules
+/// is terminating statements. This function automatically generates all rules
 /// for a given terminator and names them with specified suffix.
 function block_body_rules(suffix, terminator) {
   function alias_for_suffix($, rule_name, suffix) {
