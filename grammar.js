@@ -405,6 +405,7 @@ module.exports = grammar({
         ),
         // Allow for empty pipeline elements like `ls | | print`
         repeat1(seq(optional("\n"), PUNC().pipe)),
+        optional("\n"),
       ),
 
     pipe_element_last: ($) =>
