@@ -77,3 +77,29 @@ echo this
       (command
         (cmd_identifier)
         (val_variable)))))
+
+=====
+pipe-004-end-of-line
+=====
+
+echo this
+| split row "i" |
+  str join
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)
+        (val_string)))
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))
