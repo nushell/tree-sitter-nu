@@ -171,3 +171,18 @@ if $a { 0 } else { ls | print; ls | print; }
         (pipe_element
           (command
             (cmd_identifier)))))))
+
+=====
+cmd-008-unquoted-1-character
+=====
+
+echo n
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))
