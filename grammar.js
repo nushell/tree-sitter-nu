@@ -923,7 +923,7 @@ module.exports = grammar({
     unquoted: ($) =>
       prec.left(
         -69,
-        token(/[^-$\s\n\t\r{}()\[\]"`';][^\s\n\t\r{}()\[\]"`';]+/),
+        token(/[^-$\s\n\t\r{}()\[\]"`';][^\s\n\t\r{}()\[\]"`';]*/),
       ),
 
     /// Comments
