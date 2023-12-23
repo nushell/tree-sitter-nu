@@ -103,3 +103,21 @@ echo this
       (command
         (cmd_identifier)
         (val_string)))))
+
+=====
+pipe-005-unquoted-1-character
+=====
+
+'nushell' | str contains n
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_string))
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)
+        (val_string)))))
