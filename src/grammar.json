@@ -7049,7 +7049,7 @@
         },
         {
           "type": "PATTERN",
-          "value": ".*\\n"
+          "value": ".*"
         }
       ]
     }
