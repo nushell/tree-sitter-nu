@@ -928,7 +928,7 @@ module.exports = grammar({
 
     /// Comments
 
-    comment: ($) => seq(PUNC().hash, /.*\n/),
+    comment: ($) => seq(PUNC().hash, /.*/),
   },
 });
 
