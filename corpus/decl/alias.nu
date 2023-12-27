@@ -45,3 +45,25 @@ export alias change-directory = cd;
       (pipe_element
         (command
           (cmd_identifier))))))
+
+=====
+alias-000-terminated-by-newline
+=====
+
+alias less = bat
+let foo = "foo"
+
+-----
+
+(nu_script
+  (decl_alias
+    (cmd_identifier)
+    (pipeline
+      (pipe_element
+        (command
+          (cmd_identifier)))))
+  (stmt_let
+    (identifier)
+    (pipeline
+      (pipe_element
+        (val_string)))))

@@ -186,3 +186,24 @@ echo n
       (command
         (cmd_identifier)
         (val_string)))))
+
+=====
+cmd-009-terminated-by-newline
+=====
+
+echo hello
+let x = 42
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (stmt_let
+    (identifier)
+    (pipeline
+      (pipe_element
+        (val_number)))))
