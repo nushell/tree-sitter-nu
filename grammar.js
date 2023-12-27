@@ -8,9 +8,13 @@ module.exports = grammar({
   conflicts: ($) => [
     [$._block_body],
     [$._declaration, $._declaration_last],
+    [$._declaration_parenthesized, $._declaration_parenthesized_last],
     [$._statement, $._statement_last],
+    [$._statement_parenthesized, $._statement_parenthesized_last],
     [$.pipeline, $.pipeline_last],
+    [$.pipeline_parenthesized, $.pipeline_parenthesized_last],
     [$.pipe_element, $.pipe_element_last],
+    [$.pipe_element_parenthesized, $.pipe_element_parenthesized_last],
     [$.command],
     [$.block, $.val_record],
   ],
@@ -24,6 +28,11 @@ module.exports = grammar({
 
     ...block_body_rules("", ($) => $._terminator),
     ...block_body_rules("_last", ($) => optional($._terminator)),
+
+    // Because everything inside of the parentheses are treated as if they were written together,
+    // terminator must be semicolon.
+    ...parenthesized_body_rules("", ($) => PUNC().semicolon),
+    ...parenthesized_body_rules("_last", ($) => optional(PUNC().semicolon)),
 
     _block_body: ($) =>
       seq(
@@ -408,12 +417,33 @@ module.exports = grammar({
         optional("\n"),
       ),
 
+    pipe_element_parenthesized: ($) =>
+      seq(
+        choice(
+          prec.right(69, $._expression),
+          $._ctrl_expression,
+          $.where_command,
+          alias($._command_parenthesized_body, $.command),
+        ),
+        // Allow for empty pipeline elements like `ls | | print`
+        repeat1(seq(optional("\n"), PUNC().pipe)),
+        optional("\n"),
+      ),
+
     pipe_element_last: ($) =>
       choice(
         prec.right(69, $._expression),
         $._ctrl_expression,
         $.where_command,
         $.command,
+      ),
+
+    pipe_element_parenthesized_last: ($) =>
+      choice(
+        prec.right(69, $._expression),
+        $._ctrl_expression,
+        $.where_command,
+        alias($._command_parenthesized_body, $.command),
       ),
 
     /// Scope Statements
@@ -613,9 +643,20 @@ module.exports = grammar({
     expr_parenthesized: ($) =>
       seq(
         BRACK().open_paren,
-        $._block_body,
+        $._parenthesized_body,
         BRACK().close_paren,
         optional($.cell_path),
+      ),
+
+    _parenthesized_body: ($) =>
+      seq(
+        prec.right(
+          repeat(
+            seq($._block_body_statement_parenthesized, repeat($._terminator)),
+          ),
+        ),
+        $._block_body_statement_parenthesized_last,
+        repeat($._terminator),
       ),
 
     val_range: ($) => {
@@ -877,7 +918,16 @@ module.exports = grammar({
     command: ($) =>
       seq(
         field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
-        prec.dynamic(10, repeat(seq(optional("\n"), $._cmd_arg))),
+        prec.dynamic(10, repeat($._cmd_arg)),
+      ),
+
+    _command_parenthesized_body: ($) =>
+      prec.right(
+        seq(
+          field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
+          prec.dynamic(10, repeat(seq(optional("\n"), $._cmd_arg))),
+          optional("\n"),
+        ),
       ),
 
     _cmd_arg: ($) =>
@@ -932,6 +982,41 @@ module.exports = grammar({
   },
 });
 
+function parenthesized_body_rules(suffix, terminator) {
+  const parenthesized = "_parenthesized";
+  return {
+    ..._block_body_rules(`${parenthesized}${suffix}`),
+
+    /// pipeline
+
+    [`pipeline${parenthesized}${suffix}`]: ($) =>
+      prec.right(
+        seq(
+          repeat(alias($.pipe_element_parenthesized, $.pipe_element)),
+          alias($.pipe_element_parenthesized_last, $.pipe_element),
+          terminator($),
+        ),
+      ),
+  };
+}
+
+function block_body_rules(suffix, terminator) {
+  return {
+    ..._block_body_rules(suffix),
+
+    /// pipeline
+
+    [`pipeline${suffix}`]: ($) =>
+      prec.right(
+        seq(
+          repeat($.pipe_element),
+          alias($.pipe_element_last, $.pipe_element),
+          terminator($),
+        ),
+      ),
+  };
+}
+
 /// To parse pipelines correctly grammar needs to know now pipeline may end.
 /// For example in following closure
 /// ```
@@ -948,7 +1033,7 @@ module.exports = grammar({
 /// difference between them is terminator parameter used in pipeline rule that
 /// is terminating statements. This function automatically generates all rules
 /// for a given terminator and names them with specified suffix.
-function block_body_rules(suffix, terminator) {
+function _block_body_rules(suffix) {
   function alias_for_suffix($, rule_name, suffix) {
     if (suffix == "") {
       return $[rule_name];
@@ -1027,17 +1112,6 @@ function block_body_rules(suffix, terminator) {
         alias_for_suffix($, "stmt_mut", suffix),
         alias_for_suffix($, "stmt_const", suffix),
         alias_for_suffix($, "pipeline", suffix),
-      ),
-
-    /// Pipeline
-
-    ["pipeline" + suffix]: ($) =>
-      prec.right(
-        seq(
-          repeat($.pipe_element),
-          alias($.pipe_element_last, $.pipe_element),
-          terminator($),
-        ),
       ),
   };
 }
