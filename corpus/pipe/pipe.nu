@@ -121,3 +121,36 @@ pipe-005-unquoted-1-character
         (cmd_identifier)
         (val_string)
         (val_string)))))
+
+=====
+pipe-006-terminated-by-newline
+=====
+
+ls | each {|x| echo $x}
+let x = 42
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_closure
+          (parameter_pipes
+            (parameter
+              (identifier)))
+          (pipeline
+            (pipe_element
+              (command
+                (cmd_identifier)
+                (val_variable
+                  (identifier)))))))))
+  (stmt_let
+    (identifier)
+    (pipeline
+      (pipe_element
+        (val_number)))))
