@@ -2,7 +2,7 @@
 values-001-numbers
 =====
 
-[69 6.9 0b1000101 0o105 6.9e1 6.9E+1 0x45 -69 +69]
+[69 6.9 0b1000101 0o105 6.9e1 6.9E+1 0x45 -69 +69 .69 69.]
 
 -----
 
@@ -10,6 +10,8 @@ values-001-numbers
   (pipeline
     (pipe_element
       (val_list
+        (val_number)
+        (val_number)
         (val_number)
         (val_number)
         (val_number)
@@ -76,3 +78,29 @@ values-004-binary
         (hex_digit)
         (hex_digit)
         (hex_digit)))))
+
+=====
+values-005-numbers-with-underscore
+=====
+
+[
+  10_000,
+  1.234_5,
+  1.234_5e6
+  1_234.567_8,
+  1_234.567_8e9,
+  .123_4,
+]
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_list
+        (val_number)
+        (val_number)
+        (val_number)
+        (val_number)
+        (val_number)
+        (val_number)))))
