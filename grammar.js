@@ -714,7 +714,8 @@ module.exports = grammar({
     // especially when it comes to incorporation with ranges.
     val_number: ($) =>
       choice(
-        /[+-]?([0-9]+[.])?[0-9]+([eE][-+]?\d+)?/,
+        /[+-]?([0-9_]*[.])?[0-9_]+([eE][-+]?[\d_]+)?/,
+        /[+-]?[\d_]+\.([eE][-+]?[\d_]+)?/, // 123., 12.e3
         /0x[0-9a-fA-F_]+/,
         /0b[01_]+/,
         /0o[0-7_]+/,
