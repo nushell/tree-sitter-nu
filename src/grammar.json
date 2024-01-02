@@ -5525,8 +5525,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]
@@ -5575,8 +5589,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]
@@ -5617,8 +5645,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]
@@ -5659,8 +5701,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]
@@ -5717,8 +5773,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]
@@ -5767,8 +5837,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]
@@ -5809,8 +5893,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]
@@ -5842,8 +5940,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]
@@ -5875,8 +5987,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]
@@ -5908,8 +6034,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]
@@ -5941,8 +6081,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]
@@ -5974,8 +6128,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]
@@ -6007,8 +6175,22 @@
                 "type": "FIELD",
                 "name": "rhs",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "unquoted"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    }
+                  ]
                 }
               }
             ]

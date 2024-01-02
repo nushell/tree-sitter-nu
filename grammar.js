@@ -634,7 +634,10 @@ module.exports = grammar({
             seq(
               field("lhs", $._expression),
               field("opr", opr),
-              field("rhs", $._expression),
+              field(
+                "rhs",
+                choice($._expression, alias($.unquoted, $.val_string)),
+              ),
             ),
           ),
         ),

@@ -29,3 +29,18 @@ expr-002-preceedence
         (expr_binary
           (val_number)
           (val_number))))))
+
+====
+expr-003-rhs-unquoted
+====
+
+'foo' == bar
+
+----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_binary
+        (val_string)
+        (val_string)))))
