@@ -72,22 +72,24 @@ if $a == true {
       (command
         (cmd_identifier)
         (val_string))))
-  (ctrl_if
-    (expr_binary
-      (val_variable
-        (identifier))
-      (val_bool))
-    (block
-      (pipeline
-        (pipe_element
-          (command
-            (cmd_identifier)
-            (val_string))))
-      (pipeline
-        (pipe_element
-          (command
-            (cmd_identifier)
-            (val_string)))))))
+  (pipeline
+    (pipe_element
+      (ctrl_if
+        (expr_binary
+          (val_variable
+            (identifier))
+          (val_bool))
+        (block
+          (pipeline
+            (pipe_element
+              (command
+                (cmd_identifier)
+                (val_string))))
+          (pipeline
+            (pipe_element
+              (command
+                (cmd_identifier)
+                (val_string)))))))))
 
 =====
 cmd-005-command-with-semicolon
@@ -149,28 +151,30 @@ if $a { 0 } else { ls | print; ls | print; }
 -----
 
 (nu_script
-  (ctrl_if
-    (val_variable
-      (identifier))
-    (block
-      (pipeline
-        (pipe_element
-          (val_number))))
-    (block
-      (pipeline
-        (pipe_element
-          (command
-            (cmd_identifier)))
-        (pipe_element
-          (command
-            (cmd_identifier))))
-      (pipeline
-        (pipe_element
-          (command
-            (cmd_identifier)))
-        (pipe_element
-          (command
-            (cmd_identifier)))))))
+  (pipeline
+    (pipe_element
+      (ctrl_if
+        (val_variable
+          (identifier))
+        (block
+          (pipeline
+            (pipe_element
+              (val_number))))
+        (block
+          (pipeline
+            (pipe_element
+              (command
+                (cmd_identifier)))
+            (pipe_element
+              (command
+                (cmd_identifier))))
+          (pipeline
+            (pipe_element
+              (command
+                (cmd_identifier)))
+            (pipe_element
+              (command
+                (cmd_identifier)))))))))
 
 =====
 cmd-008-unquoted-1-character

@@ -10,20 +10,23 @@ if $a {
 -----
 
 (nu_script
-  (ctrl_if
-    (val_variable
-      (identifier))
-    (block
-      (pipeline
-        (pipe_element
-          (command
-            (cmd_identifier)
-            (val_string))))
-      (pipeline
-        (pipe_element
-          (command
-            (cmd_identifier)
-            (val_string)))))))
+  (pipeline
+    (pipe_element
+      (ctrl_if
+        (val_variable
+          (identifier))
+        (block
+          (pipeline
+            (pipe_element
+              (command
+                (cmd_identifier)
+                (val_string))))
+          (pipeline
+            (pipe_element
+              (command
+                (cmd_identifier)
+                (val_string)))))))))
+
 ====
 blocks-002-block-oneline
 ====
@@ -33,20 +36,23 @@ if $a { print qwe; print rty }
 -----
 
 (nu_script
-  (ctrl_if
-    (val_variable
-      (identifier))
-    (block
-      (pipeline
-        (pipe_element
-          (command
-            (cmd_identifier)
-            (val_string))))
-      (pipeline
-        (pipe_element
-          (command
-            (cmd_identifier)
-            (val_string)))))))
+  (pipeline
+    (pipe_element
+      (ctrl_if
+        (val_variable
+          (identifier))
+        (block
+          (pipeline
+            (pipe_element
+              (command
+                (cmd_identifier)
+                (val_string))))
+          (pipeline
+            (pipe_element
+              (command
+                (cmd_identifier)
+                (val_string)))))))))
+
 ====
 blocks-003-braced
 ====
