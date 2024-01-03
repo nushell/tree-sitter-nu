@@ -1106,7 +1106,7 @@ function _block_body_rules(suffix) {
 
     ["_statement" + suffix]: ($) =>
       choice(
-        $._control,
+        $._ctrl_statement,
         $._stmt_hide,
         $._stmt_overlay,
         $.stmt_register,

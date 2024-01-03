@@ -126,38 +126,13 @@
   {
     "type": "block",
     "named": true,
-    "fields": {
-      "ctrl_break": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "break",
-            "named": false
-          }
-        ]
-      },
-      "ctrl_continue": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "continue",
-            "named": false
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
       "types": [
         {
           "type": "assignment",
-          "named": true
-        },
-        {
-          "type": "ctrl_do",
           "named": true
         },
         {
@@ -169,23 +144,7 @@
           "named": true
         },
         {
-          "type": "ctrl_if",
-          "named": true
-        },
-        {
           "type": "ctrl_loop",
-          "named": true
-        },
-        {
-          "type": "ctrl_match",
-          "named": true
-        },
-        {
-          "type": "ctrl_return",
-          "named": true
-        },
-        {
-          "type": "ctrl_try",
           "named": true
         },
         {
@@ -1864,38 +1823,13 @@
   {
     "type": "expr_interpolated",
     "named": true,
-    "fields": {
-      "ctrl_break": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "break",
-            "named": false
-          }
-        ]
-      },
-      "ctrl_continue": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "continue",
-            "named": false
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
       "types": [
         {
           "type": "assignment",
-          "named": true
-        },
-        {
-          "type": "ctrl_do",
           "named": true
         },
         {
@@ -1907,23 +1841,7 @@
           "named": true
         },
         {
-          "type": "ctrl_if",
-          "named": true
-        },
-        {
           "type": "ctrl_loop",
-          "named": true
-        },
-        {
-          "type": "ctrl_match",
-          "named": true
-        },
-        {
-          "type": "ctrl_return",
-          "named": true
-        },
-        {
-          "type": "ctrl_try",
           "named": true
         },
         {
@@ -2008,28 +1926,7 @@
   {
     "type": "expr_parenthesized",
     "named": true,
-    "fields": {
-      "ctrl_break": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "break",
-            "named": false
-          }
-        ]
-      },
-      "ctrl_continue": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "continue",
-            "named": false
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
@@ -2043,10 +1940,6 @@
           "named": true
         },
         {
-          "type": "ctrl_do",
-          "named": true
-        },
-        {
           "type": "ctrl_error",
           "named": true
         },
@@ -2055,23 +1948,7 @@
           "named": true
         },
         {
-          "type": "ctrl_if",
-          "named": true
-        },
-        {
           "type": "ctrl_loop",
-          "named": true
-        },
-        {
-          "type": "ctrl_match",
-          "named": true
-        },
-        {
-          "type": "ctrl_return",
-          "named": true
-        },
-        {
-          "type": "ctrl_try",
           "named": true
         },
         {
@@ -2156,38 +2033,13 @@
   {
     "type": "expr_unary",
     "named": true,
-    "fields": {
-      "ctrl_break": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "break",
-            "named": false
-          }
-        ]
-      },
-      "ctrl_continue": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "continue",
-            "named": false
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
       "types": [
         {
           "type": "assignment",
-          "named": true
-        },
-        {
-          "type": "ctrl_do",
           "named": true
         },
         {
@@ -2199,23 +2051,7 @@
           "named": true
         },
         {
-          "type": "ctrl_if",
-          "named": true
-        },
-        {
           "type": "ctrl_loop",
-          "named": true
-        },
-        {
-          "type": "ctrl_match",
-          "named": true
-        },
-        {
-          "type": "ctrl_return",
-          "named": true
-        },
-        {
-          "type": "ctrl_try",
           "named": true
         },
         {
@@ -2906,38 +2742,13 @@
   {
     "type": "nu_script",
     "named": true,
-    "fields": {
-      "ctrl_break": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "break",
-            "named": false
-          }
-        ]
-      },
-      "ctrl_continue": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "continue",
-            "named": false
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
       "types": [
         {
           "type": "assignment",
-          "named": true
-        },
-        {
-          "type": "ctrl_do",
           "named": true
         },
         {
@@ -2949,23 +2760,7 @@
           "named": true
         },
         {
-          "type": "ctrl_if",
-          "named": true
-        },
-        {
           "type": "ctrl_loop",
-          "named": true
-        },
-        {
-          "type": "ctrl_match",
-          "named": true
-        },
-        {
-          "type": "ctrl_return",
-          "named": true
-        },
-        {
-          "type": "ctrl_try",
           "named": true
         },
         {
@@ -4245,26 +4040,6 @@
     "type": "val_closure",
     "named": true,
     "fields": {
-      "ctrl_break": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "break",
-            "named": false
-          }
-        ]
-      },
-      "ctrl_continue": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "continue",
-            "named": false
-          }
-        ]
-      },
       "parameters": {
         "multiple": false,
         "required": true,
@@ -4285,10 +4060,6 @@
           "named": true
         },
         {
-          "type": "ctrl_do",
-          "named": true
-        },
-        {
           "type": "ctrl_error",
           "named": true
         },
@@ -4297,23 +4068,7 @@
           "named": true
         },
         {
-          "type": "ctrl_if",
-          "named": true
-        },
-        {
           "type": "ctrl_loop",
-          "named": true
-        },
-        {
-          "type": "ctrl_match",
-          "named": true
-        },
-        {
-          "type": "ctrl_return",
-          "named": true
-        },
-        {
-          "type": "ctrl_try",
           "named": true
         },
         {
