@@ -1,12 +1,24 @@
-> **Warning**  
-> This is probably more hands-on than many people will like, but I think that's
-> just the state of things at the moment. There are superficially easier
-> solutions, but I suspect you might be frustrated by outdated grammars
-> resulting in wonky highlights.
->
-> The instructions below will at least allow you to maintain your own highlights
-> queries for things which you care about. This might result in better
-> worst-case highlighting, which is my personal preference.
+# neovim
+
+## Lazy.nvim installation
+
+Extend your lazy config with treesitter and the nu parser. The parser doesn't have to be listed under dependencies.
+
+```lua
+{
+    "nvim-treesitter/nvim-treesitter",
+    config = function()
+        -- setup treesitter with config
+    end,
+    dependencies = {
+        -- NOTE: additional parser
+        { "nushell/tree-sitter-nu" },
+    },
+    build = ":TSUpdate",
+},
+```
+
+## Manual installation
 
 The ability to add syntax highlighting can be provided by [tree-sitter] using
 [nvim-treesitter]  (please refer to its own installation instructions).
@@ -26,7 +38,7 @@ parser_config.nu = {
 
 Run `:TSInstall nu` in neovim to install the above parser.
 
-> **Note**  
+> **Note**
 > To get an overview of how [tree-sitter] is parsing [nushell] code, I recommend
 > poking around with [nvim-treesitter/playground].
 
@@ -36,8 +48,9 @@ of highlight groups.
 
 If you are using the `lazy` package manager for *neovim*, you can run the
 following snippet to install the highlights file and enable the highlighting:
+
 ```nushell
-let remote = "https://raw.githubusercontent.com/nushell/tree-sitter-nu/main/queries/"
+let remote = "https://raw.githubusercontent.com/nushell/tree-sitter-nu/main/queries/nu/"
 let local = (
     $env.XDG_DATA_HOME?
     | default ($env.HOME | path join ".local" "share")
