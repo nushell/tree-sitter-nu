@@ -10,6 +10,8 @@ match $x {
 -----
 
 (nu_script
+  (pipeline
+    (pipe_element
       (ctrl_match
         (val_variable
           (identifier))
@@ -24,7 +26,7 @@ match $x {
                 (val_number))))
           (block))
         (default_arm
-          (block))))
+          (block))))))
 
 ====
 match-002-block
@@ -38,26 +40,28 @@ match $x {
 -----
 
 (nu_script
-  (ctrl_match
-    (val_variable
-      (identifier))
-    (match_arm
-      (match_pattern
-        (val_record
-          (record_entry
-            (identifier)
-            (val_variable
-              (identifier)))))
-      (block
-        (pipeline
-          (pipe_element
-            (val_variable
-              (identifier)))
-          (pipe_element
-            (command
-              (cmd_identifier))))))
-    (default_arm
-      (block
-        (pipeline
-          (pipe_element
-            (val_record)))))))
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_variable
+          (identifier))
+        (match_arm
+          (match_pattern
+            (val_record
+              (record_entry
+                (identifier)
+                (val_variable
+                  (identifier)))))
+          (block
+            (pipeline
+              (pipe_element
+                (val_variable
+                  (identifier)))
+              (pipe_element
+                (command
+                  (cmd_identifier))))))
+        (default_arm
+          (block
+            (pipeline
+              (pipe_element
+                (val_record)))))))))

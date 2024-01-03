@@ -245,7 +245,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_control"
+          "name": "_ctrl_statement"
         },
         {
           "type": "SYMBOL",
@@ -530,7 +530,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_control"
+          "name": "_ctrl_statement"
         },
         {
           "type": "SYMBOL",
@@ -843,7 +843,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_control"
+          "name": "_ctrl_statement"
         },
         {
           "type": "SYMBOL",
@@ -1153,7 +1153,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_control"
+          "name": "_ctrl_statement"
         },
         {
           "type": "SYMBOL",
