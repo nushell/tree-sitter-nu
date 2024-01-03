@@ -50,6 +50,9 @@ module.exports = grammar({
 
     identifier: ($) => token(/[_\p{XID_Start}][_\p{XID_Continue}]*/),
 
+    _long_flag_identifier: ($) =>
+      token.immediate(/[\p{XID_Start}_][\p{XID_Continue}_-]*/),
+
     _command_name: ($) =>
       choice(
         field("unquoted_name", $.cmd_identifier),
@@ -213,7 +216,8 @@ module.exports = grammar({
     param_opt: ($) =>
       seq(field("name", $.identifier), token.immediate(PUNC().question)),
 
-    param_long_flag: ($) => seq("--", $.identifier),
+    param_long_flag: ($) =>
+      seq("--", alias($._long_flag_identifier, $.identifier)),
 
     flag_capsule: ($) =>
       seq(BRACK().open_paren, $.param_short_flag, BRACK().close_paren),
@@ -960,10 +964,7 @@ module.exports = grammar({
     short_flag: ($) => token(/-[_\p{XID_Continue}]+/),
 
     long_flag: ($) =>
-      prec.right(
-        10,
-        choice("--", seq("--", token.immediate(/[_\p{XID_Continue}]+/))),
-      ),
+      prec.right(10, choice("--", seq("--", $._long_flag_identifier))),
 
     // because this catches almost anything, we want to ensure it is
     // picked as the a last resort after everything else has failed.
