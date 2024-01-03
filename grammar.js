@@ -435,16 +435,11 @@ module.exports = grammar({
       ),
 
     pipe_element_last: ($) =>
-      choice(
-        prec.right(69, $._expression),
-        $._ctrl_expression,
-        $.where_command,
-        $.command,
-      ),
+      choice($._expression, $._ctrl_expression, $.where_command, $.command),
 
     pipe_element_parenthesized_last: ($) =>
       choice(
-        prec.right(69, $._expression),
+        $._expression,
         $._ctrl_expression,
         $.where_command,
         alias($._command_parenthesized_body, $.command),
@@ -1107,7 +1102,7 @@ function _block_body_rules(suffix) {
 
     ["_statement" + suffix]: ($) =>
       choice(
-        $._control,
+        $._ctrl_statement,
         $._stmt_hide,
         $._stmt_overlay,
         $.stmt_register,
