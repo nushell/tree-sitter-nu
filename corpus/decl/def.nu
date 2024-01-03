@@ -110,3 +110,64 @@ def-env test []: nothing -> record<a: string, b: int> {}
         (identifier)
         (flat_type)))
     (block)))
+
+======
+def-007-long-flag
+======
+
+def test [
+  --long-flag
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_long_flag
+          (identifier))))
+    (block)))
+
+======
+def-008-long-flag-with-short
+======
+
+def test [
+  --long-flag (-l)
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_long_flag
+          (identifier))
+        (flag_capsule
+          (param_short_flag))))
+    (block)))
+
+======
+def-009-long-flag-with-type
+======
+
+def test [
+  --long-flag: string
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_long_flag
+          (identifier))
+        (param_type
+          (flat_type))))
+    (block)))
