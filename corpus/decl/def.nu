@@ -306,3 +306,47 @@ def test [
         (param_rest
           (identifier))))
     (block)))
+
+======
+def-017-long-flag-with-short-without-space
+======
+
+def test [
+  --long-flag(-l)
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_long_flag
+          (identifier))
+        (flag_capsule
+          (param_short_flag))))
+    (block)))
+
+======
+def-018-long-flag-with-short-and-type
+======
+
+def test [
+  --long-flag(-l): int
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_long_flag
+          (identifier))
+        (flag_capsule
+          (param_short_flag))
+        (param_type
+          (flat_type))))
+    (block)))
