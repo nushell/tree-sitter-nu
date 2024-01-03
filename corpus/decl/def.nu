@@ -171,3 +171,138 @@ def test [
         (param_type
           (flat_type))))
     (block)))
+
+======
+def-010-short-flag
+======
+
+def test [
+  -s
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_short_flag)))
+    (block)))
+
+======
+def-011-short-flag-with-type
+======
+
+def test [
+  -s: int
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_short_flag)
+      (param_type
+        (flat_type))))
+    (block)))
+
+======
+def-012-parameter
+======
+
+def test [
+  foo
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)))
+    (block)))
+
+======
+def-013-parameter-with-type
+======
+
+def test [
+  foo: string
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (flat_type))))
+    (block)))
+
+======
+def-014-optional-parameter
+======
+
+def test [
+  foo?
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_opt
+          (identifier))))
+    (block)))
+
+======
+def-015-optional-parameter-with-type
+======
+
+def test [
+  foo?: string
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_opt
+          (identifier))
+        (param_type
+          (flat_type))))
+    (block)))
+
+======
+def-016-rest-parameter
+======
+
+def test [
+  ...rest
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_rest
+          (identifier))))
+    (block)))
