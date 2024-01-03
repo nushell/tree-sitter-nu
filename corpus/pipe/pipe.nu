@@ -348,3 +348,57 @@ try {
                 (val_variable
                   (identifier))
                 (val_number)))))))))
+
+=====
+pipe-012-next-line-after-value
+=====
+
+[1 2]
+  | length
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_list
+        (val_number)
+        (val_number)))
+    (pipe_element
+      (command
+        (cmd_identifier)))))
+
+=====
+pipe-013-next-line-after-variable
+=====
+
+$xs
+  | first
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_variable
+        (identifier)))
+    (pipe_element
+      (command
+        (cmd_identifier)))))
+
+=====
+pipe-013-next-line-after-variable
+=====
+
+$xs | first
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_variable
+        (identifier)))
+    (pipe_element
+      (command
+        (cmd_identifier)))))

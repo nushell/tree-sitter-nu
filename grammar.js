@@ -432,7 +432,7 @@ module.exports = grammar({
 
     pipe_element_last: ($) =>
       choice(
-        prec.right(69, $._expression),
+        $._expression,
         $._ctrl_expression,
         $.where_command,
         $.command,
@@ -440,7 +440,7 @@ module.exports = grammar({
 
     pipe_element_parenthesized_last: ($) =>
       choice(
-        prec.right(69, $._expression),
+        $._expression,
         $._ctrl_expression,
         $.where_command,
         alias($._command_parenthesized_body, $.command),
