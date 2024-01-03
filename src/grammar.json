@@ -1309,7 +1309,7 @@
       }
     },
     "_long_flag_identifier": {
-      "type": "TOKEN",
+      "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
         "value": "[\\p{XID_Start}_][\\p{XID_Continue}_-]*"
@@ -8041,11 +8041,8 @@
                 "value": "--"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "[_\\p{XID_Continue}]+"
-                }
+                "type": "SYMBOL",
+                "name": "_long_flag_identifier"
               }
             ]
           }

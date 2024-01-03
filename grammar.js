@@ -51,7 +51,7 @@ module.exports = grammar({
     identifier: ($) => token(/[_\p{XID_Start}][_\p{XID_Continue}]*/),
 
     _long_flag_identifier: ($) =>
-      token(/[\p{XID_Start}_][\p{XID_Continue}_-]*/),
+      token.immediate(/[\p{XID_Start}_][\p{XID_Continue}_-]*/),
 
     _command_name: ($) =>
       choice(
@@ -969,10 +969,7 @@ module.exports = grammar({
     short_flag: ($) => token(/-[_\p{XID_Continue}]+/),
 
     long_flag: ($) =>
-      prec.right(
-        10,
-        choice("--", seq("--", token.immediate(/[_\p{XID_Continue}]+/))),
-      ),
+      prec.right(10, choice("--", seq("--", $._long_flag_identifier))),
 
     // because this catches almost anything, we want to ensure it is
     // picked as the a last resort after everything else has failed.
