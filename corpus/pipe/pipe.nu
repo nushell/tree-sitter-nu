@@ -387,7 +387,7 @@ $xs
         (cmd_identifier)))))
 
 =====
-pipe-013-next-line-after-variable
+pipe-014-same-line-with-variable
 =====
 
 $xs | first
@@ -402,3 +402,35 @@ $xs | first
     (pipe_element
       (command
         (cmd_identifier)))))
+
+=====
+pipe-015-end-of-line
+=====
+
+do { [1] } |
+  each {|x| $x * 2}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_do
+        (block
+          (pipeline
+            (pipe_element
+              (val_list
+                (val_number)))))))
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_closure
+          (parameter_pipes
+            (parameter
+              (identifier)))
+          (pipeline
+            (pipe_element
+              (expr_binary
+                (val_variable
+                  (identifier))
+                (val_number)))))))))
