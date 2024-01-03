@@ -1308,6 +1308,13 @@
         "value": "[_\\p{XID_Start}][_\\p{XID_Continue}]*"
       }
     },
+    "_long_flag_identifier": {
+      "type": "IMMEDIATE_TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[\\p{XID_Start}_][\\p{XID_Continue}_-]*"
+      }
+    },
     "_command_name": {
       "type": "CHOICE",
       "members": [
@@ -2337,8 +2344,13 @@
           "value": "--"
         },
         {
-          "type": "SYMBOL",
-          "name": "identifier"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_long_flag_identifier"
+          },
+          "named": true,
+          "value": "identifier"
         }
       ]
     },
@@ -8021,11 +8033,8 @@
                 "value": "--"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "[_\\p{XID_Continue}]+"
-                }
+                "type": "SYMBOL",
+                "name": "_long_flag_identifier"
               }
             ]
           }

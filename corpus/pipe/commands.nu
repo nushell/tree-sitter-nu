@@ -211,3 +211,18 @@ let x = 42
     (pipeline
       (pipe_element
         (val_number)))))
+
+======
+cmd-010-long-flag
+======
+
+cmd --long-flag
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (long_flag)))))
