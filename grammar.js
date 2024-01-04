@@ -17,6 +17,8 @@ module.exports = grammar({
     [$.pipe_element_parenthesized, $.pipe_element_parenthesized_last],
     [$.command],
     [$.block, $.val_record],
+    [$.ctrl_if_parenthesized],
+    [$.ctrl_try_parenthesized],
   ],
 
   rules: {
@@ -253,6 +255,17 @@ module.exports = grammar({
         $.ctrl_return,
       ),
 
+    _ctrl_expression_parenthesized: ($) =>
+      choice(
+        field("ctrl_break", KEYWORD().break),
+        field("ctrl_continue", KEYWORD().continue),
+        $.ctrl_do,
+        alias($.ctrl_if_parenthesized, $.ctrl_if),
+        alias($.ctrl_try_parenthesized, $.ctrl_try),
+        $.ctrl_match,
+        $.ctrl_return,
+      ),
+
     // Standalone Controls
 
     ctrl_for: ($) =>
@@ -327,6 +340,23 @@ module.exports = grammar({
         ),
       ),
 
+    ctrl_if_parenthesized: ($) =>
+      seq(
+        KEYWORD().if,
+        field("condition", choice($._expression, $.identifier)),
+        field("then_branch", $.block),
+        optional(
+          seq(
+            optional("\n"),
+            KEYWORD().else,
+            choice(
+              field("else_block", $.block),
+              field("else_branch", alias($.ctrl_if_parenthesized, $.ctrl_if)),
+            ),
+          ),
+        ),
+      ),
+
     ctrl_match: ($) =>
       seq(
         KEYWORD().match,
@@ -388,6 +418,19 @@ module.exports = grammar({
         optional(seq(KEYWORD().catch, field("catch_branch", $._blosure))),
       ),
 
+    ctrl_try_parenthesized: ($) =>
+      seq(
+        KEYWORD().try,
+        field("try_branch", $.block),
+        optional(
+          seq(
+            optional("\n"),
+            KEYWORD().catch,
+            field("catch_branch", $._blosure),
+          ),
+        ),
+      ),
+
     ctrl_return: ($) =>
       choice(
         prec(
@@ -425,7 +468,7 @@ module.exports = grammar({
       seq(
         choice(
           prec.right(69, $._expression),
-          $._ctrl_expression,
+          $._ctrl_expression_parenthesized,
           $.where_command,
           alias($._command_parenthesized_body, $.command),
         ),
@@ -440,7 +483,7 @@ module.exports = grammar({
     pipe_element_parenthesized_last: ($) =>
       choice(
         $._expression,
-        $._ctrl_expression,
+        $._ctrl_expression_parenthesized,
         $.where_command,
         alias($._command_parenthesized_body, $.command),
       ),
