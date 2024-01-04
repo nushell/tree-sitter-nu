@@ -222,3 +222,110 @@ subexpr-009-closure
                         (identifier))
                       (val_variable
                         (identifier)))))))))))))
+
+=====
+subexpr-010-newline-before-else
+=====
+
+(
+if $cond { echo 'foo' }
+else { echo 'bar' }
+)
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (ctrl_if
+              (val_variable
+                (identifier))
+              (block
+                (pipeline
+                  (pipe_element
+                    (command
+                      (cmd_identifier)
+                      (val_string)))))
+              (block
+                (pipeline
+                  (pipe_element
+                    (command
+                      (cmd_identifier)
+                      (val_string))))))))))))
+
+=====
+subexpr-011-newline-before-else-if
+=====
+
+(
+if $cond { echo 'foo' }
+else if $cond2 { echo 'bar' }
+else { echo 'foo bar' }
+)
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (ctrl_if
+              (val_variable
+                (identifier))
+              (block
+                (pipeline
+                  (pipe_element
+                    (command
+                      (cmd_identifier)
+                      (val_string)))))
+              (ctrl_if
+                (val_variable
+                  (identifier))
+                (block
+                  (pipeline
+                    (pipe_element
+                      (command
+                        (cmd_identifier)
+                        (val_string)))))
+                (block
+                  (pipeline
+                    (pipe_element
+                      (command
+                        (cmd_identifier)
+                        (val_string)))))))))))))
+
+=====
+subexpr-012-newline-before-catch
+=====
+
+(
+try { echo 'foo' }
+catch { echo 'bar' }
+)
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (ctrl_try
+              (block
+                (pipeline
+                  (pipe_element
+                    (command
+                      (cmd_identifier)
+                      (val_string)))))
+              (block
+                (pipeline
+                  (pipe_element
+                    (command
+                      (cmd_identifier)
+                      (val_string))))))))))))
