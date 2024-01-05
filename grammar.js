@@ -178,6 +178,9 @@ module.exports = grammar({
     _type_annotation: ($) =>
       field("type", choice($.list_type, $.collection_type, $.flat_type)),
 
+    _all_type: ($) =>
+      field("type", choice($.list_type, $.collection_type, $.flat_type)),
+
     flat_type: ($) => field("flat_type", FLAT_TYPES()),
 
     collection_type: ($) => {
@@ -192,7 +195,7 @@ module.exports = grammar({
           token.immediate(BRACK().open_angle),
           repeat(
             seq(
-              seq(key, optional(seq(PUNC().colon, $.flat_type))),
+              seq(key, optional(seq(PUNC().colon, $._all_type))),
               optional(PUNC().comma),
             ),
           ),
@@ -206,7 +209,7 @@ module.exports = grammar({
         "list",
         seq(
           token.immediate(BRACK().open_angle),
-          field("inner", optional($.flat_type)),
+          field("inner", optional($._all_type)),
           BRACK().close_angle,
         ),
       ),
@@ -1407,7 +1410,6 @@ function SPECIAL() {
 
 /// nushell flat types
 /// taken from `nu_parser::parser::parse_shape_name()`
-// i.e not composite types like list<int> or record<name: string>
 function FLAT_TYPES() {
   // prettier-ignore
   const types = [
