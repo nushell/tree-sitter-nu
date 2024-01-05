@@ -627,3 +627,86 @@ def test [
           (identifier)
           (flat_type))))
     (block)))
+
+======
+def-028-type-one-line
+======
+
+def test [x: record<key: list<int>>]: nothing -> record<key: list<int>> {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (list_type
+              (flat_type))))))
+    (returns
+      (flat_type)
+      (collection_type
+        (identifier)
+        (list_type
+          (flat_type))))
+    (block)))
+
+======
+def-029-type-two-line
+======
+
+def test [x: record<key: list<int>>
+]: nothing -> record<key: list<int>> {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (list_type
+              (flat_type))))))
+    (returns
+      (flat_type)
+      (collection_type
+        (identifier)
+        (list_type
+          (flat_type))))
+    (block)))
+
+======
+def-030-type-two-line
+======
+
+def test [x: record<key: list<int>>]: nothing -> record<key: list<int>> {
+}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (list_type
+              (flat_type))))))
+    (returns
+      (flat_type)
+      (collection_type
+        (identifier)
+        (list_type
+          (flat_type))))
+    (block)))
