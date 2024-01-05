@@ -254,17 +254,25 @@
             "named": true
           }
         ]
+      },
+      "type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "collection_type",
+            "named": true
+          },
+          {
+            "type": "flat_type",
+            "named": true
+          },
+          {
+            "type": "list_type",
+            "named": true
+          }
+        ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "flat_type",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -2426,7 +2434,33 @@
         "required": false,
         "types": [
           {
+            "type": "collection_type",
+            "named": true
+          },
+          {
             "type": "flat_type",
+            "named": true
+          },
+          {
+            "type": "list_type",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "collection_type",
+            "named": true
+          },
+          {
+            "type": "flat_type",
+            "named": true
+          },
+          {
+            "type": "list_type",
             "named": true
           }
         ]
