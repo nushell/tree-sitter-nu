@@ -350,3 +350,280 @@ def test [
         (param_type
           (flat_type))))
     (block)))
+
+======
+def-019-type-list-of-list
+======
+
+def test [
+  x: list<list<int>>
+]: nothing -> list<list<int>> {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (list_type
+            (list_type
+              (flat_type))))))
+    (returns
+      (flat_type)
+      (list_type
+        (list_type
+          (flat_type))))
+    (block)))
+
+======
+def-020-type-list-of-record
+======
+
+def test [
+  x: list<record<key: string>>
+]: nothing -> list<record<key: string>> {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (list_type
+            (collection_type
+              (identifier)
+              (flat_type))))))
+    (returns
+      (flat_type)
+      (list_type
+        (collection_type
+          (identifier)
+          (flat_type))))
+    (block)))
+
+======
+def-021-type-list-of-table
+======
+
+def test [
+  x: list<table<key1: string, key2: int>>
+]: nothing -> list<table<key1: string, key2: int>> {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (list_type
+            (collection_type
+              (identifier)
+              (flat_type)
+              (identifier)
+              (flat_type))))))
+    (returns
+      (flat_type)
+      (list_type
+        (collection_type
+          (identifier)
+          (flat_type)
+          (identifier)
+          (flat_type))))
+    (block)))
+
+======
+def-022-type-record-of-list
+======
+
+def test [
+  x: record<key: list<int>>
+]: nothing -> record<key: list<int>> {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (list_type
+              (flat_type))))))
+    (returns
+      (flat_type)
+      (collection_type
+        (identifier)
+        (list_type
+          (flat_type))))
+    (block)))
+
+======
+def-023-type-record-of-record
+======
+
+def test [
+  x: record<key: list<int>>
+]: nothing -> record<key: list<int>> {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (list_type
+              (flat_type))))))
+    (returns
+      (flat_type)
+      (collection_type
+        (identifier)
+        (list_type
+          (flat_type))))
+    (block)))
+
+======
+def-024-type-record-of-table
+======
+
+def test [
+  x: record<key: table<key: int>>
+]: nothing -> record<key: table<key: int>> {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (collection_type
+              (identifier)
+              (flat_type))))))
+    (returns
+      (flat_type)
+      (collection_type
+        (identifier)
+        (collection_type
+          (identifier)
+          (flat_type))))
+    (block)))
+
+======
+def-025-type-table-of-list
+======
+
+def test [
+  x: table<key: list<string>>
+]: nothing -> table<key: list<string>> {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (list_type
+              (flat_type))))))
+    (returns
+      (flat_type)
+      (collection_type
+        (identifier)
+        (list_type
+          (flat_type))))
+    (block)))
+
+======
+def-026-type-table-of-record
+======
+
+def test [
+  x: table<key: record<key1: string, key2: int>>
+]: nothing -> table<key: record<key1: string, key2: int>> {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (collection_type
+              (identifier)
+              (flat_type)
+              (identifier)
+              (flat_type))))))
+    (returns
+      (flat_type)
+      (collection_type
+        (identifier)
+        (collection_type
+          (identifier)
+          (flat_type)
+          (identifier)
+          (flat_type))))
+    (block)))
+
+======
+def-027-type-table-of-table
+======
+
+def test [
+  x: table<key: table<key1: string, key2: int>>
+]: nothing -> table<key: table<key1: string, key2: int>> {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (collection_type
+              (identifier)
+              (flat_type)
+              (identifier)
+              (flat_type))))))
+    (returns
+      (flat_type)
+      (collection_type
+        (identifier)
+        (collection_type
+          (identifier)
+          (flat_type)
+          (identifier)
+          (flat_type))))
+    (block)))
