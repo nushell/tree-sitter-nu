@@ -710,3 +710,17 @@ def test [x: record<key: list<int>>]: nothing -> record<key: list<int>> {
         (list_type
           (flat_type))))
     (block)))
+
+======
+def-031-name-special-keys
+======
+
+def a_-!? [] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks)
+    (block)))

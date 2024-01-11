@@ -1298,7 +1298,7 @@
       "type": "TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[_\\p{XID_Start}][_\\-\\p{XID_Continue}]*"
+        "value": "[_\\p{XID_Start}][_\\-\\p{XID_Continue}!?]*"
       }
     },
     "identifier": {
