@@ -45,10 +45,10 @@ module.exports = grammar({
 
     /// Identifiers
     // NOTE:
-    // for simplicity, i used the `rust` definition of an identifier
+    // for simplicity, i used the `rust` definition of an identifier and some symbols
     // but in `nu` the rule is way more relaxed than this
 
-    cmd_identifier: ($) => token(/[_\p{XID_Start}][_\-\p{XID_Continue}]*/),
+    cmd_identifier: ($) => token(/[_\p{XID_Start}][_\-\p{XID_Continue}!?]*/),
 
     identifier: ($) => token(/[_\p{XID_Start}][_\p{XID_Continue}]*/),
 
