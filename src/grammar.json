@@ -7674,6 +7674,39 @@
               {
                 "type": "SYMBOL",
                 "name": "val_string"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "val_number"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "val_variable"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "expr_parenthesized"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_record_key"
+                },
+                "named": true,
+                "value": "identifier"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "TOKEN",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "[-+][^\\s\\n\\t\\r{}()\\[\\]\"`';:,]*"
+                  }
+                },
+                "named": true,
+                "value": "identifier"
               }
             ]
           }
@@ -7721,6 +7754,17 @@
           ]
         }
       ]
+    },
+    "_record_key": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -69,
+        "content": {
+          "type": "PATTERN",
+          "value": "[^$\\s\\n\\t\\r{}()\\[\\]\"`';:,][^\\s\\n\\t\\r{}()\\[\\]\"`';:,]*"
+        }
+      }
     },
     "val_table": {
       "type": "SEQ",

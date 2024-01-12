@@ -918,6 +918,13 @@ module.exports = grammar({
             // Without $.cmd_identifier, cannot correctly distinguish between record and closure
             alias($.cmd_identifier, $.identifier),
             $.val_string,
+            $.val_number,
+            $.val_variable,
+            $.expr_parenthesized,
+            alias($._record_key, $.identifier),
+
+            // This distinguish from number and identifier starting with -/+
+            alias(token(/[-+][^\s\n\t\r{}()\[\]"`';:,]*/), $.identifier),
           ),
         ),
         PUNC().colon,
@@ -930,6 +937,9 @@ module.exports = grammar({
         ),
         optional(PUNC().comma),
       ),
+
+    _record_key: ($) =>
+      token(prec(-69, /[^$\s\n\t\r{}()\[\]"`';:,][^\s\n\t\r{}()\[\]"`';:,]*/)),
 
     val_table: ($) =>
       seq(
