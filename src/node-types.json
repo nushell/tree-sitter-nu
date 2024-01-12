@@ -3548,11 +3548,23 @@
         "required": true,
         "types": [
           {
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
           {
+            "type": "val_number",
+            "named": true
+          },
+          {
             "type": "val_string",
+            "named": true
+          },
+          {
+            "type": "val_variable",
             "named": true
           }
         ]
