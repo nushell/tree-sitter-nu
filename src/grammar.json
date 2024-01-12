@@ -4104,8 +4104,12 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "block"
+          "type": "PREC_DYNAMIC",
+          "value": 10,
+          "content": {
+            "type": "SYMBOL",
+            "name": "block"
+          }
         },
         {
           "type": "SYMBOL",
@@ -7659,12 +7663,50 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "identifier"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "cmd_identifier"
+                },
+                "named": true,
+                "value": "identifier"
               },
               {
                 "type": "SYMBOL",
                 "name": "val_string"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "val_number"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "val_variable"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "expr_parenthesized"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_record_key"
+                },
+                "named": true,
+                "value": "identifier"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "TOKEN",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "[-+][^\\s\\n\\t\\r{}()\\[\\]\"`';:,]*"
+                  }
+                },
+                "named": true,
+                "value": "identifier"
               }
             ]
           }
@@ -7712,6 +7754,17 @@
           ]
         }
       ]
+    },
+    "_record_key": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -69,
+        "content": {
+          "type": "PATTERN",
+          "value": "[^$\\s\\n\\t\\r{}()\\[\\]\"`';:,][^\\s\\n\\t\\r{}()\\[\\]\"`';:,]*"
+        }
+      }
     },
     "val_table": {
       "type": "SEQ",
@@ -7774,12 +7827,20 @@
           "value": "{"
         },
         {
-          "type": "FIELD",
-          "name": "parameters",
-          "content": {
-            "type": "SYMBOL",
-            "name": "parameter_pipes"
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "parameters",
+              "content": {
+                "type": "SYMBOL",
+                "name": "parameter_pipes"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "SYMBOL",
@@ -8333,6 +8394,10 @@
     [
       "block",
       "val_record"
+    ],
+    [
+      "block",
+      "val_closure"
     ],
     [
       "ctrl_if_parenthesized"
