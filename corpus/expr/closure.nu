@@ -101,3 +101,83 @@ custom-cmd {|| 'hello' } { 'world' }
           (pipeline
             (pipe_element
               (val_string))))))))
+
+=====
+closure-005-let
+=====
+
+let cl = {
+  'closure'
+}
+
+-----
+
+(nu_script
+  (stmt_let
+    (identifier)
+    (pipeline
+      (pipe_element
+        (val_closure
+          (pipeline
+            (pipe_element
+              (val_string))))))))
+
+=====
+closure-006-let-parameter-pipes
+=====
+
+let cl = {|x|
+  $x * 3
+}
+
+-----
+
+(nu_script
+  (stmt_let
+    (identifier)
+    (pipeline
+      (pipe_element
+        (val_closure
+        (parameter_pipes
+          (parameter
+            (identifier)))
+          (pipeline
+            (pipe_element
+              (expr_binary
+                (val_variable
+                  (identifier))
+                (val_number)))))))))
+
+=====
+closure-007-record-value
+=====
+
+{
+  closure: {|x| $x * 2}
+  closure2: { 'closure' }
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_entry
+          (identifier)
+          (val_closure
+            (parameter_pipes
+              (parameter
+                (identifier)))
+            (pipeline
+              (pipe_element
+                (expr_binary
+                  (val_variable
+                    (identifier))
+                  (val_number))))))
+        (record_entry
+          (identifier)
+          (val_closure
+            (pipeline
+              (pipe_element
+                (val_string)))))))))
