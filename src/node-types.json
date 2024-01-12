@@ -4076,7 +4076,7 @@
     "fields": {
       "parameters": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "parameter_pipes",
