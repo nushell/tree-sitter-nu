@@ -17,6 +17,7 @@ module.exports = grammar({
     [$.pipe_element_parenthesized, $.pipe_element_parenthesized_last],
     [$.command],
     [$.block, $.val_record],
+    [$.block, $.val_closure],
     [$.ctrl_if_parenthesized],
     [$.ctrl_try_parenthesized],
   ],
@@ -601,7 +602,7 @@ module.exports = grammar({
     block: ($) =>
       seq(BRACK().open_brace, optional($._block_body), BRACK().close_brace),
 
-    _blosure: ($) => choice($.block, $.val_closure),
+    _blosure: ($) => choice(prec.dynamic(10, $.block), $.val_closure),
 
     // the where command has a unique argument pattern that breaks the
     // general command parsing, so we handle it separately
@@ -911,7 +912,21 @@ module.exports = grammar({
 
     record_entry: ($) =>
       seq(
-        field("key", choice($.identifier, $.val_string)),
+        field(
+          "key",
+          choice(
+            // Without $.cmd_identifier, cannot correctly distinguish between record and closure
+            alias($.cmd_identifier, $.identifier),
+            $.val_string,
+            $.val_number,
+            $.val_variable,
+            $.expr_parenthesized,
+            alias($._record_key, $.identifier),
+
+            // This distinguish from number and identifier starting with -/+
+            alias(token(/[-+][^\s\n\t\r{}()\[\]"`';:,]*/), $.identifier),
+          ),
+        ),
         PUNC().colon,
         field(
           "value",
@@ -922,6 +937,9 @@ module.exports = grammar({
         ),
         optional(PUNC().comma),
       ),
+
+    _record_key: ($) =>
+      token(prec(-69, /[^$\s\n\t\r{}()\[\]"`';:,][^\s\n\t\r{}()\[\]"`';:,]*/)),
 
     val_table: ($) =>
       seq(
@@ -935,7 +953,7 @@ module.exports = grammar({
     val_closure: ($) =>
       seq(
         BRACK().open_brace,
-        field("parameters", $.parameter_pipes),
+        optional(field("parameters", $.parameter_pipes)),
         $._block_body,
         BRACK().close_brace,
       ),
