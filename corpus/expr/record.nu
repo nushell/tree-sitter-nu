@@ -131,3 +131,53 @@ record-006-subexpression-key
                   (val_string)
                   (val_string)))))
           (val_string))))))
+
+=====
+record-007-keyword-key
+=====
+
+{
+  error: 'error',
+  def: {while: value},
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_entry
+          (identifier)
+          (val_string))
+        (record_entry
+          (identifier)
+          (val_record
+            (record_entry
+              (identifier)
+              (val_string))))))))
+
+=====
+record-008-modifier-key
+=====
+
+{
+  export: value,
+  use: {export: value},
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_entry
+          (identifier)
+          (val_string))
+        (record_entry
+          (identifier)
+          (val_record
+            (record_entry
+              (identifier)
+              (val_string))))))))

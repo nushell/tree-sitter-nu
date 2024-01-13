@@ -925,6 +925,10 @@ module.exports = grammar({
 
             // This distinguish from number and identifier starting with -/+
             alias(token(/[-+][^\s\n\t\r{}()\[\]"`';:,]*/), $.identifier),
+
+            // This distinguish between record keys and keywords
+            ...Object.values(KEYWORD()).map((x) => alias(x, $.identifier)),
+            ...Object.values(MODIFIER()).map((x) => alias(x, $.identifier)),
           ),
         ),
         PUNC().colon,
