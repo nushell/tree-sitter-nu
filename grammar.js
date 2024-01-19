@@ -20,6 +20,7 @@ module.exports = grammar({
     [$.block, $.val_closure],
     [$.ctrl_if_parenthesized],
     [$.ctrl_try_parenthesized],
+    [$.decl_module],
   ],
 
   rules: {
@@ -49,7 +50,7 @@ module.exports = grammar({
     // for simplicity, i used the `rust` definition of an identifier and some symbols
     // but in `nu` the rule is way more relaxed than this
 
-    cmd_identifier: ($) => token(/[_\p{XID_Start}][_\-\p{XID_Continue}!?]*/),
+    cmd_identifier: ($) => token(/[_\p{XID_Start}][_\-\p{XID_Continue}!?.]*/),
 
     identifier: ($) => token(/[_\p{XID_Start}][_\p{XID_Continue}]*/),
 
@@ -101,7 +102,7 @@ module.exports = grammar({
         optional(MODIFIER().visibility),
         KEYWORD().module,
         field("name", $._command_name),
-        field("body", $.block),
+        optional(field("body", $.block)),
       ),
 
     decl_use: ($) =>
@@ -893,7 +894,12 @@ module.exports = grammar({
           field(
             "item",
             seq(
-              choice($._expression, alias($.cmd_identifier, $.val_string)),
+              choice(
+                $._expression,
+                alias($.cmd_identifier, $.val_string),
+                alias($.short_flag, $.val_string),
+                alias($.long_flag, $.val_string),
+              ),
               optional(PUNC().comma),
             ),
           ),
