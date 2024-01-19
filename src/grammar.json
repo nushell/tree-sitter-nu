@@ -7588,6 +7588,24 @@
                       },
                       "named": true,
                       "value": "val_string"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "short_flag"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "long_flag"
+                      },
+                      "named": true,
+                      "value": "val_string"
                     }
                   ]
                 },

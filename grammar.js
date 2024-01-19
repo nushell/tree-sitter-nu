@@ -894,7 +894,12 @@ module.exports = grammar({
           field(
             "item",
             seq(
-              choice($._expression, alias($.cmd_identifier, $.val_string)),
+              choice(
+                $._expression,
+                alias($.cmd_identifier, $.val_string),
+                alias($.short_flag, $.val_string),
+                alias($.long_flag, $.val_string),
+              ),
               optional(PUNC().comma),
             ),
           ),
