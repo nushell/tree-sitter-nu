@@ -1298,7 +1298,7 @@
       "type": "TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[_\\p{XID_Start}][_\\-\\p{XID_Continue}!?]*"
+        "value": "[_\\p{XID_Start}][_\\-\\p{XID_Continue}!?.]*"
       }
     },
     "identifier": {
@@ -1560,12 +1560,20 @@
           }
         },
         {
-          "type": "FIELD",
-          "name": "body",
-          "content": {
-            "type": "SYMBOL",
-            "name": "block"
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "body",
+              "content": {
+                "type": "SYMBOL",
+                "name": "block"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -7580,6 +7588,24 @@
                       },
                       "named": true,
                       "value": "val_string"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "short_flag"
+                      },
+                      "named": true,
+                      "value": "val_string"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "long_flag"
+                      },
+                      "named": true,
+                      "value": "val_string"
                     }
                   ]
                 },
@@ -8746,6 +8772,9 @@
     ],
     [
       "ctrl_try_parenthesized"
+    ],
+    [
+      "decl_module"
     ]
   ],
   "precedences": [],
