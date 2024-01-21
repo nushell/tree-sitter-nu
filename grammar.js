@@ -1480,7 +1480,6 @@ function FILESIZE_UNIT() {
     "tb", "tB", "Tb", "TB",
     "pb", "pB", "Pb", "PB",
     "eb", "eB", "Eb", "EB",
-    "zb", "zB", "Zb", "ZB",
 
     "kib", "kiB", "kIB", "kIb", "Kib", "KIb", "KIB",
     "mib", "miB", "mIB", "mIb", "Mib", "MIb", "MIB",
@@ -1488,6 +1487,5 @@ function FILESIZE_UNIT() {
     "tib", "tiB", "tIB", "tIb", "Tib", "TIb", "TIB",
     "pib", "piB", "pIB", "pIb", "Pib", "PIb", "PIB",
     "eib", "eiB", "eIB", "eIb", "Eib", "EIb", "EIB",
-    "zib", "ziB", "zIB", "zIb", "Zib", "ZIb", "ZIB",
   ])
 }
