@@ -4387,26 +4387,6 @@
             "named": false
           },
           {
-            "type": "ZB",
-            "named": false
-          },
-          {
-            "type": "ZIB",
-            "named": false
-          },
-          {
-            "type": "ZIb",
-            "named": false
-          },
-          {
-            "type": "Zb",
-            "named": false
-          },
-          {
-            "type": "Zib",
-            "named": false
-          },
-          {
             "type": "b",
             "named": false
           },
@@ -4552,30 +4532,6 @@
           },
           {
             "type": "tib",
-            "named": false
-          },
-          {
-            "type": "zB",
-            "named": false
-          },
-          {
-            "type": "zIB",
-            "named": false
-          },
-          {
-            "type": "zIb",
-            "named": false
-          },
-          {
-            "type": "zb",
-            "named": false
-          },
-          {
-            "type": "ziB",
-            "named": false
-          },
-          {
-            "type": "zib",
             "named": false
           }
         ]
@@ -5560,26 +5516,6 @@
     "named": false
   },
   {
-    "type": "ZB",
-    "named": false
-  },
-  {
-    "type": "ZIB",
-    "named": false
-  },
-  {
-    "type": "ZIb",
-    "named": false
-  },
-  {
-    "type": "Zb",
-    "named": false
-  },
-  {
-    "type": "Zib",
-    "named": false
-  },
-  {
     "type": "[",
     "named": false
   },
@@ -6189,30 +6125,6 @@
   },
   {
     "type": "xor",
-    "named": false
-  },
-  {
-    "type": "zB",
-    "named": false
-  },
-  {
-    "type": "zIB",
-    "named": false
-  },
-  {
-    "type": "zIb",
-    "named": false
-  },
-  {
-    "type": "zb",
-    "named": false
-  },
-  {
-    "type": "ziB",
-    "named": false
-  },
-  {
-    "type": "zib",
     "named": false
   },
   {

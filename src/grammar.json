@@ -6996,22 +6996,6 @@
               },
               {
                 "type": "STRING",
-                "value": "zb"
-              },
-              {
-                "type": "STRING",
-                "value": "zB"
-              },
-              {
-                "type": "STRING",
-                "value": "Zb"
-              },
-              {
-                "type": "STRING",
-                "value": "ZB"
-              },
-              {
-                "type": "STRING",
                 "value": "kib"
               },
               {
@@ -7177,34 +7161,6 @@
               {
                 "type": "STRING",
                 "value": "EIB"
-              },
-              {
-                "type": "STRING",
-                "value": "zib"
-              },
-              {
-                "type": "STRING",
-                "value": "ziB"
-              },
-              {
-                "type": "STRING",
-                "value": "zIB"
-              },
-              {
-                "type": "STRING",
-                "value": "zIb"
-              },
-              {
-                "type": "STRING",
-                "value": "Zib"
-              },
-              {
-                "type": "STRING",
-                "value": "ZIb"
-              },
-              {
-                "type": "STRING",
-                "value": "ZIB"
               }
             ]
           }
@@ -8244,8 +8200,11 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "."
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "."
+          }
         },
         {
           "type": "CHOICE",
@@ -8689,11 +8648,49 @@
       "type": "PREC_LEFT",
       "value": -69,
       "content": {
-        "type": "TOKEN",
-        "content": {
-          "type": "PATTERN",
-          "value": "[^-$\\s\\n\\t\\r{}()\\[\\]\"`';][^\\s\\n\\t\\r{}()\\[\\]\"`';]*"
-        }
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "TOKEN",
+            "content": {
+              "type": "PREC",
+              "value": -69,
+              "content": {
+                "type": "PATTERN",
+                "value": "[^-$\\s\\n\\t\\r{}()\\[\\]\"`';][^\\s\\n\\t\\r{}()\\[\\]\"`';]*"
+              }
+            }
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "..<"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": ".."
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "..="
+                  }
+                ]
+              },
+              {
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\n\\t\\r{}()\\[\\]\"`';]*"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     "comment": {
