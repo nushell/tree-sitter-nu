@@ -6996,22 +6996,6 @@
               },
               {
                 "type": "STRING",
-                "value": "zb"
-              },
-              {
-                "type": "STRING",
-                "value": "zB"
-              },
-              {
-                "type": "STRING",
-                "value": "Zb"
-              },
-              {
-                "type": "STRING",
-                "value": "ZB"
-              },
-              {
-                "type": "STRING",
                 "value": "kib"
               },
               {
@@ -7177,34 +7161,6 @@
               {
                 "type": "STRING",
                 "value": "EIB"
-              },
-              {
-                "type": "STRING",
-                "value": "zib"
-              },
-              {
-                "type": "STRING",
-                "value": "ziB"
-              },
-              {
-                "type": "STRING",
-                "value": "zIB"
-              },
-              {
-                "type": "STRING",
-                "value": "zIb"
-              },
-              {
-                "type": "STRING",
-                "value": "Zib"
-              },
-              {
-                "type": "STRING",
-                "value": "ZIb"
-              },
-              {
-                "type": "STRING",
-                "value": "ZIB"
               }
             ]
           }
@@ -8713,7 +8669,15 @@
                 "members": [
                   {
                     "type": "STRING",
+                    "value": "..<"
+                  },
+                  {
+                    "type": "STRING",
                     "value": ".."
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "..="
                   }
                 ]
               },
