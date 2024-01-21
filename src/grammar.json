@@ -8244,8 +8244,11 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "."
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "."
+          }
         },
         {
           "type": "CHOICE",
@@ -8689,11 +8692,41 @@
       "type": "PREC_LEFT",
       "value": -69,
       "content": {
-        "type": "TOKEN",
-        "content": {
-          "type": "PATTERN",
-          "value": "[^-$\\s\\n\\t\\r{}()\\[\\]\"`';][^\\s\\n\\t\\r{}()\\[\\]\"`';]*"
-        }
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "TOKEN",
+            "content": {
+              "type": "PREC",
+              "value": -69,
+              "content": {
+                "type": "PATTERN",
+                "value": "[^-$\\s\\n\\t\\r{}()\\[\\]\"`';][^\\s\\n\\t\\r{}()\\[\\]\"`';]*"
+              }
+            }
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": ".."
+                  }
+                ]
+              },
+              {
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\n\\t\\r{}()\\[\\]\"`';]*"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     "comment": {
