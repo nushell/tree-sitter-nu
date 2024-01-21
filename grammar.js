@@ -1052,7 +1052,11 @@ module.exports = grammar({
 
           // distinguish between unquoted and val_range in cmd_arg
           seq(
-            choice(OPR().range_exclusive, OPR().range_inclusive, OPR().range_inclusive2),
+            choice(
+              OPR().range_exclusive,
+              OPR().range_inclusive,
+              OPR().range_inclusive2,
+            ),
             token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
           ),
         ),
