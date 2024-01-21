@@ -982,7 +982,7 @@ module.exports = grammar({
       const path = choice(prec.right(2, token(/[0-9a-zA-Z_-]+/)), quoted);
 
       return seq(
-        PUNC().dot,
+        token.immediate(PUNC().dot),
         choice(
           field("raw_path", path),
           field("protected_path", seq(path, PUNC().question)),
@@ -1047,7 +1047,15 @@ module.exports = grammar({
     unquoted: ($) =>
       prec.left(
         -69,
-        token(/[^-$\s\n\t\r{}()\[\]"`';][^\s\n\t\r{}()\[\]"`';]*/),
+        choice(
+          token(prec(-69, /[^-$\s\n\t\r{}()\[\]"`';][^\s\n\t\r{}()\[\]"`';]*/)),
+
+          // distinguish between unquoted and val_range in cmd_arg
+          seq(
+            choice(OPR().range_exclusive, OPR().range_inclusive, OPR().range_inclusive2),
+            token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
+          ),
+        ),
       ),
 
     /// Comments
