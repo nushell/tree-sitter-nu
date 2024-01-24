@@ -82,6 +82,7 @@ module.exports = grammar({
       seq(
         optional(MODIFIER().visibility),
         choice(KEYWORD().def, KEYWORD().def_env),
+        repeat($.long_flag),
         field("name", $._command_name),
         field("parameters", choice($.parameter_parens, $.parameter_bracks)),
         field("return_type", optional($.returns)),

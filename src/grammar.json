@@ -1399,6 +1399,13 @@
           ]
         },
         {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "long_flag"
+          }
+        },
+        {
           "type": "FIELD",
           "name": "name",
           "content": {

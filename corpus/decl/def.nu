@@ -724,3 +724,29 @@ def a_-!? [] {}
     (cmd_identifier)
     (parameter_bracks)
     (block)))
+
+======
+def-032-flag
+======
+
+def --env foo [] {}
+def --env --wrapped bar [...args] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (long_flag)
+    (cmd_identifier)
+    (parameter_bracks)
+    (block))
+  (decl_def
+    (long_flag)
+    (long_flag)
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_rest
+          (identifier))))
+    (block))
+)
