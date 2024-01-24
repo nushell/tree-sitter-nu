@@ -21,6 +21,11 @@ module.exports = grammar({
     [$.ctrl_if_parenthesized],
     [$.ctrl_try_parenthesized],
     [$.decl_module],
+    [$._val_number_decimal],
+    [$._val_range_end_decimal],
+    [$.expr_parenthesized],
+    [$.val_variable],
+    [$.val_range, $.unquoted],
   ],
 
   rules: {
@@ -710,22 +715,71 @@ module.exports = grammar({
       ),
 
     val_range: ($) => {
-      const opr = choice(
-        OPR().range_exclusive,
-        OPR().range_inclusive,
-        OPR().range_inclusive2,
+      // Divide each dot as a token to distinguish $.val_range and $.val_number
+      const create_opr = (immediate) => {
+        const head_token = immediate ? token.immediate : token;
+        return {
+          opr: choice(
+            alias(
+              seq(head_token(PUNC().dot), token.immediate(PUNC().dot)),
+              OPR().range_inclusive,
+            ),
+            alias(
+              seq(
+                head_token(PUNC().dot),
+                token.immediate(PUNC().dot),
+                token.immediate(PUNC().eq),
+              ),
+              OPR().range_inclusive2,
+            ),
+            alias(
+              seq(
+                head_token(PUNC().dot),
+                token.immediate(PUNC().dot),
+                token.immediate(BRACK().open_angle),
+              ),
+              OPR().range_exclusive,
+            ),
+          ),
+          step: alias(
+            seq(head_token(PUNC().dot), token.immediate(PUNC().dot)),
+            OPR().range_inclusive,
+          ),
+        };
+      };
+
+      const { opr, step: opr_step } = create_opr(false);
+      const { opr: opr_imm, step: opr_step_imm } = create_opr(true);
+
+      const member = choice(
+        $.expr_parenthesized,
+        alias($._val_number_decimal, $.val_number),
+        $.val_variable,
+      );
+      const step_or_end = choice(
+        $.expr_parenthesized,
+        alias($._val_range_end_decimal, $.val_number),
+        $.val_variable,
       );
 
-      const member = choice($.expr_parenthesized, $.val_number);
-
-      const lo = field("lo", member);
-      const hi = field("hi", member);
+      const start = field("start", member);
+      const end = field("end", step_or_end);
+      const step = field("step", step_or_end);
 
       return prec.right(
         PREC().range,
-        choice(seq(lo, opr, hi), seq(lo, opr), seq(opr, hi)),
+        choice(
+          seq(start, opr_imm, end),
+          seq(start, opr_imm),
+          seq(opr, end),
+          seq(start, opr_step_imm, step, opr_imm, end),
+          seq(opr_step, step, opr_imm, end),
+          seq(start, opr_step_imm, step, opr_imm),
+        ),
       );
     },
+
+    _val_range_end_decimal: _decimal_rule(true),
 
     /// Simple Expressions
 
@@ -764,8 +818,7 @@ module.exports = grammar({
     // especially when it comes to incorporation with ranges.
     val_number: ($) =>
       choice(
-        /[+-]?([0-9_]*[.])?[0-9_]+([eE][-+]?[\d_]+)?/,
-        /[+-]?[\d_]+\.([eE][-+]?[\d_]+)?/, // 123., 12.e3
+        $._val_number_decimal,
         /0x[0-9a-fA-F_]+/,
         /0b[01_]+/,
         /0o[0-7_]+/,
@@ -773,6 +826,8 @@ module.exports = grammar({
         SPECIAL().neg_infinity,
         SPECIAL().not_a_number,
       ),
+
+    _val_number_decimal: _decimal_rule(false),
 
     val_duration: ($) =>
       seq(field("value", $.val_number), field("unit", DURATION_UNIT())),
@@ -896,7 +951,7 @@ module.exports = grammar({
             seq(
               choice(
                 $._expression,
-                alias($.cmd_identifier, $.val_string),
+                alias($._list_item_identifier, $.val_string),
                 alias($.short_flag, $.val_string),
                 alias($.long_flag, $.val_string),
               ),
@@ -907,6 +962,10 @@ module.exports = grammar({
         BRACK().close_brack,
         optional($.cell_path),
       ),
+
+    // Lower the precedence to correctly recognize $.val_range in lists
+    _list_item_identifier: ($) =>
+      token(prec(-1, /[_\p{XID_Start}][_\-\p{XID_Continue}!?.]*/)),
 
     val_record: ($) =>
       seq(
@@ -1052,12 +1111,44 @@ module.exports = grammar({
 
           // distinguish between unquoted and val_range in cmd_arg
           seq(
-            choice(
-              OPR().range_exclusive,
-              OPR().range_inclusive,
-              OPR().range_inclusive2,
-            ),
+            token(PUNC().dot),
+            token.immediate(/[^\s\n\t\r{}()\[\]"`';.]/),
+            token.immediate(/[^\s\n\t\r{}()\[\]"`';]+/),
+          ),
+          seq(
+            token(PUNC().dot),
+            token.immediate(PUNC().dot),
+            token.immediate(/[^\s\n\t\r{}()\[\]"`';=<]/),
             token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
+          ),
+          seq(
+            token(PUNC().dot),
+            token.immediate(PUNC().dot),
+            token.immediate(PUNC().eq),
+            token.immediate(/[^\s\n\t\r{}()\[\]"`';$]/),
+            token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
+          ),
+          seq(
+            token(PUNC().dot),
+            token.immediate(PUNC().dot),
+            token.immediate(BRACK().open_angle),
+            token.immediate(/[^\s\n\t\r{}()\[\]"`';$]/),
+            token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
+          ),
+          seq(
+            token(PUNC().dot),
+            token.immediate(PUNC().dot),
+            token.immediate(PUNC().dot),
+            token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
+          ),
+          seq(
+            token(PUNC().dot),
+            token.immediate(PUNC().dot),
+            optional(token.immediate(/[^\s\n\t\r{}()\[\]"`';]/)),
+          ),
+          seq(
+            token(PUNC().dot),
+            optional(token.immediate(/[^\s\n\t\r{}()\[\]"`';.]/)),
           ),
         ),
       ),
@@ -1200,6 +1291,30 @@ function _block_body_rules(suffix) {
         alias_for_suffix($, "pipeline", suffix),
       ),
   };
+}
+
+function _decimal_rule(immediate) {
+  const exponent = token.immediate(/[eE][-+]?[\d_]*\d[\d_]*/);
+  const digits = token.immediate(/[\d_]*\d[\d_]*/);
+  const head_token = immediate ? token.immediate : token;
+
+  return ($) =>
+    choice(
+      seq(head_token(/[+-]?[\d_]*\d[\d_]*/), optional(exponent)),
+      seq(
+        head_token(/[+-]?[\d_]*\d[\d_]*/),
+        token.immediate(PUNC().dot),
+        optional(digits),
+        optional(exponent),
+      ),
+      seq(head_token(PUNC().dot), digits, optional(exponent)),
+      seq(
+        head_token(/[+-]_*/),
+        token.immediate(PUNC().dot),
+        digits,
+        optional(exponent),
+      ),
+    );
 }
 
 /// nushell keywords
