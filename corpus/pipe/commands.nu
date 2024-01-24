@@ -226,3 +226,121 @@ cmd --long-flag
       (command
         (cmd_identifier)
         (long_flag)))))
+
+======
+cmd-011-path-string-1-dot
+======
+
+cargo install --path .
+cargo install --path ./
+cargo install --path ./dir
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)
+        (long_flag)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)
+        (long_flag)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)
+        (long_flag)
+        (val_string))))
+  )
+
+======
+cmd-012-path-string-2-dots
+======
+
+cd ..
+cd ../
+cd ../dir
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  )
+
+======
+cmd-013-path-string-3-dots
+======
+
+cd ...
+cd .../
+cd .../dir
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  )
+
+======
+cmd-014-path-string-4-dots
+======
+
+cd ....
+cd ..../
+cd ..../dir
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  )

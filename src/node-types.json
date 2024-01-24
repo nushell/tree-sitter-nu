@@ -4689,7 +4689,7 @@
     "type": "val_range",
     "named": true,
     "fields": {
-      "hi": {
+      "end": {
         "multiple": false,
         "required": false,
         "types": [
@@ -4699,11 +4699,15 @@
           },
           {
             "type": "val_number",
+            "named": true
+          },
+          {
+            "type": "val_variable",
             "named": true
           }
         ]
       },
-      "lo": {
+      "start": {
         "multiple": false,
         "required": false,
         "types": [
@@ -4713,6 +4717,28 @@
           },
           {
             "type": "val_number",
+            "named": true
+          },
+          {
+            "type": "val_variable",
+            "named": true
+          }
+        ]
+      },
+      "step": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
+            "type": "val_number",
+            "named": true
+          },
+          {
+            "type": "val_variable",
             "named": true
           }
         ]
