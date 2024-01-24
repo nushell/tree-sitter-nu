@@ -20,7 +20,9 @@
       "scope": "source.nu",
       "file-types": [
         "nu"
-      ]
+      ],
+      "highlights": "queries/nu/highlights.scm",
+      "injections": "queries/nu/injections.scm"
     }
   ]
 }
