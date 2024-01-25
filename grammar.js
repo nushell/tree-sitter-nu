@@ -81,7 +81,7 @@ module.exports = grammar({
     decl_def: ($) =>
       seq(
         optional(MODIFIER().visibility),
-        choice(KEYWORD().def, KEYWORD().def_env),
+        KEYWORD().def,
         repeat($.long_flag),
         field("name", $._command_name),
         field("parameters", choice($.parameter_parens, $.parameter_bracks)),
