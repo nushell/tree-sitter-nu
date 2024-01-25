@@ -1386,17 +1386,8 @@
           ]
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "def"
-            },
-            {
-              "type": "STRING",
-              "value": "def-env"
-            }
-          ]
+          "type": "STRING",
+          "value": "def"
         },
         {
           "type": "REPEAT",
