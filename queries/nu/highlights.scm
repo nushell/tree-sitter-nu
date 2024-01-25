@@ -2,7 +2,6 @@
 ;;; keywords
 [
     "def"
-    "def-env"
     "alias"
     "export-env"
     "export"
