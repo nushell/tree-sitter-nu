@@ -1288,6 +1288,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "long_flag",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -5655,10 +5665,6 @@
   },
   {
     "type": "def",
-    "named": false
-  },
-  {
-    "type": "def-env",
     "named": false
   },
   {
