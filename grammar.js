@@ -22,10 +22,11 @@ module.exports = grammar({
     [$.ctrl_try_parenthesized],
     [$.decl_module],
     [$._val_number_decimal],
-    [$._val_range_end_decimal],
+    [$._immediate_decimal],
     [$.expr_parenthesized],
     [$.val_variable],
     [$.val_range, $.unquoted],
+    [$._expression, $._expr_binary_expression],
   ],
 
   rules: {
@@ -664,20 +665,20 @@ module.exports = grammar({
         $.expr_unary,
       );
 
-      return choice(
-        seq(OPR().not, after_not),
-        seq(
-          OPR().minus,
-          seq(
-            // ensure the expression immediately follows the
-            // opening paren
-            token.immediate(BRACK().open_paren),
-            $._block_body,
-            BRACK().close_paren,
-          ),
-        ),
-      );
+      return choice(seq(OPR().not, after_not), $._expr_unary_minus);
     },
+
+    _expr_unary_minus: ($) =>
+      seq(
+        token(OPR().minus),
+        seq(
+          // ensure the expression immediately follows the
+          // opening paren
+          token.immediate(BRACK().open_paren),
+          $._block_body,
+          BRACK().close_paren,
+        ),
+      ),
 
     expr_binary: ($) =>
       choice(
@@ -685,16 +686,22 @@ module.exports = grammar({
           prec.right(
             precedence,
             seq(
-              field("lhs", $._expression),
+              field("lhs", $._expr_binary_expression),
               field("opr", opr),
               field(
                 "rhs",
-                choice($._expression, alias($.unquoted, $.val_string)),
+                choice(
+                  $._expr_binary_expression,
+                  alias($.unquoted, $.val_string),
+                ),
               ),
             ),
           ),
         ),
       ),
+
+    _expr_binary_expression: ($) =>
+      choice($._value, $.expr_binary, $.expr_unary, $.expr_parenthesized),
 
     expr_parenthesized: ($) =>
       seq(
@@ -759,7 +766,7 @@ module.exports = grammar({
       );
       const step_or_end = choice(
         $.expr_parenthesized,
-        alias($._val_range_end_decimal, $.val_number),
+        alias($._immediate_decimal, $.val_number),
         $.val_variable,
       );
 
@@ -780,7 +787,7 @@ module.exports = grammar({
       );
     },
 
-    _val_range_end_decimal: _decimal_rule(true),
+    _immediate_decimal: _decimal_rule(true),
 
     /// Simple Expressions
 
@@ -815,9 +822,13 @@ module.exports = grammar({
         field("name", choice("nu", "in", "env", "nothing", $.identifier)),
       ),
 
+    val_number: ($) => $._val_number,
+
+    _val_number_decimal: _decimal_rule(false),
+
     // separating floats from integers does not end well
     // especially when it comes to incorporation with ranges.
-    val_number: ($) =>
+    _val_number: ($) =>
       choice(
         $._val_number_decimal,
         /0x[0-9a-fA-F_]+/,
@@ -827,8 +838,6 @@ module.exports = grammar({
         SPECIAL().neg_infinity,
         SPECIAL().not_a_number,
       ),
-
-    _val_number_decimal: _decimal_rule(false),
 
     val_duration: ($) =>
       seq(field("value", $.val_number), field("unit", DURATION_UNIT())),
@@ -951,10 +960,11 @@ module.exports = grammar({
             "item",
             seq(
               choice(
-                $._expression,
-                alias($._list_item_identifier, $.val_string),
+                $._list_item_expression,
+                alias($._unquoted_in_list, $.val_string),
                 alias($.short_flag, $.val_string),
                 alias($.long_flag, $.val_string),
+                alias($._list_item_starts_with_sign, $.val_string),
               ),
               optional(PUNC().comma),
             ),
@@ -964,9 +974,19 @@ module.exports = grammar({
         optional($.cell_path),
       ),
 
-    // Lower the precedence to correctly recognize $.val_range in lists
-    _list_item_identifier: ($) =>
-      token(prec(-1, /[_\p{XID_Start}][_\-\p{XID_Continue}!?.]*/)),
+    _list_item_expression: ($) =>
+      choice(
+        $._value,
+        alias($._expr_unary_minus, $.expr_unary),
+        $.val_range,
+        $.expr_parenthesized,
+      ),
+
+    _list_item_starts_with_sign: ($) =>
+      seq(
+        choice(token(OPR().minus), token(OPR().plus)),
+        token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
+      ),
 
     val_record: ($) =>
       seq(
@@ -989,9 +1009,6 @@ module.exports = grammar({
             $.expr_parenthesized,
             alias($._record_key, $.identifier),
 
-            // This distinguish from number and identifier starting with -/+
-            alias(token(/[-+][^\s\n\t\r{}()\[\]"`';:,]*/), $.identifier),
-
             // This distinguish between record keys and keywords
             ...Object.values(KEYWORD()).map((x) => alias(x, $.identifier)),
             ...Object.values(MODIFIER()).map((x) => alias(x, $.identifier)),
@@ -1009,7 +1026,16 @@ module.exports = grammar({
       ),
 
     _record_key: ($) =>
-      token(prec(-69, /[^$\s\n\t\r{}()\[\]"`';:,][^\s\n\t\r{}()\[\]"`';:,]*/)),
+      choice(
+        // This distinguish number and identifier starting with -/+
+        seq(
+          choice(token(OPR().minus), token(OPR().plus)),
+          token.immediate(/[^\s\n\t\r{}()\[\]"`';:,]*/),
+        ),
+        token(
+          prec(-69, /[^$\s\n\t\r{}()\[\]"`';:,][^\s\n\t\r{}()\[\]"`';:,]*/),
+        ),
+      ),
 
     val_table: ($) =>
       seq(
@@ -1095,64 +1121,23 @@ module.exports = grammar({
 
     _flag: ($) => prec.right(5, choice($.short_flag, $.long_flag)),
 
-    short_flag: ($) => token(/-[_\p{XID_Continue}]+/),
+    short_flag: ($) =>
+      seq(token(OPR().minus), token.immediate(/[_\p{XID_Continue}]+/)),
 
     long_flag: ($) =>
-      prec.right(10, choice("--", seq("--", $._long_flag_identifier))),
-
-    // because this catches almost anything, we want to ensure it is
-    // picked as the a last resort after everything else has failed.
-    // so we give it a ridiculously low precedence and place it at the
-    // very end
-    unquoted: ($) =>
-      prec.left(
-        -69,
+      prec.right(
+        10,
         choice(
-          token(prec(-69, /[^-$\s\n\t\r{}()\[\]"`';][^\s\n\t\r{}()\[\]"`';]*/)),
-
-          // distinguish between unquoted and val_range in cmd_arg
+          alias(seq(token(OPR().minus), token.immediate(OPR().minus)), "--"),
           seq(
-            token(PUNC().dot),
-            token.immediate(/[^\s\n\t\r{}()\[\]"`';.]/),
-            token.immediate(/[^\s\n\t\r{}()\[\]"`';]+/),
-          ),
-          seq(
-            token(PUNC().dot),
-            token.immediate(PUNC().dot),
-            token.immediate(/[^\s\n\t\r{}()\[\]"`';=<]/),
-            token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
-          ),
-          seq(
-            token(PUNC().dot),
-            token.immediate(PUNC().dot),
-            token.immediate(PUNC().eq),
-            token.immediate(/[^\s\n\t\r{}()\[\]"`';$]/),
-            token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
-          ),
-          seq(
-            token(PUNC().dot),
-            token.immediate(PUNC().dot),
-            token.immediate(BRACK().open_angle),
-            token.immediate(/[^\s\n\t\r{}()\[\]"`';$]/),
-            token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
-          ),
-          seq(
-            token(PUNC().dot),
-            token.immediate(PUNC().dot),
-            token.immediate(PUNC().dot),
-            token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
-          ),
-          seq(
-            token(PUNC().dot),
-            token.immediate(PUNC().dot),
-            optional(token.immediate(/[^\s\n\t\r{}()\[\]"`';]/)),
-          ),
-          seq(
-            token(PUNC().dot),
-            optional(token.immediate(/[^\s\n\t\r{}()\[\]"`';.]/)),
+            alias(seq(token(OPR().minus), token.immediate(OPR().minus)), "--"),
+            $._long_flag_identifier,
           ),
         ),
       ),
+
+    unquoted: _unquoted_rule(false),
+    _unquoted_in_list: _unquoted_rule(true),
 
     /// Comments
 
@@ -1301,19 +1286,138 @@ function _decimal_rule(immediate) {
 
   return ($) =>
     choice(
-      seq(head_token(/[+-]?[\d_]*\d[\d_]*/), optional(exponent)),
+      seq(head_token(/[\d_]*\d[\d_]*/), optional(exponent)),
       seq(
-        head_token(/[+-]?[\d_]*\d[\d_]*/),
+        choice(head_token(OPR().minus), head_token(OPR().plus)),
+        digits,
+        optional(exponent),
+      ),
+      seq(
+        head_token(/[\d_]*\d[\d_]*/),
+        token.immediate(PUNC().dot),
+        optional(digits),
+        optional(exponent),
+      ),
+      seq(
+        choice(head_token(OPR().minus), head_token(OPR().plus)),
+        digits,
         token.immediate(PUNC().dot),
         optional(digits),
         optional(exponent),
       ),
       seq(head_token(PUNC().dot), digits, optional(exponent)),
       seq(
-        head_token(/[+-]_*/),
+        choice(head_token(OPR().minus), head_token(OPR().plus)),
+        optional(token.immediate(/_+/)),
         token.immediate(PUNC().dot),
         digits,
         optional(exponent),
+      ),
+    );
+}
+
+function _unquoted_rule(in_list) {
+  const pattern = in_list
+    ? /[^-$\s\n\t\r{}()\[\]"`';,][^\s\n\t\r{}()\[\]"`';,]*/
+    : /[^-$\s\n\t\r{}()\[\]"`';][^\s\n\t\r{}()\[\]"`';]*/;
+  const pattern_repeat = in_list
+    ? /[^\s\n\t\r{}()\[\]"`';,]*/
+    : /[^\s\n\t\r{}()\[\]"`';]*/;
+  const pattern_repeat1 = in_list
+    ? /[^\s\n\t\r{}()\[\]"`';,]+/
+    : /[^\s\n\t\r{}()\[\]"`';]+/;
+  const pattern_once = in_list
+    ? /[^\s\n\t\r{}()\[\]"`';,]/
+    : /[^\s\n\t\r{}()\[\]"`';]/;
+  const pattern_with_dot = in_list
+    ? /[^\s\n\t\r{}()\[\]"`';,.]/
+    : /[^\s\n\t\r{}()\[\]"`';.]/;
+  const pattern_with_le = in_list
+    ? /[^\s\n\t\r{}()\[\]"`';,=<]/
+    : /[^\s\n\t\r{}()\[\]"`';=<]/;
+  const pattern_with_dollar = in_list
+    ? /[^\s\n\t\r{}()\[\]"`';,$]/
+    : /[^\s\n\t\r{}()\[\]"`';$]/;
+
+  // because this catches almost anything, we want to ensure it is
+  // picked as the a last resort after everything else has failed.
+  // so we give it a ridiculously low precedence and place it at the
+  // very end
+  return ($) =>
+    prec.left(
+      -69,
+      choice(
+        token(prec(-69, token(pattern))),
+
+        // distinguish between unquoted and val_range in cmd_arg
+        seq(
+          token(PUNC().dot),
+          token.immediate(pattern_with_dot),
+          token.immediate(pattern_repeat1),
+        ),
+        seq(
+          token(PUNC().dot),
+          token.immediate(PUNC().dot),
+          token.immediate(pattern_with_le),
+          token.immediate(pattern_repeat),
+        ),
+        seq(
+          token(PUNC().dot),
+          token.immediate(PUNC().dot),
+          token.immediate(PUNC().eq),
+          token.immediate(pattern_with_dollar),
+          token.immediate(pattern_repeat),
+        ),
+        seq(
+          token(PUNC().dot),
+          token.immediate(PUNC().dot),
+          token.immediate(BRACK().open_angle),
+          token.immediate(pattern_with_dollar),
+          token.immediate(pattern_repeat),
+        ),
+        seq(
+          token(PUNC().dot),
+          token.immediate(PUNC().dot),
+          token.immediate(PUNC().dot),
+          token.immediate(pattern_repeat),
+        ),
+        seq(
+          token(PUNC().dot),
+          token.immediate(PUNC().dot),
+          choice(
+            token.immediate(PUNC().eq),
+            token.immediate(BRACK().open_angle),
+          ),
+        ),
+        seq(
+          token(PUNC().dot),
+          token.immediate(PUNC().dot),
+          optional(token.immediate(pattern_once)),
+        ),
+        seq(token(PUNC().dot), optional(token.immediate(pattern_with_dot))),
+
+        // distinguish between $.val_number and unquoted string starting with numeric characters
+        seq(
+          choice(
+            $._val_number_decimal,
+            token(SPECIAL().pos_infinity),
+            token(SPECIAL().neg_infinity),
+            token(SPECIAL().not_a_number),
+          ),
+          token.immediate(pattern_once),
+          token.immediate(pattern_repeat),
+        ),
+
+        // recognize unquoted string starting with numeric characters
+        // e.g. 192.168.0.1
+        seq(
+          $._val_number_decimal,
+          token.immediate(PUNC().dot),
+          $._immediate_decimal,
+          token.immediate(PUNC().dot),
+          $._immediate_decimal,
+          token.immediate(pattern_repeat1),
+        ),
       ),
     );
 }
@@ -1558,9 +1662,9 @@ function SPECIAL() {
     false: "false",
     null: "null",
 
-    pos_infinity: "inf",
-    neg_infinity: "-inf",
-    not_a_number: "NaN",
+    pos_infinity: /[iI][nN][fF]([iI][nN][iI][tT][yY])?/,
+    neg_infinity: /-[iI][nN][fF]([iI][nN][iI][tT][yY])?/,
+    not_a_number: /[nN][aA][nN]/,
   };
 }
 
