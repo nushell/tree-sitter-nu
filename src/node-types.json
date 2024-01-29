@@ -1619,10 +1619,6 @@
             "named": true
           },
           {
-            "type": "val_range",
-            "named": true
-          },
-          {
             "type": "val_record",
             "named": true
           },
@@ -1812,10 +1808,6 @@
           },
           {
             "type": "val_number",
-            "named": true
-          },
-          {
-            "type": "val_range",
             "named": true
           },
           {
@@ -3833,6 +3825,11 @@
     "fields": {}
   },
   {
+    "type": "short_flag",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "stmt_const",
     "named": true,
     "fields": {
@@ -4605,10 +4602,6 @@
             "named": false
           },
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
             "type": "expr_parenthesized",
             "named": true
           },
@@ -5328,10 +5321,6 @@
     "named": false
   },
   {
-    "type": "-inf",
-    "named": false
-  },
-  {
     "type": ".",
     "named": false
   },
@@ -5505,10 +5494,6 @@
   },
   {
     "type": "Mib",
-    "named": false
-  },
-  {
-    "type": "NaN",
     "named": false
   },
   {
@@ -5836,10 +5821,6 @@
     "named": false
   },
   {
-    "type": "inf",
-    "named": false
-  },
-  {
     "type": "int",
     "named": false
   },
@@ -6054,10 +6035,6 @@
   {
     "type": "sec",
     "named": false
-  },
-  {
-    "type": "short_flag",
-    "named": true
   },
   {
     "type": "signature",
