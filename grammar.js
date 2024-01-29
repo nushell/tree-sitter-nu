@@ -1426,7 +1426,6 @@ function _unquoted_rule(in_list) {
 function KEYWORD() {
   return {
     def: "def",
-    def_env: "def-env",
     alias: "alias",
     use: "use",
     export_env: "export-env",

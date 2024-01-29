@@ -9177,15 +9177,6 @@
                 "type": "ALIAS",
                 "content": {
                   "type": "STRING",
-                  "value": "def-env"
-                },
-                "named": true,
-                "value": "identifier"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "STRING",
                   "value": "alias"
                 },
                 "named": true,
