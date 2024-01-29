@@ -104,3 +104,59 @@ values-005-numbers-with-underscore
         (val_number)
         (val_number)
         (val_number)))))
+
+=====
+values-006-infinity-number
+=====
+
+[
+  inf
+  Inf
+  INF
+  Infinity
+  INFINITY
+  -inf
+  -Inf
+  -INF
+  -Infinity
+  -INFINITY
+]
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_list
+        (val_number)
+        (val_number)
+        (val_number)
+        (val_number)
+        (val_number)
+        (val_number)
+        (val_number)
+        (val_number)
+        (val_number)
+        (val_number)))))
+
+=====
+values-006-not-a-number
+=====
+
+[
+  nan
+  NaN
+  NAN
+  Nan
+]
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_list
+        (val_number)
+        (val_number)
+        (val_number)
+        (val_number)))))

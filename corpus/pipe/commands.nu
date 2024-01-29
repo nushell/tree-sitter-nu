@@ -344,3 +344,97 @@ cd ..../dir
         (cmd_identifier)
         (val_string))))
   )
+
+======
+cmd-015-unquoted-starts-with-numeric
+======
+
+echo 127abc
+log info
+debug info
+print information
+print nanometer
+print 5e652a7e-bbce-11ee-8dfd-00155dd76211
+print 7.3eabc
+print 192.168.0.1
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))
+
+======
+cmd-016-args-contains-comma
+======
+
+echo hello,world
+echo hello, world
+echo ,hello world
+echo [hello,world]
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_list
+          (val_string)
+          (val_string))))))
