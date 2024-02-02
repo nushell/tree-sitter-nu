@@ -2658,48 +2658,11 @@
   {
     "type": "match_pattern",
     "named": true,
-    "fields": {
-      "head": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "$",
-            "named": false
-          },
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      },
-      "tail": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "$",
-            "named": false
-          },
-          {
-            "type": ".",
-            "named": false
-          },
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
-        {
-          "type": "expr_binary",
-          "named": true
-        },
         {
           "type": "expr_parenthesized",
           "named": true
@@ -2721,10 +2684,6 @@
           "named": true
         },
         {
-          "type": "val_closure",
-          "named": true
-        },
-        {
           "type": "val_date",
           "named": true
         },
@@ -2734,10 +2693,6 @@
         },
         {
           "type": "val_filesize",
-          "named": true
-        },
-        {
-          "type": "val_interpolated",
           "named": true
         },
         {
@@ -4670,6 +4625,20 @@
             "named": true
           }
         ]
+      },
+      "rest": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ".",
+            "named": false
+          },
+          {
+            "type": "val_variable",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
@@ -4835,7 +4804,7 @@
     "fields": {
       "name": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "env",
@@ -4866,6 +4835,10 @@
       "types": [
         {
           "type": "cell_path",
+          "named": true
+        },
+        {
+          "type": "identifier",
           "named": true
         }
       ]
