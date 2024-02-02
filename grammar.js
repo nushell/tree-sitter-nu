@@ -27,6 +27,9 @@ module.exports = grammar({
     [$.val_variable],
     [$.val_range, $.unquoted],
     [$._expression, $._expr_binary_expression],
+    [$._match_pattern_value, $._value],
+    [$._match_pattern_expression, $._list_item_expression],
+    [$._match_pattern_list, $.val_list],
   ],
 
   rules: {
@@ -398,30 +401,79 @@ module.exports = grammar({
     _match_expression: ($) => choice($._expression, prec.dynamic(10, $.block)),
 
     match_pattern: ($) =>
-      choice($._match_or_pattern, $._match_list_destructure_pattern),
-
-    _match_or_pattern: ($) =>
-      seq(
-        seq($._expression, optional($.match_guard)),
-        repeat(seq(PUNC().pipe, $._expression)),
+      choice(
+        seq($._match_pattern_expression, optional($.match_guard)),
+        seq(
+          $._match_pattern_expression,
+          repeat(seq(PUNC().pipe, $._match_pattern_expression)),
+        ),
       ),
 
     match_guard: ($) => seq(KEYWORD().if, $._expression),
 
-    _match_list_destructure_pattern: ($) =>
-      prec(
-        1,
-        seq(
-          BRACK().open_brack,
-          field("head", seq(PUNC().dollar, $.identifier)),
-          optional(PUNC().comma),
-          field(
-            "tail",
-            seq(PUNC().dot, PUNC().dot, PUNC().dollar, $.identifier),
-          ),
-          BRACK().close_brack,
-        ),
+    _match_pattern_expression: ($) =>
+      choice(
+        $._match_pattern_value,
+        alias($._expr_unary_minus, $.expr_unary),
+        $.val_range,
+        $.expr_parenthesized,
       ),
+
+    _match_pattern_value: ($) =>
+      choice(
+        $.val_variable,
+        $.val_nothing,
+        $.val_bool,
+        $.val_number,
+        $.val_duration,
+        $.val_filesize,
+        $.val_binary,
+        $.val_string,
+        $.val_date,
+        alias($._match_pattern_list, $.val_list),
+        $.val_record,
+        $.val_table,
+      ),
+
+    _match_pattern_list: ($) =>
+      seq(
+        BRACK().open_brack,
+        repeat(
+          field(
+            "item",
+            seq(
+              choice(
+                $._match_pattern_expression,
+                alias($._unquoted_in_list, $.val_string),
+                alias($.short_flag, $.val_string),
+                alias($.long_flag, $.val_string),
+                alias($._list_item_starts_with_sign, $.val_string),
+              ),
+              optional(PUNC().comma),
+            ),
+          ),
+        ),
+        optional(
+          field(
+            "rest",
+            choice(
+              alias($._match_pattern_rest, $.val_variable),
+              $._match_pattern_ignore_rest,
+            ),
+          ),
+        ),
+        BRACK().close_brack,
+      ),
+
+    _match_pattern_rest: ($) =>
+      seq(
+        PUNC().dot,
+        token.immediate(PUNC().dot),
+        seq(token.immediate(PUNC().dollar), $.identifier),
+      ),
+
+    _match_pattern_ignore_rest: ($) =>
+      seq(PUNC().dot, token.immediate(PUNC().dot)),
 
     ctrl_try: ($) =>
       seq(
