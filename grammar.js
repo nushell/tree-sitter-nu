@@ -875,7 +875,7 @@ module.exports = grammar({
     _var: ($) =>
       seq(
         PUNC().dollar,
-        field("name", choice("nu", "in", "env", "nothing", $.identifier)),
+        field("name", choice("nu", "in", "env", $.identifier)),
       ),
 
     val_number: ($) => $._val_number,

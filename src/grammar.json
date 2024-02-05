@@ -8082,10 +8082,6 @@
                 "value": "env"
               },
               {
-                "type": "STRING",
-                "value": "nothing"
-              },
-              {
                 "type": "SYMBOL",
                 "name": "identifier"
               }
