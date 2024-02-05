@@ -262,7 +262,6 @@
    "in"
    "nu"
    "env"
-   "nothing"
    ] @special
 )
 ;;; ---
