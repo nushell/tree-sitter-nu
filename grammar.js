@@ -862,7 +862,11 @@ module.exports = grammar({
       ),
 
     /// Literals
-    val_nothing: ($) => SPECIAL().null,
+    val_nothing: ($) =>
+      choice(
+        SPECIAL().null,
+        seq(token(BRACK().open_paren), token.immediate(BRACK().close_paren)),
+      ),
 
     val_bool: ($) => choice(SPECIAL().true, SPECIAL().false),
 
@@ -871,7 +875,7 @@ module.exports = grammar({
     _var: ($) =>
       seq(
         PUNC().dollar,
-        field("name", choice("nu", "in", "env", "nothing", $.identifier)),
+        field("name", choice("nu", "in", "env", $.identifier)),
       ),
 
     val_number: ($) => $._val_number,

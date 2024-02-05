@@ -47,14 +47,19 @@ values-002-booleans
 values-003-nothing
 =====
 
-null
+[
+  null
+  ()
+]
 
 -----
 
 (nu_script
   (pipeline
     (pipe_element
-      (val_nothing))))
+      (val_list
+        (val_nothing)
+        (val_nothing)))))
 
 =====
 values-004-binary
