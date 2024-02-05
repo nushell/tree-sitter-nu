@@ -4653,6 +4653,11 @@
     }
   },
   {
+    "type": "val_nothing",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "val_number",
     "named": true,
     "fields": {}
@@ -5926,6 +5931,10 @@
     "named": false
   },
   {
+    "type": "null",
+    "named": false
+  },
+  {
     "type": "number",
     "named": false
   },
@@ -6079,10 +6088,6 @@
   },
   {
     "type": "val_date",
-    "named": true
-  },
-  {
-    "type": "val_nothing",
     "named": true
   },
   {
