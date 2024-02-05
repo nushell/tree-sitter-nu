@@ -7994,8 +7994,32 @@
       ]
     },
     "val_nothing": {
-      "type": "STRING",
-      "value": "null"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "null"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "TOKEN",
+              "content": {
+                "type": "STRING",
+                "value": "("
+              }
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "STRING",
+                "value": ")"
+              }
+            }
+          ]
+        }
+      ]
     },
     "val_bool": {
       "type": "CHOICE",
@@ -8056,10 +8080,6 @@
               {
                 "type": "STRING",
                 "value": "env"
-              },
-              {
-                "type": "STRING",
-                "value": "nothing"
               },
               {
                 "type": "SYMBOL",
