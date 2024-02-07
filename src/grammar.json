@@ -3062,8 +3062,22 @@
           "type": "FIELD",
           "name": "scrutinee",
           "content": {
-            "type": "SYMBOL",
-            "name": "_expression"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_expression"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "unquoted"
+                },
+                "named": true,
+                "value": "val_string"
+              }
+            ]
           }
         },
         {
@@ -3194,7 +3208,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_match_pattern_expression"
+              "name": "_match_pattern"
             },
             {
               "type": "CHOICE",
@@ -3215,7 +3229,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_match_pattern_expression"
+              "name": "_match_pattern"
             },
             {
               "type": "REPEAT",
@@ -3228,12 +3242,30 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "_match_pattern_expression"
+                    "name": "_match_pattern"
                   }
                 ]
               }
             }
           ]
+        }
+      ]
+    },
+    "_match_pattern": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_match_pattern_expression"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "unquoted"
+          },
+          "named": true,
+          "value": "val_string"
         }
       ]
     },
