@@ -254,3 +254,23 @@ match $xs {
           (block))
         (default_arm
           (block))))))
+
+=====
+match-007-unquoted
+=====
+
+match foo {
+   foo => {}
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_string)
+        (match_arm
+          (match_pattern
+            (val_string))
+          (block))))))

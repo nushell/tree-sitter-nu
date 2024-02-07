@@ -375,7 +375,10 @@ module.exports = grammar({
     ctrl_match: ($) =>
       seq(
         KEYWORD().match,
-        field("scrutinee", $._expression),
+        field(
+          "scrutinee",
+          choice($._expression, alias($.unquoted, $.val_string)),
+        ),
         BRACK().open_brace,
         repeat($.match_arm),
         optional($.default_arm),
@@ -402,12 +405,12 @@ module.exports = grammar({
 
     match_pattern: ($) =>
       choice(
-        seq($._match_pattern_expression, optional($.match_guard)),
-        seq(
-          $._match_pattern_expression,
-          repeat(seq(PUNC().pipe, $._match_pattern_expression)),
-        ),
+        seq($._match_pattern, optional($.match_guard)),
+        seq($._match_pattern, repeat(seq(PUNC().pipe, $._match_pattern))),
       ),
+
+    _match_pattern: ($) =>
+      choice($._match_pattern_expression, alias($.unquoted, $.val_string)),
 
     match_guard: ($) => seq(KEYWORD().if, $._expression),
 
