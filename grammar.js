@@ -483,7 +483,12 @@ module.exports = grammar({
     _match_pattern_record: ($) =>
       seq(
         BRACK().open_brace,
-        repeat(field("entry", choice($.record_entry, $._match_pattern_record_variable))),
+        repeat(
+          field(
+            "entry",
+            choice($.record_entry, $._match_pattern_record_variable),
+          ),
+        ),
         BRACK().close_brace,
         optional($.cell_path),
       ),
