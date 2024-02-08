@@ -274,3 +274,45 @@ match foo {
           (match_pattern
             (val_string))
           (block))))))
+
+=====
+match-008-record
+=====
+
+match $x {
+  {$y} => {}
+  {$foo, $bar} => {}
+  {$a, b: c} => {}
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_variable
+          (identifier))
+        (match_arm
+          (match_pattern
+            (val_record
+              (val_variable
+                (identifier))))
+          (block))
+        (match_arm
+          (match_pattern
+            (val_record
+              (val_variable
+                (identifier))
+              (val_variable
+                (identifier))))
+          (block))
+        (match_arm
+          (match_pattern
+            (val_record
+              (val_variable
+                (identifier))
+              (record_entry
+                  (identifier)
+                  (val_string))))
+          (block))))))
