@@ -3357,8 +3357,13 @@
           "value": "val_list"
         },
         {
-          "type": "SYMBOL",
-          "name": "val_record"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_match_pattern_record"
+          },
+          "named": true,
+          "value": "val_record"
         },
         {
           "type": "SYMBOL",
@@ -3523,6 +3528,72 @@
             "type": "STRING",
             "value": "."
           }
+        }
+      ]
+    },
+    "_match_pattern_record": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "FIELD",
+            "name": "entry",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "record_entry"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_match_pattern_record_variable"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "cell_path"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "_match_pattern_record_variable": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "val_variable"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": ","
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -11291,6 +11362,14 @@
     [
       "_match_pattern_list",
       "val_list"
+    ],
+    [
+      "_match_pattern_record",
+      "val_record"
+    ],
+    [
+      "_match_pattern_record_variable",
+      "_value"
     ]
   ],
   "precedences": [],

@@ -30,6 +30,8 @@ module.exports = grammar({
     [$._match_pattern_value, $._value],
     [$._match_pattern_expression, $._list_item_expression],
     [$._match_pattern_list, $.val_list],
+    [$._match_pattern_record, $.val_record],
+    [$._match_pattern_record_variable, $._value],
   ],
 
   rules: {
@@ -434,7 +436,7 @@ module.exports = grammar({
         $.val_string,
         $.val_date,
         alias($._match_pattern_list, $.val_list),
-        $.val_record,
+        alias($._match_pattern_record, $.val_record),
         $.val_table,
       ),
 
@@ -477,6 +479,17 @@ module.exports = grammar({
 
     _match_pattern_ignore_rest: ($) =>
       seq(PUNC().dot, token.immediate(PUNC().dot)),
+
+    _match_pattern_record: ($) =>
+      seq(
+        BRACK().open_brace,
+        repeat(field("entry", choice($.record_entry, $._match_pattern_record_variable))),
+        BRACK().close_brace,
+        optional($.cell_path),
+      ),
+
+    _match_pattern_record_variable: ($) =>
+      seq($.val_variable, optional(PUNC().comma)),
 
     ctrl_try: ($) =>
       seq(
