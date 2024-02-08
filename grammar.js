@@ -30,6 +30,8 @@ module.exports = grammar({
     [$._match_pattern_value, $._value],
     [$._match_pattern_expression, $._list_item_expression],
     [$._match_pattern_list, $.val_list],
+    [$._match_pattern_record, $.val_record],
+    [$._match_pattern_record_variable, $._value],
   ],
 
   rules: {
@@ -375,7 +377,10 @@ module.exports = grammar({
     ctrl_match: ($) =>
       seq(
         KEYWORD().match,
-        field("scrutinee", $._expression),
+        field(
+          "scrutinee",
+          choice($._expression, alias($.unquoted, $.val_string)),
+        ),
         BRACK().open_brace,
         repeat($.match_arm),
         optional($.default_arm),
@@ -402,12 +407,12 @@ module.exports = grammar({
 
     match_pattern: ($) =>
       choice(
-        seq($._match_pattern_expression, optional($.match_guard)),
-        seq(
-          $._match_pattern_expression,
-          repeat(seq(PUNC().pipe, $._match_pattern_expression)),
-        ),
+        seq($._match_pattern, optional($.match_guard)),
+        seq($._match_pattern, repeat(seq(PUNC().pipe, $._match_pattern))),
       ),
+
+    _match_pattern: ($) =>
+      choice($._match_pattern_expression, alias($.unquoted, $.val_string)),
 
     match_guard: ($) => seq(KEYWORD().if, $._expression),
 
@@ -431,7 +436,7 @@ module.exports = grammar({
         $.val_string,
         $.val_date,
         alias($._match_pattern_list, $.val_list),
-        $.val_record,
+        alias($._match_pattern_record, $.val_record),
         $.val_table,
       ),
 
@@ -474,6 +479,22 @@ module.exports = grammar({
 
     _match_pattern_ignore_rest: ($) =>
       seq(PUNC().dot, token.immediate(PUNC().dot)),
+
+    _match_pattern_record: ($) =>
+      seq(
+        BRACK().open_brace,
+        repeat(
+          field(
+            "entry",
+            choice($.record_entry, $._match_pattern_record_variable),
+          ),
+        ),
+        BRACK().close_brace,
+        optional($.cell_path),
+      ),
+
+    _match_pattern_record_variable: ($) =>
+      seq($.val_variable, optional(PUNC().comma)),
 
     ctrl_try: ($) =>
       seq(

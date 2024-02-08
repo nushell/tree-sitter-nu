@@ -4731,7 +4731,15 @@
         "required": false,
         "types": [
           {
+            "type": ",",
+            "named": false
+          },
+          {
             "type": "record_entry",
+            "named": true
+          },
+          {
+            "type": "val_variable",
             "named": true
           }
         ]
