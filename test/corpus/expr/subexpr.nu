@@ -61,7 +61,8 @@ subexpr-003-pipeline
             (where_command
               (val_string)
               (val_filesize
-                (val_number)))))))))
+                (val_number)
+                (filesize_unit)))))))))
 
 =====
 subexpr-004-pipeline-multiline
@@ -94,7 +95,6 @@ subexpr-004-pipeline-multiline
               (val_string)
               (val_string))))))))
 
-
 =====
 subexpr-005-assignment
 =====
@@ -115,6 +115,7 @@ let xs = (echo one two)
                 (cmd_identifier)
                 (val_string)
                 (val_string)))))))))
+
 =====
 subexpr-006-multiline-assignment
 =====

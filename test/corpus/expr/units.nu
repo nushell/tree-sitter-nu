@@ -17,36 +17,43 @@ units-001-duration
   (pipeline
     (pipe_element
       (val_duration
-        (val_number))))
+        (val_number)
+        (duration_unit))))
   (pipeline
     (pipe_element
       (val_duration
-        (val_number))))
+        (val_number)
+        (duration_unit))))
   (pipeline
     (pipe_element
       (val_duration
-        (val_number))))
+        (val_number)
+        (duration_unit))))
   (pipeline
     (pipe_element
       (val_duration
-        (val_number))))
+        (val_number)
+        (duration_unit))))
   (pipeline
     (pipe_element
       (val_duration
-        (val_number))))
+        (val_number)
+        (duration_unit))))
   (pipeline
     (pipe_element
       (val_duration
-        (val_number))))
+        (val_number)
+        (duration_unit))))
   (pipeline
     (pipe_element
       (val_duration
-        (val_number))))
+        (val_number)
+        (duration_unit))))
   (pipeline
     (pipe_element
       (val_duration
-        (val_number))))
-)
+        (val_number)
+        (duration_unit)))))
 
 ====
 units-002-filesize
@@ -73,56 +80,68 @@ units-002-filesize
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
+        (val_number)
+        (filesize_unit))))
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
+        (val_number)
+        (filesize_unit))))
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
+        (val_number)
+        (filesize_unit))))
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
+        (val_number)
+        (filesize_unit))))
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
+        (val_number)
+        (filesize_unit))))
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
+        (val_number)
+        (filesize_unit))))
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
+        (val_number)
+        (filesize_unit))))
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
+        (val_number)
+        (filesize_unit))))
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
+        (val_number)
+        (filesize_unit))))
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
+        (val_number)
+        (filesize_unit))))
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
+        (val_number)
+        (filesize_unit))))
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
+        (val_number)
+        (filesize_unit))))
   (pipeline
     (pipe_element
       (val_filesize
-        (val_number))))
-)
+        (val_number)
+        (filesize_unit)))))
 
 ====
 units-003-command-args
@@ -139,11 +158,12 @@ echo 1kb
       (command
         (cmd_identifier)
         (val_duration
-          (val_number)))))
+          (val_number)
+          (duration_unit)))))
   (pipeline
     (pipe_element
       (command
         (cmd_identifier)
         (val_filesize
-          (val_number)))))
-)
+          (val_number)
+          (filesize_unit))))))
