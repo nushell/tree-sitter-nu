@@ -3,17 +3,30 @@
   "version": "0.0.1",
   "description": "nu-lang",
   "main": "bindings/node",
+  "types": "bindings/node",
   "scripts": {
-    "test": " "
+    "test": " ",
+    "install": "node-gyp-build",
+    "prebuildify": "prebuildify --napi --strip"
   },
   "author": "The Nushell Contributors",
   "license": "MIT",
   "dependencies": {
-    "nan": "^2.18.0"
+    "node-addon-api": "^7.1.0",
+    "node-gyp-build": "^4.8.0"
+  },
+  "peerDependencies": {
+    "tree-sitter": "^0.21.0"
+  },
+  "peerDependenciesMeta": {
+    "tree_sitter": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "prettier": "3.1.1",
-    "tree-sitter-cli": "^0.20.8"
+    "tree-sitter-cli": "^0.22.3",
+    "prebuildify": "^6.0.0"
   },
   "tree-sitter": [
     {
@@ -24,5 +37,13 @@
       "highlights": "queries/nu/highlights.scm",
       "injections": "queries/nu/injections.scm"
     }
+  ],
+  "files": [
+    "grammar.js",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**"
   ]
 }
