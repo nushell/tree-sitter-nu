@@ -353,21 +353,23 @@ module.exports = grammar({
       ),
 
     ctrl_if_parenthesized: ($) =>
-      prec.right(seq(
-        KEYWORD().if,
-        field("condition", choice($._expression, $.identifier)),
-        field("then_branch", $.block),
-        optional(
-          seq(
-            optional("\n"),
-            KEYWORD().else,
-            choice(
-              field("else_block", $.block),
-              field("else_branch", alias($.ctrl_if_parenthesized, $.ctrl_if)),
+      prec.right(
+        seq(
+          KEYWORD().if,
+          field("condition", choice($._expression, $.identifier)),
+          field("then_branch", $.block),
+          optional(
+            seq(
+              optional("\n"),
+              KEYWORD().else,
+              choice(
+                field("else_block", $.block),
+                field("else_branch", alias($.ctrl_if_parenthesized, $.ctrl_if)),
+              ),
             ),
           ),
         ),
-      )),
+      ),
 
     ctrl_match: ($) =>
       seq(
@@ -499,17 +501,19 @@ module.exports = grammar({
       ),
 
     ctrl_try_parenthesized: ($) =>
-      prec.right(seq(
-        KEYWORD().try,
-        field("try_branch", $.block),
-        optional(
-          seq(
-            optional("\n"),
-            KEYWORD().catch,
-            field("catch_branch", $._blosure),
+      prec.right(
+        seq(
+          KEYWORD().try,
+          field("try_branch", $.block),
+          optional(
+            seq(
+              optional("\n"),
+              KEYWORD().catch,
+              field("catch_branch", $._blosure),
+            ),
           ),
         ),
-      )),
+      ),
 
     ctrl_return: ($) =>
       choice(
@@ -917,6 +921,7 @@ module.exports = grammar({
     val_filesize: ($) =>
       seq(field("value", $.val_number), field("unit", $.filesize_unit)),
 
+    // prettier-ignore
     filesize_unit: ($) => token(choice(
       "b", "B",
 
@@ -935,6 +940,7 @@ module.exports = grammar({
       "eib", "eiB", "eIB", "eIb", "Eib", "EIb", "EIB",
     )),
 
+    // prettier-ignore
     duration_unit: ($) => token(choice(
       "ns", "µs", "us", "ms", "sec", "min", "hr", "day", "wk"
     )),
