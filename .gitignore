@@ -13,3 +13,6 @@ target/
 /parser.lib
 /parser.obj
 *.wasm
+
+# macOS junk
+.DS_Store
