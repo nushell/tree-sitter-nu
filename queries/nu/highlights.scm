@@ -57,30 +57,8 @@
 ;;; ---
 ;;; literals
 (val_number) @constant.numeric
-(val_duration
-    unit: [
-        "ns" "µs" "us" "ms" "sec" "min" "hr" "day" "wk"
-    ] @variable.parameter
-)
-(val_filesize
-    unit: [
-        "b" "B"
-
-        "kb" "kB" "Kb" "KB"
-        "mb" "mB" "Mb" "MB"
-        "gb" "gB" "Gb" "GB"
-        "tb" "tB" "Tb" "TB"
-        "pb" "pB" "Pb" "PB"
-        "eb" "eB" "Eb" "EB"
-
-        "kib" "kiB" "kIB" "kIb" "Kib" "KIb" "KIB"
-        "mib" "miB" "mIB" "mIb" "Mib" "MIb" "MIB"
-        "gib" "giB" "gIB" "gIb" "Gib" "GIb" "GIB"
-        "tib" "tiB" "tIB" "tIb" "Tib" "TIb" "TIB"
-        "pib" "piB" "pIB" "pIb" "Pib" "PIb" "PIB"
-        "eib" "eiB" "eIB" "eIb" "Eib" "EIb" "EIB"
-    ] @variable.parameter
-)
+(val_duration unit: _ @variable.parameter)
+(val_filesize unit: _ @variable.parameter)
 (val_binary
     [
        "0b"
@@ -255,7 +233,7 @@
   ["." "?"] @punctuation.delimiter
 ) @variable.parameter
 
-(val_variable 
+(val_variable
   "$" @variable.parameter
   [
    (identifier) @namespace
@@ -274,7 +252,7 @@
 (collection_type
     ["record" "table"] @type.enum
     "<" @punctuation.bracket
-    key: (_) @variable.parameter 
+    key: (_) @variable.parameter
     ["," ":"] @punctuation.delimiter
     ">" @punctuation.bracket
 )

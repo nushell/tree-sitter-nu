@@ -1,0 +1,169 @@
+====
+units-001-duration
+====
+
+604800e+9ns
+604800E6us
+604800e3ms
+604800sec
+10080min
+168hr
+7day
+1wk
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_duration
+        (val_number)
+        (duration_unit))))
+  (pipeline
+    (pipe_element
+      (val_duration
+        (val_number)
+        (duration_unit))))
+  (pipeline
+    (pipe_element
+      (val_duration
+        (val_number)
+        (duration_unit))))
+  (pipeline
+    (pipe_element
+      (val_duration
+        (val_number)
+        (duration_unit))))
+  (pipeline
+    (pipe_element
+      (val_duration
+        (val_number)
+        (duration_unit))))
+  (pipeline
+    (pipe_element
+      (val_duration
+        (val_number)
+        (duration_unit))))
+  (pipeline
+    (pipe_element
+      (val_duration
+        (val_number)
+        (duration_unit))))
+  (pipeline
+    (pipe_element
+      (val_duration
+        (val_number)
+        (duration_unit)))))
+
+====
+units-002-filesize
+====
+
+1E+9b
+1e6kb
+1000mb
+1gb
+0.001tb
+1e-6pb
+1E-9eb
+
+1.048576e+6kib
+1024mib
+1gib
+0.0009765625tib
+9.536743e-7pib
+9.313226E-10eib
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit))))
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit))))
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit))))
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit))))
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit))))
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit))))
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit))))
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit))))
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit))))
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit))))
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit))))
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit))))
+  (pipeline
+    (pipe_element
+      (val_filesize
+        (val_number)
+        (filesize_unit)))))
+
+====
+units-003-command-args
+====
+
+sleep 1sec
+echo 1kb
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_duration
+          (val_number)
+          (duration_unit)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_filesize
+          (val_number)
+          (filesize_unit))))))
