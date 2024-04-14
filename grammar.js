@@ -6,7 +6,6 @@ module.exports = grammar({
   extras: ($) => [/\s/, $.comment],
 
   conflicts: ($) => [
-    [$._block_body],
     [$._declaration, $._declaration_last],
     [$._declaration_parenthesized, $._declaration_parenthesized_last],
     [$._statement, $._statement_last],
@@ -15,17 +14,13 @@ module.exports = grammar({
     [$.pipeline_parenthesized, $.pipeline_parenthesized_last],
     [$.pipe_element, $.pipe_element_last],
     [$.pipe_element_parenthesized, $.pipe_element_parenthesized_last],
-    [$.command],
     [$.block, $.val_record],
     [$.block, $.val_closure],
-    [$.ctrl_if_parenthesized],
-    [$.ctrl_try_parenthesized],
     [$.decl_module],
     [$._val_number_decimal],
     [$._immediate_decimal],
     [$.expr_parenthesized],
     [$.val_variable],
-    [$.val_range, $.unquoted],
     [$._expression, $._expr_binary_expression],
     [$._match_pattern_value, $._value],
     [$._match_pattern_expression, $._list_item_expression],
@@ -358,17 +353,19 @@ module.exports = grammar({
       ),
 
     ctrl_if_parenthesized: ($) =>
-      seq(
-        KEYWORD().if,
-        field("condition", choice($._expression, $.identifier)),
-        field("then_branch", $.block),
-        optional(
-          seq(
-            optional("\n"),
-            KEYWORD().else,
-            choice(
-              field("else_block", $.block),
-              field("else_branch", alias($.ctrl_if_parenthesized, $.ctrl_if)),
+      prec.right(
+        seq(
+          KEYWORD().if,
+          field("condition", choice($._expression, $.identifier)),
+          field("then_branch", $.block),
+          optional(
+            seq(
+              optional("\n"),
+              KEYWORD().else,
+              choice(
+                field("else_block", $.block),
+                field("else_branch", alias($.ctrl_if_parenthesized, $.ctrl_if)),
+              ),
             ),
           ),
         ),
@@ -504,14 +501,16 @@ module.exports = grammar({
       ),
 
     ctrl_try_parenthesized: ($) =>
-      seq(
-        KEYWORD().try,
-        field("try_branch", $.block),
-        optional(
-          seq(
-            optional("\n"),
-            KEYWORD().catch,
-            field("catch_branch", $._blosure),
+      prec.right(
+        seq(
+          KEYWORD().try,
+          field("try_branch", $.block),
+          optional(
+            seq(
+              optional("\n"),
+              KEYWORD().catch,
+              field("catch_branch", $._blosure),
+            ),
           ),
         ),
       ),
@@ -917,10 +916,34 @@ module.exports = grammar({
       ),
 
     val_duration: ($) =>
-      seq(field("value", $.val_number), field("unit", DURATION_UNIT())),
+      seq(field("value", $.val_number), field("unit", $.duration_unit)),
 
     val_filesize: ($) =>
-      seq(field("value", $.val_number), field("unit", FILESIZE_UNIT())),
+      seq(field("value", $.val_number), field("unit", $.filesize_unit)),
+
+    // prettier-ignore
+    filesize_unit: ($) => token(choice(
+      "b", "B",
+
+      "kb", "kB", "Kb", "KB",
+      "mb", "mB", "Mb", "MB",
+      "gb", "gB", "Gb", "GB",
+      "tb", "tB", "Tb", "TB",
+      "pb", "pB", "Pb", "PB",
+      "eb", "eB", "Eb", "EB",
+
+      "kib", "kiB", "kIB", "kIb", "Kib", "KIb", "KIB",
+      "mib", "miB", "mIB", "mIb", "Mib", "MIb", "MIB",
+      "gib", "giB", "gIB", "gIb", "Gib", "GIb", "GIB",
+      "tib", "tiB", "tIB", "tIb", "Tib", "TIb", "TIB",
+      "pib", "piB", "pIB", "pIb", "Pib", "PIb", "PIB",
+      "eib", "eiB", "eIB", "eIb", "Eib", "EIb", "EIB",
+    )),
+
+    // prettier-ignore
+    duration_unit: ($) => token(choice(
+      "ns", "µs", "us", "ms", "sec", "min", "hr", "day", "wk"
+    )),
 
     val_binary: ($) =>
       seq(
@@ -969,7 +992,7 @@ module.exports = grammar({
           choice(
             /[^xu]/,
             /u[0-9a-fA-F]{4}/,
-            /u{[0-9a-fA-F]+}/,
+            /u\{[0-9a-fA-F]+\}/,
             /x[0-9a-fA-F]{2}/,
           ),
         ),
@@ -1017,7 +1040,7 @@ module.exports = grammar({
           choice(
             /[^xu]/,
             /u[0-9a-fA-F]{4}/,
-            /u{[0-9a-fA-F]+}/,
+            /u\{[0-9a-fA-F]+\}/,
             /x[0-9a-fA-F]{2}/,
             "(",
           ),
@@ -1758,34 +1781,4 @@ function FLAT_TYPES() {
   ];
 
   return choice(...types);
-}
-
-/// duration units, are case sensitive
-/// taken from `nu_parser::parse_duration_bytes()`
-function DURATION_UNIT() {
-  // prettier-ignore
-  return choice(...["ns", "µs", "us", "ms", "sec", "min", "hr", "day", "wk"])
-}
-
-/// filesize units, are case insensitive
-/// taken from `nu_parser::parse_filesize_bytes()`
-function FILESIZE_UNIT() {
-  // prettier-ignore
-  return choice(...[
-    "b", "B",
-
-    "kb", "kB", "Kb", "KB",
-    "mb", "mB", "Mb", "MB",
-    "gb", "gB", "Gb", "GB",
-    "tb", "tB", "Tb", "TB",
-    "pb", "pB", "Pb", "PB",
-    "eb", "eB", "Eb", "EB",
-
-    "kib", "kiB", "kIB", "kIb", "Kib", "KIb", "KIB",
-    "mib", "miB", "mIB", "mIb", "Mib", "MIb", "MIB",
-    "gib", "giB", "gIB", "gIb", "Gib", "GIb", "GIB",
-    "tib", "tiB", "tIB", "tIb", "Tib", "TIb", "TIB",
-    "pib", "piB", "pIB", "pIb", "Pib", "PIb", "PIB",
-    "eib", "eiB", "eIB", "eIb", "Eib", "EIb", "EIB",
-  ])
 }

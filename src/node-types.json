@@ -4167,40 +4167,8 @@
         "required": true,
         "types": [
           {
-            "type": "day",
-            "named": false
-          },
-          {
-            "type": "hr",
-            "named": false
-          },
-          {
-            "type": "min",
-            "named": false
-          },
-          {
-            "type": "ms",
-            "named": false
-          },
-          {
-            "type": "ns",
-            "named": false
-          },
-          {
-            "type": "sec",
-            "named": false
-          },
-          {
-            "type": "us",
-            "named": false
-          },
-          {
-            "type": "wk",
-            "named": false
-          },
-          {
-            "type": "µs",
-            "named": false
+            "type": "duration_unit",
+            "named": true
           }
         ]
       },
@@ -4225,276 +4193,8 @@
         "required": true,
         "types": [
           {
-            "type": "B",
-            "named": false
-          },
-          {
-            "type": "EB",
-            "named": false
-          },
-          {
-            "type": "EIB",
-            "named": false
-          },
-          {
-            "type": "EIb",
-            "named": false
-          },
-          {
-            "type": "Eb",
-            "named": false
-          },
-          {
-            "type": "Eib",
-            "named": false
-          },
-          {
-            "type": "GB",
-            "named": false
-          },
-          {
-            "type": "GIB",
-            "named": false
-          },
-          {
-            "type": "GIb",
-            "named": false
-          },
-          {
-            "type": "Gb",
-            "named": false
-          },
-          {
-            "type": "Gib",
-            "named": false
-          },
-          {
-            "type": "KB",
-            "named": false
-          },
-          {
-            "type": "KIB",
-            "named": false
-          },
-          {
-            "type": "KIb",
-            "named": false
-          },
-          {
-            "type": "Kb",
-            "named": false
-          },
-          {
-            "type": "Kib",
-            "named": false
-          },
-          {
-            "type": "MB",
-            "named": false
-          },
-          {
-            "type": "MIB",
-            "named": false
-          },
-          {
-            "type": "MIb",
-            "named": false
-          },
-          {
-            "type": "Mb",
-            "named": false
-          },
-          {
-            "type": "Mib",
-            "named": false
-          },
-          {
-            "type": "PB",
-            "named": false
-          },
-          {
-            "type": "PIB",
-            "named": false
-          },
-          {
-            "type": "PIb",
-            "named": false
-          },
-          {
-            "type": "Pb",
-            "named": false
-          },
-          {
-            "type": "Pib",
-            "named": false
-          },
-          {
-            "type": "TB",
-            "named": false
-          },
-          {
-            "type": "TIB",
-            "named": false
-          },
-          {
-            "type": "TIb",
-            "named": false
-          },
-          {
-            "type": "Tb",
-            "named": false
-          },
-          {
-            "type": "Tib",
-            "named": false
-          },
-          {
-            "type": "b",
-            "named": false
-          },
-          {
-            "type": "eB",
-            "named": false
-          },
-          {
-            "type": "eIB",
-            "named": false
-          },
-          {
-            "type": "eIb",
-            "named": false
-          },
-          {
-            "type": "eb",
-            "named": false
-          },
-          {
-            "type": "eiB",
-            "named": false
-          },
-          {
-            "type": "eib",
-            "named": false
-          },
-          {
-            "type": "gB",
-            "named": false
-          },
-          {
-            "type": "gIB",
-            "named": false
-          },
-          {
-            "type": "gIb",
-            "named": false
-          },
-          {
-            "type": "gb",
-            "named": false
-          },
-          {
-            "type": "giB",
-            "named": false
-          },
-          {
-            "type": "gib",
-            "named": false
-          },
-          {
-            "type": "kB",
-            "named": false
-          },
-          {
-            "type": "kIB",
-            "named": false
-          },
-          {
-            "type": "kIb",
-            "named": false
-          },
-          {
-            "type": "kb",
-            "named": false
-          },
-          {
-            "type": "kiB",
-            "named": false
-          },
-          {
-            "type": "kib",
-            "named": false
-          },
-          {
-            "type": "mB",
-            "named": false
-          },
-          {
-            "type": "mIB",
-            "named": false
-          },
-          {
-            "type": "mIb",
-            "named": false
-          },
-          {
-            "type": "mb",
-            "named": false
-          },
-          {
-            "type": "miB",
-            "named": false
-          },
-          {
-            "type": "mib",
-            "named": false
-          },
-          {
-            "type": "pB",
-            "named": false
-          },
-          {
-            "type": "pIB",
-            "named": false
-          },
-          {
-            "type": "pIb",
-            "named": false
-          },
-          {
-            "type": "pb",
-            "named": false
-          },
-          {
-            "type": "piB",
-            "named": false
-          },
-          {
-            "type": "pib",
-            "named": false
-          },
-          {
-            "type": "tB",
-            "named": false
-          },
-          {
-            "type": "tIB",
-            "named": false
-          },
-          {
-            "type": "tIb",
-            "named": false
-          },
-          {
-            "type": "tb",
-            "named": false
-          },
-          {
-            "type": "tiB",
-            "named": false
-          },
-          {
-            "type": "tib",
-            "named": false
+            "type": "filesize_unit",
+            "named": true
           }
         ]
       },
@@ -5395,130 +5095,6 @@
     "named": false
   },
   {
-    "type": "B",
-    "named": false
-  },
-  {
-    "type": "EB",
-    "named": false
-  },
-  {
-    "type": "EIB",
-    "named": false
-  },
-  {
-    "type": "EIb",
-    "named": false
-  },
-  {
-    "type": "Eb",
-    "named": false
-  },
-  {
-    "type": "Eib",
-    "named": false
-  },
-  {
-    "type": "GB",
-    "named": false
-  },
-  {
-    "type": "GIB",
-    "named": false
-  },
-  {
-    "type": "GIb",
-    "named": false
-  },
-  {
-    "type": "Gb",
-    "named": false
-  },
-  {
-    "type": "Gib",
-    "named": false
-  },
-  {
-    "type": "KB",
-    "named": false
-  },
-  {
-    "type": "KIB",
-    "named": false
-  },
-  {
-    "type": "KIb",
-    "named": false
-  },
-  {
-    "type": "Kb",
-    "named": false
-  },
-  {
-    "type": "Kib",
-    "named": false
-  },
-  {
-    "type": "MB",
-    "named": false
-  },
-  {
-    "type": "MIB",
-    "named": false
-  },
-  {
-    "type": "MIb",
-    "named": false
-  },
-  {
-    "type": "Mb",
-    "named": false
-  },
-  {
-    "type": "Mib",
-    "named": false
-  },
-  {
-    "type": "PB",
-    "named": false
-  },
-  {
-    "type": "PIB",
-    "named": false
-  },
-  {
-    "type": "PIb",
-    "named": false
-  },
-  {
-    "type": "Pb",
-    "named": false
-  },
-  {
-    "type": "Pib",
-    "named": false
-  },
-  {
-    "type": "TB",
-    "named": false
-  },
-  {
-    "type": "TIB",
-    "named": false
-  },
-  {
-    "type": "TIb",
-    "named": false
-  },
-  {
-    "type": "Tb",
-    "named": false
-  },
-  {
-    "type": "Tib",
-    "named": false
-  },
-  {
     "type": "[",
     "named": false
   },
@@ -5548,10 +5124,6 @@
   },
   {
     "type": "as",
-    "named": false
-  },
-  {
-    "type": "b",
     "named": false
   },
   {
@@ -5623,10 +5195,6 @@
     "named": false
   },
   {
-    "type": "day",
-    "named": false
-  },
-  {
     "type": "decimal",
     "named": false
   },
@@ -5647,35 +5215,15 @@
     "named": false
   },
   {
+    "type": "duration_unit",
+    "named": true
+  },
+  {
     "type": "e+o>",
     "named": false
   },
   {
     "type": "e>",
-    "named": false
-  },
-  {
-    "type": "eB",
-    "named": false
-  },
-  {
-    "type": "eIB",
-    "named": false
-  },
-  {
-    "type": "eIb",
-    "named": false
-  },
-  {
-    "type": "eb",
-    "named": false
-  },
-  {
-    "type": "eiB",
-    "named": false
-  },
-  {
-    "type": "eib",
     "named": false
   },
   {
@@ -5735,6 +5283,10 @@
     "named": false
   },
   {
+    "type": "filesize_unit",
+    "named": true
+  },
+  {
     "type": "float",
     "named": false
   },
@@ -5744,30 +5296,6 @@
   },
   {
     "type": "full-cell-path",
-    "named": false
-  },
-  {
-    "type": "gB",
-    "named": false
-  },
-  {
-    "type": "gIB",
-    "named": false
-  },
-  {
-    "type": "gIb",
-    "named": false
-  },
-  {
-    "type": "gb",
-    "named": false
-  },
-  {
-    "type": "giB",
-    "named": false
-  },
-  {
-    "type": "gib",
     "named": false
   },
   {
@@ -5784,10 +5312,6 @@
   },
   {
     "type": "hide-env",
-    "named": false
-  },
-  {
-    "type": "hr",
     "named": false
   },
   {
@@ -5811,31 +5335,7 @@
     "named": true
   },
   {
-    "type": "kB",
-    "named": false
-  },
-  {
-    "type": "kIB",
-    "named": false
-  },
-  {
-    "type": "kIb",
-    "named": false
-  },
-  {
-    "type": "kb",
-    "named": false
-  },
-  {
     "type": "keyword",
-    "named": false
-  },
-  {
-    "type": "kiB",
-    "named": false
-  },
-  {
-    "type": "kib",
     "named": false
   },
   {
@@ -5855,18 +5355,6 @@
     "named": false
   },
   {
-    "type": "mB",
-    "named": false
-  },
-  {
-    "type": "mIB",
-    "named": false
-  },
-  {
-    "type": "mIb",
-    "named": false
-  },
-  {
     "type": "make",
     "named": false
   },
@@ -5879,31 +5367,11 @@
     "named": false
   },
   {
-    "type": "mb",
-    "named": false
-  },
-  {
-    "type": "miB",
-    "named": false
-  },
-  {
-    "type": "mib",
-    "named": false
-  },
-  {
-    "type": "min",
-    "named": false
-  },
-  {
     "type": "mod",
     "named": false
   },
   {
     "type": "module",
-    "named": false
-  },
-  {
-    "type": "ms",
     "named": false
   },
   {
@@ -5924,10 +5392,6 @@
   },
   {
     "type": "nothing",
-    "named": false
-  },
-  {
-    "type": "ns",
     "named": false
   },
   {
@@ -5975,31 +5439,7 @@
     "named": false
   },
   {
-    "type": "pB",
-    "named": false
-  },
-  {
-    "type": "pIB",
-    "named": false
-  },
-  {
-    "type": "pIb",
-    "named": false
-  },
-  {
     "type": "path",
-    "named": false
-  },
-  {
-    "type": "pb",
-    "named": false
-  },
-  {
-    "type": "piB",
-    "named": false
-  },
-  {
-    "type": "pib",
     "named": false
   },
   {
@@ -6016,10 +5456,6 @@
   },
   {
     "type": "return",
-    "named": false
-  },
-  {
-    "type": "sec",
     "named": false
   },
   {
@@ -6043,31 +5479,7 @@
     "named": false
   },
   {
-    "type": "tB",
-    "named": false
-  },
-  {
-    "type": "tIB",
-    "named": false
-  },
-  {
-    "type": "tIb",
-    "named": false
-  },
-  {
     "type": "table",
-    "named": false
-  },
-  {
-    "type": "tb",
-    "named": false
-  },
-  {
-    "type": "tiB",
-    "named": false
-  },
-  {
-    "type": "tib",
     "named": false
   },
   {
@@ -6081,10 +5493,6 @@
   {
     "type": "unescaped_interpolated_content",
     "named": true
-  },
-  {
-    "type": "us",
-    "named": false
   },
   {
     "type": "use",
@@ -6111,10 +5519,6 @@
     "named": false
   },
   {
-    "type": "wk",
-    "named": false
-  },
-  {
     "type": "xor",
     "named": false
   },
@@ -6128,10 +5532,6 @@
   },
   {
     "type": "}",
-    "named": false
-  },
-  {
-    "type": "µs",
     "named": false
   }
 ]
