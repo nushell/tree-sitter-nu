@@ -686,7 +686,15 @@ module.exports = grammar({
 
     // the where command has a unique argument pattern that breaks the
     // general command parsing, so we handle it separately
-    where_command: ($) => seq("where", $._where_predicate),
+    where_command: ($) =>
+      seq(
+        "where",
+        choice(
+          $._where_predicate,
+          $._expression,
+          alias($.block, $.val_closure),
+        ),
+      ),
 
     _where_predicate: ($) =>
       choice(
