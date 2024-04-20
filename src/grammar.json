@@ -4411,8 +4411,26 @@
           "value": "where"
         },
         {
-          "type": "SYMBOL",
-          "name": "_where_predicate"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_where_predicate"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_expression"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "block"
+              },
+              "named": true,
+              "value": "val_closure"
+            }
+          ]
         }
       ]
     },
