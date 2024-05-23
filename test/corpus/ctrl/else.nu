@@ -63,7 +63,7 @@ if true {} else ^'ls'
         condition: (val_bool)
         then_branch: (block)
         else_block: (command
-          head: (cmd_identifier))))))
+          head: (val_string))))))
 
 =====
 else-005-command
@@ -80,7 +80,10 @@ if true {} else ^('ls')
         condition: (val_bool)
         then_branch: (block)
         else_block: (command
-          head: (cmd_identifier))))))
+          head: (expr_parenthesized
+            (pipeline
+              (pipe_element
+                (val_string)))))))))
 
 =====
 else-006-expression
