@@ -386,6 +386,10 @@
             "named": true
           },
           {
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
             "type": "val_string",
             "named": true
           }
@@ -810,7 +814,7 @@
             "named": true
           },
           {
-            "type": "cmd_identifier",
+            "type": "command",
             "named": true
           },
           {
