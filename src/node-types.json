@@ -384,6 +384,10 @@
           {
             "type": "cmd_identifier",
             "named": true
+          },
+          {
+            "type": "val_string",
+            "named": true
           }
         ]
       },
@@ -803,6 +807,82 @@
         "types": [
           {
             "type": "block",
+            "named": true
+          },
+          {
+            "type": "cmd_identifier",
+            "named": true
+          },
+          {
+            "type": "expr_binary",
+            "named": true
+          },
+          {
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
+            "type": "expr_unary",
+            "named": true
+          },
+          {
+            "type": "val_binary",
+            "named": true
+          },
+          {
+            "type": "val_bool",
+            "named": true
+          },
+          {
+            "type": "val_closure",
+            "named": true
+          },
+          {
+            "type": "val_date",
+            "named": true
+          },
+          {
+            "type": "val_duration",
+            "named": true
+          },
+          {
+            "type": "val_filesize",
+            "named": true
+          },
+          {
+            "type": "val_interpolated",
+            "named": true
+          },
+          {
+            "type": "val_list",
+            "named": true
+          },
+          {
+            "type": "val_nothing",
+            "named": true
+          },
+          {
+            "type": "val_number",
+            "named": true
+          },
+          {
+            "type": "val_range",
+            "named": true
+          },
+          {
+            "type": "val_record",
+            "named": true
+          },
+          {
+            "type": "val_string",
+            "named": true
+          },
+          {
+            "type": "val_table",
+            "named": true
+          },
+          {
+            "type": "val_variable",
             "named": true
           }
         ]
@@ -1448,6 +1528,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "expr_parenthesized",
+            "named": true
+          },
           {
             "type": "unquoted",
             "named": true
