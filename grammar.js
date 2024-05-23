@@ -1188,14 +1188,20 @@ module.exports = grammar({
 
     command: ($) =>
       seq(
-        field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
+        choice(
+          field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
+          field("head", seq(PUNC().caret, $.val_string)),
+        ),
         prec.dynamic(10, repeat($._cmd_arg)),
       ),
 
     _command_parenthesized_body: ($) =>
       prec.right(
         seq(
-          field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
+          choice(
+            field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
+            field("head", seq(PUNC().caret, $.val_string)),
+          ),
           prec.dynamic(10, repeat(seq(optional("\n"), $._cmd_arg))),
           optional("\n"),
         ),
