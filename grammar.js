@@ -345,7 +345,7 @@ module.exports = grammar({
           seq(
             KEYWORD().else,
             choice(
-              field("else_block", $.block),
+              field("else_block", choice($.block, $._expression, $.cmd_identifier)),
               field("else_branch", $.ctrl_if),
             ),
           ),
@@ -363,7 +363,7 @@ module.exports = grammar({
               optional("\n"),
               KEYWORD().else,
               choice(
-                field("else_block", $.block),
+                field("else_block", choice($.block, $._expression, $.cmd_identifier)),
                 field("else_branch", alias($.ctrl_if_parenthesized, $.ctrl_if)),
               ),
             ),
