@@ -118,7 +118,15 @@ module.exports = grammar({
         seq(
           optional(MODIFIER().visibility),
           KEYWORD().use,
-          field("module", choice($.val_string, $.unquoted)),
+          field(
+            "module",
+            choice(
+              $.val_string,
+              $.val_interpolated,
+              $.expr_parenthesized,
+              $.unquoted,
+            ),
+          ),
           optional(field("import_pattern", $.scope_pattern)),
         ),
       ),
@@ -345,7 +353,7 @@ module.exports = grammar({
           seq(
             KEYWORD().else,
             choice(
-              field("else_block", $.block),
+              field("else_block", choice($.block, $._expression, $.command)),
               field("else_branch", $.ctrl_if),
             ),
           ),
@@ -363,7 +371,7 @@ module.exports = grammar({
               optional("\n"),
               KEYWORD().else,
               choice(
-                field("else_block", $.block),
+                field("else_block", choice($.block, $._expression, $.command)),
                 field("else_branch", alias($.ctrl_if_parenthesized, $.ctrl_if)),
               ),
             ),
@@ -1188,14 +1196,22 @@ module.exports = grammar({
 
     command: ($) =>
       seq(
-        field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
+        choice(
+          field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
+          field("head", seq(PUNC().caret, $.val_string)), // Support for ^'command' type of syntax.
+          field("head", seq(PUNC().caret, $.expr_parenthesized)), // Support for pipes into external command.
+        ),
         prec.dynamic(10, repeat($._cmd_arg)),
       ),
 
     _command_parenthesized_body: ($) =>
       prec.right(
         seq(
-          field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
+          choice(
+            field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
+            field("head", seq(PUNC().caret, $.val_string)), // Support for ^'command' type of syntax.
+            field("head", seq(PUNC().caret, $.expr_parenthesized)), // Support for pipes into external command.
+          ),
           prec.dynamic(10, repeat(seq(optional("\n"), $._cmd_arg))),
           optional("\n"),
         ),
