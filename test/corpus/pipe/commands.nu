@@ -438,3 +438,34 @@ echo [hello,world]
         (val_list
           (val_string)
           (val_string))))))
+
+======
+cmd-017-string-external
+======
+
+^'ls'
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        head: (val_string)))))
+
+======
+cmd-018-pipe-external
+======
+
+^('ls')
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        head: (expr_parenthesized
+          (pipeline
+            (pipe_element
+              (val_string))))))))
