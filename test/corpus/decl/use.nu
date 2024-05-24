@@ -36,3 +36,23 @@ use ('file.nu')
       (pipeline
         (pipe_element
           (val_string))))))
+
+=====
+use-004-interpolated-string
+=====
+
+use $"('s' + 't' + 'd')"
+
+-----
+
+(nu_script
+  (decl_use
+    (val_interpolated
+      (expr_interpolated
+        (pipeline
+          (pipe_element
+            (expr_binary
+              (val_string)
+              (expr_binary
+                (val_string)
+                (val_string)))))))))
