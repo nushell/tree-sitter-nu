@@ -1,6 +1,4 @@
 [
-  (pipeline)
-  (pipe_element)
   (expr_parenthesized)
   (parameter_bracks)
   (val_record)
