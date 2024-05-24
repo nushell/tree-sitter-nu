@@ -4095,6 +4095,14 @@
         "required": true,
         "types": [
           {
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
+            "type": "val_interpolated",
+            "named": true
+          },
+          {
             "type": "val_string",
             "named": true
           },
