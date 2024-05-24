@@ -2,6 +2,7 @@
   (pipeline)
   (pipe_element)
   (expr_parenthesized)
+  (parameter_bracks)
   (val_record)
   (val_list)
   (val_closure)
