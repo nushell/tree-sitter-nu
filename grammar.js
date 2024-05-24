@@ -120,7 +120,12 @@ module.exports = grammar({
           KEYWORD().use,
           field(
             "module",
-            choice($.val_string, $.expr_parenthesized, $.unquoted),
+            choice(
+              $.val_string,
+              $.val_interpolated,
+              $.expr_parenthesized,
+              $.unquoted,
+            ),
           ),
           optional(field("import_pattern", $.scope_pattern)),
         ),
