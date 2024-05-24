@@ -1609,6 +1609,10 @@
                 },
                 {
                   "type": "SYMBOL",
+                  "name": "val_interpolated"
+                },
+                {
+                  "type": "SYMBOL",
                   "name": "expr_parenthesized"
                 },
                 {

@@ -1541,6 +1541,10 @@
             "named": true
           },
           {
+            "type": "val_interpolated",
+            "named": true
+          },
+          {
             "type": "val_string",
             "named": true
           }
