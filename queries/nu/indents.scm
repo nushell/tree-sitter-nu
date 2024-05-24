@@ -8,6 +8,9 @@
   (block)
 ] @indent.begin
 
+(("|") @indent.begin
+  (#set! indent.immediate 1))
+
 [
   "}"
   "]"
