@@ -585,7 +585,16 @@ module.exports = grammar({
     stmt_source: ($) =>
       seq(
         choice(KEYWORD().source, KEYWORD().source_env),
-        field("file", choice(alias($.unquoted, $.val_string), $.val_variable)),
+        field(
+          "file",
+          choice(
+            alias($.unquoted, $.val_string),
+            $.val_string,
+            $.expr_parenthesized,
+            $.val_variable,
+            $.val_interpolated,
+          ),
+        ),
       ),
 
     stmt_register: ($) =>
