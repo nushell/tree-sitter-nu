@@ -1,3 +1,5 @@
+/// <reference types="tree-sitter-cli/dsl" />
+// @ts-check
 module.exports = grammar({
   name: "nu",
 
@@ -1116,7 +1118,17 @@ module.exports = grammar({
     val_record: ($) =>
       seq(
         BRACK().open_brace,
-        repeat(field("entry", $.record_entry)),
+        seq(
+          optional(
+            repeat(
+              seq(field("entry", $.record_entry), $.record_entry_separator),
+            ),
+          ),
+          seq(
+            field("entry", $.record_entry),
+            optional($.record_entry_separator),
+          ),
+        ),
         BRACK().close_brace,
         optional($.cell_path),
       ),
@@ -1147,8 +1159,9 @@ module.exports = grammar({
             alias($.cmd_identifier, $.val_string),
           ),
         ),
-        optional(PUNC().comma),
       ),
+
+    record_entry_separator: (_$) => choice(PUNC().comma, /\s/, /[\r\n]/),
 
     _record_key: ($) =>
       choice(
