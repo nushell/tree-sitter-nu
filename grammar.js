@@ -1121,17 +1121,19 @@ module.exports = grammar({
         seq(
           optional(
             repeat(
-              seq(field("entry", $.record_entry), $.record_entry_separator),
+              seq(field("entry", $.record_entry), $._record_entry_separator),
             ),
           ),
           seq(
             field("entry", $.record_entry),
-            optional($.record_entry_separator),
+            optional($._record_entry_separator),
           ),
         ),
         BRACK().close_brace,
         optional($.cell_path),
       ),
+
+    _record_entry_separator: (_$) => choice(PUNC().comma, /\s/, /[\r\n]/),
 
     record_entry: ($) =>
       seq(
@@ -1160,8 +1162,6 @@ module.exports = grammar({
           ),
         ),
       ),
-
-    record_entry_separator: (_$) => choice(PUNC().comma, /\s/, /[\r\n]/),
 
     _record_key: ($) =>
       choice(
