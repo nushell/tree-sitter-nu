@@ -36,7 +36,7 @@ module.exports = grammar({
 
     nu_script: ($) => seq(optional($.shebang), optional($._block_body)),
 
-    shebang: ($) => seq("#!", /.*\n/),
+    shebang: (_$) => seq("#!", /.*\n/),
 
     ...block_body_rules("", ($) => $._terminator),
     ...block_body_rules("_last", ($) => optional($._terminator)),
@@ -44,7 +44,7 @@ module.exports = grammar({
     // Because everything inside of the parentheses are treated as if they were written together,
     // terminator must be semicolon.
     ...parenthesized_body_rules("", ($) => PUNC().semicolon),
-    ...parenthesized_body_rules("_last", ($) => optional(PUNC().semicolon)),
+    ...parenthesized_body_rules("_last", (_$) => optional(PUNC().semicolon)),
 
     _block_body: ($) =>
       seq(
@@ -58,11 +58,11 @@ module.exports = grammar({
     // for simplicity, i used the `rust` definition of an identifier and some symbols
     // but in `nu` the rule is way more relaxed than this
 
-    cmd_identifier: ($) => token(/[_\p{XID_Start}][_\-\p{XID_Continue}!?.]*/),
+    cmd_identifier: (_$) => token(/[_\p{XID_Start}][_\-\p{XID_Continue}!?.]*/),
 
-    identifier: ($) => token(/[_\p{XID_Start}][_\p{XID_Continue}]*/),
+    identifier: (_$) => token(/[_\p{XID_Start}][_\p{XID_Continue}]*/),
 
-    _long_flag_identifier: ($) =>
+    _long_flag_identifier: (_$) =>
       token.immediate(/[\p{XID_Start}_][\p{XID_Continue}_-]*/),
 
     _command_name: ($) =>
@@ -77,7 +77,7 @@ module.exports = grammar({
         field("dollar_name", $.val_variable),
       ),
 
-    _terminator: ($) => choice(PUNC().semicolon, "\n"),
+    _terminator: (_$) => choice(PUNC().semicolon, "\n"),
 
     /// Top Level Items
 
@@ -200,7 +200,7 @@ module.exports = grammar({
     _all_type: ($) =>
       field("type", choice($.list_type, $.collection_type, $.flat_type)),
 
-    flat_type: ($) => field("flat_type", FLAT_TYPES()),
+    flat_type: (_$) => field("flat_type", FLAT_TYPES()),
 
     collection_type: ($) => {
       const key = field(
@@ -246,7 +246,7 @@ module.exports = grammar({
     flag_capsule: ($) =>
       seq(BRACK().open_paren, $.param_short_flag, BRACK().close_paren),
 
-    param_short_flag: ($) =>
+    param_short_flag: (_$) =>
       seq("-", field("name", token.immediate(/[a-zA-Z0-9]/))),
 
     /// Controls
@@ -484,7 +484,7 @@ module.exports = grammar({
         seq(token.immediate(PUNC().dollar), $.identifier),
       ),
 
-    _match_pattern_ignore_rest: ($) =>
+    _match_pattern_ignore_rest: (_$) =>
       seq(PUNC().dot, token.immediate(PUNC().dot)),
 
     _match_pattern_record: ($) =>
@@ -630,7 +630,7 @@ module.exports = grammar({
     _stmt_overlay: ($) =>
       choice($.overlay_hide, $.overlay_list, $.overlay_new, $.overlay_use),
 
-    overlay_list: ($) => seq(KEYWORD().overlay, MODIFIER().overlay_list),
+    overlay_list: (_$) => seq(KEYWORD().overlay, MODIFIER().overlay_list),
 
     overlay_hide: ($) =>
       prec.right(
@@ -665,7 +665,7 @@ module.exports = grammar({
         field("command_list", $.command_list),
       ),
 
-    wild_card: ($) => token("*"),
+    wild_card: (_$) => token("*"),
 
     command_list: ($) =>
       seq(
@@ -909,13 +909,13 @@ module.exports = grammar({
       ),
 
     /// Literals
-    val_nothing: ($) =>
+    val_nothing: (_$) =>
       choice(
         SPECIAL().null,
         seq(token(BRACK().open_paren), token.immediate(BRACK().close_paren)),
       ),
 
-    val_bool: ($) => choice(SPECIAL().true, SPECIAL().false),
+    val_bool: (_$) => choice(SPECIAL().true, SPECIAL().false),
 
     val_variable: ($) => choice($._var, seq($._var, $.cell_path)),
 
@@ -949,7 +949,7 @@ module.exports = grammar({
       seq(field("value", $.val_number), field("unit", $.filesize_unit)),
 
     // prettier-ignore
-    filesize_unit: ($) => token(choice(
+    filesize_unit: (_$) => token(choice(
       "b", "B",
 
       "kb", "kB", "Kb", "KB",
@@ -968,7 +968,7 @@ module.exports = grammar({
     )),
 
     // prettier-ignore
-    duration_unit: ($) => token(choice(
+    duration_unit: (_$) => token(choice(
       "ns", "µs", "us", "ms", "sec", "min", "hr", "day", "wk"
     )),
 
@@ -980,9 +980,9 @@ module.exports = grammar({
         BRACK().close_brack,
       ),
 
-    hex_digit: ($) => token(/[0-9a-fA-F]+/),
+    hex_digit: (_$) => token(/[0-9a-fA-F]+/),
 
-    val_date: ($) =>
+    val_date: (_$) =>
       token(
         choice(
           /[0-9]{4}-[0-9]{2}-[0-9]{2}/i,
@@ -1006,13 +1006,13 @@ module.exports = grammar({
         '"',
       ),
 
-    _escaped_str_content: ($) => token.immediate(prec(1, /[^"\\]+/)),
+    _escaped_str_content: (_$) => token.immediate(prec(1, /[^"\\]+/)),
 
-    _str_single_quotes: ($) => /'[^']*'/,
+    _str_single_quotes: (_$) => /'[^']*'/,
 
-    _str_back_ticks: ($) => /`[^`]*`/,
+    _str_back_ticks: (_$) => /`[^`]*`/,
 
-    escape_sequence: ($) =>
+    escape_sequence: (_$) =>
       token.immediate(
         seq(
           "\\",
@@ -1030,9 +1030,9 @@ module.exports = grammar({
     val_interpolated: ($) =>
       choice($._inter_single_quotes, $._inter_double_quotes),
 
-    escaped_interpolated_content: ($) => token.immediate(prec(1, /[^"\\(]+/)),
+    escaped_interpolated_content: (_$) => token.immediate(prec(1, /[^"\\(]+/)),
 
-    unescaped_interpolated_content: ($) => token.immediate(prec(1, /[^'(]+/)),
+    unescaped_interpolated_content: (_$) => token.immediate(prec(1, /[^'(]+/)),
 
     _inter_single_quotes: ($) =>
       seq(
@@ -1060,7 +1060,7 @@ module.exports = grammar({
         token.immediate('"'),
       ),
 
-    inter_escape_sequence: ($) =>
+    inter_escape_sequence: (_$) =>
       token.immediate(
         seq(
           "\\",
@@ -1112,7 +1112,7 @@ module.exports = grammar({
         $.expr_parenthesized,
       ),
 
-    _list_item_starts_with_sign: ($) =>
+    _list_item_starts_with_sign: (_$) =>
       seq(
         choice(token(OPR().minus), token(OPR().plus)),
         token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
@@ -1163,7 +1163,7 @@ module.exports = grammar({
         ),
       ),
 
-    _record_key: ($) =>
+    _record_key: (_$) =>
       choice(
         // This distinguish number and identifier starting with -/+
         seq(
@@ -1267,7 +1267,7 @@ module.exports = grammar({
 
     _flag: ($) => prec.right(5, choice($.short_flag, $.long_flag)),
 
-    short_flag: ($) =>
+    short_flag: (_$) =>
       seq(token(OPR().minus), token.immediate(/[_\p{XID_Continue}]+/)),
 
     long_flag: ($) =>
@@ -1287,7 +1287,7 @@ module.exports = grammar({
 
     /// Comments
 
-    comment: ($) => seq(PUNC().hash, /.*/),
+    comment: (_$) => seq(PUNC().hash, /.*/),
   },
 });
 
