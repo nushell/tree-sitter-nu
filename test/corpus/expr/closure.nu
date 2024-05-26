@@ -191,3 +191,31 @@ closure-007-record-value
               (pipeline
                 (pipe_element
                   (val_string))))))))))
+
+=====
+closure-008-while
+=====
+
+let cl = {
+  while $condition {
+    echo hello
+  }
+}
+
+-----
+
+(nu_script
+  (stmt_let
+    (identifier)
+    (pipeline
+      (pipe_element
+        (val_closure
+          (ctrl_while
+            (val_variable
+              (identifier))
+            (block
+              (pipeline
+                (pipe_element
+                  (command
+                    (cmd_identifier)
+                    (val_string)))))))))))
