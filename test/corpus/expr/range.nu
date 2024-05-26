@@ -53,33 +53,43 @@ range-002-float-exponent
   (pipeline
     (pipe_element
       (val_list
-        (val_range
-          (val_number)
-          (val_number))
-        (val_range
-          (val_number)
-          (val_number))
-        (val_range
-          (val_number)
-          (val_number))
-        (val_range
-          (val_number)
-          (val_number))
-        (val_range
-          (val_number)
-          (val_number))
-        (val_range
-          (val_number)
-          (val_number))
-        (val_range
-          (val_number)
-          (val_number))
-        (val_range
-          (val_number)
-          (val_number))
-        (val_range
-          (val_number)
-          (val_number))))))
+        (list_body
+          (val_entry
+            (val_range
+              (val_number)
+              (val_number)))
+          (val_entry
+            (val_range
+              (val_number)
+              (val_number)))
+          (val_entry
+            (val_range
+              (val_number)
+              (val_number)))
+          (val_entry
+            (val_range
+              (val_number)
+              (val_number)))
+          (val_entry
+            (val_range
+              (val_number)
+              (val_number)))
+          (val_entry
+            (val_range
+              (val_number)
+              (val_number)))
+          (val_entry
+            (val_range
+              (val_number)
+              (val_number)))
+          (val_entry
+            (val_range
+              (val_number)
+              (val_number)))
+          (val_entry
+            (val_range
+              (val_number)
+              (val_number))))))))
 
 =====
 range-003-only-start
@@ -95,20 +105,20 @@ range-003-only-start
 (nu_script
   (pipeline
     (pipe_element
-        (val_range
-          (val_number))))
+      (val_range
+        (val_number))))
   (pipeline
     (pipe_element
-        (val_range
-          (val_number))))
+      (val_range
+        (val_number))))
   (pipeline
     (pipe_element
-        (val_range
-          (val_number))))
+      (val_range
+        (val_number))))
   (pipeline
     (pipe_element
-        (val_range
-          (val_number)))))
+      (val_range
+        (val_number)))))
 
 =====
 range-004-only-end
@@ -129,40 +139,40 @@ range-004-only-end
 (nu_script
   (pipeline
     (pipe_element
-        (val_range
-          (val_number))))
+      (val_range
+        (val_number))))
   (pipeline
     (pipe_element
-        (val_range
-          (val_number))))
+      (val_range
+        (val_number))))
   (pipeline
     (pipe_element
-        (val_range
-          (val_number))))
+      (val_range
+        (val_number))))
   (pipeline
     (pipe_element
-        (val_range
-          (val_number))))
+      (val_range
+        (val_number))))
   (pipeline
     (pipe_element
-        (val_range
-          (val_number))))
+      (val_range
+        (val_number))))
   (pipeline
     (pipe_element
-        (val_range
-          (val_number))))
+      (val_range
+        (val_number))))
   (pipeline
     (pipe_element
-        (val_range
-          (val_number))))
+      (val_range
+        (val_number))))
   (pipeline
     (pipe_element
-        (val_range
-          (val_number))))
+      (val_range
+        (val_number))))
   (pipeline
     (pipe_element
-        (val_range
-          (val_number)))))
+      (val_range
+        (val_number)))))
 
 =====
 range-005-variable
@@ -714,10 +724,13 @@ range ($n + 1)..($n + 3)..=([$a $b] | math max)
             (pipeline
               (pipe_element
                 (val_list
-                  (val_variable
-                    (identifier))
-                  (val_variable
-                    (identifier))))
+                  (list_body
+                    (val_entry
+                      (val_variable
+                        (identifier)))
+                    (val_entry
+                      (val_variable
+                        (identifier))))))
               (pipe_element
                 (command
                   (cmd_identifier)
@@ -803,10 +816,13 @@ range ..($n + 3)..=([$a $b] | math max)
             (pipeline
               (pipe_element
                 (val_list
-                  (val_variable
-                    (identifier))
-                  (val_variable
-                    (identifier))))
+                  (list_body
+                    (val_entry
+                      (val_variable
+                        (identifier)))
+                    (val_entry
+                      (val_variable
+                        (identifier))))))
               (pipe_element
                 (command
                   (cmd_identifier)
