@@ -1082,18 +1082,35 @@ module.exports = grammar({
     val_list: ($) =>
       seq(
         BRACK().open_brack,
-        repeat(
-          field(
-            "item",
-            seq(
-              choice(
-                $._list_item_expression,
-                alias($._unquoted_in_list, $.val_string),
-                alias($.short_flag, $.val_string),
-                alias($.long_flag, $.val_string),
-                alias($._list_item_starts_with_sign, $.val_string),
+        optional(
+          seq(
+            repeat(
+              seq(
+                field(
+                  "item",
+                  choice(
+                    $._list_item_expression,
+                    alias($._unquoted_in_list, $.val_string),
+                    alias($.short_flag, $.val_string),
+                    alias($.long_flag, $.val_string),
+                    alias($._list_item_starts_with_sign, $.val_string),
+                  ),
+                ),
+                $._entry_separator,
               ),
-              optional(PUNC().comma),
+            ),
+            seq(
+              field(
+                "item",
+                choice(
+                  $._list_item_expression,
+                  alias($._unquoted_in_list, $.val_string),
+                  alias($.short_flag, $.val_string),
+                  alias($.long_flag, $.val_string),
+                  alias($._list_item_starts_with_sign, $.val_string),
+                ),
+              ),
+              optional($._entry_separator),
             ),
           ),
         ),
@@ -1121,21 +1138,16 @@ module.exports = grammar({
         optional(
           seq(
             optional(
-              repeat(
-                seq(field("entry", $.record_entry), $._record_entry_separator),
-              ),
+              repeat(seq(field("entry", $.record_entry), $._entry_separator)),
             ),
-            seq(
-              field("entry", $.record_entry),
-              optional($._record_entry_separator),
-            ),
+            seq(field("entry", $.record_entry), optional($._entry_separator)),
           ),
         ),
         BRACK().close_brace,
         optional($.cell_path),
       ),
 
-    _record_entry_separator: (_$) => choice(PUNC().comma, /\s/, /[\r\n]/),
+    _entry_separator: (_$) => prec(-69, choice(PUNC().comma, /\s/, /[\r\n]/)),
 
     record_entry: ($) =>
       seq(
