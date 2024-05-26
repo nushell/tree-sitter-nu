@@ -1118,15 +1118,17 @@ module.exports = grammar({
     val_record: ($) =>
       seq(
         BRACK().open_brace,
-        seq(
-          optional(
-            repeat(
-              seq(field("entry", $.record_entry), $._record_entry_separator),
-            ),
-          ),
+        optional(
           seq(
-            field("entry", $.record_entry),
-            optional($._record_entry_separator),
+            optional(
+              repeat(
+                seq(field("entry", $.record_entry), $._record_entry_separator),
+              ),
+            ),
+            seq(
+              field("entry", $.record_entry),
+              optional($._record_entry_separator),
+            ),
           ),
         ),
         BRACK().close_brace,
