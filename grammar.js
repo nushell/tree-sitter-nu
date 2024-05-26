@@ -1084,38 +1084,27 @@ module.exports = grammar({
         BRACK().open_brack,
         optional(
           seq(
-            repeat(
-              seq(
-                field(
-                  "item",
-                  choice(
-                    $._list_item_expression,
-                    alias($._unquoted_in_list, $.val_string),
-                    alias($.short_flag, $.val_string),
-                    alias($.long_flag, $.val_string),
-                    alias($._list_item_starts_with_sign, $.val_string),
-                  ),
-                ),
-                $._entry_separator,
-              ),
-            ),
-            seq(
-              field(
-                "item",
-                choice(
-                  $._list_item_expression,
-                  alias($._unquoted_in_list, $.val_string),
-                  alias($.short_flag, $.val_string),
-                  alias($.long_flag, $.val_string),
-                  alias($._list_item_starts_with_sign, $.val_string),
-                ),
-              ),
-              optional($._entry_separator),
-            ),
+            repeat(seq($.val_entry, $._entry_separator)),
+            seq($.val_entry, optional($._entry_separator)),
           ),
         ),
         BRACK().close_brack,
         optional($.cell_path),
+      ),
+
+    val_entry: ($) =>
+      prec(
+        10,
+        field(
+          "item",
+          choice(
+            $._list_item_expression,
+            alias($._unquoted_in_list, $.val_string),
+            alias($.short_flag, $.val_string),
+            alias($.long_flag, $.val_string),
+            alias($._list_item_starts_with_sign, $.val_string),
+          ),
+        ),
       ),
 
     _list_item_expression: ($) =>
