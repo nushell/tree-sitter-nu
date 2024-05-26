@@ -201,9 +201,13 @@ subexpr-009-closure
         (pipeline
           (pipe_element
             (val_list
-              (val_number)
-              (val_number)
-              (val_number)))
+              (list_body
+                (val_entry
+                  (val_number))
+                (val_entry
+                  (val_number))
+                (val_entry
+                  (val_number)))))
           (pipe_element
             (command
               (cmd_identifier)
