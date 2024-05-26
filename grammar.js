@@ -1082,15 +1082,12 @@ module.exports = grammar({
     val_list: ($) =>
       seq(
         BRACK().open_brack,
-        optional(
-          seq(
-            repeat(seq($.val_entry, $._entry_separator)),
-            seq($.val_entry, optional($._entry_separator)),
-          ),
-        ),
+        optional($.list_body),
         BRACK().close_brack,
         optional($.cell_path),
       ),
+
+    list_body: general_body_rules("entry", "val_entry", "_entry_separator"),
 
     val_entry: ($) =>
       prec(
@@ -1124,17 +1121,16 @@ module.exports = grammar({
     val_record: ($) =>
       seq(
         BRACK().open_brace,
-        optional(
-          seq(
-            optional(
-              repeat(seq(field("entry", $.record_entry), $._entry_separator)),
-            ),
-            seq(field("entry", $.record_entry), optional($._entry_separator)),
-          ),
-        ),
+        optional($.record_body),
         BRACK().close_brace,
         optional($.cell_path),
       ),
+
+    record_body: general_body_rules(
+      "entry",
+      "record_entry",
+      "_entry_separator",
+    ),
 
     _entry_separator: (_$) =>
       prec(20, token(choice(PUNC().comma, /\s/, /[\r\n]/))),
@@ -1294,6 +1290,17 @@ module.exports = grammar({
     comment: ($) => seq(PUNC().hash, /.*/),
   },
 });
+
+function general_body_rules(field_name, entry, separator) {
+  return ($) =>
+    prec(
+      20,
+      seq(
+        repeat(seq(field(field_name, $[entry]), $[separator])), // Normal entries MUST have a separator
+        seq(field(field_name, $[entry]), optional($[separator])), // Final entry may or may not have separator
+      ),
+    );
+}
 
 function parenthesized_body_rules(suffix, terminator) {
   const parenthesized = "_parenthesized";
