@@ -10,17 +10,29 @@ values-001-numbers
   (pipeline
     (pipe_element
       (val_list
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)))))
+        (list_body
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number)))))))
 
 =====
 values-002-booleans
@@ -35,13 +47,17 @@ values-002-booleans
   (pipeline
     (pipe_element
       (val_list
-        (val_bool)
-        (val_bool)
-        (expr_parenthesized
-          (pipeline
-            (pipe_element
-              (expr_unary
-                (val_bool)))))))))
+        (list_body
+          (val_entry
+            (val_bool))
+          (val_entry
+            (val_bool))
+          (val_entry
+            (expr_parenthesized
+              (pipeline
+                (pipe_element
+                  (expr_unary
+                    (val_bool)))))))))))
 
 =====
 values-003-nothing
@@ -58,8 +74,11 @@ values-003-nothing
   (pipeline
     (pipe_element
       (val_list
-        (val_nothing)
-        (val_nothing)))))
+        (list_body
+          (val_entry
+            (val_nothing))
+          (val_entry
+            (val_nothing)))))))
 
 =====
 values-004-binary
@@ -103,12 +122,19 @@ values-005-numbers-with-underscore
   (pipeline
     (pipe_element
       (val_list
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)))))
+        (list_body
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number)))))))
 
 =====
 values-006-infinity-number
@@ -133,16 +159,27 @@ values-006-infinity-number
   (pipeline
     (pipe_element
       (val_list
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)))))
+        (list_body
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number)))))))
 
 =====
 values-006-not-a-number
@@ -161,7 +198,12 @@ values-006-not-a-number
   (pipeline
     (pipe_element
       (val_list
-        (val_number)
-        (val_number)
-        (val_number)
-        (val_number)))))
+        (list_body
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number)))))))
