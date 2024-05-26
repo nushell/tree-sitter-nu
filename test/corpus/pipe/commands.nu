@@ -258,8 +258,7 @@ cargo install --path ./dir
         (cmd_identifier)
         (val_string)
         (long_flag)
-        (val_string))))
-  )
+        (val_string)))))
 
 ======
 cmd-012-path-string-2-dots
@@ -286,8 +285,7 @@ cd ../dir
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string))))
-  )
+        (val_string)))))
 
 ======
 cmd-013-path-string-3-dots
@@ -314,8 +312,7 @@ cd .../dir
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string))))
-  )
+        (val_string)))))
 
 ======
 cmd-014-path-string-4-dots
@@ -342,8 +339,7 @@ cd ..../dir
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string))))
-  )
+        (val_string)))))
 
 ======
 cmd-015-unquoted-starts-with-numeric
@@ -436,8 +432,11 @@ echo [hello,world]
       (command
         (cmd_identifier)
         (val_list
-          (val_string)
-          (val_string))))))
+          (list_body
+            (val_entry
+              (val_string))
+            (val_entry
+              (val_string))))))))
 
 ======
 cmd-017-string-external

@@ -1,3 +1,5 @@
+/// <reference types="tree-sitter-cli/dsl" />
+// @ts-check
 module.exports = grammar({
   name: "nu",
 
@@ -1080,23 +1082,26 @@ module.exports = grammar({
     val_list: ($) =>
       seq(
         BRACK().open_brack,
-        repeat(
-          field(
-            "item",
-            seq(
-              choice(
-                $._list_item_expression,
-                alias($._unquoted_in_list, $.val_string),
-                alias($.short_flag, $.val_string),
-                alias($.long_flag, $.val_string),
-                alias($._list_item_starts_with_sign, $.val_string),
-              ),
-              optional(PUNC().comma),
-            ),
-          ),
-        ),
+        optional($.list_body),
         BRACK().close_brack,
         optional($.cell_path),
+      ),
+
+    list_body: general_body_rules("entry", "val_entry", "_entry_separator"),
+
+    val_entry: ($) =>
+      prec(
+        10,
+        field(
+          "item",
+          choice(
+            $._list_item_expression,
+            alias($._unquoted_in_list, $.val_string),
+            alias($.short_flag, $.val_string),
+            alias($.long_flag, $.val_string),
+            alias($._list_item_starts_with_sign, $.val_string),
+          ),
+        ),
       ),
 
     _list_item_expression: ($) =>
@@ -1116,10 +1121,19 @@ module.exports = grammar({
     val_record: ($) =>
       seq(
         BRACK().open_brace,
-        repeat(field("entry", $.record_entry)),
+        optional($.record_body),
         BRACK().close_brace,
         optional($.cell_path),
       ),
+
+    record_body: general_body_rules(
+      "entry",
+      "record_entry",
+      "_entry_separator",
+    ),
+
+    _entry_separator: (_$) =>
+      prec(20, token(choice(PUNC().comma, /\s/, /[\r\n]/))),
 
     record_entry: ($) =>
       seq(
@@ -1147,7 +1161,6 @@ module.exports = grammar({
             alias($.cmd_identifier, $.val_string),
           ),
         ),
-        optional(PUNC().comma),
       ),
 
     _record_key: ($) =>
@@ -1277,6 +1290,17 @@ module.exports = grammar({
     comment: ($) => seq(PUNC().hash, /.*/),
   },
 });
+
+function general_body_rules(field_name, entry, separator) {
+  return ($) =>
+    prec(
+      20,
+      seq(
+        repeat(seq(field(field_name, $[entry]), $[separator])), // Normal entries MUST have a separator
+        seq(field(field_name, $[entry]), optional($[separator])), // Final entry may or may not have separator
+      ),
+    );
+}
 
 function parenthesized_body_rules(suffix, terminator) {
   const parenthesized = "_parenthesized";

@@ -10,9 +10,10 @@ record-001-basic
   (pipeline
     (pipe_element
       (val_record
-        (record_entry
-          (val_string)
-          (val_string))))))
+        (record_body
+          (record_entry
+            (val_string)
+            (val_string)))))))
 
 =====
 record-002-empty
@@ -43,15 +44,16 @@ record-003-number-key
   (pipeline
     (pipe_element
       (val_record
-        (record_entry
-          (val_number)
-          (val_string))
-        (record_entry
-          (val_number)
-          (val_string))
-        (record_entry
-          (val_number)
-          (val_string))))))
+        (record_body
+          (record_entry
+            (val_number)
+            (val_string))
+          (record_entry
+            (val_number)
+            (val_string))
+          (record_entry
+            (val_number)
+            (val_string)))))))
 
 =====
 record-004-key-using-symbol
@@ -71,21 +73,22 @@ record-004-key-using-symbol
   (pipeline
     (pipe_element
       (val_record
-        (record_entry
-          (identifier)
-          (val_string))
-        (record_entry
-          (identifier)
-          (val_string))
-        (record_entry
-          (identifier)
-          (val_string))
-        (record_entry
-          (identifier)
-          (val_string))
-        (record_entry
-          (identifier)
-          (val_string))))))
+        (record_body
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string)))))))
 
 =====
 record-005-variable-key
@@ -99,10 +102,11 @@ record-005-variable-key
   (pipeline
     (pipe_element
       (val_record
-        (record_entry
-          (val_variable
-            (identifier))
-          (val_string))))))
+        (record_body
+          (record_entry
+            (val_variable
+              (identifier))
+            (val_string)))))))
 
 =====
 record-006-subexpression-key
@@ -118,19 +122,23 @@ record-006-subexpression-key
   (pipeline
     (pipe_element
       (val_record
-        (record_entry
-          (expr_parenthesized
-            (pipeline
-              (pipe_element
-                (val_list
-                  (val_string)
-                  (val_string)))
-              (pipe_element
-                (command
-                  (cmd_identifier)
-                  (val_string)
-                  (val_string)))))
-          (val_string))))))
+        (record_body
+          (record_entry
+            (expr_parenthesized
+              (pipeline
+                (pipe_element
+                  (val_list
+                    (list_body
+                      (val_entry
+                        (val_string))
+                      (val_entry
+                        (val_string)))))
+                (pipe_element
+                  (command
+                    (cmd_identifier)
+                    (val_string)
+                    (val_string)))))
+            (val_string)))))))
 
 =====
 record-007-keyword-key
@@ -147,15 +155,17 @@ record-007-keyword-key
   (pipeline
     (pipe_element
       (val_record
-        (record_entry
-          (identifier)
-          (val_string))
-        (record_entry
-          (identifier)
-          (val_record
-            (record_entry
-              (identifier)
-              (val_string))))))))
+        (record_body
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_record
+              (record_body
+                (record_entry
+                  (identifier)
+                  (val_string))))))))))
 
 =====
 record-008-modifier-key
@@ -172,12 +182,65 @@ record-008-modifier-key
   (pipeline
     (pipe_element
       (val_record
-        (record_entry
-          (identifier)
-          (val_string))
-        (record_entry
-          (identifier)
-          (val_record
-            (record_entry
-              (identifier)
-              (val_string))))))))
+        (record_body
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_record
+              (record_body
+                (record_entry
+                  (identifier)
+                  (val_string))))))))))
+
+=====
+record-009-duration
+=====
+
+{
+    export: 5sec,
+    use: {export: value},
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (val_duration
+              (val_number)
+              (duration_unit)))
+          (record_entry
+            (identifier)
+            (val_record
+              (record_body
+                (record_entry
+                  (identifier)
+                  (val_string))))))))))
+
+=====
+record-010-key-value-seperation
+=====
+
+{
+    export: 556key: 897
+}
+
+-----
+
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (ERROR
+              (identifier))
+            (val_number)))))))

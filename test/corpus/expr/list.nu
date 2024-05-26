@@ -18,13 +18,21 @@ list-001-item-string
   (pipeline
     (pipe_element
       (val_list
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)))))
+        (list_body
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string)))))))
 
 =====
 list-002-unquoted-starts-with-numeric
@@ -46,13 +54,21 @@ list-002-unquoted-starts-with-numeric
   (pipeline
     (pipe_element
       (val_list
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)))))
+        (list_body
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string)))))))
 
 =====
 list-003-unquoted-arithmetic-operator
@@ -75,14 +91,23 @@ list-003-unquoted-arithmetic-operator
   (pipeline
     (pipe_element
       (val_list
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)))))
+        (list_body
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string)))))))
 
 =====
 list-004-unquoted-comparison-operator
@@ -103,12 +128,19 @@ list-004-unquoted-comparison-operator
   (pipeline
     (pipe_element
       (val_list
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)))))
+        (list_body
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string)))))))
 
 =====
 list-005-unquoted-regex-operator
@@ -125,8 +157,11 @@ list-005-unquoted-regex-operator
   (pipeline
     (pipe_element
       (val_list
-        (val_string)
-        (val_string)))))
+        (list_body
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string)))))))
 
 =====
 list-006-unquoted-assignment-operator
@@ -146,11 +181,17 @@ list-006-unquoted-assignment-operator
   (pipeline
     (pipe_element
       (val_list
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)))))
+        (list_body
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string)))))))
 
 =====
 list-007-unquoted-range-operator
@@ -168,9 +209,13 @@ list-007-unquoted-range-operator
   (pipeline
     (pipe_element
       (val_list
-        (val_string)
-        (val_string)
-        (val_string)))))
+        (list_body
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string)))))))
 
 =====
 list-008-separated-by-comma
@@ -184,9 +229,13 @@ list-008-separated-by-comma
   (pipeline
     (pipe_element
       (val_list
-        (val_string)
-        (val_string)
-        (val_number)))))
+        (list_body
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_number)))))))
 
 =====
 list-009-unquoted-path
@@ -210,12 +259,22 @@ list-009-unquoted-path
   (pipeline
     (pipe_element
       (val_list
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)
-        (val_string)))))
+        (list_body
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string)))))))
