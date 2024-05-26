@@ -222,3 +222,25 @@ record-009-duration
                 (record_entry
                   (identifier)
                   (val_string))))))))))
+
+=====
+record-010-key-value-seperation
+=====
+
+{
+    export: 556key: 897
+}
+
+-----
+
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (ERROR
+              (identifier))
+            (val_number)))))))
