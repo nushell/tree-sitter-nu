@@ -10,8 +10,11 @@ closure-001-basic
   (pipeline
     (pipe_element
       (val_list
-        (val_number)
-        (val_number)))
+        (list_body
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number)))))
     (pipe_element
       (command
         (cmd_identifier)
@@ -38,9 +41,13 @@ closure-002-closure-without-parameter
   (pipeline
     (pipe_element
       (val_list
-        (val_number)
-        (val_number)
-        (val_number)))
+        (list_body
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number)))))
     (pipe_element
       (command
         (cmd_identifier)
@@ -66,8 +73,11 @@ closure-003-closure-without-parameter-pipes
   (pipeline
     (pipe_element
       (val_list
-        (val_number)
-        (val_number)))
+        (list_body
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number)))))
     (pipe_element
       (command
         (cmd_identifier)
@@ -77,7 +87,6 @@ closure-003-closure-without-parameter-pipes
               (expr_binary
                 (val_variable)
                 (val_number)))))))))
-
 
 =====
 closure-004-cmd-args
@@ -138,9 +147,9 @@ let cl = {|x|
     (pipeline
       (pipe_element
         (val_closure
-        (parameter_pipes
-          (parameter
-            (identifier)))
+          (parameter_pipes
+            (parameter
+              (identifier)))
           (pipeline
             (pipe_element
               (expr_binary
@@ -163,24 +172,25 @@ closure-007-record-value
   (pipeline
     (pipe_element
       (val_record
-        (record_entry
-          (identifier)
-          (val_closure
-            (parameter_pipes
-              (parameter
-                (identifier)))
-            (pipeline
-              (pipe_element
-                (expr_binary
-                  (val_variable
-                    (identifier))
-                  (val_number))))))
-        (record_entry
-          (identifier)
-          (val_closure
-            (pipeline
-              (pipe_element
-                (val_string)))))))))
+        (record_body
+          (record_entry
+            (identifier)
+            (val_closure
+              (parameter_pipes
+                (parameter
+                  (identifier)))
+              (pipeline
+                (pipe_element
+                  (expr_binary
+                    (val_variable
+                      (identifier))
+                    (val_number))))))
+          (record_entry
+            (identifier)
+            (val_closure
+              (pipeline
+                (pipe_element
+                  (val_string))))))))))
 
 =====
 closure-008-while

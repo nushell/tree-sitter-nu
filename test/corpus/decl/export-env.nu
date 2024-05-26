@@ -28,9 +28,10 @@ export-env {
           (command
             (cmd_identifier)
             (val_record
-              (record_entry
-                (identifier)
-                (val_string))
-              (record_entry
-                (identifier)
-                (val_string)))))))))
+              (record_body
+                (record_entry
+                  (identifier)
+                  (val_string))
+                (record_entry
+                  (identifier)
+                  (val_string))))))))))

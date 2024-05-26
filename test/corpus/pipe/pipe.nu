@@ -177,12 +177,18 @@ match $x {
           (match_pattern
             (val_number))
           (val_list
-            (val_number)))
+            (list_body
+              (val_entry
+                (val_number)))))
         (default_arm
           (val_list
-            (val_number)
-            (val_number)
-            (val_number)))))
+            (list_body
+              (val_entry
+                (val_number))
+              (val_entry
+                (val_number))
+              (val_entry
+                (val_number)))))))
     (pipe_element
       (command
         (cmd_identifier)
@@ -220,13 +226,18 @@ if $cond {
           (pipeline
             (pipe_element
               (val_list
-                (val_number)))))
+                (list_body
+                  (val_entry
+                    (val_number)))))))
         (block
           (pipeline
             (pipe_element
               (val_list
-                (val_number)
-                (val_number)))))))
+                (list_body
+                  (val_entry
+                    (val_number))
+                  (val_entry
+                    (val_number)))))))))
     (pipe_element
       (command
         (cmd_identifier)
@@ -258,7 +269,9 @@ do { [1] }
           (pipeline
             (pipe_element
               (val_list
-                (val_number)))))))
+                (list_body
+                  (val_entry
+                    (val_number)))))))))
     (pipe_element
       (command
         (cmd_identifier)
@@ -292,7 +305,9 @@ try {
           (pipeline
             (pipe_element
               (val_list
-                (val_number)))))))
+                (list_body
+                  (val_entry
+                    (val_number)))))))))
     (pipe_element
       (command
         (cmd_identifier)
@@ -328,13 +343,18 @@ try {
           (pipeline
             (pipe_element
               (val_list
-                (val_number)))))
+                (list_body
+                  (val_entry
+                    (val_number)))))))
         (block
           (pipeline
             (pipe_element
               (val_list
-                (val_number)
-                (val_number)))))))
+                (list_body
+                  (val_entry
+                    (val_number))
+                  (val_entry
+                    (val_number)))))))))
     (pipe_element
       (command
         (cmd_identifier)
@@ -362,8 +382,11 @@ pipe-012-next-line-after-value
   (pipeline
     (pipe_element
       (val_list
-        (val_number)
-        (val_number)))
+        (list_body
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number)))))
     (pipe_element
       (command
         (cmd_identifier)))))
@@ -420,7 +443,9 @@ do { [1] } |
           (pipeline
             (pipe_element
               (val_list
-                (val_number)))))))
+                (list_body
+                  (val_entry
+                    (val_number)))))))))
     (pipe_element
       (command
         (cmd_identifier)

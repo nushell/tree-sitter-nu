@@ -48,7 +48,6 @@ let x = 42 | math sin
           (cmd_identifier)
           (val_string))))))
 
-
 =====
 let-004-with-type
 =====
@@ -84,6 +83,7 @@ let x: record<name: string> = { name: 'tree-sitter' }
     (pipeline
       (pipe_element
         (val_record
-          (record_entry
-            (identifier)
-            (val_string)))))))
+          (record_body
+            (record_entry
+              (identifier)
+              (val_string))))))))

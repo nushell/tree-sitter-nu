@@ -2520,6 +2520,22 @@
     }
   },
   {
+    "type": "list_body",
+    "named": true,
+    "fields": {
+      "entry": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "val_entry",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "list_type",
     "named": true,
     "fields": {
@@ -3589,6 +3605,22 @@
     }
   },
   {
+    "type": "record_body",
+    "named": true,
+    "fields": {
+      "entry": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "record_entry",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "record_entry",
     "named": true,
     "fields": {
@@ -4285,6 +4317,86 @@
     }
   },
   {
+    "type": "val_entry",
+    "named": true,
+    "fields": {
+      "item": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
+            "type": "expr_unary",
+            "named": true
+          },
+          {
+            "type": "val_binary",
+            "named": true
+          },
+          {
+            "type": "val_bool",
+            "named": true
+          },
+          {
+            "type": "val_closure",
+            "named": true
+          },
+          {
+            "type": "val_date",
+            "named": true
+          },
+          {
+            "type": "val_duration",
+            "named": true
+          },
+          {
+            "type": "val_filesize",
+            "named": true
+          },
+          {
+            "type": "val_interpolated",
+            "named": true
+          },
+          {
+            "type": "val_list",
+            "named": true
+          },
+          {
+            "type": "val_nothing",
+            "named": true
+          },
+          {
+            "type": "val_number",
+            "named": true
+          },
+          {
+            "type": "val_range",
+            "named": true
+          },
+          {
+            "type": "val_record",
+            "named": true
+          },
+          {
+            "type": "val_string",
+            "named": true
+          },
+          {
+            "type": "val_table",
+            "named": true
+          },
+          {
+            "type": "val_variable",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "val_filesize",
     "named": true,
     "fields": {
@@ -4373,10 +4485,6 @@
             "named": true
           },
           {
-            "type": "val_closure",
-            "named": true
-          },
-          {
             "type": "val_date",
             "named": true
           },
@@ -4386,10 +4494,6 @@
           },
           {
             "type": "val_filesize",
-            "named": true
-          },
-          {
-            "type": "val_interpolated",
             "named": true
           },
           {
@@ -4442,11 +4546,15 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
           "type": "cell_path",
+          "named": true
+        },
+        {
+          "type": "list_body",
           "named": true
         }
       ]
@@ -4546,11 +4654,15 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
           "type": "cell_path",
+          "named": true
+        },
+        {
+          "type": "record_body",
           "named": true
         }
       ]
