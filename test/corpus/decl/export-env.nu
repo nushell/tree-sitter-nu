@@ -1,4 +1,16 @@
 =====
+export-env-001-smoke-test
+=====
+
+export-env {}
+
+-----
+
+(nu_script
+  (decl_export
+    (block)))
+
+=====
 export-env-002-with-commands
 =====
 
