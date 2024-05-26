@@ -1136,7 +1136,8 @@ module.exports = grammar({
         optional($.cell_path),
       ),
 
-    _entry_separator: (_$) => prec(-69, choice(PUNC().comma, /\s/, /[\r\n]/)),
+    _entry_separator: (_$) =>
+      prec(20, token(choice(PUNC().comma, /\s/, /[\r\n]/))),
 
     record_entry: ($) =>
       seq(
