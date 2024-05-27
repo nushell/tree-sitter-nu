@@ -1146,7 +1146,7 @@ module.exports = grammar({
     ),
 
     _entry_separator: (_$) =>
-      prec(20, token(choice(PUNC().comma, /\s/, /[\r\n]/))),
+      token(prec(20, choice(PUNC().comma, /\s/, /[\r\n]/))),
 
     record_entry: ($) =>
       seq(
