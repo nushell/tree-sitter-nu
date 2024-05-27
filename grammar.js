@@ -36,15 +36,24 @@ module.exports = grammar({
 
     nu_script: ($) => seq(optional($.shebang), optional($._block_body)),
 
-    shebang: ($) => seq("#!", /.*\n/),
+    shebang: (_$) => seq("#!", /.*\n/),
 
-    ...block_body_rules("", ($) => $._terminator),
-    ...block_body_rules("_last", ($) => optional($._terminator)),
+    ...block_body_rules("", (/** @type {any} */ $) => $._terminator),
+    ...block_body_rules("_last", (/** @type {any} */ $) =>
+      optional($._terminator),
+    ),
 
     // Because everything inside of the parentheses are treated as if they were written together,
     // terminator must be semicolon.
-    ...parenthesized_body_rules("", ($) => PUNC().semicolon),
-    ...parenthesized_body_rules("_last", ($) => optional(PUNC().semicolon)),
+    ...parenthesized_body_rules(
+      "",
+      // @ts-ignore
+      (/** @type {any} */ _$) => PUNC().semicolon,
+    ),
+    // @ts-ignore
+    ...parenthesized_body_rules("_last", (/** @type {any} */ _$) =>
+      optional(PUNC().semicolon),
+    ),
 
     _block_body: ($) =>
       seq(
@@ -58,11 +67,11 @@ module.exports = grammar({
     // for simplicity, i used the `rust` definition of an identifier and some symbols
     // but in `nu` the rule is way more relaxed than this
 
-    cmd_identifier: ($) => token(/[_\p{XID_Start}][_\-\p{XID_Continue}!?.]*/),
+    cmd_identifier: (_$) => token(/[_\p{XID_Start}][_\-\p{XID_Continue}!?.]*/),
 
-    identifier: ($) => token(/[_\p{XID_Start}][_\p{XID_Continue}]*/),
+    identifier: (_$) => token(/[_\p{XID_Start}][_\p{XID_Continue}]*/),
 
-    _long_flag_identifier: ($) =>
+    _long_flag_identifier: (_$) =>
       token.immediate(/[\p{XID_Start}_][\p{XID_Continue}_-]*/),
 
     _command_name: ($) =>
@@ -77,7 +86,7 @@ module.exports = grammar({
         field("dollar_name", $.val_variable),
       ),
 
-    _terminator: ($) => choice(PUNC().semicolon, "\n"),
+    _terminator: (_$) => choice(PUNC().semicolon, "\n"),
 
     /// Top Level Items
 
@@ -200,7 +209,7 @@ module.exports = grammar({
     _all_type: ($) =>
       field("type", choice($.list_type, $.collection_type, $.flat_type)),
 
-    flat_type: ($) => field("flat_type", FLAT_TYPES()),
+    flat_type: (_$) => field("flat_type", FLAT_TYPES()),
 
     collection_type: ($) => {
       const key = field(
@@ -246,7 +255,7 @@ module.exports = grammar({
     flag_capsule: ($) =>
       seq(BRACK().open_paren, $.param_short_flag, BRACK().close_paren),
 
-    param_short_flag: ($) =>
+    param_short_flag: (_$) =>
       seq("-", field("name", token.immediate(/[a-zA-Z0-9]/))),
 
     /// Controls
@@ -484,7 +493,7 @@ module.exports = grammar({
         seq(token.immediate(PUNC().dollar), $.identifier),
       ),
 
-    _match_pattern_ignore_rest: ($) =>
+    _match_pattern_ignore_rest: (_$) =>
       seq(PUNC().dot, token.immediate(PUNC().dot)),
 
     _match_pattern_record: ($) =>
@@ -630,7 +639,7 @@ module.exports = grammar({
     _stmt_overlay: ($) =>
       choice($.overlay_hide, $.overlay_list, $.overlay_new, $.overlay_use),
 
-    overlay_list: ($) => seq(KEYWORD().overlay, MODIFIER().overlay_list),
+    overlay_list: (_$) => seq(KEYWORD().overlay, MODIFIER().overlay_list),
 
     overlay_hide: ($) =>
       prec.right(
@@ -665,7 +674,7 @@ module.exports = grammar({
         field("command_list", $.command_list),
       ),
 
-    wild_card: ($) => token("*"),
+    wild_card: (_$) => token("*"),
 
     command_list: ($) =>
       seq(
@@ -719,6 +728,7 @@ module.exports = grammar({
       choice(
         ...TABLE().map(([precedence, opr]) =>
           prec.left(
+            // @ts-ignore
             precedence,
             seq(
               field(
@@ -734,6 +744,7 @@ module.exports = grammar({
               ),
               optional(
                 seq(
+                  // @ts-ignore
                   field("opr", opr),
                   field("rhs", choice($._expression, $._where_predicate)),
                 ),
@@ -783,9 +794,11 @@ module.exports = grammar({
       choice(
         ...TABLE().map(([precedence, opr]) =>
           prec.right(
+            // @ts-ignore
             precedence,
             seq(
               field("lhs", $._expr_binary_expression),
+              // @ts-ignore
               field("opr", opr),
               field(
                 "rhs",
@@ -823,7 +836,7 @@ module.exports = grammar({
 
     val_range: ($) => {
       // Divide each dot as a token to distinguish $.val_range and $.val_number
-      const create_opr = (immediate) => {
+      const create_opr = (/** @type {boolean} */ immediate) => {
         const head_token = immediate ? token.immediate : token;
         return {
           opr: choice(
@@ -909,13 +922,13 @@ module.exports = grammar({
       ),
 
     /// Literals
-    val_nothing: ($) =>
+    val_nothing: (_$) =>
       choice(
         SPECIAL().null,
         seq(token(BRACK().open_paren), token.immediate(BRACK().close_paren)),
       ),
 
-    val_bool: ($) => choice(SPECIAL().true, SPECIAL().false),
+    val_bool: (_$) => choice(SPECIAL().true, SPECIAL().false),
 
     val_variable: ($) => choice($._var, seq($._var, $.cell_path)),
 
@@ -949,7 +962,7 @@ module.exports = grammar({
       seq(field("value", $.val_number), field("unit", $.filesize_unit)),
 
     // prettier-ignore
-    filesize_unit: ($) => token(choice(
+    filesize_unit: (_$) => token(choice(
       "b", "B",
 
       "kb", "kB", "Kb", "KB",
@@ -968,7 +981,7 @@ module.exports = grammar({
     )),
 
     // prettier-ignore
-    duration_unit: ($) => token(choice(
+    duration_unit: (_$) => token(choice(
       "ns", "µs", "us", "ms", "sec", "min", "hr", "day", "wk"
     )),
 
@@ -980,9 +993,9 @@ module.exports = grammar({
         BRACK().close_brack,
       ),
 
-    hex_digit: ($) => token(/[0-9a-fA-F]+/),
+    hex_digit: (_$) => token(/[0-9a-fA-F]+/),
 
-    val_date: ($) =>
+    val_date: (_$) =>
       token(
         choice(
           /[0-9]{4}-[0-9]{2}-[0-9]{2}/i,
@@ -1006,13 +1019,13 @@ module.exports = grammar({
         '"',
       ),
 
-    _escaped_str_content: ($) => token.immediate(prec(1, /[^"\\]+/)),
+    _escaped_str_content: (_$) => token.immediate(prec(1, /[^"\\]+/)),
 
-    _str_single_quotes: ($) => /'[^']*'/,
+    _str_single_quotes: (_$) => /'[^']*'/,
 
-    _str_back_ticks: ($) => /`[^`]*`/,
+    _str_back_ticks: (_$) => /`[^`]*`/,
 
-    escape_sequence: ($) =>
+    escape_sequence: (_$) =>
       token.immediate(
         seq(
           "\\",
@@ -1030,9 +1043,9 @@ module.exports = grammar({
     val_interpolated: ($) =>
       choice($._inter_single_quotes, $._inter_double_quotes),
 
-    escaped_interpolated_content: ($) => token.immediate(prec(1, /[^"\\(]+/)),
+    escaped_interpolated_content: (_$) => token.immediate(prec(1, /[^"\\(]+/)),
 
-    unescaped_interpolated_content: ($) => token.immediate(prec(1, /[^'(]+/)),
+    unescaped_interpolated_content: (_$) => token.immediate(prec(1, /[^'(]+/)),
 
     _inter_single_quotes: ($) =>
       seq(
@@ -1060,7 +1073,7 @@ module.exports = grammar({
         token.immediate('"'),
       ),
 
-    inter_escape_sequence: ($) =>
+    inter_escape_sequence: (_$) =>
       token.immediate(
         seq(
           "\\",
@@ -1112,7 +1125,7 @@ module.exports = grammar({
         $.expr_parenthesized,
       ),
 
-    _list_item_starts_with_sign: ($) =>
+    _list_item_starts_with_sign: (_$) =>
       seq(
         choice(token(OPR().minus), token(OPR().plus)),
         token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
@@ -1163,7 +1176,7 @@ module.exports = grammar({
         ),
       ),
 
-    _record_key: ($) =>
+    _record_key: (_$) =>
       choice(
         // This distinguish number and identifier starting with -/+
         seq(
@@ -1267,7 +1280,7 @@ module.exports = grammar({
 
     _flag: ($) => prec.right(5, choice($.short_flag, $.long_flag)),
 
-    short_flag: ($) =>
+    short_flag: (_$) =>
       seq(token(OPR().minus), token.immediate(/[_\p{XID_Continue}]+/)),
 
     long_flag: ($) =>
@@ -1287,12 +1300,17 @@ module.exports = grammar({
 
     /// Comments
 
-    comment: ($) => seq(PUNC().hash, /.*/),
+    comment: (_$) => seq(PUNC().hash, /.*/),
   },
 });
 
+/**
+ * @param {string} field_name
+ * @param {string} entry
+ * @param {string} separator
+ */
 function general_body_rules(field_name, entry, separator) {
-  return ($) =>
+  return (/** @type {{ [x: string]: RuleOrLiteral; }} */ $) =>
     prec(
       20,
       seq(
@@ -1302,6 +1320,10 @@ function general_body_rules(field_name, entry, separator) {
     );
 }
 
+/**
+ * @param {string} suffix
+ * @param {{ (_$: any): string; (_$: any): ChoiceRule; (arg0: any): RuleOrLiteral; }} terminator
+ */
 function parenthesized_body_rules(suffix, terminator) {
   const parenthesized = "_parenthesized";
   return {
@@ -1309,7 +1331,9 @@ function parenthesized_body_rules(suffix, terminator) {
 
     /// pipeline
 
-    [`pipeline${parenthesized}${suffix}`]: ($) =>
+    [`pipeline${parenthesized}${suffix}`]: (
+      /** @type {{ pipe_element_parenthesized: RuleOrLiteral; pipe_element: string; pipe_element_parenthesized_last: RuleOrLiteral; }} */ $,
+    ) =>
       prec.right(
         seq(
           repeat(alias($.pipe_element_parenthesized, $.pipe_element)),
@@ -1320,13 +1344,17 @@ function parenthesized_body_rules(suffix, terminator) {
   };
 }
 
+/**
+ * @param {string} suffix
+ * @param {{ ($: { _terminator: any; }): any; ($: { _terminator: RuleOrLiteral; }): ChoiceRule; (arg0: any): RuleOrLiteral; }} terminator
+ */
 function block_body_rules(suffix, terminator) {
   return {
     ..._block_body_rules(suffix),
 
     /// pipeline
 
-    [`pipeline${suffix}`]: ($) =>
+    [`pipeline${suffix}`]: (/** @type {any} */ $) =>
       prec.right(
         seq(
           repeat($.pipe_element),
@@ -1353,7 +1381,15 @@ function block_body_rules(suffix, terminator) {
 /// difference between them is terminator parameter used in pipeline rule that
 /// is terminating statements. This function automatically generates all rules
 /// for a given terminator and names them with specified suffix.
+/**
+ * @param {string} suffix
+ */
 function _block_body_rules(suffix) {
+  /**
+   * @param {{ [x: string]: string; }} $
+   * @param {string} rule_name
+   * @param {string} suffix
+   */
   function alias_for_suffix($, rule_name, suffix) {
     if (suffix == "") {
       return $[rule_name];
@@ -1363,11 +1399,14 @@ function _block_body_rules(suffix) {
   }
 
   return {
-    ["_block_body_statement" + suffix]: ($) =>
-      choice($["_declaration" + suffix], $["_statement" + suffix]),
+    ["_block_body_statement" + suffix]: (
+      /** @type {{ [x: string]: RuleOrLiteral; }} */ $,
+    ) => choice($["_declaration" + suffix], $["_statement" + suffix]),
 
     /// Declarations
-    ["_declaration" + suffix]: ($) =>
+    ["_declaration" + suffix]: (
+      /** @type {{ [x: string]: string; decl_def?: any; decl_export?: any; decl_extern?: any; decl_module?: any; decl_use?: any; }} */ $,
+    ) =>
       choice(
         alias_for_suffix($, "decl_alias", suffix),
         $.decl_def,
@@ -1377,7 +1416,9 @@ function _block_body_rules(suffix) {
         $.decl_use,
       ),
 
-    ["decl_alias" + suffix]: ($) =>
+    ["decl_alias" + suffix]: (
+      /** @type {{ [x: string]: string; _command_name?: any; }} */ $,
+    ) =>
       seq(
         optional(MODIFIER().visibility),
         KEYWORD().alias,
@@ -1388,7 +1429,7 @@ function _block_body_rules(suffix) {
 
     /// Storage statements
 
-    ["stmt_let" + suffix]: ($) =>
+    ["stmt_let" + suffix]: (/** @type {{ [x: string]: RuleOrLiteral; }} */ $) =>
       prec.right(
         1,
         seq(
@@ -1397,10 +1438,12 @@ function _block_body_rules(suffix) {
         ),
       ),
 
-    ["stmt_mut" + suffix]: ($) =>
+    ["stmt_mut" + suffix]: (/** @type {{ [x: string]: RuleOrLiteral; }} */ $) =>
       prec.right(1, seq(KEYWORD().mut, $["_assignment_pattern" + suffix])),
 
-    ["stmt_const" + suffix]: ($) =>
+    ["stmt_const" + suffix]: (
+      /** @type {{ [x: string]: RuleOrLiteral; }} */ $,
+    ) =>
       prec.right(
         1,
         seq(
@@ -1410,7 +1453,9 @@ function _block_body_rules(suffix) {
         ),
       ),
 
-    ["_assignment_pattern" + suffix]: ($) =>
+    ["_assignment_pattern" + suffix]: (
+      /** @type {{ [x: string]: string; _variable_name?: any; param_type?: any; }} */ $,
+    ) =>
       seq(
         field("name", $._variable_name),
         field("type", optional($.param_type)),
@@ -1420,7 +1465,9 @@ function _block_body_rules(suffix) {
 
     /// Statements
 
-    ["_statement" + suffix]: ($) =>
+    ["_statement" + suffix]: (
+      /**⋅@type {any} */ /** @type {{ [x: string]: string; _ctrl_statement?: any; _stmt_hide?: any; _stmt_overlay?: any; stmt_register?: any; stmt_source?: any; assignment?: any; }} */ $,
+    ) =>
       choice(
         $._ctrl_statement,
         $._stmt_hide,
@@ -1436,12 +1483,15 @@ function _block_body_rules(suffix) {
   };
 }
 
+/**
+ * @param {boolean} immediate
+ */
 function _decimal_rule(immediate) {
   const exponent = token.immediate(/[eE][-+]?[\d_]*\d[\d_]*/);
   const digits = token.immediate(/[\d_]*\d[\d_]*/);
   const head_token = immediate ? token.immediate : token;
 
-  return ($) =>
+  return (/** @type {any} */ _$) =>
     choice(
       seq(head_token(/[\d_]*\d[\d_]*/), optional(exponent)),
       seq(
@@ -1473,6 +1523,9 @@ function _decimal_rule(immediate) {
     );
 }
 
+/**
+ * @param {boolean} in_list
+ */
 function _unquoted_rule(in_list) {
   const pattern = in_list
     ? /[^-$\s\n\t\r{}()\[\]"`';,][^\s\n\t\r{}()\[\]"`';,]*/
@@ -1500,7 +1553,9 @@ function _unquoted_rule(in_list) {
   // picked as the a last resort after everything else has failed.
   // so we give it a ridiculously low precedence and place it at the
   // very end
-  return ($) =>
+  return (
+    /** @type {{ _val_number_decimal: RuleOrLiteral; _immediate_decimal: RuleOrLiteral; }} */ $,
+  ) =>
     prec.left(
       -69,
       choice(
