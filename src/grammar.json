@@ -9606,10 +9606,10 @@
       }
     },
     "_entry_separator": {
-      "type": "PREC",
-      "value": 20,
+      "type": "TOKEN",
       "content": {
-        "type": "TOKEN",
+        "type": "PREC",
+        "value": 20,
         "content": {
           "type": "CHOICE",
           "members": [
