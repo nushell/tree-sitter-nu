@@ -56,7 +56,7 @@
 
 ;;; ---
 ;;; literals
-(val_number) @constant.numeric
+(val_number) @number
 (val_duration unit: _ @variable.parameter)
 (val_filesize unit: _ @variable.parameter)
 (val_binary
@@ -64,18 +64,20 @@
        "0b"
        "0o"
        "0x"
-    ] @constant.numeric
+    ] @number
     "[" @punctuation.bracket
     digit: [
         "," @punctuation.delimiter
-        (hex_digit) @constant.number
+        (hex_digit) @number
     ]
     "]" @punctuation.bracket
-) @constant.numeric
+) @number
 (val_bool) @constant.builtin
 (val_nothing) @constant.builtin
 (val_string) @string
-(val_date) @constant.number
+arg_str: (val_string) @variable.parameter
+file_path: (val_string) @variable.parameter
+(val_date) @number
 (inter_escape_sequence) @constant.character.escape
 (escape_sequence) @constant.character.escape
 (val_interpolated [
@@ -176,14 +178,14 @@
     "e>"   "err>"
     "e+o>" "err+out>"
     "o+e>" "out+err>"
-] @special
+] @operator
 
 ;;; ---
 ;;; punctuation
 [
     ","
     ";"
-] @punctuation.delimiter
+] @punctuation.special
 
 (param_short_flag "-" @punctuation.delimiter)
 (param_long_flag ["--"] @punctuation.delimiter)
@@ -193,6 +195,7 @@
 (param_value ["="] @punctuation.special)
 (param_cmd ["@"] @punctuation.special)
 (param_opt ["?"] @punctuation.special)
+(returns "->" @punctuation.special)
 
 [
     "(" ")"
@@ -202,6 +205,8 @@
 
 (val_record
   (record_entry ":" @punctuation.delimiter))
+key: (identifier) @property
+
 ;;; ---
 ;;; identifiers
 (param_rest
@@ -234,17 +239,21 @@
 ) @variable.parameter
 
 (val_variable
-  "$" @variable.parameter
+  "$" @punctuation.special
   [
-   (identifier) @namespace
-   "in"
-   "nu"
-   "env"
-   ] @special
-)
+   (identifier) @variable
+   "in" @special
+   "nu" @namespace
+   "env" @constant
+  ]
+) @none
+
+(record_entry
+  ":" @punctuation.special)
+
 ;;; ---
 ;;; types
-(flat_type) @type.builtin
+(flat_type) @type
 (list_type
     "list" @type.enum
     ["<" ">"] @punctuation.bracket
@@ -253,9 +262,17 @@
     ["record" "table"] @type.enum
     "<" @punctuation.bracket
     key: (_) @variable.parameter
-    ["," ":"] @punctuation.delimiter
+    ["," ":"] @punctuation.special
     ">" @punctuation.bracket
 )
 
-(shebang) @comment
+(shebang) @keyword.directive
 (comment) @comment
+(
+ (comment) @comment.documentation
+ (decl_def)
+)
+(
+ (parameter)
+ (comment) @comment.documentation
+)
