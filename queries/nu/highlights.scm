@@ -261,6 +261,8 @@ key: (identifier) @property
     head: (_) @function
 )
 
+"where" @function.builtin
+
 (path
   ["." "?"] @punctuation.delimiter
 ) @variable.parameter
