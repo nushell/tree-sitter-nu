@@ -1308,7 +1308,7 @@
         "value": "[_\\p{XID_Start}][_\\p{XID_Continue}]*"
       }
     },
-    "_long_flag_identifier": {
+    "long_flag_identifier": {
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
@@ -2379,13 +2379,8 @@
           "value": "--"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_long_flag_identifier"
-          },
-          "named": true,
-          "value": "identifier"
+          "type": "SYMBOL",
+          "name": "long_flag_identifier"
         }
       ]
     },
@@ -2417,14 +2412,18 @@
           "type": "FIELD",
           "name": "name",
           "content": {
-            "type": "IMMEDIATE_TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "[a-zA-Z0-9]"
-            }
+            "type": "SYMBOL",
+            "name": "param_short_flag_identifier"
           }
         }
       ]
+    },
+    "param_short_flag_identifier": {
+      "type": "IMMEDIATE_TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[a-zA-Z0-9]"
+      }
     },
     "_control": {
       "type": "PREC",
@@ -10690,20 +10689,21 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "STRING",
-            "value": "-"
-          }
+          "type": "STRING",
+          "value": "-"
         },
         {
-          "type": "IMMEDIATE_TOKEN",
-          "content": {
-            "type": "PATTERN",
-            "value": "[_\\p{XID_Continue}]+"
-          }
+          "type": "SYMBOL",
+          "name": "short_flag_identifier"
         }
       ]
+    },
+    "short_flag_identifier": {
+      "type": "IMMEDIATE_TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[_\\p{XID_Continue}]+"
+      }
     },
     "long_flag": {
       "type": "PREC_RIGHT",
@@ -10712,59 +10712,19 @@
         "type": "CHOICE",
         "members": [
           {
-            "type": "ALIAS",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "STRING",
-                    "value": "-"
-                  }
-                },
-                {
-                  "type": "IMMEDIATE_TOKEN",
-                  "content": {
-                    "type": "STRING",
-                    "value": "-"
-                  }
-                }
-              ]
-            },
-            "named": false,
+            "type": "STRING",
             "value": "--"
           },
           {
             "type": "SEQ",
             "members": [
               {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "TOKEN",
-                      "content": {
-                        "type": "STRING",
-                        "value": "-"
-                      }
-                    },
-                    {
-                      "type": "IMMEDIATE_TOKEN",
-                      "content": {
-                        "type": "STRING",
-                        "value": "-"
-                      }
-                    }
-                  ]
-                },
-                "named": false,
+                "type": "STRING",
                 "value": "--"
               },
               {
                 "type": "SYMBOL",
-                "name": "_long_flag_identifier"
+                "name": "long_flag_identifier"
               }
             ]
           }
