@@ -71,7 +71,7 @@ module.exports = grammar({
 
     identifier: (_$) => token(/[_\p{XID_Start}][_\p{XID_Continue}]*/),
 
-    _long_flag_identifier: (_$) =>
+    long_flag_identifier: (_$) =>
       token.immediate(/[\p{XID_Start}_][\p{XID_Continue}_-]*/),
 
     _command_name: ($) =>
@@ -249,14 +249,15 @@ module.exports = grammar({
     param_opt: ($) =>
       seq(field("name", $.identifier), token.immediate(PUNC().question)),
 
-    param_long_flag: ($) =>
-      seq("--", alias($._long_flag_identifier, $.identifier)),
+    param_long_flag: ($) => seq(OPR().long_flag, $.long_flag_identifier),
 
     flag_capsule: ($) =>
       seq(BRACK().open_paren, $.param_short_flag, BRACK().close_paren),
 
-    param_short_flag: (_$) =>
-      seq("-", field("name", token.immediate(/[a-zA-Z0-9]/))),
+    param_short_flag: ($) =>
+      seq(OPR().minus, field("name", $.param_short_flag_identifier)),
+
+    param_short_flag_identifier: (_$) => token.immediate(/[a-zA-Z0-9]/),
 
     /// Controls
 
@@ -1280,19 +1281,14 @@ module.exports = grammar({
 
     _flag: ($) => prec.right(5, choice($.short_flag, $.long_flag)),
 
-    short_flag: (_$) =>
-      seq(token(OPR().minus), token.immediate(/[_\p{XID_Continue}]+/)),
+    short_flag: ($) => seq(OPR().minus, $.short_flag_identifier),
+
+    short_flag_identifier: (_$) => token.immediate(/[_\p{XID_Continue}]+/),
 
     long_flag: ($) =>
       prec.right(
         10,
-        choice(
-          alias(seq(token(OPR().minus), token.immediate(OPR().minus)), "--"),
-          seq(
-            alias(seq(token(OPR().minus), token.immediate(OPR().minus)), "--"),
-            $._long_flag_identifier,
-          ),
-        ),
+        choice(OPR().long_flag, seq(OPR().long_flag, $.long_flag_identifier)),
       ),
 
     unquoted: _unquoted_rule(false),
@@ -1749,6 +1745,9 @@ function OPR() {
     floor: "//",
     power: "**",
     append: "++",
+
+    // special
+    long_flag: "--",
 
     // comparison
     equal: "==",

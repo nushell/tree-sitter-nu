@@ -53,13 +53,13 @@ def --wrapped --env bar [...args] {}
 
 (nu_script
   (decl_def
-    (long_flag)
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks)
     (block))
   (decl_def
-    (long_flag)
-    (long_flag)
+    (long_flag (long_flag_identifier))
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -67,7 +67,7 @@ def --wrapped --env bar [...args] {}
           (identifier))))
     (block))
   (decl_def
-    (long_flag)
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -75,8 +75,8 @@ def --wrapped --env bar [...args] {}
           (identifier))))
     (block))
   (decl_def
-    (long_flag)
-    (long_flag)
+    (long_flag (long_flag_identifier))
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -97,7 +97,7 @@ def --wrapped --env test [...args]: nothing -> string {}
 
 (nu_script
   (decl_def
-    (long_flag)
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks)
     (returns
@@ -105,8 +105,8 @@ def --wrapped --env test [...args]: nothing -> string {}
       (flat_type))
     (block))
   (decl_def
-    (long_flag)
-    (long_flag)
+    (long_flag (long_flag_identifier))
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -117,7 +117,7 @@ def --wrapped --env test [...args]: nothing -> string {}
       (flat_type))
     (block))
   (decl_def
-    (long_flag)
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -128,8 +128,8 @@ def --wrapped --env test [...args]: nothing -> string {}
       (flat_type))
     (block))
   (decl_def
-    (long_flag)
-    (long_flag)
+    (long_flag (long_flag_identifier))
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -154,7 +154,7 @@ def --wrapped test [...args]: [nothing -> string, nothing -> int] {}
 
 (nu_script
   (decl_def
-    (long_flag)
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks)
     (returns
@@ -164,8 +164,8 @@ def --wrapped test [...args]: [nothing -> string, nothing -> int] {}
       (flat_type))
     (block))
   (decl_def
-    (long_flag)
-    (long_flag)
+    (long_flag (long_flag_identifier))
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -178,8 +178,8 @@ def --wrapped test [...args]: [nothing -> string, nothing -> int] {}
       (flat_type))
     (block))
   (decl_def
-    (long_flag)
-    (long_flag)
+    (long_flag (long_flag_identifier))
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -192,7 +192,7 @@ def --wrapped test [...args]: [nothing -> string, nothing -> int] {}
       (flat_type))
     (block))
   (decl_def
-    (long_flag)
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -218,7 +218,7 @@ def --wrapped test [...args]: nothing -> record<a: string, b: int> {}
 
 (nu_script
   (decl_def
-    (long_flag)
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks)
     (returns
@@ -230,8 +230,8 @@ def --wrapped test [...args]: nothing -> record<a: string, b: int> {}
         (flat_type)))
     (block))
   (decl_def
-    (long_flag)
-    (long_flag)
+    (long_flag (long_flag_identifier))
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -246,8 +246,8 @@ def --wrapped test [...args]: nothing -> record<a: string, b: int> {}
         (flat_type)))
     (block))
   (decl_def
-    (long_flag)
-    (long_flag)
+    (long_flag (long_flag_identifier))
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -262,7 +262,7 @@ def --wrapped test [...args]: nothing -> record<a: string, b: int> {}
         (flat_type)))
     (block))
   (decl_def
-    (long_flag)
+    (long_flag (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -293,7 +293,7 @@ def test [
     (parameter_bracks
       (parameter
         (param_long_flag
-          (identifier))))
+          (long_flag_identifier))))
     (block)))
 
 ======
@@ -312,9 +312,9 @@ def test [
     (parameter_bracks
       (parameter
         (param_long_flag
-          (identifier))
+          (long_flag_identifier))
         (flag_capsule
-          (param_short_flag))))
+          (param_short_flag (param_short_flag_identifier)))))
     (block)))
 
 ======
@@ -333,7 +333,7 @@ def test [
     (parameter_bracks
       (parameter
         (param_long_flag
-          (identifier))
+          (long_flag_identifier))
         (param_type
           (flat_type))))
     (block)))
@@ -353,7 +353,7 @@ def test [
     (cmd_identifier)
     (parameter_bracks
       (parameter
-        (param_short_flag)))
+        (param_short_flag (param_short_flag_identifier))))
     (block)))
 
 ======
@@ -371,7 +371,7 @@ def test [
     (cmd_identifier)
     (parameter_bracks
       (parameter
-        (param_short_flag)
+        (param_short_flag (param_short_flag_identifier))
       (param_type
         (flat_type))))
     (block)))
@@ -489,9 +489,9 @@ def test [
     (parameter_bracks
       (parameter
         (param_long_flag
-          (identifier))
+          (long_flag_identifier))
         (flag_capsule
-          (param_short_flag))))
+          (param_short_flag (param_short_flag_identifier)))))
     (block)))
 
 ======
@@ -510,9 +510,9 @@ def test [
     (parameter_bracks
       (parameter
         (param_long_flag
-          (identifier))
+          (long_flag_identifier))
         (flag_capsule
-          (param_short_flag))
+          (param_short_flag (param_short_flag_identifier)))
         (param_type
           (flat_type))))
     (block)))

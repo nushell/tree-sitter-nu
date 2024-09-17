@@ -2580,7 +2580,17 @@
   {
     "type": "long_flag",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "long_flag_identifier",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "match_arm",
@@ -3129,7 +3139,7 @@
       "required": true,
       "types": [
         {
-          "type": "identifier",
+          "type": "long_flag_identifier",
           "named": true
         }
       ]
@@ -3170,7 +3180,18 @@
   {
     "type": "param_short_flag",
     "named": true,
-    "fields": {}
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "param_short_flag_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "param_type",
@@ -3906,7 +3927,17 @@
   {
     "type": "short_flag",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "short_flag_identifier",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "stmt_const",
@@ -4678,6 +4709,14 @@
       "types": [
         {
           "type": "escape_sequence",
+          "named": true
+        },
+        {
+          "type": "long_flag_identifier",
+          "named": true
+        },
+        {
+          "type": "short_flag_identifier",
           "named": true
         }
       ]
@@ -5641,6 +5680,10 @@
     "named": false
   },
   {
+    "type": "long_flag_identifier",
+    "named": true
+  },
+  {
     "type": "loop",
     "named": false
   },
@@ -5729,6 +5772,10 @@
     "named": false
   },
   {
+    "type": "param_short_flag_identifier",
+    "named": true
+  },
+  {
     "type": "path",
     "named": false
   },
@@ -5747,6 +5794,10 @@
   {
     "type": "return",
     "named": false
+  },
+  {
+    "type": "short_flag_identifier",
+    "named": true
   },
   {
     "type": "signature",
