@@ -256,9 +256,7 @@ module.exports = grammar({
       seq(BRACK().open_paren, $.param_short_flag, BRACK().close_paren),
 
     param_short_flag: ($) =>
-      seq($.dash, field("name", $.param_short_flag_identifier)),
-
-    dash: (_$) => OPR().minus,
+      seq(OPR().minus, field("name", $.param_short_flag_identifier)),
 
     param_short_flag_identifier: (_$) => token.immediate(/[a-zA-Z0-9]/),
 
@@ -1285,7 +1283,7 @@ module.exports = grammar({
     _flag: ($) => prec.right(5, choice($.short_flag, $.long_flag)),
 
     short_flag: ($) =>
-      seq($.dash, $.short_flag_identifier),
+      seq(OPR().minus, $.short_flag_identifier),
 
     short_flag_identifier: (_$) => token.immediate(/[_\p{XID_Continue}]+/),
 

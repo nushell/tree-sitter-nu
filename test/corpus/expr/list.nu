@@ -32,7 +32,8 @@ list-001-item-string
           (val_entry
             (val_string))
           (val_entry
-            (val_string)))))))
+            (val_string
+              (long_flag_identifier))))))))
 
 =====
 list-002-unquoted-starts-with-numeric

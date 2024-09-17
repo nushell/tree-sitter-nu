@@ -190,8 +190,8 @@ file_path: (val_string) @variable.parameter
 ; TODO: check these.
 (param_long_flag ["--"] @punctuation.delimiter)
 (long_flag ["--"] @punctuation.delimiter)
-(short_flag (dash) @punctuation.delimiter)
-(param_short_flag (dash) @punctuation.delimiter)
+(short_flag ["-"] @punctuation.delimiter)
+(param_short_flag ["-"] @punctuation.delimiter)
 (param_rest "..." @punctuation.delimiter)
 (param_type [":"] @punctuation.special)
 (param_value ["="] @punctuation.special)
