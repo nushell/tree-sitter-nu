@@ -187,7 +187,6 @@ file_path: (val_string) @variable.parameter
     ";"
 ] @punctuation.special
 
-; TODO: check these.
 (param_long_flag ["--"] @punctuation.delimiter)
 (long_flag ["--"] @punctuation.delimiter)
 (short_flag ["-"] @punctuation.delimiter)
@@ -222,7 +221,6 @@ key: (identifier) @property
 (param_long_flag (long_flag_identifier) @variable.parameter)
 (param_short_flag (param_short_flag_identifier) @variable.parameter)
 
-; TODO: do
 (short_flag (short_flag_identifier) @variable.parameter)
 (long_flag (long_flag_identifier) @variable.parameter)
 
