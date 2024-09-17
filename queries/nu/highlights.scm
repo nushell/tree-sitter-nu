@@ -187,9 +187,11 @@ file_path: (val_string) @variable.parameter
     ";"
 ] @punctuation.special
 
-(param_short_flag "-" @punctuation.delimiter)
+; TODO: check these.
 (param_long_flag ["--"] @punctuation.delimiter)
 (long_flag ["--"] @punctuation.delimiter)
+(short_flag (dash) @punctuation.delimiter)
+(param_short_flag (dash) @punctuation.delimiter)
 (param_rest "..." @punctuation.delimiter)
 (param_type [":"] @punctuation.special)
 (param_value ["="] @punctuation.special)
@@ -217,11 +219,12 @@ key: (identifier) @property
     param_name: (_) @variable.parameter)
 (param_cmd
     (cmd_identifier) @string)
-(param_long_flag) @variable.parameter
-(param_short_flag) @variable.parameter
+(param_long_flag (long_flag_identifier) @variable.parameter)
+(param_short_flag (param_short_flag_identifier) @variable.parameter)
 
-(short_flag) @variable.parameter
-(long_flag) @variable.parameter
+; TODO: do
+(short_flag (short_flag_identifier) @variable.parameter)
+(long_flag (long_flag_identifier) @variable.parameter)
 
 (scope_pattern [(wild_card) @function])
 
