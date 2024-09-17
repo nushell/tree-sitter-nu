@@ -225,7 +225,7 @@ cmd --long-flag
     (pipe_element
       (command
         (cmd_identifier)
-        (long_flag)))))
+        (long_flag (long_flag_identifier))))))
 
 ======
 cmd-011-path-string-1-dot
@@ -243,21 +243,21 @@ cargo install --path ./dir
       (command
         (cmd_identifier)
         (val_string)
-        (long_flag)
+        (long_flag (long_flag_identifier))
         (val_string))))
   (pipeline
     (pipe_element
       (command
         (cmd_identifier)
         (val_string)
-        (long_flag)
+        (long_flag (long_flag_identifier))
         (val_string))))
   (pipeline
     (pipe_element
       (command
         (cmd_identifier)
         (val_string)
-        (long_flag)
+        (long_flag (long_flag_identifier))
         (val_string)))))
 
 ======

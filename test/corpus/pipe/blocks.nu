@@ -96,8 +96,8 @@ blocks-004-multiline-command
 				  (pipe_element
 					  (command
 						  (cmd_identifier)
-							(long_flag)
-							(short_flag)
+							(long_flag (long_flag_identifier))
+							(short_flag (short_flag_identifier))
 							(val_string))))))))
 
 
