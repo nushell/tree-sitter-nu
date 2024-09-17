@@ -1,0 +1,5 @@
+def "nur run" [] {
+    tree-sitter generate
+    tree-sitter test
+}
+
