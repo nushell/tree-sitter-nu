@@ -1,4 +1,4 @@
-vim.filetype.add({ extension = { nu = "nu" } })
+vim.filetype.add({ extension = { nu = "nu" }, filename = { ["nurfile"] = "nu" } })
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "nu",
