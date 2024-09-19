@@ -1297,16 +1297,17 @@ module.exports = grammar({
         choice(
           OPR().long_flag,
           seq(OPR().long_flag, $.long_flag_identifier),
-          $.long_flag_equals_value
-        )
+          $.long_flag_equals_value,
+        ),
       ),
 
-    long_flag_equals_value: ($) => seq(
-      OPR().long_flag,
-      $.long_flag_identifier,
-      PUNC().eq,
-      $.long_flag_value,
-    ),
+    long_flag_equals_value: ($) =>
+      seq(
+        OPR().long_flag,
+        $.long_flag_identifier,
+        PUNC().eq,
+        $.long_flag_value,
+      ),
 
     long_flag_value: ($) => $._cmd_arg,
 
