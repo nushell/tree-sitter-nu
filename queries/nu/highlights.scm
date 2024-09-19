@@ -75,7 +75,6 @@
 (val_bool) @constant.builtin
 (val_nothing) @constant.builtin
 (val_string) @string
-arg_str: (val_string) @variable.parameter
 file_path: (val_string) @variable.parameter
 (val_date) @number
 (inter_escape_sequence) @constant.character.escape
@@ -189,7 +188,9 @@ file_path: (val_string) @variable.parameter
 
 (param_long_flag ["--"] @punctuation.delimiter)
 (long_flag ["--"] @punctuation.delimiter)
+(long_flag_equals_value ["--"] @punctuation.delimiter)
 (short_flag ["-"] @punctuation.delimiter)
+(long_flag_equals_value ["="] @punctuation.special)
 (param_short_flag ["-"] @punctuation.delimiter)
 (param_rest "..." @punctuation.delimiter)
 (param_type [":"] @punctuation.special)
@@ -222,7 +223,7 @@ key: (identifier) @property
 (param_short_flag (param_short_flag_identifier) @variable.parameter)
 
 (short_flag (short_flag_identifier) @variable.parameter)
-(long_flag (long_flag_identifier) @variable.parameter)
+(long_flag_identifier) @variable.parameter
 
 (scope_pattern [(wild_card) @function])
 

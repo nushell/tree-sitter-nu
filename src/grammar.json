@@ -10563,6 +10563,19 @@
         }
       ]
     },
+    "flag_value": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_value"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "val_string"
+        }
+      ]
+    },
     "redirection": {
       "type": "CHOICE",
       "members": [
@@ -10727,9 +10740,38 @@
                 "name": "long_flag_identifier"
               }
             ]
+          },
+          {
+            "type": "SYMBOL",
+            "name": "long_flag_equals_value"
           }
         ]
       }
+    },
+    "long_flag_equals_value": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "--"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "long_flag_identifier"
+        },
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "SYMBOL",
+          "name": "long_flag_value"
+        }
+      ]
+    },
+    "long_flag_value": {
+      "type": "SYMBOL",
+      "name": "_cmd_arg"
     },
     "unquoted": {
       "type": "PREC_LEFT",
