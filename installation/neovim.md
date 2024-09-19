@@ -12,7 +12,7 @@ Extend your lazy config with treesitter and the nu parser. The parser doesn't ha
     end,
     dependencies = {
         -- NOTE: additional parser
-        { "nushell/tree-sitter-nu" },
+        { "nushell/tree-sitter-nu", build = ":TSUpdate nu" },
     },
     build = ":TSUpdate",
 },
