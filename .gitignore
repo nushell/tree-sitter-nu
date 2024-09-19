@@ -4,6 +4,9 @@ target/
 
 /build/
 
+# C lsp cache
+.ccls-cache/
+
 # Workspace Config
 .nvim/
 # .vscode/
