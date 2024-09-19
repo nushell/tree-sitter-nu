@@ -268,6 +268,8 @@ key: (identifier) @property
   ["." "?"] @punctuation.delimiter
 ) @variable.parameter
 
+(stmt_let (identifier) @variable)
+
 (val_variable
   "$" @punctuation.special
   [
