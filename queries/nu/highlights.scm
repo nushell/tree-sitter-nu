@@ -74,7 +74,8 @@
 ) @number
 (val_bool) @constant.builtin
 (val_nothing) @constant.builtin
-(val_string) @string
+(val_string) @variable.parameter
+arg_str: (val_string) @variable.parameter
 file_path: (val_string) @variable.parameter
 (val_date) @number
 (inter_escape_sequence) @constant.character.escape
@@ -222,8 +223,8 @@ key: (identifier) @property
 (param_long_flag (long_flag_identifier) @variable.parameter)
 (param_short_flag (param_short_flag_identifier) @variable.parameter)
 
-(short_flag (short_flag_identifier) @variable.parameter)
-(long_flag_identifier) @variable.parameter
+(short_flag_identifier) @type
+(long_flag_identifier) @type
 
 (scope_pattern [(wild_card) @function])
 
