@@ -7,6 +7,10 @@ module.exports = grammar({
 
   extras: ($) => [/\s/, $.comment],
 
+  // externals: $ => [
+  //   $.long_flag_equals_value
+  // ],
+
   conflicts: ($) => [
     [$._declaration, $._declaration_last],
     [$._declaration_parenthesized, $._declaration_parenthesized_last],
@@ -1264,6 +1268,8 @@ module.exports = grammar({
         field("arg_str", alias($.unquoted, $.val_string)),
       ),
 
+    flag_value: ($) => choice($._value, $.val_string),
+
     redirection: ($) =>
       choice(
         prec.right(
@@ -1288,8 +1294,22 @@ module.exports = grammar({
     long_flag: ($) =>
       prec.right(
         10,
-        choice(OPR().long_flag, seq(OPR().long_flag, $.long_flag_identifier)),
+        choice(
+          OPR().long_flag,
+          seq(OPR().long_flag, $.long_flag_identifier),
+          $.long_flag_equals_value,
+        ),
       ),
+
+    long_flag_equals_value: ($) =>
+      seq(
+        OPR().long_flag,
+        $.long_flag_identifier,
+        PUNC().eq,
+        $.long_flag_value,
+      ),
+
+    long_flag_value: ($) => $._cmd_arg,
 
     unquoted: _unquoted_rule(false),
     _unquoted_in_list: _unquoted_rule(true),

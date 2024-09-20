@@ -5,9 +5,10 @@
   "main": "bindings/node",
   "types": "bindings/node",
   "scripts": {
-    "test": " ",
     "install": "node-gyp-build",
-    "prebuildify": "prebuildify --napi --strip"
+    "prestart": "tree-sitter build --wasm",
+    "start": "tree-sitter playground",
+    "test": "node --test bindings/node/*_test.js"
   },
   "author": "The Nushell Contributors",
   "license": "MIT",
