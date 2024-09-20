@@ -220,11 +220,12 @@ key: (identifier) @property
     param_name: (_) @variable.parameter)
 (param_cmd
     (cmd_identifier) @string)
-(param_long_flag (long_flag_identifier) @variable.parameter)
-(param_short_flag (param_short_flag_identifier) @variable.parameter)
 
-(short_flag_identifier) @type
-(long_flag_identifier) @type
+(param_long_flag (long_flag_identifier) @attribute)
+(param_short_flag (param_short_flag_identifier) @attribute)
+
+(short_flag (short_flag_identifier) @attribute)
+(long_flag_identifier) @attribute
 
 (scope_pattern [(wild_card) @function])
 
