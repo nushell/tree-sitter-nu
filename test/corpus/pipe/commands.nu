@@ -468,3 +468,32 @@ cmd-018-pipe-external
           (pipeline
             (pipe_element
               (val_string))))))))
+
+=====
+cmd-019-flags-with-values
+=====
+
+bla --weird-that=this --behaved-differently=than-this --level=2
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+          (long_flag
+            (long_flag_equals_value
+              (long_flag_identifier)
+              (long_flag_value
+                (val_string))))
+          (long_flag
+            (long_flag_equals_value
+              (long_flag_identifier)
+              (long_flag_value
+                (val_string))))
+          (long_flag
+            (long_flag_equals_value
+              (long_flag_identifier)
+              (long_flag_value
+                (val_number))))))))
