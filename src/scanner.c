@@ -57,9 +57,12 @@ void tree_sitter_nu_external_scanner_deserialize(
     const char *buffer,
     unsigned length
 ) {
-    if (length > 0) {
+    if (length == 2) {
         ((Scanner *)payload)->level = buffer[0];
         ((Scanner *)payload)->emitted_content = buffer[1];
+    } else if (length == 0) {
+        ((Scanner *)payload)->level = 0;
+        ((Scanner *)payload)->emitted_content = false;
     }
 }
 
