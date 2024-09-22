@@ -7,10 +7,10 @@ module.exports = grammar({
 
   extras: ($) => [/\s/, $.comment],
 
-  externals: $ => [
+  externals: ($) => [
     $.raw_string_begin,
     $.raw_string_content,
-    $.raw_string_end
+    $.raw_string_end,
   ],
 
   conflicts: ($) => [
@@ -1011,9 +1011,15 @@ module.exports = grammar({
       ),
 
     val_string: ($) =>
-      choice($._str_double_quotes, $._str_single_quotes, $._str_back_ticks, $._raw_str),
+      choice(
+        $._str_double_quotes,
+        $._str_single_quotes,
+        $._str_back_ticks,
+        $._raw_str,
+      ),
 
-    _raw_str: ($) => seq($.raw_string_begin, $.raw_string_content, $.raw_string_end),
+    _raw_str: ($) =>
+      seq($.raw_string_begin, $.raw_string_content, $.raw_string_end),
 
     _str_double_quotes: ($) =>
       seq(
