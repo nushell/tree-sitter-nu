@@ -89,6 +89,7 @@ file_path: (val_string) @variable.parameter
 (unescaped_interpolated_content) @string
 (escaped_interpolated_content) @string
 (expr_interpolated ["(" ")"] @variable.parameter)
+
 (raw_string_begin) @string
 (raw_string_content) @string
 (raw_string_end) @string
