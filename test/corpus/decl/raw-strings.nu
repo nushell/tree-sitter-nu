@@ -18,7 +18,7 @@ r#'string'#
 raw-strings-002-simple
 =====
 
-r##'string'##
+r##'raw string: r#'bla'#'##
 
 -----
 
@@ -50,7 +50,7 @@ r#####'string'#####
 raw-strings-004-with-ticks-and-tags
 =====
 
-r#####'string '# '## '#####
+r#####'string '#'##'#####
 
 -----
 

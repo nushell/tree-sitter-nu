@@ -4,7 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define advance lexer->advance(lexer, false)
+#define skip lexer->advance(lexer, true)
+#define adv lexer->advance(lexer, false)
 #define eof lexer->eof(lexer)
 
 enum TokenType {
@@ -22,7 +23,7 @@ typedef struct {
 static uint8_t consume_chars(TSLexer *lexer, char c) {
     uint8_t count = 0;
     while (lexer->lookahead == c && !eof) {
-        advance;
+        adv;
         ++count;
     }
     return count;
@@ -31,7 +32,7 @@ static uint8_t consume_chars(TSLexer *lexer, char c) {
 static uint32_t consume_until(TSLexer *lexer, char c) {
     uint32_t count = 0;
     while (lexer->lookahead != c && !eof) {
-        advance;
+        adv;
         count++;
     }
     return count;
@@ -76,16 +77,25 @@ void tree_sitter_nu_external_scanner_deserialize(
     }
 }
 
+static void skip_whitespace(TSLexer *lexer) {
+    while (lexer->lookahead ==  ' ' || lexer->lookahead == '\t'
+            || lexer->lookahead == '\n' && !eof) {
+        skip;
+    }
+}
+
 static bool scan_raw_string_begin(TSLexer *lexer, Scanner *s) {
     lexer->log(lexer, "BEGIN\n");
     // scan for r#' r##' or more #
+    skip_whitespace(lexer);
+
     if (lexer->lookahead == 'r') {
         lexer->log(lexer, "Detected 'r'.\n");
-        advance;
+        adv;
         uint8_t level = consume_chars(lexer, '#');
         lexer->log(lexer, "num #: %i\n", level);
         if (lexer->lookahead == '\'') {
-            advance;
+            adv;
             lexer->log(lexer, "Detected level: %i\n", level);
             s->level = level;
             return true;
@@ -99,12 +109,10 @@ static bool scan_raw_string_content(TSLexer *lexer, Scanner *s) {
     lexer->log(lexer, "CONTENT\n");
     while (!eof) {
         uint32_t num = consume_until(lexer, '\'');
-        if (num != 0) {
-            lexer->log(lexer, "Set mark\n");
-        }
-        len += num;
+        lexer->log(lexer, "Set mark\n");
         lexer->mark_end(lexer);
-        advance;
+        len += num;
+        adv;
         uint8_t level = consume_chars(lexer, '#');
         lexer->log(lexer, "Consumed [%i] #\n", level);
         if (level == s->level && len != 0) {
@@ -120,17 +128,14 @@ static bool scan_raw_string_content(TSLexer *lexer, Scanner *s) {
 
 bool scan_raw_string_end(TSLexer *lexer, Scanner *s) {
     lexer->log(lexer, "END\n");
-    while (!eof) {
-        consume_until(lexer, '\'');
-        advance;
-        uint8_t level = consume_chars(lexer, '#');
-        lexer->log(lexer, "Consumed [%i] #\n", level);
-        if (level == s->level) {
-            lexer->log(lexer, "Emitted end\n" );
-            s->level = 0;
-            s->emitted_content = false;
-            return true;
-        }
+    adv;
+    uint8_t level = consume_chars(lexer, '#');
+    lexer->log(lexer, "Consumed [%i] #\n", level);
+    if (level == s->level) {
+        lexer->log(lexer, "Emitted end\n" );
+        s->level = 0;
+        s->emitted_content = false;
+        return true;
     }
 
     return false;
@@ -153,13 +158,13 @@ bool tree_sitter_nu_external_scanner_scan(
         lexer->result_symbol = RAW_STRING_BEGIN;
         return scan_raw_string_begin(lexer, s);
     }
-    if (valid_symbols[RAW_STRING_CONTENT] && !s->emitted_content || s->level != 0) {
+    if (valid_symbols[RAW_STRING_CONTENT] && s->level != 0) {
         lexer->result_symbol = RAW_STRING_CONTENT;
         return scan_raw_string_content(lexer, s);
     }
 
-    if (valid_symbols[RAW_STRING_END] || s->level != 0
-            || lexer->lookahead == '\'') {
+    if (valid_symbols[RAW_STRING_END] && s->level != 0
+            && lexer->lookahead == '\'') {
         lexer->result_symbol = RAW_STRING_END;
         return scan_raw_string_end(lexer, s);
     }
