@@ -1,0 +1,1 @@
+open --raw Cargo.toml

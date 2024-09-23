@@ -45,8 +45,9 @@ setup(
                 "/utf-8",
             ],
             define_macros=[
-                ("Py_LIMITED_API", "0x03080000"),
-                ("PY_SSIZE_T_CLEAN", None)
+                ("Py_LIMITED_API", "0x03090000"),
+                ("PY_SSIZE_T_CLEAN", None),
+                ("TREE_SITTER_HIDE_SYMBOLS", None),
             ],
             include_dirs=["src"],
             py_limited_api=True,
