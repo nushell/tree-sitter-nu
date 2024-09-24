@@ -7,11 +7,9 @@ module.exports = grammar({
 
   extras: ($) => [/\s/, $.comment],
 
-  externals: ($) => [
-    $.raw_string_begin,
-    $.raw_string_content,
-    $.raw_string_end,
-  ],
+  // externals: $ => [
+  //   $.long_flag_equals_value
+  // ],
 
   conflicts: ($) => [
     [$._declaration, $._declaration_last],
@@ -1011,15 +1009,7 @@ module.exports = grammar({
       ),
 
     val_string: ($) =>
-      choice(
-        $._str_double_quotes,
-        $._str_single_quotes,
-        $._str_back_ticks,
-        $._raw_str,
-      ),
-
-    _raw_str: ($) =>
-      seq($.raw_string_begin, $.raw_string_content, $.raw_string_end),
+      choice($._str_double_quotes, $._str_single_quotes, $._str_back_ticks),
 
     _str_double_quotes: ($) =>
       seq(

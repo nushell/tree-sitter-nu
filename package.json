@@ -13,8 +13,8 @@
   "author": "The Nushell Contributors",
   "license": "MIT",
   "dependencies": {
-    "node-addon-api": "^8.1.0",
-    "node-gyp-build": "^4.8.2"
+    "node-addon-api": "^8.0.0",
+    "node-gyp-build": "^4.8.0"
   },
   "peerDependencies": {
     "tree-sitter": "^0.21.0"
@@ -25,9 +25,9 @@
     }
   },
   "devDependencies": {
-    "prettier": "3.3.3",
-    "tree-sitter-cli": "^0.23.0",
-    "prebuildify": "^6.0.1"
+    "prettier": "3.2.5",
+    "tree-sitter-cli": "^0.22.5",
+    "prebuildify": "^6.0.0"
   },
   "tree-sitter": [
     {
