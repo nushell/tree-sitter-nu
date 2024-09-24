@@ -5,7 +5,7 @@ on:
       - main
 jobs:
   main:
-    name: setup, lint and test
+    name: install
 
     runs-on: ${{ matrix.os }}
     strategy:
