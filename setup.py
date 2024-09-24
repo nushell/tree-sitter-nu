@@ -36,7 +36,7 @@ setup(
             sources=[
                 "bindings/python/tree_sitter_nu/binding.c",
                 "src/parser.c",
-                # NOTE: if your language uses an external scanner, add it here.
+                "src/scanner.c",
             ],
             extra_compile_args=[
                 "-std=c11",
@@ -45,8 +45,9 @@ setup(
                 "/utf-8",
             ],
             define_macros=[
-                ("Py_LIMITED_API", "0x03080000"),
-                ("PY_SSIZE_T_CLEAN", None)
+                ("Py_LIMITED_API", "0x03090000"),
+                ("PY_SSIZE_T_CLEAN", None),
+                ("TREE_SITTER_HIDE_SYMBOLS", None),
             ],
             include_dirs=["src"],
             py_limited_api=True,

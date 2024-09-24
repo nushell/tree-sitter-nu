@@ -1,5 +1,8 @@
-def "nur run" [] {
+def "nur build" [] {
     tree-sitter generate
+}
+
+def "nur test" [] {
     tree-sitter test
 }
 
