@@ -5,7 +5,7 @@ on:
       - main
 jobs:
   main:
-    name: install
+    name: setup, lint, test
 
     runs-on: ${{ matrix.os }}
     strategy:
@@ -30,3 +30,9 @@ jobs:
 
       - name: test
         run: npx tree-sitter test
+
+  tests:
+    uses: ./.github/workflows/nvim-tests.yml
+    with:
+      neovim_versions: |
+        [ "nightly", "v0.10.1", "v0.9.5" ]
