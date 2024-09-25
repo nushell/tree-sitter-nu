@@ -90,6 +90,10 @@ file_path: (val_string) @variable.parameter
 (escaped_interpolated_content) @string
 (expr_interpolated ["(" ")"] @variable.parameter)
 
+(raw_string_begin) @string
+(raw_string_content) @string
+(raw_string_end) @string
+
 ;;; ---
 ;;; operators
 (expr_binary [

@@ -2515,6 +2515,18 @@
         {
           "type": "escape_sequence",
           "named": true
+        },
+        {
+          "type": "raw_string_begin",
+          "named": true
+        },
+        {
+          "type": "raw_string_content",
+          "named": true
+        },
+        {
+          "type": "raw_string_end",
+          "named": true
         }
       ]
     }
@@ -4853,6 +4865,18 @@
           "named": true
         },
         {
+          "type": "raw_string_begin",
+          "named": true
+        },
+        {
+          "type": "raw_string_content",
+          "named": true
+        },
+        {
+          "type": "raw_string_end",
+          "named": true
+        },
+        {
           "type": "short_flag_identifier",
           "named": true
         }
@@ -5919,6 +5943,18 @@
   {
     "type": "range",
     "named": false
+  },
+  {
+    "type": "raw_string_begin",
+    "named": true
+  },
+  {
+    "type": "raw_string_content",
+    "named": true
+  },
+  {
+    "type": "raw_string_end",
+    "named": true
   },
   {
     "type": "record",
