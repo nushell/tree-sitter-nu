@@ -316,3 +316,31 @@ match $x {
                   (identifier)
                   (val_string))))
           (block))))))
+
+=====
+match-009-defaults
+=====
+
+match $x {
+   _ if $x == 4 => {},
+   _ => {}
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_variable
+          (identifier))
+        (match_arm
+          (match_pattern
+            (match_guard
+              (expr_binary
+                (val_variable
+                  (identifier))
+                (val_number))))
+          (block))
+        (default_arm
+          (block))))))
