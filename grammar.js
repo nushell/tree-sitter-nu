@@ -428,6 +428,7 @@ module.exports = grammar({
 
     match_pattern: ($) =>
       choice(
+        seq(PUNC().underscore, $.match_guard),
         seq($._match_pattern, optional($.match_guard)),
         seq($._match_pattern, repeat(seq(PUNC().pipe, $._match_pattern))),
       ),
