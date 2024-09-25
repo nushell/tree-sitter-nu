@@ -3244,6 +3244,19 @@
           "type": "SEQ",
           "members": [
             {
+              "type": "STRING",
+              "value": "_"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "match_guard"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
               "type": "SYMBOL",
               "name": "_match_pattern"
             },
