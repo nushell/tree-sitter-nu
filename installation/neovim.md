@@ -29,7 +29,7 @@ local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.nu = {
   install_info = {
     url = "https://github.com/nushell/tree-sitter-nu",
-    files = { "src/parser.c" },
+    files = { "src/parser.c", "src/scanner.c" },
     branch = "main",
   },
   filetype = "nu",
@@ -62,6 +62,8 @@ let file = "highlights.scm"
 mkdir $local
 http get ([$remote $file] | str join "/") | save --force ($local | path join $file)
 ```
+
+You need to run this snippet whenever the highlights change and `:TSUpdate nu` whenever there is a new version of the parser.
 
 [tree-sitter]: https://tree-sitter.github.io/tree-sitter/
 [nvim-treesitter]: https://github.com/nvim-treesitter/nvim-treesitter

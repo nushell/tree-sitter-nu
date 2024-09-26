@@ -34,5 +34,5 @@ jobs:
         run: |
           export PATH="${PWD}/.ci/neovim/bin:${PATH}"
           export VIM="${PWD}/.ci/neovim/share/nvim/runtime"
-          nvim -c "Lazy update | e ts.nu | q"
+          nvim --headless +"Lazy update" +"e ts.nu" +"q" -u ${MIN_INIT_LUA}
           make test
