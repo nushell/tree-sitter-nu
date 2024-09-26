@@ -74,7 +74,7 @@
 ) @number
 (val_bool) @constant.builtin
 (val_nothing) @constant.builtin
-(val_string) @variable.parameter
+(val_string) @string
 arg_str: (val_string) @variable.parameter
 file_path: (val_string) @variable.parameter
 (val_date) @number
