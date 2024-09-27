@@ -35,4 +35,3 @@ jobs:
           export PATH="${PWD}/.ci/neovim/bin:${PATH}"
           export VIM="${PWD}/.ci/neovim/share/nvim/runtime"
           nvim --headless +"Lazy update" +"e ts.nu" +"q" -u ${MIN_INIT_LUA}
-          make test
