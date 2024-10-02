@@ -27,8 +27,7 @@ require("lazy").setup({
 				-- setup treesitter with config
 			end,
 			dependencies = {
-				-- NOTE: additional parser
-				{ "nushell/tree-sitter-nu", build = ":TSUpdate nu" },
+				{ dir = ".", build = ":TSUpdate nu" },
 			},
 			build = ":TSUpdate",
 		},
