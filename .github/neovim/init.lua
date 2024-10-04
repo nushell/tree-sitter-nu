@@ -25,6 +25,7 @@ require("lazy").setup({
 			"nvim-treesitter/nvim-treesitter",
 			config = function()
 				-- setup treesitter with config
+				vim.cmd([[TSInstall nu]])
 			end,
 			dependencies = {
 				{ dir = ".", build = ":TSUpdate nu" },
