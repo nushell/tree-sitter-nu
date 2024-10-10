@@ -28,7 +28,7 @@ require("lazy").setup({
 				vim.cmd([[TSInstall nu]])
 			end,
 			dependencies = {
-				{ dir = ".", build = ":TSUpdate nu" },
+				{ dir = "TS_NU_PATH", build = ":TSUpdate nu" },
 			},
 			build = ":TSUpdate",
 		},
