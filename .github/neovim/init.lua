@@ -24,8 +24,10 @@ require("lazy").setup({
 		{
 			"nvim-treesitter/nvim-treesitter",
 			config = function()
-				-- setup treesitter with config
-				vim.cmd([[TSInstall nu]])
+				require("nvim-treesitter.configs").setup({
+					ensure_installed = { "nu" },
+					highlight = { enable = true },
+				})
 			end,
 			dependencies = {
 				{ dir = "TS_NU_PATH", build = ":TSUpdate nu" },
