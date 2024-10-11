@@ -78,8 +78,8 @@ void tree_sitter_nu_external_scanner_deserialize(
 }
 
 static void skip_whitespace(TSLexer *lexer) {
-    while (lexer->lookahead ==  ' ' || lexer->lookahead == '\t'
-            || lexer->lookahead == '\n' && !eof) {
+    while ((lexer->lookahead ==  ' ' || lexer->lookahead == '\t'
+            || lexer->lookahead == '\n') && !eof) {
         skip;
     }
 }
