@@ -34,5 +34,5 @@ jobs:
         run: |
           export PATH="${PWD}/.ci/neovim/bin:${PATH}"
           export VIM="${PWD}/.ci/neovim/share/nvim/runtime"
-          sed "s#TS_NU_PATH#${PWD}#" > .ci/init.lua
+          sed "s#TS_NU_PATH#${PWD}#" .github/neovim/init.lua > .ci/init.lua
           nvim --headless -c "Lazy! update | TSInstallSync! nu | e ts.nu | sleep | q" -u .ci/init.lua
