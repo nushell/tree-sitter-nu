@@ -2996,6 +2996,7 @@
   {
     "type": "nu_script",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
