@@ -8,14 +8,20 @@ Extend your lazy config with treesitter and the nu parser. The parser doesn't ha
 {
     "nvim-treesitter/nvim-treesitter",
     config = function()
-        -- setup treesitter with config
+        require("nvim-treesitter.configs").setup {
+            ensure_installed = { "nu" }, -- Ensure the "nu" parser is installed
+            highlight = {
+                enable = true,            -- Enable syntax highlighting
+                additional_vim_regex_highlighting = false, -- Set to false if Tree-sitter is used exclusively
+            },
+        }
     end,
     dependencies = {
-        -- NOTE: additional parser
+        -- Additional Nushell parser
         { "nushell/tree-sitter-nu", build = ":TSUpdate nu" },
     },
     build = ":TSUpdate",
-},
+}
 ```
 
 ## Manual installation
