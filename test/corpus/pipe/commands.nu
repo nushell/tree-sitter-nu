@@ -497,3 +497,39 @@ bla --weird-that=this --behaved-differently=than-this --level=2
               (long_flag_identifier)
               (long_flag_value
                 (val_number))))))))
+
+======
+cmd-020-variable-external
+======
+
+^$cmd
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (val_variable
+          (identifier))))))
+
+======
+cmd-021-variable-external-parenthesized
+======
+
+(^$cmd
+  arg
+)
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (command
+              (val_variable
+                (identifier))
+              (val_string))))))))
