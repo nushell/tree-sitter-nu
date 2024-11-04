@@ -25,8 +25,6 @@ module.exports = grammar({
     [$.decl_module],
     [$._val_number_decimal],
     [$._immediate_decimal],
-    [$.expr_parenthesized],
-    [$.val_variable],
     [$._expression, $._expr_binary_expression],
     [$._match_pattern_value, $._value],
     [$._match_pattern_expression, $._list_item_expression],
@@ -485,7 +483,7 @@ module.exports = grammar({
             "rest",
             choice(
               alias($._match_pattern_rest, $.val_variable),
-              $._match_pattern_ignore_rest,
+              OPR().range_inclusive,
             ),
           ),
         ),
@@ -494,13 +492,9 @@ module.exports = grammar({
 
     _match_pattern_rest: ($) =>
       seq(
-        PUNC().dot,
-        token.immediate(PUNC().dot),
+        OPR().range_inclusive,
         seq(token.immediate(PUNC().dollar), $.identifier),
       ),
-
-    _match_pattern_ignore_rest: (_$) =>
-      seq(PUNC().dot, token.immediate(PUNC().dot)),
 
     _match_pattern_record: ($) =>
       seq(
@@ -829,6 +823,13 @@ module.exports = grammar({
         optional($.cell_path),
       ),
 
+    _expr_parenthesized_immediate: ($) =>
+      seq(
+        token.immediate(BRACK().open_paren),
+        optional($._parenthesized_body),
+        BRACK().close_paren,
+      ),
+
     _parenthesized_body: ($) =>
       seq(
         prec.right(
@@ -840,70 +841,9 @@ module.exports = grammar({
         repeat($._terminator),
       ),
 
-    val_range: ($) => {
-      // Divide each dot as a token to distinguish $.val_range and $.val_number
-      const create_opr = (/** @type {boolean} */ immediate) => {
-        const head_token = immediate ? token.immediate : token;
-        return {
-          opr: choice(
-            alias(
-              seq(head_token(PUNC().dot), token.immediate(PUNC().dot)),
-              OPR().range_inclusive,
-            ),
-            alias(
-              seq(
-                head_token(PUNC().dot),
-                token.immediate(PUNC().dot),
-                token.immediate(PUNC().eq),
-              ),
-              OPR().range_inclusive2,
-            ),
-            alias(
-              seq(
-                head_token(PUNC().dot),
-                token.immediate(PUNC().dot),
-                token.immediate(BRACK().open_angle),
-              ),
-              OPR().range_exclusive,
-            ),
-          ),
-          step: alias(
-            seq(head_token(PUNC().dot), token.immediate(PUNC().dot)),
-            OPR().range_inclusive,
-          ),
-        };
-      };
-
-      const { opr, step: opr_step } = create_opr(false);
-      const { opr: opr_imm, step: opr_step_imm } = create_opr(true);
-
-      const member = choice(
-        $.expr_parenthesized,
-        alias($._val_number_decimal, $.val_number),
-        $.val_variable,
-      );
-      const step_or_end = choice(
-        $.expr_parenthesized,
-        alias($._immediate_decimal, $.val_number),
-        $.val_variable,
-      );
-
-      const start = field("start", member);
-      const end = field("end", step_or_end);
-      const step = field("step", step_or_end);
-
-      return prec.right(
-        PREC().range,
-        choice(
-          seq(start, opr_imm, end),
-          seq(start, opr_imm),
-          seq(opr, end),
-          seq(start, opr_step_imm, step, opr_imm, end),
-          seq(opr_step, step, opr_imm, end),
-          seq(start, opr_step_imm, step, opr_imm),
-        ),
-      );
-    },
+    val_range: _range_rule(false),
+    _val_range: _range_rule(true),
+    _val_range_with_end: _range_rule(true, true),
 
     _immediate_decimal: _decimal_rule(true),
 
@@ -962,13 +902,19 @@ module.exports = grammar({
       ),
 
     val_duration: ($) =>
-      seq(field("value", $.val_number), field("unit", $.duration_unit)),
+      seq(
+        field("value", alias($._val_number_decimal, $.val_number)),
+        field("unit", $.duration_unit)
+      ),
 
     val_filesize: ($) =>
-      seq(field("value", $.val_number), field("unit", $.filesize_unit)),
+      seq(
+        field("value", alias($._val_number_decimal, $.val_number)),
+        field("unit", $.filesize_unit)
+      ),
 
     // prettier-ignore
-    filesize_unit: (_$) => token(choice(
+    filesize_unit: (_$) => token.immediate(choice(
       "b", "B",
 
       "kb", "kB", "Kb", "KB",
@@ -987,7 +933,7 @@ module.exports = grammar({
     )),
 
     // prettier-ignore
-    duration_unit: (_$) => token(choice(
+    duration_unit: (_$) => token.immediate(choice(
       "ns", "µs", "us", "ms", "sec", "min", "hr", "day", "wk"
     )),
 
@@ -1116,6 +1062,7 @@ module.exports = grammar({
           choice(
             $._list_item_expression,
             alias($._unquoted_in_list, $.val_string),
+            alias($._unquoted_in_list_with_expr, $.val_string),
             alias($.short_flag, $.val_string),
             alias($.long_flag, $.val_string),
             alias($._list_item_starts_with_sign, $.val_string),
@@ -1243,7 +1190,12 @@ module.exports = grammar({
           field("head", seq(PUNC().caret, $.val_variable)), // Support for ^$cmd type of syntax.
           field("head", seq(PUNC().caret, $.expr_parenthesized)), // Support for pipes into external command.
         ),
-        prec.dynamic(10, repeat($._cmd_arg)),
+        prec.dynamic(10, repeat(
+          seq(
+            token.immediate(/[ \t]+/),
+            optional($._cmd_arg),
+          ),
+        )),
       ),
 
     _command_parenthesized_body: ($) =>
@@ -1255,7 +1207,15 @@ module.exports = grammar({
             field("head", seq(PUNC().caret, $.val_variable)), // Support for ^$cmd type of syntax.
             field("head", seq(PUNC().caret, $.expr_parenthesized)), // Support for pipes into external command.
           ),
-          prec.dynamic(10, repeat(seq(optional("\n"), $._cmd_arg))),
+          prec.dynamic(10, repeat(
+            seq(
+              choice(
+                token.immediate("\n"),
+                token.immediate(/[ \t]+/)
+              ),
+              optional($._cmd_arg),
+            ),
+          )),
           optional("\n"),
         ),
       ),
@@ -1269,23 +1229,26 @@ module.exports = grammar({
         field("arg", prec.right(7, $.expr_parenthesized)),
         // lowest precedence to make it a last resort
         field("arg_str", alias($.unquoted, $.val_string)),
+        field("arg_str", alias($._unquoted_with_expr, $.val_string)),
       ),
 
     flag_value: ($) => choice($._value, $.val_string),
 
     redirection: ($) =>
-      choice(
-        prec.right(
-          10,
-          seq(
-            choice(...REDIR()),
-            field(
-              "file_path",
-              choice(alias($.unquoted, $.val_string), $._expression),
+      prec.right(
+        10,
+        seq(
+          choice(...REDIR()),
+          optional(
+            seq(
+              token.immediate(/[ \t]+/),
+              field(
+                "file_path",
+                choice(alias($.unquoted, $.val_string), $._expression),
+              ),
             ),
           ),
         ),
-        ...REDIR(),
       ),
 
     _flag: ($) => prec.right(5, choice($.short_flag, $.long_flag)),
@@ -1316,6 +1279,23 @@ module.exports = grammar({
 
     unquoted: _unquoted_rule(false),
     _unquoted_in_list: _unquoted_rule(true),
+    _unquoted_with_expr: _unquoted_with_expr_rule(false),
+    _unquoted_in_list_with_expr: _unquoted_with_expr_rule(true),
+
+    _unquoted_anonymous_prefix: ($) =>
+      choice(
+        ...REDIR(),
+        SPECIAL().null,
+        alias($.val_bool, '_prefix'),
+        alias($.val_date, '_prefix'),
+        seq(
+          $._val_number_decimal,
+          choice(
+            alias($.duration_unit, "_unit"),
+            alias($.filesize_unit, "_unit"),
+          ),
+        ),
+      ),
 
     /// Comments
 
@@ -1509,37 +1489,133 @@ function _decimal_rule(immediate) {
   const exponent = token.immediate(/[eE][-+]?[\d_]*\d[\d_]*/);
   const digits = token.immediate(/[\d_]*\d[\d_]*/);
   const head_token = immediate ? token.immediate : token;
+  return (/** @type {any} */ _$) => choice(
+    seq(head_token(/[\d_]*\d[\d_]*/), optional(exponent)),
+    seq(
+      choice(head_token(OPR().minus), head_token(OPR().plus)),
+      digits,
+      optional(exponent),
+    ),
+    seq(
+      head_token(/[\d_]*\d[\d_]*/),
+      token.immediate(PUNC().dot),
+      optional(digits),
+      optional(exponent),
+    ),
+    seq(
+      choice(head_token(OPR().minus), head_token(OPR().plus)),
+      digits,
+      token.immediate(PUNC().dot),
+      optional(digits),
+      optional(exponent),
+    ),
+    seq(head_token(PUNC().dot), digits, optional(exponent)),
+    seq(
+      choice(head_token(OPR().minus), head_token(OPR().plus)),
+      optional(token.immediate(/_+/)),
+      token.immediate(PUNC().dot),
+      digits,
+      optional(exponent),
+    ),
+  );
+}
 
-  return (/** @type {any} */ _$) =>
-    choice(
-      seq(head_token(/[\d_]*\d[\d_]*/), optional(exponent)),
-      seq(
-        choice(head_token(OPR().minus), head_token(OPR().plus)),
-        digits,
-        optional(exponent),
+/**
+ * @param {boolean} anonymous
+ */
+function _range_rule(anonymous, with_end_decimal = false) {
+  // Divide each dot as a token to distinguish $.val_range and $.val_number
+  const create_opr = (/** @type {boolean} */ immediate) => {
+    const head_token = immediate ? token.immediate : token;
+    return {
+      opr: choice(
+        head_token(OPR().range_inclusive),
+        head_token(OPR().range_inclusive2),
+        head_token(OPR().range_exclusive),
       ),
-      seq(
-        head_token(/[\d_]*\d[\d_]*/),
-        token.immediate(PUNC().dot),
-        optional(digits),
-        optional(exponent),
-      ),
-      seq(
-        choice(head_token(OPR().minus), head_token(OPR().plus)),
-        digits,
-        token.immediate(PUNC().dot),
-        optional(digits),
-        optional(exponent),
-      ),
-      seq(head_token(PUNC().dot), digits, optional(exponent)),
-      seq(
-        choice(head_token(OPR().minus), head_token(OPR().plus)),
-        optional(token.immediate(/_+/)),
-        token.immediate(PUNC().dot),
-        digits,
-        optional(exponent),
+      step: head_token(OPR().range_inclusive),
+    };
+  };
+
+  const { opr, step: opr_step } = create_opr(false);
+  const { opr: opr_imm, step: opr_step_imm } = create_opr(true);
+
+  return (/** @type {any} */ $) => {
+    const member = choice(
+      $.expr_parenthesized,
+      alias($._val_number_decimal, $.val_number),
+      $.val_variable,
+    );
+    const step_or_end = choice(
+      alias($._expr_parenthesized_immediate, $.expr_parenthesized),
+      alias($._immediate_decimal, $.val_number),
+      $.val_variable,
+    );
+    var start = field("start", member);
+    var end = field("end", step_or_end);
+    var step = field("step", step_or_end);
+    if (anonymous) {
+      start = $._val_number_decimal;
+      step = $._immediate_decimal;
+      end = $._immediate_decimal;
+    }
+    const common_choices =
+      [
+        // 1... works as range from 1 to infinity
+        seq(start, opr_step_imm, token.immediate(PUNC().dot)),
+        seq(opr, end),
+        seq(opr_step, step, opr_imm, end),
+      ]
+    const seq_with_start = [
+      start,
+      optional(seq(opr_step_imm, step)),
+      opr_imm,
+    ]
+    const end_pattern = with_end_decimal ? end : optional(end);
+
+    return prec.right(
+      anonymous ? PREC().range - 1 : PREC().range,
+      choice(
+        ...common_choices,
+        seq(
+          ...seq_with_start,
+          end_pattern,
+        ),
       ),
     );
+  };
+}
+
+
+/**
+ * @param {boolean} in_list
+ */
+function _unquoted_with_expr_rule(in_list) {
+  const pattern_repeat = in_list
+    ? /[^\s\n\t\r();,]*/
+    : /[^\s\n\t\r();]*/;
+  return ($) => {
+    const unquoted_head = in_list ? $._unquoted_in_list : $.unquoted;
+    return prec(
+      -1,
+      seq(
+        choice(
+          $._unquoted_anonymous_prefix,
+          $._val_number_decimal,
+          $._val_range_with_end,
+          alias(unquoted_head, "_head"),
+        ),
+        alias($._expr_parenthesized_immediate, $.expr_parenthesized),
+        optional(
+          repeat(seq(
+            token.immediate(pattern_repeat),
+            alias($._expr_parenthesized_immediate, $.expr_parenthesized),
+          )),
+        ),
+        token.immediate(pattern_repeat),
+      ),
+    )
+  };
 }
 
 /**
@@ -1582,47 +1658,43 @@ function _unquoted_rule(in_list) {
 
         // distinguish between unquoted and val_range in cmd_arg
         seq(
-          token(PUNC().dot),
-          token.immediate(pattern_with_dot),
-          token.immediate(pattern_repeat1),
+          $._val_range,
+          choice(
+            token.immediate(pattern_with_dot),
+            token.immediate(PUNC().dot),
+          ),
+          token.immediate(pattern_repeat),
         ),
         seq(
           token(PUNC().dot),
-          token.immediate(PUNC().dot),
+          token.immediate(pattern_with_dot),
+          token.immediate(pattern_repeat),
+        ),
+        seq(
+          OPR().range_inclusive,
           token.immediate(pattern_with_le),
           token.immediate(pattern_repeat),
         ),
         seq(
-          token(PUNC().dot),
-          token.immediate(PUNC().dot),
-          token.immediate(PUNC().eq),
-          token.immediate(pattern_with_dollar),
-          token.immediate(pattern_repeat),
-        ),
-        seq(
-          token(PUNC().dot),
-          token.immediate(PUNC().dot),
-          token.immediate(BRACK().open_angle),
-          token.immediate(pattern_with_dollar),
-          token.immediate(pattern_repeat),
-        ),
-        seq(
-          token(PUNC().dot),
-          token.immediate(PUNC().dot),
-          token.immediate(PUNC().dot),
-          token.immediate(pattern_repeat),
-        ),
-        seq(
-          token(PUNC().dot),
-          token.immediate(PUNC().dot),
           choice(
-            token.immediate(PUNC().eq),
-            token.immediate(BRACK().open_angle),
+            OPR().range_inclusive2,
+            OPR().range_exclusive,
           ),
+          token.immediate(pattern_with_dollar),
+          token.immediate(pattern_repeat),
         ),
         seq(
-          token(PUNC().dot),
+          OPR().range_inclusive,
           token.immediate(PUNC().dot),
+          token.immediate(pattern_repeat),
+        ),
+        choice(
+          OPR().range_inclusive,
+          OPR().range_inclusive2,
+          OPR().range_exclusive,
+        ),
+        seq(
+          OPR().range_inclusive,
           optional(token.immediate(pattern_once)),
         ),
         seq(token(PUNC().dot), optional(token.immediate(pattern_with_dot))),
@@ -1645,8 +1717,13 @@ function _unquoted_rule(in_list) {
           $._val_number_decimal,
           token.immediate(PUNC().dot),
           $._immediate_decimal,
-          token.immediate(PUNC().dot),
-          $._immediate_decimal,
+          token.immediate(pattern_repeat),
+        ),
+
+        // recognize unquoted string starting with special patterns
+        // e.g. true-foo, e>bar, 1ms-baz ...
+        seq(
+          $._unquoted_anonymous_prefix,
           token.immediate(pattern_repeat1),
         ),
       ),

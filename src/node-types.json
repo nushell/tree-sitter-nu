@@ -1,5 +1,15 @@
 [
   {
+    "type": "_head",
+    "named": false,
+    "fields": {}
+  },
+  {
+    "type": "_prefix",
+    "named": false,
+    "fields": {}
+  },
+  {
     "type": "assignment",
     "named": true,
     "fields": {
@@ -4699,11 +4709,11 @@
         ]
       },
       "rest": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
           {
-            "type": ".",
+            "type": "..",
             "named": false
           },
           {
@@ -4846,6 +4856,10 @@
       "types": [
         {
           "type": "escape_sequence",
+          "named": true
+        },
+        {
+          "type": "expr_parenthesized",
           "named": true
         },
         {
@@ -5578,6 +5592,14 @@
   },
   {
     "type": "_",
+    "named": false
+  },
+  {
+    "type": "_prefix",
+    "named": false
+  },
+  {
+    "type": "_unit",
     "named": false
   },
   {
