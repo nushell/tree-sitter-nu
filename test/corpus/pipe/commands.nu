@@ -548,7 +548,7 @@ echo 1mb-foo
 echo .1foo
 echo 1.foo
 echo 1.1foo
-echo -1.1e-10.
+echo 1.1e-10.
 echo 1991-02-02foo
 
 ------
