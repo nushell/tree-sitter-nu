@@ -533,3 +533,374 @@ cmd-021-variable-external-parenthesized
               (val_variable
                 (identifier))
               (val_string))))))))
+
+======
+cmd-022-unquoted-string-vs-type
+======
+
+echo infms
+echo nankb
+echo true-foo
+echo null-foo
+echo e>foo
+echo 1ms-foo
+echo 1mb-foo
+echo .1foo
+echo 1.foo
+echo 1.1foo
+echo 1.1e-10.
+echo 1991-02-02foo
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))
+
+======
+cmd-023-unquoted-string-vs-range
+======
+
+echo .1...
+echo ..2.2
+echo .0...0
+echo ..1..=2.2
+echo .1...0..=0.
+# unquoted following
+echo .1..foo
+echo .1...2foo
+echo .1...1...2foo
+echo .1...0..=0.foo
+echo 1...2foo
+echo ..=.2foo
+echo ..1..=2.foo
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)
+          (val_number)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)
+          (val_number)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)
+          (val_number)
+          (val_number)))))
+  (comment)
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))
+
+======
+cmd-024-unquoted-string-vs-range-followed-by-dot
+======
+
+echo .1...foo
+echo 1...2.foo
+echo .1...0.
+echo ..=.2.
+echo ..<22.2.
+echo ..1..=2..
+echo .1...0..=0..
+echo .1...0..=0..foo
+echo .1...1..<2.foo
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))
+
+======
+cmd-025-unquoted-string-with-immediate-expr-parenthesized
+======
+
+echo foo(
+'bar')baz(
+1)
+echo foo('bar')()
+echo .()
+echo true()
+echo null()
+echo .1ms()
+echo .1mb()
+echo 2024-01-01()
+echo .1()
+echo e>()
+echo ..=1()
+echo ..1..<1()
+echo .1..=1()
+echo 1...1..=1()
+echo ..=1.foo()
+echo 1...()
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized
+            (pipeline
+              (pipe_element
+                (val_string))))
+          (expr_parenthesized
+            (pipeline
+              (pipe_element
+                (val_number))))))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized
+            (pipeline
+              (pipe_element
+                (val_string))))
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized))))))
+
