@@ -908,9 +908,14 @@ module.exports = grammar({
       ),
 
     val_filesize: ($) =>
-      seq(
-        field("value", alias($._val_number_decimal, $.val_number)),
-        field("unit", $.filesize_unit),
+      choice(
+        // "0b" as single terminal in both $.val_binary and $.val_number
+        // not able to further split it into value and unit
+        "0b",
+        seq(
+          field("value", alias($._val_number_decimal, $.val_number)),
+          field("unit", $.filesize_unit),
+        ),
       ),
 
     // prettier-ignore

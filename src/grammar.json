@@ -8423,28 +8423,37 @@
       ]
     },
     "val_filesize": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "FIELD",
-          "name": "value",
-          "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_val_number_decimal"
-            },
-            "named": true,
-            "value": "val_number"
-          }
+          "type": "STRING",
+          "value": "0b"
         },
         {
-          "type": "FIELD",
-          "name": "unit",
-          "content": {
-            "type": "SYMBOL",
-            "name": "filesize_unit"
-          }
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_val_number_decimal"
+                },
+                "named": true,
+                "value": "val_number"
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "unit",
+              "content": {
+                "type": "SYMBOL",
+                "name": "filesize_unit"
+              }
+            }
+          ]
         }
       ]
     },

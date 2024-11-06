@@ -4580,7 +4580,7 @@
     "fields": {
       "unit": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "filesize_unit",
@@ -4590,7 +4590,7 @@
       },
       "value": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "val_number",
