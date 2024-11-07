@@ -683,28 +683,6 @@ module.exports = grammar({
         BRACK().close_brack,
       ),
 
-    /// Assignment Statement
-
-    assignment: ($) => {
-      const opr = [
-        PUNC().eq,
-        OPR().assign_add,
-        OPR().assign_sub,
-        OPR().assign_mul,
-        OPR().assign_div,
-        OPR().assign_append,
-      ];
-
-      return prec.left(
-        PREC().assignment,
-        seq(
-          field("lhs", $.val_variable),
-          field("opr", choice(...opr)),
-          field("rhs", $._expression),
-        ),
-      );
-    },
-
     /// Block
 
     block: ($) =>
@@ -1433,7 +1411,7 @@ function _block_body_rules(suffix) {
 
     ["stmt_let" + suffix]: (/** @type {{ [x: string]: RuleOrLiteral; }} */ $) =>
       prec.right(
-        1,
+        PREC().assignment,
         seq(
           choice(KEYWORD().let, KEYWORD().let_env),
           $["_assignment_pattern" + suffix],
@@ -1447,13 +1425,18 @@ function _block_body_rules(suffix) {
       /** @type {{ [x: string]: RuleOrLiteral; }} */ $,
     ) =>
       prec.right(
-        1,
+        PREC().assignment,
         seq(
           optional(MODIFIER().visibility),
           KEYWORD().const,
           $["_assignment_pattern" + suffix],
         ),
       ),
+
+    ["assignment" + suffix]: (
+      /** @type {{ [x: string]: RuleOrLiteral; }} */ $,
+    ) =>
+      prec.right(PREC().assignment, $["_mutable_assignment_pattern" + suffix]),
 
     ["_assignment_pattern" + suffix]: (
       /** @type {{ [x: string]: string; _variable_name?: any; param_type?: any; }} */ $,
@@ -1463,6 +1446,25 @@ function _block_body_rules(suffix) {
         field("type", optional($.param_type)),
         PUNC().eq,
         field("value", alias_for_suffix($, "pipeline", suffix)),
+      ),
+
+    ["_mutable_assignment_pattern" + suffix]: (
+      /** @type {{ [x: string]: string; _variable_name?: any; param_type?: any; }} */ $,
+    ) =>
+      seq(
+        field("lhs", $.val_variable),
+        field(
+          "opr",
+          choice(
+            PUNC().eq,
+            OPR().assign_add,
+            OPR().assign_sub,
+            OPR().assign_mul,
+            OPR().assign_div,
+            OPR().assign_append,
+          ),
+        ),
+        field("rhs", alias_for_suffix($, "pipeline", suffix)),
       ),
 
     /// Statements
@@ -1476,7 +1478,7 @@ function _block_body_rules(suffix) {
         $._stmt_overlay,
         $.stmt_register,
         $.stmt_source,
-        $.assignment,
+        alias_for_suffix($, "assignment", suffix),
         alias_for_suffix($, "stmt_let", suffix),
         alias_for_suffix($, "stmt_mut", suffix),
         alias_for_suffix($, "stmt_const", suffix),

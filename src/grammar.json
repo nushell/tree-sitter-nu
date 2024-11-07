@@ -199,6 +199,14 @@
         ]
       }
     },
+    "assignment": {
+      "type": "PREC_RIGHT",
+      "value": 1,
+      "content": {
+        "type": "SYMBOL",
+        "name": "_mutable_assignment_pattern"
+      }
+    },
     "_assignment_pattern": {
       "type": "SEQ",
       "members": [
@@ -233,6 +241,60 @@
         {
           "type": "FIELD",
           "name": "value",
+          "content": {
+            "type": "SYMBOL",
+            "name": "pipeline"
+          }
+        }
+      ]
+    },
+    "_mutable_assignment_pattern": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "lhs",
+          "content": {
+            "type": "SYMBOL",
+            "name": "val_variable"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "opr",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "="
+              },
+              {
+                "type": "STRING",
+                "value": "+="
+              },
+              {
+                "type": "STRING",
+                "value": "-="
+              },
+              {
+                "type": "STRING",
+                "value": "*="
+              },
+              {
+                "type": "STRING",
+                "value": "/="
+              },
+              {
+                "type": "STRING",
+                "value": "++="
+              }
+            ]
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "rhs",
           "content": {
             "type": "SYMBOL",
             "name": "pipeline"
@@ -479,6 +541,14 @@
         ]
       }
     },
+    "assignment_last": {
+      "type": "PREC_RIGHT",
+      "value": 1,
+      "content": {
+        "type": "SYMBOL",
+        "name": "_mutable_assignment_pattern_last"
+      }
+    },
     "_assignment_pattern_last": {
       "type": "SEQ",
       "members": [
@@ -525,6 +595,65 @@
         }
       ]
     },
+    "_mutable_assignment_pattern_last": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "lhs",
+          "content": {
+            "type": "SYMBOL",
+            "name": "val_variable"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "opr",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "="
+              },
+              {
+                "type": "STRING",
+                "value": "+="
+              },
+              {
+                "type": "STRING",
+                "value": "-="
+              },
+              {
+                "type": "STRING",
+                "value": "*="
+              },
+              {
+                "type": "STRING",
+                "value": "/="
+              },
+              {
+                "type": "STRING",
+                "value": "++="
+              }
+            ]
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "rhs",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "pipeline_last"
+            },
+            "named": true,
+            "value": "pipeline"
+          }
+        }
+      ]
+    },
     "_statement_last": {
       "type": "CHOICE",
       "members": [
@@ -549,8 +678,13 @@
           "name": "stmt_source"
         },
         {
-          "type": "SYMBOL",
-          "name": "assignment"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "assignment_last"
+          },
+          "named": true,
+          "value": "assignment"
         },
         {
           "type": "ALIAS",
@@ -792,6 +926,14 @@
         ]
       }
     },
+    "assignment_parenthesized": {
+      "type": "PREC_RIGHT",
+      "value": 1,
+      "content": {
+        "type": "SYMBOL",
+        "name": "_mutable_assignment_pattern_parenthesized"
+      }
+    },
     "_assignment_pattern_parenthesized": {
       "type": "SEQ",
       "members": [
@@ -838,6 +980,65 @@
         }
       ]
     },
+    "_mutable_assignment_pattern_parenthesized": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "lhs",
+          "content": {
+            "type": "SYMBOL",
+            "name": "val_variable"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "opr",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "="
+              },
+              {
+                "type": "STRING",
+                "value": "+="
+              },
+              {
+                "type": "STRING",
+                "value": "-="
+              },
+              {
+                "type": "STRING",
+                "value": "*="
+              },
+              {
+                "type": "STRING",
+                "value": "/="
+              },
+              {
+                "type": "STRING",
+                "value": "++="
+              }
+            ]
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "rhs",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "pipeline_parenthesized"
+            },
+            "named": true,
+            "value": "pipeline"
+          }
+        }
+      ]
+    },
     "_statement_parenthesized": {
       "type": "CHOICE",
       "members": [
@@ -862,8 +1063,13 @@
           "name": "stmt_source"
         },
         {
-          "type": "SYMBOL",
-          "name": "assignment"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "assignment_parenthesized"
+          },
+          "named": true,
+          "value": "assignment"
         },
         {
           "type": "ALIAS",
@@ -1102,6 +1308,14 @@
         ]
       }
     },
+    "assignment_parenthesized_last": {
+      "type": "PREC_RIGHT",
+      "value": 1,
+      "content": {
+        "type": "SYMBOL",
+        "name": "_mutable_assignment_pattern_parenthesized_last"
+      }
+    },
     "_assignment_pattern_parenthesized_last": {
       "type": "SEQ",
       "members": [
@@ -1148,6 +1362,65 @@
         }
       ]
     },
+    "_mutable_assignment_pattern_parenthesized_last": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "lhs",
+          "content": {
+            "type": "SYMBOL",
+            "name": "val_variable"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "opr",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "="
+              },
+              {
+                "type": "STRING",
+                "value": "+="
+              },
+              {
+                "type": "STRING",
+                "value": "-="
+              },
+              {
+                "type": "STRING",
+                "value": "*="
+              },
+              {
+                "type": "STRING",
+                "value": "/="
+              },
+              {
+                "type": "STRING",
+                "value": "++="
+              }
+            ]
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "rhs",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "pipeline_parenthesized_last"
+            },
+            "named": true,
+            "value": "pipeline"
+          }
+        }
+      ]
+    },
     "_statement_parenthesized_last": {
       "type": "CHOICE",
       "members": [
@@ -1172,8 +1445,13 @@
           "name": "stmt_source"
         },
         {
-          "type": "SYMBOL",
-          "name": "assignment"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "assignment_parenthesized_last"
+          },
+          "named": true,
+          "value": "assignment"
         },
         {
           "type": "ALIAS",
@@ -4337,64 +4615,6 @@
           "value": "]"
         }
       ]
-    },
-    "assignment": {
-      "type": "PREC_LEFT",
-      "value": 1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "FIELD",
-            "name": "lhs",
-            "content": {
-              "type": "SYMBOL",
-              "name": "val_variable"
-            }
-          },
-          {
-            "type": "FIELD",
-            "name": "opr",
-            "content": {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "="
-                },
-                {
-                  "type": "STRING",
-                  "value": "+="
-                },
-                {
-                  "type": "STRING",
-                  "value": "-="
-                },
-                {
-                  "type": "STRING",
-                  "value": "*="
-                },
-                {
-                  "type": "STRING",
-                  "value": "/="
-                },
-                {
-                  "type": "STRING",
-                  "value": "++="
-                }
-              ]
-            }
-          },
-          {
-            "type": "FIELD",
-            "name": "rhs",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_expression"
-            }
-          }
-        ]
-      }
     },
     "block": {
       "type": "SEQ",
