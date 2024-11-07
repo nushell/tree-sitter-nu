@@ -1496,8 +1496,9 @@ function _decimal_rule(immediate) {
     choice(
       seq(head_token(/[\d_]*\d[\d_]*/), optional(exponent)),
       seq(
-        choice(head_token(OPR().minus), head_token(OPR().plus)),
-        digits,
+        token(
+          seq(choice(head_token(OPR().minus), head_token(OPR().plus)), digits),
+        ),
         optional(exponent),
       ),
       seq(
@@ -1507,18 +1508,23 @@ function _decimal_rule(immediate) {
         optional(exponent),
       ),
       seq(
-        choice(head_token(OPR().minus), head_token(OPR().plus)),
-        digits,
+        token(
+          seq(choice(head_token(OPR().minus), head_token(OPR().plus)), digits),
+        ),
         token.immediate(PUNC().dot),
         optional(digits),
         optional(exponent),
       ),
       seq(head_token(PUNC().dot), digits, optional(exponent)),
       seq(
-        choice(head_token(OPR().minus), head_token(OPR().plus)),
-        optional(token.immediate(/_+/)),
-        token.immediate(PUNC().dot),
-        digits,
+        token(
+          seq(
+            choice(head_token(OPR().minus), head_token(OPR().plus)),
+            optional(token.immediate(/_+/)),
+            token.immediate(PUNC().dot),
+            digits,
+          ),
+        ),
         optional(exponent),
       ),
     );
