@@ -904,3 +904,115 @@ echo 1...()
         (val_string
           (expr_parenthesized))))))
 
+======
+cmd-026-unquoted-string-with-leading-plus
+======
+
+echo +100
+echo +_.1
+echo +1.
+echo +1..
+echo +.1..()
+# unquoted below
+chmod +x
+echo +1.f
+echo +.1f
+echo +..1
+echo +
+echo +-
+echo ++1
+echo +.x
+echo +()
+echo +.1()
+echo +..1()
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_number))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_number))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_number))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)
+          (expr_parenthesized)))))
+  (comment)
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized))))))
