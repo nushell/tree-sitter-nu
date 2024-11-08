@@ -2865,10 +2865,6 @@
           "named": true
         },
         {
-          "type": "expr_unary",
-          "named": true
-        },
-        {
           "type": "match_guard",
           "named": true
         },
@@ -2930,6 +2926,7 @@
   {
     "type": "nu_script",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -3755,15 +3752,7 @@
         "required": true,
         "types": [
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
             "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
             "named": true
           },
           {
@@ -4439,10 +4428,6 @@
             "named": true
           },
           {
-            "type": "expr_unary",
-            "named": true
-          },
-          {
             "type": "val_binary",
             "named": true
           },
@@ -4580,10 +4565,6 @@
           },
           {
             "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
             "named": true
           },
           {
@@ -4792,18 +4773,6 @@
         },
         {
           "type": "expr_parenthesized",
-          "named": true
-        },
-        {
-          "type": "long_flag_equals_value",
-          "named": true
-        },
-        {
-          "type": "long_flag_identifier",
-          "named": true
-        },
-        {
-          "type": "short_flag_identifier",
           "named": true
         }
       ]

@@ -437,12 +437,7 @@ module.exports = grammar({
     match_guard: ($) => seq(KEYWORD().if, $._expression),
 
     _match_pattern_expression: ($) =>
-      choice(
-        $._match_pattern_value,
-        alias($._expr_unary_minus, $.expr_unary),
-        $.val_range,
-        $.expr_parenthesized,
-      ),
+      choice($._match_pattern_value, $.val_range, $.expr_parenthesized),
 
     _match_pattern_value: ($) =>
       choice(
@@ -470,9 +465,6 @@ module.exports = grammar({
               choice(
                 $._match_pattern_expression,
                 alias($._unquoted_in_list, $.val_string),
-                alias($.short_flag, $.val_string),
-                alias($.long_flag, $.val_string),
-                alias($._list_item_starts_with_sign, $.val_string),
               ),
               optional(PUNC().comma),
             ),
@@ -1046,26 +1038,12 @@ module.exports = grammar({
             $._list_item_expression,
             alias($._unquoted_in_list, $.val_string),
             alias($._unquoted_in_list_with_expr, $.val_string),
-            alias($.short_flag, $.val_string),
-            alias($.long_flag, $.val_string),
-            alias($._list_item_starts_with_sign, $.val_string),
           ),
         ),
       ),
 
     _list_item_expression: ($) =>
-      choice(
-        $._value,
-        alias($._expr_unary_minus, $.expr_unary),
-        $.val_range,
-        $.expr_parenthesized,
-      ),
-
-    _list_item_starts_with_sign: (_$) =>
-      seq(
-        choice(token(OPR().minus), token(OPR().plus)),
-        token.immediate(/[^\s\n\t\r{}()\[\]"`';]*/),
-      ),
+      choice($._value, $.val_range, $.expr_parenthesized),
 
     val_record: ($) =>
       seq(
@@ -1106,8 +1084,9 @@ module.exports = grammar({
         field(
           "value",
           choice(
-            prec.right(10, $._expression),
-            alias($.cmd_identifier, $.val_string),
+            $._list_item_expression,
+            alias($._unquoted_in_record, $.val_string),
+            alias($._unquoted_in_record_with_expr, $.val_string),
           ),
         ),
       ),
@@ -1258,10 +1237,12 @@ module.exports = grammar({
 
     long_flag_value: ($) => $._cmd_arg,
 
-    unquoted: _unquoted_rule(false),
-    _unquoted_in_list: _unquoted_rule(true),
-    _unquoted_with_expr: _unquoted_with_expr_rule(false),
-    _unquoted_in_list_with_expr: _unquoted_with_expr_rule(true),
+    unquoted: _unquoted_rule("command"),
+    _unquoted_in_list: _unquoted_rule("list"),
+    _unquoted_in_record: _unquoted_rule("record"),
+    _unquoted_with_expr: _unquoted_with_expr_rule("command"),
+    _unquoted_in_list_with_expr: _unquoted_with_expr_rule("list"),
+    _unquoted_in_record_with_expr: _unquoted_with_expr_rule("record"),
 
     _unquoted_anonymous_prefix: ($) =>
       choice(
@@ -1588,12 +1569,28 @@ function _range_rule(anonymous, with_end_decimal = false) {
 }
 
 /**
- * @param {boolean} in_list
+ * @param {string} type
  */
-function _unquoted_with_expr_rule(in_list) {
-  const pattern_repeat = in_list ? /[^\s\n\t\r();,]*/ : /[^\s\n\t\r();]*/;
+function _unquoted_with_expr_rule(type) {
+  var pattern_repeat = /[^\s\n\t\r();]*/;
+  switch (type) {
+    case "list":
+      pattern_repeat = /[^\s\n\t\r();,]*/;
+      break;
+    case "record":
+      pattern_repeat = /[^\s\n\t\r();:,]*/;
+      break;
+  }
   return ($) => {
-    const unquoted_head = in_list ? $._unquoted_in_list : $.unquoted;
+    var unquoted_head = $.unquoted;
+    switch (type) {
+      case "list":
+        unquoted_head = $._unquoted_in_list;
+        break;
+      case "record":
+        unquoted_head = $._unquoted_in_record;
+        break;
+    }
     return prec(
       -1,
       seq(
@@ -1619,31 +1616,36 @@ function _unquoted_with_expr_rule(in_list) {
 }
 
 /**
- * @param {boolean} in_list
+ * @param {string} type
  */
-function _unquoted_rule(in_list) {
-  const pattern = in_list
-    ? /[^-$\s\n\t\r{}()\[\]"`';,][^\s\n\t\r{}()\[\]"`';,]*/
-    : /[^-$\s\n\t\r{}()\[\]"`';][^\s\n\t\r{}()\[\]"`';]*/;
-  const pattern_repeat = in_list
-    ? /[^\s\n\t\r{}()\[\]"`';,]*/
-    : /[^\s\n\t\r{}()\[\]"`';]*/;
-  const pattern_repeat1 = in_list
-    ? /[^\s\n\t\r{}()\[\]"`';,]+/
-    : /[^\s\n\t\r{}()\[\]"`';]+/;
-  const pattern_once = in_list
-    ? /[^\s\n\t\r{}()\[\]"`';,]/
-    : /[^\s\n\t\r{}()\[\]"`';]/;
-  const pattern_with_dot = in_list
-    ? /[^\s\n\t\r{}()\[\]"`';,.]/
-    : /[^\s\n\t\r{}()\[\]"`';.]/;
-  const pattern_with_le = in_list
-    ? /[^\s\n\t\r{}()\[\]"`';,=<]/
-    : /[^\s\n\t\r{}()\[\]"`';=<]/;
-  const pattern_with_dollar = in_list
-    ? /[^\s\n\t\r{}()\[\]"`';,$]/
-    : /[^\s\n\t\r{}()\[\]"`';$]/;
-
+function _unquoted_rule(type) {
+  var pattern = /[^-$\s\n\t\r{}()\[\]"`';][^\s\n\t\r{}()\[\]"`';]*/;
+  var pattern_repeat = /[^\s\n\t\r{}()\[\]"`';]*/;
+  var pattern_repeat1 = /[^\s\n\t\r{}()\[\]"`';]+/;
+  var pattern_once = /[^\s\n\t\r{}()\[\]"`';]/;
+  var pattern_with_dot = /[^\s\n\t\r{}()\[\]"`';.]/;
+  var pattern_with_le = /[^\s\n\t\r{}()\[\]"`';=<]/;
+  var pattern_with_dollar = /[^\s\n\t\r{}()\[\]"`';$]/;
+  switch (type) {
+    case "list":
+      pattern = /[^$\s\n\t\r{}()\[\]"`';,][^\s\n\t\r{}()\[\]"`';,]*/;
+      pattern_repeat = /[^\s\n\t\r{}()\[\]"`';,]*/;
+      pattern_repeat1 = /[^\s\n\t\r{}()\[\]"`';,]+/;
+      pattern_once = /[^\s\n\t\r{}()\[\]"`';,]/;
+      pattern_with_dot = /[^\s\n\t\r{}()\[\]"`';,.]/;
+      pattern_with_le = /[^\s\n\t\r{}()\[\]"`';,=<]/;
+      pattern_with_dollar = /[^\s\n\t\r{}()\[\]"`';,$]/;
+      break;
+    case "record":
+      pattern = /[^$\s\n\t\r{}()\[\]"`';:,][^\s\n\t\r{}()\[\]"`';:,]*/;
+      pattern_repeat = /[^\s\n\t\r{}()\[\]"`';:,]*/;
+      pattern_repeat1 = /[^\s\n\t\r{}()\[\]"`';:,]+/;
+      pattern_once = /[^\s\n\t\r{}()\[\]"`';:,]/;
+      pattern_with_dot = /[^\s\n\t\r{}()\[\]"`';:,.]/;
+      pattern_with_le = /[^\s\n\t\r{}()\[\]"`';:,=<]/;
+      pattern_with_dollar = /[^\s\n\t\r{}()\[\]"`';:,$]/;
+      break;
+  }
   // because this catches almost anything, we want to ensure it is
   // picked as the a last resort after everything else has failed.
   // so we give it a ridiculously low precedence and place it at the
@@ -1710,7 +1712,6 @@ function _unquoted_rule(in_list) {
         seq(
           $._val_number_decimal,
           token.immediate(PUNC().dot),
-          $._immediate_decimal,
           token.immediate(pattern_repeat),
         ),
 
