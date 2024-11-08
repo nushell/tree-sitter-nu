@@ -32,8 +32,7 @@ list-001-item-string
           (val_entry
             (val_string))
           (val_entry
-            (val_string
-              (long_flag_identifier))))))))
+            (val_string)))))))
 
 =====
 list-002-unquoted-starts-with-numeric
@@ -398,6 +397,9 @@ list-012-unquoted-vs-range-followed-by-dot
 ======
 
 [
+  .1.
+  1.1.
+  ._1_.
   .1...foo
   1...2.foo
   .1...0.
@@ -416,6 +418,12 @@ list-012-unquoted-vs-range-followed-by-dot
     (pipe_element
       (val_list
         (list_body
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
           (val_entry
             (val_string))
           (val_entry
