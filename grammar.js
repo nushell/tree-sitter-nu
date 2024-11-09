@@ -293,7 +293,7 @@ module.exports = grammar({
       choice(
         field("ctrl_break", KEYWORD().break),
         field("ctrl_continue", KEYWORD().continue),
-        $.ctrl_do,
+        alias($.ctrl_do_parenthesized, $.ctrl_do),
         alias($.ctrl_if_parenthesized, $.ctrl_if),
         alias($.ctrl_try_parenthesized, $.ctrl_try),
         $.ctrl_match,
@@ -334,27 +334,39 @@ module.exports = grammar({
       ),
 
     // Nestable Controls
+    _do_expression: ($) =>
+      choice(
+        $._list_item_expression,
+        $._flag,
+        alias($.unquoted, $.val_string),
+        alias($._unquoted_with_expr, $.val_string),
+      ),
 
     ctrl_do: ($) =>
       prec.left(
         -1,
         seq(
-          // `do` has 4 flags, is there a better way to do this?
           KEYWORD().do,
-          optional($._flag),
-          optional($._flag),
-          optional($._flag),
-          optional($._flag),
+          repeat($._flag),
           choice($._blosure, $.val_variable),
-          optional($._flag),
-          optional($._flag),
-          optional($._flag),
-          optional($._flag),
-          optional($._expression),
-          optional($._flag),
-          optional($._flag),
-          optional($._flag),
-          optional($._flag),
+          // optional to allow comment at the end
+          repeat(seq(token.immediate(/[ \t]+/), optional($._do_expression))),
+        ),
+      ),
+
+    ctrl_do_parenthesized: ($) =>
+      prec.left(
+        -1,
+        seq(
+          KEYWORD().do,
+          repeat($._flag),
+          choice($._blosure, $.val_variable),
+          repeat(
+            seq(
+              choice(token.immediate("\n"), token.immediate(/[ \t]+/)),
+              optional($._do_expression),
+            ),
+          ),
         ),
       ),
 
@@ -626,7 +638,11 @@ module.exports = grammar({
       ),
 
     hide_env: ($) =>
-      seq(KEYWORD().hide_env, field("variable", $._variable_name)),
+      seq(
+        KEYWORD().hide_env,
+        repeat($._flag),
+        field("variable", $._variable_name),
+      ),
 
     _stmt_overlay: ($) =>
       choice($.overlay_hide, $.overlay_list, $.overlay_new, $.overlay_use),
@@ -1015,7 +1031,7 @@ module.exports = grammar({
       ),
 
     expr_interpolated: ($) =>
-      seq(BRACK().open_paren, $._block_body, BRACK().close_paren),
+      seq(BRACK().open_paren, $._parenthesized_body, BRACK().close_paren),
 
     /// Collections
 
@@ -1176,7 +1192,6 @@ module.exports = grammar({
               ),
             ),
           ),
-          optional("\n"),
         ),
       ),
 
