@@ -38,7 +38,7 @@ module.exports = grammar({
 
     nu_script: ($) => seq(optional($.shebang), optional($._block_body)),
 
-    shebang: (_$) => seq("#!", /.*\n/),
+    shebang: (_$) => seq("#!", /.*\r?\n/),
 
     ...block_body_rules("", (/** @type {any} */ $) => $._terminator),
     ...block_body_rules("_last", (/** @type {any} */ $) =>
@@ -88,7 +88,7 @@ module.exports = grammar({
         field("dollar_name", $.val_variable),
       ),
 
-    _terminator: (_$) => choice(PUNC().semicolon, "\n"),
+    _terminator: (_$) => choice(PUNC().semicolon, /\r?\n/),
 
     /// Top Level Items
 
@@ -363,7 +363,7 @@ module.exports = grammar({
           choice($._blosure, $.val_variable),
           repeat(
             seq(
-              choice(token.immediate("\n"), token.immediate(/[ \t]+/)),
+              choice(/\r?\n/, token.immediate(/[ \t]+/)),
               optional($._do_expression),
             ),
           ),
@@ -394,7 +394,7 @@ module.exports = grammar({
           field("then_branch", $.block),
           optional(
             seq(
-              optional("\n"),
+              optional(/\r?\n/),
               KEYWORD().else,
               choice(
                 field("else_block", choice($.block, $._expression, $.command)),
@@ -530,7 +530,7 @@ module.exports = grammar({
           field("try_branch", $.block),
           optional(
             seq(
-              optional("\n"),
+              optional(/\r?\n/),
               KEYWORD().catch,
               field("catch_branch", $._blosure),
             ),
@@ -567,8 +567,8 @@ module.exports = grammar({
           $.command,
         ),
         // Allow for empty pipeline elements like `ls | | print`
-        repeat1(seq(optional("\n"), PUNC().pipe)),
-        optional("\n"),
+        repeat1(seq(optional(/\r?\n/), PUNC().pipe)),
+        optional(/\r?\n/),
       ),
 
     pipe_element_parenthesized: ($) =>
@@ -580,8 +580,8 @@ module.exports = grammar({
           alias($._command_parenthesized_body, $.command),
         ),
         // Allow for empty pipeline elements like `ls | | print`
-        repeat1(seq(optional("\n"), PUNC().pipe)),
-        optional("\n"),
+        repeat1(seq(optional(/\r?\n/), PUNC().pipe)),
+        optional(/\r?\n/),
       ),
 
     pipe_element_last: ($) =>
@@ -1075,8 +1075,7 @@ module.exports = grammar({
       "_entry_separator",
     ),
 
-    _entry_separator: (_$) =>
-      token(prec(20, choice(PUNC().comma, /\s/, /[\r\n]/))),
+    _entry_separator: (_$) => token(prec(20, choice(PUNC().comma, /\s/))),
 
     record_entry: ($) =>
       seq(
@@ -1187,7 +1186,7 @@ module.exports = grammar({
             10,
             repeat(
               seq(
-                choice(token.immediate("\n"), token.immediate(/[ \t]+/)),
+                choice(/\r?\n/, token.immediate(/[ \t]+/)),
                 optional($._cmd_arg),
               ),
             ),
