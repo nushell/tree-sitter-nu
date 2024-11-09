@@ -207,3 +207,70 @@ values-006-not-a-number
             (val_number))
           (val_entry
             (val_number)))))))
+
+=====
+values-007-interpolated-string
+=====
+
+$"foo(1)bar"
+$'foo(1)bar'
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_interpolated
+        (escaped_interpolated_content)
+        (expr_interpolated
+          (pipeline
+            (pipe_element
+              (val_number))))
+        (escaped_interpolated_content))))
+  (pipeline
+    (pipe_element
+      (val_interpolated
+        (unescaped_interpolated_content)
+        (expr_interpolated
+          (pipeline
+            (pipe_element
+              (val_number))))
+        (unescaped_interpolated_content)))))
+
+=====
+values-008-interpolated-string-multiline-command
+=====
+
+$'foo(
+  echo foo # should be single pipeline
+  $'( # comment
+    echo nested
+    val_interpolated # should be command argument
+  )'
+)bar'
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_interpolated
+        (unescaped_interpolated_content)
+        (expr_interpolated
+          (pipeline
+            (pipe_element
+              (command
+                (cmd_identifier)
+                (val_string)
+                (comment)
+                (val_interpolated
+                  (expr_interpolated
+                    (comment)
+                    (pipeline
+                      (pipe_element
+                        (command
+                          (cmd_identifier)
+                          (val_string)
+                          (val_string)
+                          (comment))))))))))
+        (unescaped_interpolated_content)))))

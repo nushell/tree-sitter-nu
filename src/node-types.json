@@ -411,15 +411,7 @@
           "named": true
         },
         {
-          "type": "expr_binary",
-          "named": true
-        },
-        {
           "type": "expr_parenthesized",
-          "named": true
-        },
-        {
-          "type": "expr_unary",
           "named": true
         },
         {
@@ -2398,6 +2390,20 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "long_flag",
+          "named": true
+        },
+        {
+          "type": "short_flag",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -5290,10 +5296,6 @@
     "type": "wild_card",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "\n",
-    "named": false
   },
   {
     "type": "!=",
