@@ -56,8 +56,8 @@ echo hello # comment
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string)))
-    (comment)))
+        (val_string))))
+  (comment))
 
 =====
 comment-003-empty-end-of-line
@@ -72,8 +72,8 @@ echo hello #
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string)))
-    (comment)))
+        (val_string))))
+  (comment))
 
 =====
 comment-003-empty-end-of-line-before-command
@@ -89,10 +89,28 @@ echo world
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string)))
-    (comment))
+        (val_string))))
+  (comment)
   (pipeline
     (pipe_element
       (command
         (cmd_identifier)
         (val_string)))))
+
+=====
+comment-004-between-pipes
+=====
+
+1
+# comment
+| $in
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_number))
+    (comment)
+    (pipe_element
+      (val_variable))))

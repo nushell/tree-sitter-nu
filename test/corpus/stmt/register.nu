@@ -54,74 +54,59 @@ register ~/plugins/nu-plugin-math {
 
 (nu_script
   (stmt_register
-    (val_string))
-  (pipeline
-    (pipe_element
-      (val_record
-        (record_body
-          (record_entry
-            (val_string)
-            (val_record
-              (record_body
-                (record_entry
-                  (val_string)
-                  (val_string))
-                (record_entry
-                  (val_string)
-                  (val_string))
-                (record_entry
-                  (val_string)
-                  (val_string))
-                (record_entry
-                  (val_string)
-                  (val_string))
-                (record_entry
-                  (val_string)
-                  (val_string))
-                (record_entry
-                  (val_string)
-                  (val_list
-                    (list_body
-                      (val_entry
-                        (val_record
-                          (record_body
-                            (record_entry
-                              (val_string)
-                              (val_string))
-                            (record_entry
-                              (val_string)
-                              (val_string))
-                            (record_entry
-                              (val_string)
-                              (val_string))
-                            (record_entry
-                              (val_string)
-                              (val_string)))))
-                      (val_entry
-                        (val_record
-                          (record_body
-                            (record_entry
-                              (val_string)
-                              (val_string))
-                            (record_entry
-                              (val_string)
-                              (val_string))
-                            (record_entry
-                              (val_string)
-                              (val_string))
-                            (record_entry
-                              (val_string)
-                              (val_string))))))))))))))))
-
-=====
-register-004-variable
-=====
-
-register $plugin
-
------
-
-(nu_script
-  (stmt_register
-    (val_variable
-      (identifier))))
+    (val_string)
+    (val_record
+      (record_body
+        (record_entry
+          (val_string)
+          (val_record
+            (record_body
+              (record_entry
+                (val_string)
+                (val_string))
+              (record_entry
+                (val_string)
+                (val_string))
+              (record_entry
+                (val_string)
+                (val_string))
+              (record_entry
+                (val_string)
+                (val_string))
+              (record_entry
+                (val_string)
+                (val_string))
+              (record_entry
+                (val_string)
+                (val_list
+                  (list_body
+                    (val_entry
+                      (val_record
+                        (record_body
+                          (record_entry
+                            (val_string)
+                            (val_string))
+                          (record_entry
+                            (val_string)
+                            (val_string))
+                          (record_entry
+                            (val_string)
+                            (val_string))
+                          (record_entry
+                            (val_string)
+                            (val_string)))))
+                    (val_entry
+                      (val_record
+                        (record_body
+                          (record_entry
+                            (val_string)
+                            (val_string))
+                          (record_entry
+                            (val_string)
+                            (val_string))
+                          (record_entry
+                            (val_string)
+                            (val_string))
+                          (record_entry
+                            (val_string)
+                            (val_string)))))))))))))))

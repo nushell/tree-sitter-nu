@@ -56,3 +56,24 @@ use $"('s' + 't' + 'd')"
               (expr_binary
                 (val_string)
                 (val_string)))))))))
+
+=====
+use-005-multiple-commands
+=====
+
+use foo.nu [
+  foo
+  bar,
+  baz
+]
+
+-----
+
+(nu_script
+  (decl_use
+    (unquoted)
+    (scope_pattern
+      (command_list
+        (cmd_identifier)
+        (cmd_identifier)
+        (cmd_identifier)))))

@@ -219,3 +219,30 @@ let cl = {
                   (command
                     (cmd_identifier)
                     (val_string)))))))))))
+
+=====
+closure-009-parameter-pipes
+=====
+{
+  |
+a
+  b
+
+  ,
+
+  c |
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_closure
+        (parameter_pipes
+          (parameter
+            (identifier))
+          (parameter
+            (identifier))
+          (parameter
+            (identifier)))))))

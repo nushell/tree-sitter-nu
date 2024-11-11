@@ -44,3 +44,133 @@ expr-003-rhs-unquoted
       (expr_binary
         (val_string)
         (val_string)))))
+
+====
+expr-004-rhs-unquoted-with-expr
+====
+
+'foo' == bar('baz')
+
+----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_binary
+        (val_string)
+        (val_string
+          (expr_parenthesized
+            (pipeline
+              (pipe_element
+                (val_string)))))))))
+
+====
+expr-005-multiline-fail-without-parenthesis
+:error
+====
+
+1 +
+2
+
+----
+
+====
+expr-006-multiline
+====
+
+(
+ 1
+  +
+ 1
+)
+
+----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (expr_binary
+              (val_number)
+              (val_number))))))))
+
+====
+expr-007-multiline-nested
+====
+
+(
+ 1
+  +
+(1
++
+
+1 +
+
+  1
+  + 1;
+1);
+ 1
++
+
+1
+)
+
+----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (expr_binary
+              (val_number)
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (expr_binary
+                      (val_number)
+                      (expr_binary
+                        (val_number)
+                        (expr_binary
+                          (val_number)
+                          (val_number))))))
+                (pipeline
+                  (pipe_element
+                    (val_number)))))))
+        (pipeline
+          (pipe_element
+            (expr_binary
+              (val_number)
+              (val_number))))))))
+
+====
+expr-008-multiline-precedence
+====
+
+(1
+  + # lower
+  1 * 5 # higher
++
+
+  7)
+
+----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (expr_binary
+              (val_number)
+              (comment)
+              (expr_binary
+                (expr_binary
+                  (val_number)
+                  (val_number))
+                (comment)
+                (val_number)))))))))

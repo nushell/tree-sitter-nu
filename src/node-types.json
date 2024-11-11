@@ -1668,7 +1668,7 @@
       },
       "opr": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "!=",
@@ -4792,10 +4792,6 @@
         "multiple": true,
         "required": true,
         "types": [
-          {
-            "type": ";",
-            "named": false
-          },
           {
             "type": "val_list",
             "named": true
