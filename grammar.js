@@ -1644,10 +1644,10 @@ function _unquoted_with_expr_rule(type) {
   var pattern_repeat = /[^\s\n\t\r();]*/;
   switch (type) {
     case "list":
-      pattern_repeat = /[^\s\n\t\r();,]*/;
+      pattern_repeat = /[^\s\n\t\r()\[\];,]*/;
       break;
     case "record":
-      pattern_repeat = /[^\s\n\t\r();:,]*/;
+      pattern_repeat = /[^\s\n\t\r{}();:,]*/;
       break;
   }
   return ($) => {
