@@ -70,7 +70,7 @@ module.exports = grammar({
     identifier: (_$) => token(/[_\p{XID_Start}][_\p{XID_Continue}]*/),
 
     long_flag_identifier: (_$) =>
-      token.immediate(/[\p{XID_Start}_][\p{XID_Continue}_-]*/),
+      token.immediate(/[0-9\p{XID_Start}_][\p{XID_Continue}?_-]*/),
 
     _command_name: ($) =>
       choice(
@@ -145,7 +145,8 @@ module.exports = grammar({
       ),
 
     /// Return types
-    returns: ($) => seq(PUNC().colon, choice($._multiple_types, $._one_type)),
+    returns: ($) =>
+      seq(optional(PUNC().colon), choice($._multiple_types, $._one_type)),
 
     _one_type: ($) =>
       seq($._type_annotation, PUNC().thin_arrow, $._type_annotation),
@@ -280,7 +281,8 @@ module.exports = grammar({
     param_short_flag: ($) =>
       seq(OPR().minus, field("name", $.param_short_flag_identifier)),
 
-    param_short_flag_identifier: (_$) => token.immediate(/[a-zA-Z0-9]/),
+    param_short_flag_identifier: (_$) =>
+      token.immediate(/[\p{Punctuation}\p{Symbol}\p{XID_Continue}]/),
 
     /// Controls
 
@@ -1281,7 +1283,8 @@ module.exports = grammar({
 
     short_flag: ($) => seq(OPR().minus, $.short_flag_identifier),
 
-    short_flag_identifier: (_$) => token.immediate(/[_\p{XID_Continue}]+/),
+    short_flag_identifier: (_$) =>
+      token.immediate(/[\p{Punctuation}\p{Symbol}\p{XID_Continue}]+/),
 
     long_flag: ($) =>
       prec.right(

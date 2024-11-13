@@ -89,8 +89,8 @@ def-004-flag-with-one-return-type
 ======
 
 def --env test []: nothing -> string {}
-def --env --wrapped test [...args]: nothing -> string {}
-def --wrapped test [...args]: nothing -> string {}
+def --env --wrapped test [...args] nothing -> string {}
+def --wrapped test [...args] nothing -> string {}
 def --wrapped --env test [...args]: nothing -> string {}
 
 -----
@@ -343,7 +343,7 @@ def-010-short-flag
 ======
 
 def test [
-  -s
+  -?
 ] {}
 
 -----

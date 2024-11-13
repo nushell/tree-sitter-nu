@@ -894,7 +894,7 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[\\p{XID_Start}_][\\p{XID_Continue}_-]*"
+        "value": "[0-9\\p{XID_Start}_][\\p{XID_Continue}?_-]*"
       }
     },
     "_command_name": {
@@ -1244,8 +1244,16 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": ":"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": ":"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "CHOICE",
@@ -2067,7 +2075,7 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[a-zA-Z0-9]"
+        "value": "[\\p{Punctuation}\\p{Symbol}\\p{XID_Continue}]"
       }
     },
     "_control": {
@@ -11435,7 +11443,7 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[_\\p{XID_Continue}]+"
+        "value": "[\\p{Punctuation}\\p{Symbol}\\p{XID_Continue}]+"
       }
     },
     "long_flag": {
