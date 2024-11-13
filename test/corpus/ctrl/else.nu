@@ -101,3 +101,40 @@ if true {} else $expression
         then_branch: (block)
         else_block: (val_variable
           name: (identifier))))))
+
+=====
+else-007-parenthesized
+=====
+
+(
+if
+
+# comment
+false
+  # comment
+  { 1 }
+
+  else
+
+  2
+  # comment
+)
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (ctrl_if
+              (comment)
+              (val_bool)
+              (comment)
+              (block
+                (pipeline
+                  (pipe_element
+                    (val_number))))
+              (val_number))))
+        (comment)))))

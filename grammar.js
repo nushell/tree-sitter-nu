@@ -405,12 +405,15 @@ module.exports = grammar({
       prec.right(
         seq(
           KEYWORD().if,
+          repeat($._newline),
           field("condition", choice($._expression, $.identifier)),
+          repeat($._newline),
           field("then_branch", $.block),
           optional(
             seq(
-              optional($._newline),
+              repeat($._newline),
               KEYWORD().else,
+              repeat($._newline),
               choice(
                 field("else_block", choice($.block, $._expression, $.command)),
                 field("else_branch", alias($.ctrl_if_parenthesized, $.ctrl_if)),
@@ -545,11 +548,13 @@ module.exports = grammar({
       prec.right(
         seq(
           KEYWORD().try,
+          repeat($._newline),
           field("try_branch", $.block),
           optional(
             seq(
-              optional($._newline),
+              repeat($._newline),
               KEYWORD().catch,
+              repeat($._newline),
               field("catch_branch", $._blosure),
             ),
           ),

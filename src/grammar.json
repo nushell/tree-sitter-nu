@@ -2604,6 +2604,13 @@
             "value": "if"
           },
           {
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_newline"
+            }
+          },
+          {
             "type": "FIELD",
             "name": "condition",
             "content": {
@@ -2621,6 +2628,13 @@
             }
           },
           {
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_newline"
+            }
+          },
+          {
             "type": "FIELD",
             "name": "then_branch",
             "content": {
@@ -2635,20 +2649,22 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "_newline"
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_newline"
+                    }
                   },
                   {
                     "type": "STRING",
                     "value": "else"
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_newline"
+                    }
                   },
                   {
                     "type": "CHOICE",
@@ -3273,6 +3289,13 @@
             "value": "try"
           },
           {
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_newline"
+            }
+          },
+          {
             "type": "FIELD",
             "name": "try_branch",
             "content": {
@@ -3287,20 +3310,22 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "_newline"
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_newline"
+                    }
                   },
                   {
                     "type": "STRING",
                     "value": "catch"
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_newline"
+                    }
                   },
                   {
                     "type": "FIELD",

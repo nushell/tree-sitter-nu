@@ -103,9 +103,12 @@ do {|x,y| $x} 77, -c unquoted # flags in-between
 do-004-parenthesized
 =====
 
-$'(do {|x,y| $x} 77, # string
+$'(do
+{|x,y| $x} 77, # string
 ...2 # range
+
 -c # flag
+
 (1 + 1) foo('bar')
 unquoted; # string
 another_pipeline
