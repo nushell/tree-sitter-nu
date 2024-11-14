@@ -334,3 +334,41 @@ catch { echo 'bar' }
                     (command
                       (cmd_identifier)
                       (val_string))))))))))))
+
+=====
+subexpr-013-immediate-closing
+=====
+
+(ps -l)
+(ps --long)
+(ps unquoted)
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (command
+              (cmd_identifier)
+              (short_flag
+                (short_flag_identifier))))))))
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (command
+              (cmd_identifier)
+              (long_flag
+                (long_flag_identifier))))))))
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (command
+              (cmd_identifier)
+              (val_string))))))))

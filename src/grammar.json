@@ -4106,6 +4106,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4131,6 +4135,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4157,6 +4165,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4182,6 +4194,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4208,6 +4224,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4233,6 +4253,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4264,6 +4288,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate_parenthesized"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4303,6 +4331,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate_parenthesized"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4336,6 +4368,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate_parenthesized"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4375,6 +4411,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate_parenthesized"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4408,6 +4448,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate_parenthesized"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4447,6 +4491,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate_parenthesized"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -10786,7 +10834,7 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[\\p{Punctuation}\\p{Symbol}\\p{XID_Continue}]+"
+        "value": "[\\p{XID_Continue}?@!%_-]+"
       }
     },
     "long_flag": {

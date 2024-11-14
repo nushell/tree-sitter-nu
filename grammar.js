@@ -1191,8 +1191,7 @@ module.exports = grammar({
 
     short_flag: ($) => seq(OPR().minus, $.short_flag_identifier),
 
-    short_flag_identifier: (_$) =>
-      token.immediate(/[\p{Punctuation}\p{Symbol}\p{XID_Continue}]+/),
+    short_flag_identifier: (_$) => token.immediate(/[\p{XID_Continue}?@!%_-]+/),
 
     long_flag: ($) =>
       prec.right(
@@ -1566,9 +1565,9 @@ function _binary_predicate_rule(parenthesized) {
     return choice(
       ...BINARY().map(([precedence, opr]) => {
         const seq_array = [
-          field("lhs", choice($._predicate, _expr)),
+          field("lhs", choice($._predicate, _expr, $.expr_parenthesized)),
           field("opr", opr),
-          field("rhs", choice($._predicate, _expr)),
+          field("rhs", choice($._predicate, _expr, $.expr_parenthesized)),
         ];
         return parenthesized
           ? prec.left(precedence, _insert_newline($, seq_array))
