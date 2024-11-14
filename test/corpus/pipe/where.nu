@@ -77,3 +77,66 @@ ls | where {|x| $x.size > 10kb }
                 (val_filesize
                   (val_number)
                   (filesize_unit))))))))))
+
+=====
+where-004-binary-predicate
+=====
+
+ls | where size > 10kb and size < 100kb
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))
+    (pipe_element
+      (where_command
+        (val_string)
+        (val_filesize
+          (val_number)
+          (filesize_unit))
+        (val_string)
+        (val_filesize
+          (val_number)
+          (filesize_unit))))))
+
+=====
+where-005-parenthesized-binary-predicate
+=====
+
+(ls |
+where
+  size > 10kb # comment
+  and # comment
+  size < 100kb # comment
+  or
+  name == 'foo'
+  )
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (command
+              (cmd_identifier)))
+          (pipe_element
+            (where_command
+              (val_string)
+              (val_filesize
+                (val_number)
+                (filesize_unit))
+              (comment)
+              (comment)
+              (val_string)
+              (val_filesize
+                (val_number)
+                (filesize_unit))
+              (comment)
+              (val_string)
+              (val_string))))))))

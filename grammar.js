@@ -12,7 +12,9 @@ module.exports = grammar({
   // ],
 
   conflicts: ($) => [
+    [$._binary_predicate_parenthesized],
     [$._expression, $._expr_binary_expression],
+    [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._immediate_decimal],
     [$._match_pattern_expression, $._list_item_expression],
     [$._match_pattern_list, $.val_list],
@@ -20,13 +22,16 @@ module.exports = grammar({
     [$._match_pattern_record_variable, $._value],
     [$._match_pattern_value, $._value],
     [$._parenthesized_body],
+    [$._terminator, $._parenthesized_body],
     [$._terminator, $.parameter_pipes, $.record_body],
     [$._terminator, $.parameter_pipes],
-    [$._terminator, $._parenthesized_body],
     [$._terminator],
     [$._val_number_decimal],
     [$.block, $.val_closure],
     [$.block, $.val_record],
+    [$.ctrl_if_parenthesized],
+    [$.ctrl_try_parenthesized],
+    [$.expr_binary_parenthesized],
     [$.nu_script, $._terminator],
     [$.pipeline],
     [$.pipeline_parenthesized],
@@ -387,43 +392,8 @@ module.exports = grammar({
         ),
       ),
 
-    ctrl_if: ($) =>
-      seq(
-        KEYWORD().if,
-        field("condition", choice($._expression, $.identifier)),
-        field("then_branch", $.block),
-        optional(
-          seq(
-            KEYWORD().else,
-            choice(
-              field("else_block", choice($.block, $._expression, $.command)),
-              field("else_branch", $.ctrl_if),
-            ),
-          ),
-        ),
-      ),
-
-    ctrl_if_parenthesized: ($) =>
-      prec.right(
-        seq(
-          KEYWORD().if,
-          repeat($._newline),
-          field("condition", choice($._expression, $.identifier)),
-          repeat($._newline),
-          field("then_branch", $.block),
-          optional(
-            seq(
-              repeat($._newline),
-              KEYWORD().else,
-              repeat($._newline),
-              choice(
-                field("else_block", choice($.block, $._expression, $.command)),
-                field("else_branch", alias($.ctrl_if_parenthesized, $.ctrl_if)),
-              ),
-            ),
-          ),
-        ),
-      ),
+    ctrl_if: _ctrl_if_rule(false),
+    ctrl_if_parenthesized: _ctrl_if_rule(true),
 
     ctrl_match: ($) =>
       seq(
@@ -539,29 +509,8 @@ module.exports = grammar({
     _match_pattern_record_variable: ($) =>
       seq($.val_variable, optional(PUNC().comma)),
 
-    ctrl_try: ($) =>
-      seq(
-        KEYWORD().try,
-        field("try_branch", $.block),
-        optional(seq(KEYWORD().catch, field("catch_branch", $._blosure))),
-      ),
-
-    ctrl_try_parenthesized: ($) =>
-      prec.right(
-        seq(
-          KEYWORD().try,
-          repeat($._newline),
-          field("try_branch", $.block),
-          optional(
-            seq(
-              repeat($._newline),
-              KEYWORD().catch,
-              repeat($._newline),
-              field("catch_branch", $._blosure),
-            ),
-          ),
-        ),
-      ),
+    ctrl_try: _ctrl_try_rule(false),
+    ctrl_try_parenthesized: _ctrl_try_rule(true),
 
     ctrl_return: ($) =>
       choice(
@@ -598,7 +547,7 @@ module.exports = grammar({
         choice(
           prec.right(69, $._expression_parenthesized),
           $._ctrl_expression_parenthesized,
-          $.where_command,
+          alias($.where_command_parenthesized, $.where_command),
           alias($._command_parenthesized_body, $.command),
         ),
       ),
@@ -714,39 +663,40 @@ module.exports = grammar({
 
     // the where command has a unique argument pattern that breaks the
     // general command parsing, so we handle it separately
-    where_command: ($) =>
+    _where_predicate_lhs: ($) =>
       seq(
-        "where",
-        choice(
-          $._where_predicate,
-          $._expression,
-          alias($.block, $.val_closure),
-        ),
+        choice(alias($.identifier, $.val_string), $.val_number),
+        optional(PUNC().question),
+        optional($.cell_path),
       ),
 
-    _where_predicate: ($) =>
+    where_command: _where_clause_rule(false),
+    where_command_parenthesized: _where_clause_rule(true),
+
+    _binary_predicate: _binary_predicate_rule(false),
+    _binary_predicate_parenthesized: _binary_predicate_rule(true),
+
+    _predicate: ($) =>
       choice(
-        ...TABLE().map(([precedence, opr]) =>
+        ...PREDICATE().map(([precedence, opr]) =>
           prec.left(
-            // @ts-ignore
             precedence,
             seq(
               field(
                 "lhs",
                 choice(
-                  seq(
-                    choice(alias($.identifier, $.val_string), $.val_number),
-                    optional(PUNC().question),
-                    optional($.cell_path),
-                  ),
+                  $._where_predicate_lhs,
                   $.val_variable,
+                  $.expr_parenthesized,
                 ),
               ),
-              optional(
-                seq(
-                  // @ts-ignore
-                  field("opr", opr),
-                  field("rhs", choice($._expression, $._where_predicate)),
+              field("opr", opr),
+              field(
+                "rhs",
+                choice(
+                  $._expression,
+                  alias($.unquoted, $.val_string),
+                  alias($._unquoted_with_expr, $.val_string),
                 ),
               ),
             ),
@@ -799,50 +749,8 @@ module.exports = grammar({
         ),
       ),
 
-    expr_binary: ($) =>
-      choice(
-        ...TABLE().map(([precedence, opr]) =>
-          prec.right(
-            // @ts-ignore
-            precedence,
-            seq(
-              field("lhs", $._expr_binary_expression),
-              field("opr", opr),
-              field(
-                "rhs",
-                choice(
-                  $._expr_binary_expression,
-                  alias($.unquoted, $.val_string),
-                  alias($._unquoted_with_expr, $.val_string),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-
-    expr_binary_parenthesized: ($) =>
-      choice(
-        ...TABLE().map(([precedence, opr]) =>
-          prec.right(
-            precedence,
-            seq(
-              field("lhs", $._expr_binary_expression_parenthesized),
-              // group preceding newline to opr, less conflicts
-              field("opr", token(seq(/[\s\t\r\n]+/, opr))),
-              repeat($._newline),
-              field(
-                "rhs",
-                choice(
-                  $._expr_binary_expression_parenthesized,
-                  alias($.unquoted, $.val_string),
-                  alias($._unquoted_with_expr, $.val_string),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+    expr_binary: _expr_binary_rule(false),
+    expr_binary_parenthesized: _expr_binary_rule(true),
 
     _expr_binary_expression: ($) =>
       choice($._value, $.expr_binary, $.expr_unary, $.expr_parenthesized),
@@ -1546,6 +1454,156 @@ function _block_body_rules(suffix) {
 }
 
 /**
+ * Insert repeat($._newline) in-between
+ * @param {array} sequence
+ * @param {boolean} begin allow newline in beginning
+ * @param {boolean} end allow newline in end
+ */
+function _insert_newline($, sequence, begin = false, end = true) {
+  var result = [repeat($._newline)];
+  for (const item of sequence) {
+    result.push(item);
+    result.push(repeat($._newline));
+  }
+  result = begin ? result : result.slice(1);
+  result = end ? result : result.slice(0, -1);
+  return seq(...result);
+}
+
+/**
+ * @param {boolean} parenthesized
+ */
+function _ctrl_try_rule(parenthesized) {
+  return (/** @type {any} */ $) => {
+    const seq_catch_array = [
+      KEYWORD().catch,
+      field("catch_branch", $._blosure),
+    ];
+    const seq_array = [
+      KEYWORD().try,
+      field("try_branch", $.block),
+      optional(
+        parenthesized
+          ? _insert_newline($, seq_catch_array, true, false)
+          : seq(...seq_catch_array),
+      ),
+    ];
+    return parenthesized
+      ? _insert_newline($, seq_array, false, false)
+      : seq(...seq_array);
+  };
+}
+
+/**
+ * @param {boolean} parenthesized
+ */
+function _ctrl_if_rule(parenthesized) {
+  return (/** @type {any} */ $) => {
+    const seq_else_array = [
+      KEYWORD().else,
+      choice(
+        field("else_block", choice($.block, $._expression, $.command)),
+        field(
+          "else_branch",
+          parenthesized ? alias($.ctrl_if_parenthesized, $.ctrl_if) : $.ctrl_if,
+        ),
+      ),
+    ];
+    const seq_array = [
+      KEYWORD().if,
+      field("condition", choice($._expression, $.identifier)),
+      field("then_branch", $.block),
+      optional(
+        parenthesized
+          ? _insert_newline($, seq_else_array, true, false)
+          : seq(...seq_else_array),
+      ),
+    ];
+    return parenthesized
+      ? _insert_newline($, seq_array, false, false)
+      : seq(...seq_array);
+  };
+}
+
+/**
+ * @param {boolean} parenthesized
+ */
+function _expr_binary_rule(parenthesized) {
+  return (/** @type {any} */ $) => {
+    const _expr = parenthesized
+      ? $._expr_binary_expression_parenthesized
+      : $._expr_binary_expression;
+    return choice(
+      ...TABLE().map(([precedence, opr]) => {
+        const seq_array = [
+          field("lhs", _expr),
+          field("opr", opr),
+          field(
+            "rhs",
+            choice(
+              _expr,
+              alias($.unquoted, $.val_string),
+              alias($._unquoted_with_expr, $.val_string),
+            ),
+          ),
+        ];
+        return parenthesized
+          ? prec.left(precedence, _insert_newline($, seq_array, false, false))
+          : prec.left(precedence, seq(...seq_array));
+      }),
+    );
+  };
+}
+
+/**
+ * @param {boolean} parenthesized
+ */
+function _binary_predicate_rule(parenthesized) {
+  return (/** @type {any} */ $) => {
+    const _expr = parenthesized
+      ? $._binary_predicate_parenthesized
+      : $._binary_predicate;
+    return choice(
+      ...BINARY().map(([precedence, opr]) => {
+        const seq_array = [
+          field("lhs", choice($._predicate, _expr)),
+          field("opr", opr),
+          field("rhs", choice($._predicate, _expr)),
+        ];
+        return parenthesized
+          ? prec.left(precedence, _insert_newline($, seq_array))
+          : prec.left(precedence, seq(...seq_array));
+      }),
+    );
+  };
+}
+
+/**
+ * @param {boolean} parenthesized
+ */
+function _where_clause_rule(parenthesized) {
+  return (/** @type {any} */ $) => {
+    const seq_array = [
+      "where",
+      field(
+        "predicate",
+        choice(
+          $._predicate,
+          $.expr_parenthesized,
+          $.val_closure,
+          parenthesized
+            ? $._binary_predicate_parenthesized
+            : $._binary_predicate,
+        ),
+      ),
+    ];
+    return parenthesized
+      ? prec.left(_insert_newline($, seq_array))
+      : seq(...seq_array);
+  };
+}
+
+/**
  * @param {boolean} immediate
  */
 function _decimal_rule(immediate) {
@@ -2000,6 +2058,35 @@ function TABLE() {
     OPR().floor,
   );
 
+  // `range` is not included here and is handled separately
+  return [
+    [PREC().power, choice(OPR().power, OPR().append)],
+    [PREC().multiplicative, multiplicatives],
+    [PREC().additive, choice(OPR().plus, OPR().minus)],
+    [PREC().bit_shift, choice(OPR().bit_shl, OPR().bit_shr)],
+    [PREC().regex, choice(OPR().regex_match, OPR().regex_not_match)],
+    [PREC().bit_and, OPR().bit_and],
+    [PREC().bit_xor, OPR().bit_xor],
+    [PREC().bit_or, OPR().bit_or],
+  ].concat(BINARY(), PREDICATE());
+}
+
+function BINARY() {
+  return [
+    [PREC().and, OPR().and],
+    [PREC().xor, OPR().xor],
+    [PREC().or, OPR().or],
+  ];
+}
+
+function PREDICATE() {
+  const memberships = choice(
+    OPR().in,
+    OPR().not_in,
+    OPR().starts_with,
+    OPR().ends_with,
+  );
+
   const comparatives = choice(
     OPR().equal,
     OPR().not_equal,
@@ -2009,28 +2096,10 @@ function TABLE() {
     OPR().greater_than_equal,
   );
 
-  const memberships = choice(
-    OPR().in,
-    OPR().not_in,
-    OPR().starts_with,
-    OPR().ends_with,
-  );
-
-  // `range` is not included here and is handled separately
   return [
-    [PREC().power, choice(OPR().power, OPR().append)],
-    [PREC().multiplicative, multiplicatives],
-    [PREC().additive, choice(OPR().plus, OPR().minus)],
-    [PREC().bit_shift, choice(OPR().bit_shl, OPR().bit_shr)],
-    [PREC().comparative, comparatives],
     [PREC().membership, memberships],
+    [PREC().comparative, comparatives],
     [PREC().regex, choice(OPR().regex_match, OPR().regex_not_match)],
-    [PREC().bit_and, OPR().bit_and],
-    [PREC().bit_xor, OPR().bit_xor],
-    [PREC().bit_or, OPR().bit_or],
-    [PREC().and, OPR().and],
-    [PREC().xor, OPR().xor],
-    [PREC().or, OPR().or],
   ];
 }
 

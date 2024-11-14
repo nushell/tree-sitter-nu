@@ -131,12 +131,12 @@ expr-007-multiline-nested
                 (pipeline
                   (pipe_element
                     (expr_binary
-                      (val_number)
                       (expr_binary
-                        (val_number)
                         (expr_binary
                           (val_number)
-                          (val_number))))))
+                          (val_number))
+                        (val_number))
+                      (val_number))))
                 (pipeline
                   (pipe_element
                     (val_number)))))))
@@ -166,11 +166,11 @@ expr-008-multiline-precedence
         (pipeline
           (pipe_element
             (expr_binary
-              (val_number)
-              (comment)
               (expr_binary
+                (val_number)
+                (comment)
                 (expr_binary
                   (val_number)
-                  (val_number))
-                (comment)
-                (val_number)))))))))
+                  (val_number)))
+              (comment)
+              (val_number))))))))

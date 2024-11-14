@@ -52,10 +52,10 @@ use $"('s' + 't' + 'd')"
         (pipeline
           (pipe_element
             (expr_binary
-              (val_string)
               (expr_binary
                 (val_string)
-                (val_string)))))))))
+                (val_string))
+              (val_string))))))))
 
 =====
 use-005-multiple-commands
