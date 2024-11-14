@@ -12,7 +12,6 @@ Extend your lazy config with treesitter and the nu parser. The parser doesn't ha
             ensure_installed = { "nu" }, -- Ensure the "nu" parser is installed
             highlight = {
                 enable = true,            -- Enable syntax highlighting
-                additional_vim_regex_highlighting = false, -- Set to false if Tree-sitter is used exclusively
             },
         }
     end,
