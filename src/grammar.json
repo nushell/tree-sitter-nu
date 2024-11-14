@@ -4017,10 +4017,6 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "expr_parenthesized"
-              },
-              {
-                "type": "SYMBOL",
                 "name": "val_closure"
               },
               {
@@ -4058,10 +4054,6 @@
                 {
                   "type": "SYMBOL",
                   "name": "_predicate"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "expr_parenthesized"
                 },
                 {
                   "type": "SYMBOL",
@@ -4106,10 +4098,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4135,10 +4123,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4165,10 +4149,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4194,10 +4174,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4224,10 +4200,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4253,10 +4225,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4288,10 +4256,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate_parenthesized"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4331,10 +4295,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate_parenthesized"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4368,10 +4328,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate_parenthesized"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4411,10 +4367,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate_parenthesized"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4448,10 +4400,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate_parenthesized"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4491,10 +4439,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_binary_predicate_parenthesized"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "expr_parenthesized"
                     }
                   ]
                 }
@@ -4514,6 +4458,18 @@
     "_predicate": {
       "type": "CHOICE",
       "members": [
+        {
+          "type": "SYMBOL",
+          "name": "val_bool"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expr_unary"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expr_parenthesized"
+        },
         {
           "type": "PREC_LEFT",
           "value": 9,

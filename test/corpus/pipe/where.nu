@@ -145,7 +145,7 @@ where
 where-006-binary-predicate-with-expression
 =====
 
-ls | where size > 10kb and (true)
+ls | where (size > 10kb) and true
 
 -----
 
@@ -156,12 +156,51 @@ ls | where size > 10kb and (true)
         (cmd_identifier)))
     (pipe_element
       (where_command
-        (val_string)
-        (expr_binary
-          (val_filesize
-            (val_number)
-            (filesize_unit))
+        (expr_parenthesized
+          (pipeline
+            (pipe_element
+              (command
+                (cmd_identifier)
+                (val_string)
+                (val_filesize
+                  (val_number)
+                  (filesize_unit))))))
+        (val_bool)))))
+
+=====
+where-007-unary
+=====
+
+where false
+where not ($in)
+(
+where
+false
+and
+name !~ foo
+)
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (where_command
+        (val_bool))))
+  (pipeline
+    (pipe_element
+      (where_command
+        (expr_unary
           (expr_parenthesized
             (pipeline
               (pipe_element
-                (val_bool)))))))))
+                (val_variable))))))))
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (where_command
+              (val_bool)
+              (val_string)
+              (val_string))))))))

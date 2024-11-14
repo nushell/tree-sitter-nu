@@ -678,6 +678,9 @@ module.exports = grammar({
 
     _predicate: ($) =>
       choice(
+        $.val_bool,
+        $.expr_unary,
+        $.expr_parenthesized,
         ...PREDICATE().map(([precedence, opr]) =>
           prec.left(
             precedence,
@@ -1565,9 +1568,9 @@ function _binary_predicate_rule(parenthesized) {
     return choice(
       ...BINARY().map(([precedence, opr]) => {
         const seq_array = [
-          field("lhs", choice($._predicate, _expr, $.expr_parenthesized)),
+          field("lhs", choice($._predicate, _expr)),
           field("opr", opr),
-          field("rhs", choice($._predicate, _expr, $.expr_parenthesized)),
+          field("rhs", choice($._predicate, _expr)),
         ];
         return parenthesized
           ? prec.left(precedence, _insert_newline($, seq_array))
@@ -1588,7 +1591,6 @@ function _where_clause_rule(parenthesized) {
         "predicate",
         choice(
           $._predicate,
-          $.expr_parenthesized,
           $.val_closure,
           parenthesized
             ? $._binary_predicate_parenthesized
