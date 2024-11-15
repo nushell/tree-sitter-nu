@@ -92,7 +92,8 @@ module.exports = grammar({
     // manually controlled by adding the following to parenthesized rules
     _newline: (_$) => /\r?\n/,
     _terminator: (_$) => choice(PUNC().semicolon, _$._newline),
-    _separator: (_$) => choice(/[ \t]+/, _$._newline),
+    _space: (_$) => /[ \t]+/,
+    _separator: (_$) => choice(_$._space, _$._newline),
     _pipe_separator: (_$) =>
       repeat1(seq(repeat(_$._newline), token(PUNC().pipe))),
 
@@ -733,7 +734,12 @@ module.exports = grammar({
         $.expr_unary,
       );
 
-      return choice(seq(OPR().not, after_not), $._expr_unary_minus);
+      return choice(
+        // "not" should be followed by space
+        // to distinguish from unquoted e.g. $foo == nothing
+        seq(alias(token(seq(OPR().not, /\s/)), OPR().not), after_not),
+        $._expr_unary_minus,
+      );
     },
 
     _expr_unary_minus: ($) =>
@@ -1144,7 +1150,7 @@ module.exports = grammar({
           field("head", seq(PUNC().caret, $.val_variable)), // Support for ^$cmd type of syntax.
           field("head", seq(PUNC().caret, $.expr_parenthesized)), // Support for pipes into external command.
         ),
-        prec.dynamic(10, repeat(seq(/[ \t]+/, optional($._cmd_arg)))),
+        prec.dynamic(10, repeat(seq($._space, optional($._cmd_arg)))),
       ),
 
     _command_parenthesized_body: ($) =>
@@ -1181,7 +1187,7 @@ module.exports = grammar({
           choice(...REDIR()),
           optional(
             seq(
-              token.immediate(/[ \t]+/),
+              $._space,
               field(
                 "file_path",
                 choice(alias($.unquoted, $.val_string), $._expression),

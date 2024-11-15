@@ -1,5 +1,5 @@
 =====
-expr-001-smoke-test
+binary-expr-001-smoke-test
 =====
 
 420 + 69
@@ -14,7 +14,7 @@ expr-001-smoke-test
         (val_number)))))
 
 ====
-expr-002-preceedence
+binary-expr-002-preceedence
 ====
 
 420 + 69 * 9001
@@ -31,7 +31,7 @@ expr-002-preceedence
           (val_number))))))
 
 ====
-expr-003-rhs-unquoted
+binary-expr-003-rhs-unquoted
 ====
 
 'foo' == bar
@@ -46,7 +46,7 @@ expr-003-rhs-unquoted
         (val_string)))))
 
 ====
-expr-004-rhs-unquoted-with-expr
+binary-expr-004-rhs-unquoted-with-expr
 ====
 
 'foo' == bar('baz')
@@ -65,7 +65,7 @@ expr-004-rhs-unquoted-with-expr
                 (val_string)))))))))
 
 ====
-expr-005-multiline-fail-without-parenthesis
+binary-expr-005-multiline-fail-without-parenthesis
 :error
 ====
 
@@ -75,7 +75,7 @@ expr-005-multiline-fail-without-parenthesis
 ----
 
 ====
-expr-006-multiline
+binary-expr-006-multiline
 ====
 
 (
@@ -97,7 +97,7 @@ expr-006-multiline
               (val_number))))))))
 
 ====
-expr-007-multiline-nested
+binary-expr-007-multiline-nested
 ====
 
 (
@@ -147,7 +147,7 @@ expr-007-multiline-nested
               (val_number))))))))
 
 ====
-expr-008-multiline-precedence
+binary-expr-008-multiline-precedence
 ====
 
 (1
@@ -176,7 +176,7 @@ expr-008-multiline-precedence
               (val_number))))))))
 
 ====
-expr-009-multiline-precedence-2
+binary-expr-009-multiline-precedence-2
 ====
 
 (1 == 1
