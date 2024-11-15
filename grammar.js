@@ -383,13 +383,14 @@ module.exports = grammar({
       ),
 
     ctrl_do_parenthesized: ($) =>
-      prec.right(
+      prec.left(
+        -1,
         seq(
           KEYWORD().do,
           optional(seq(repeat($._flags_parenthesized))),
           repeat1($._separator),
           choice($._blosure, $.val_variable),
-          repeat(seq(repeat1($._separator), $._do_expression)),
+          repeat(seq(repeat($._newline), $._do_expression)),
         ),
       ),
 

@@ -159,3 +159,22 @@ another_pipeline
             (pipe_element
               (command
                 (cmd_identifier)))))))))
+
+=====
+do-005-parenthesized-no-arguments
+=====
+
+(do {} #lkj
+)
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (ctrl_do
+              (block))))
+        (comment)))))

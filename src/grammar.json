@@ -2431,8 +2431,8 @@
       }
     },
     "ctrl_do_parenthesized": {
-      "type": "PREC_RIGHT",
-      "value": 0,
+      "type": "PREC_LEFT",
+      "value": -1,
       "content": {
         "type": "SEQ",
         "members": [
@@ -2486,10 +2486,10 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "REPEAT1",
+                  "type": "REPEAT",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "_separator"
+                    "name": "_newline"
                   }
                 },
                 {
