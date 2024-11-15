@@ -1250,6 +1250,7 @@ module.exports = grammar({
         choice(
           field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
           field("head", seq(PUNC().caret, $.val_string)), // Support for ^'command' type of syntax.
+          field("head", seq(PUNC().caret, $.val_variable)), // Support for ^$cmd type of syntax.
           field("head", seq(PUNC().caret, $.expr_parenthesized)), // Support for pipes into external command.
         ),
         prec.dynamic(10, repeat($._cmd_arg)),
@@ -1261,6 +1262,7 @@ module.exports = grammar({
           choice(
             field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
             field("head", seq(PUNC().caret, $.val_string)), // Support for ^'command' type of syntax.
+            field("head", seq(PUNC().caret, $.val_variable)), // Support for ^$cmd type of syntax.
             field("head", seq(PUNC().caret, $.expr_parenthesized)), // Support for pipes into external command.
           ),
           prec.dynamic(10, repeat(seq(optional("\n"), $._cmd_arg))),

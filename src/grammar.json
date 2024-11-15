@@ -10387,6 +10387,23 @@
                   },
                   {
                     "type": "SYMBOL",
+                    "name": "val_variable"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "head",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "^"
+                  },
+                  {
+                    "type": "SYMBOL",
                     "name": "expr_parenthesized"
                   }
                 ]
@@ -10454,6 +10471,23 @@
                     {
                       "type": "SYMBOL",
                       "name": "val_string"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "FIELD",
+                "name": "head",
+                "content": {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "^"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "val_variable"
                     }
                   ]
                 }

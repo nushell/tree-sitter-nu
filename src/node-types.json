@@ -392,6 +392,10 @@
           {
             "type": "val_string",
             "named": true
+          },
+          {
+            "type": "val_variable",
+            "named": true
           }
         ]
       },
