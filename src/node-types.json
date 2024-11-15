@@ -4919,10 +4919,6 @@
             "named": false
           },
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
             "type": "expr_parenthesized",
             "named": true
           },
@@ -5131,10 +5127,6 @@
             "named": false
           },
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
             "type": "expr_parenthesized",
             "named": true
           },
@@ -5275,10 +5267,6 @@
           {
             "type": "ends-with",
             "named": false
-          },
-          {
-            "type": "expr_binary",
-            "named": true
           },
           {
             "type": "expr_parenthesized",

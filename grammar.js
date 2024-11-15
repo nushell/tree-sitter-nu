@@ -25,6 +25,7 @@ module.exports = grammar({
     [$._terminator, $._parenthesized_body],
     [$._terminator, $.parameter_pipes, $.record_body],
     [$._terminator, $.parameter_pipes],
+    [$._terminator, $.shebang],
     [$._terminator],
     [$._val_number_decimal],
     [$.block, $.val_closure],
@@ -32,7 +33,6 @@ module.exports = grammar({
     [$.ctrl_if_parenthesized],
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
-    [$.nu_script, $._terminator],
     [$.pipeline],
     [$.pipeline_parenthesized],
   ],
@@ -40,10 +40,9 @@ module.exports = grammar({
   rules: {
     /// File
 
-    nu_script: ($) =>
-      seq(repeat($._newline), optional($.shebang), optional($._block_body)),
+    nu_script: ($) => seq(optional($.shebang), optional($._block_body)),
 
-    shebang: (_$) => seq("#!", /.*\r?\n?/),
+    shebang: (_$) => seq(repeat(_$._newline), "#!", /.*\r?\n?/),
 
     ...block_body_rules(),
 
@@ -94,6 +93,8 @@ module.exports = grammar({
     _newline: (_$) => /\r?\n/,
     _terminator: (_$) => choice(PUNC().semicolon, _$._newline),
     _separator: (_$) => choice(/[ \t]+/, _$._newline),
+    _pipe_separator: (_$) =>
+      repeat1(seq(repeat(_$._newline), token(PUNC().pipe))),
 
     /// Top Level Items
 
@@ -533,23 +534,14 @@ module.exports = grammar({
     /// Pipelines
 
     pipe_element: ($) =>
-      seq(
-        choice(
-          prec.right(69, $._expression),
-          $._ctrl_expression,
-          $.where_command,
-          $.command,
-        ),
-      ),
+      choice($._expression, $._ctrl_expression, $.where_command, $.command),
 
     pipe_element_parenthesized: ($) =>
-      seq(
-        choice(
-          prec.right(69, $._expression_parenthesized),
-          $._ctrl_expression_parenthesized,
-          alias($.where_command_parenthesized, $.where_command),
-          alias($._command_parenthesized_body, $.command),
-        ),
+      choice(
+        $._expression_parenthesized,
+        $._ctrl_expression_parenthesized,
+        alias($.where_command_parenthesized, $.where_command),
+        alias($._command_parenthesized_body, $.command),
       ),
 
     /// Scope Statements
@@ -697,7 +689,10 @@ module.exports = grammar({
               field(
                 "rhs",
                 choice(
-                  $._expression,
+                  $._value,
+                  $.val_range,
+                  $.expr_unary,
+                  $.expr_parenthesized,
                   alias($.unquoted, $.val_string),
                   alias($._unquoted_with_expr, $.val_string),
                 ),
@@ -1280,7 +1275,7 @@ function parenthesized_body_rules() {
         repeat(
           seq(
             alias($.pipe_element_parenthesized, $.pipe_element),
-            repeat1(seq(repeat($._newline), token(PUNC().pipe))),
+            $._pipe_separator,
             repeat($._newline),
           ),
         ),
@@ -1301,13 +1296,7 @@ function block_body_rules() {
 
     pipeline: (/** @type {any} */ $) =>
       seq(
-        repeat(
-          seq(
-            $.pipe_element,
-            repeat1(seq(repeat($._newline), token(PUNC().pipe))),
-            optional($._newline),
-          ),
-        ),
+        repeat(seq($.pipe_element, $._pipe_separator, optional($._newline))),
         $.pipe_element,
       ),
   };
@@ -1550,7 +1539,7 @@ function _expr_binary_rule(parenthesized) {
           ),
         ];
         return parenthesized
-          ? prec.left(precedence, _insert_newline($, seq_array, false, false))
+          ? prec.left(precedence, _insert_newline($, seq_array))
           : prec.left(precedence, seq(...seq_array));
       }),
     );

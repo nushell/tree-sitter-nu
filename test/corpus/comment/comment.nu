@@ -115,3 +115,23 @@ comment-004-between-pipes
     (pipe_element
       (val_variable))))
 
+=====
+comment-005-between-pipes-parenthesized
+=====
+
+(1
+# comment
+| $in)
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (val_number))
+          (comment)
+          (pipe_element
+            (val_variable)))))))

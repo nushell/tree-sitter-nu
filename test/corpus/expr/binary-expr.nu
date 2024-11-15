@@ -171,6 +171,33 @@ expr-008-multiline-precedence
                 (comment)
                 (expr_binary
                   (val_number)
-                  (val_number)))
-              (comment)
+                  (val_number)
+                (comment)))
               (val_number))))))))
+
+====
+expr-009-multiline-precedence-2
+====
+
+(1 == 1
+and 1 == 1
+and true
+)
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (expr_binary
+              (expr_binary
+                (expr_binary
+                  (val_number)
+                  (val_number))
+                (expr_binary
+                  (val_number)
+                  (val_number)))
+              (val_bool))))))))
