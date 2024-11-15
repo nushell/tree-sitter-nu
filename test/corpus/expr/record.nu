@@ -469,3 +469,29 @@ k4.9: 1...()}
             (identifier)
             (val_string
               (expr_parenthesized))))))))
+
+=====
+record-015-separated-colon-vs-closure
+=====
+
+{echo : 1}
+{echo 1:}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (val_number))))))
+  (pipeline
+    (pipe_element
+      (val_closure
+        (pipeline
+          (pipe_element
+            (command
+              (cmd_identifier)
+              (val_string))))))))

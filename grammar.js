@@ -1040,7 +1040,8 @@ module.exports = grammar({
       "_entry_separator",
     ),
 
-    _entry_separator: (_$) => token(prec(20, choice(PUNC().comma, /\s/))),
+    _entry_separator: (_$) =>
+      token(prec(PREC().higher, choice(PUNC().comma, /\s/))),
 
     record_entry: ($) =>
       seq(
@@ -1060,7 +1061,10 @@ module.exports = grammar({
             ...Object.values(MODIFIER()).map((x) => alias(x, $.identifier)),
           ),
         ),
-        PUNC().colon,
+        alias(
+          token(prec(PREC().higher, seq(/\s*/, PUNC().colon))),
+          PUNC().colon,
+        ),
         field(
           "value",
           choice(
@@ -1079,13 +1083,16 @@ module.exports = grammar({
           token.immediate(/[^\s\n\t\r{}()\[\]"`';:,]*/),
         ),
         token(
-          prec(-69, /[^$\s\n\t\r{}()\[\]"`';:,][^\s\n\t\r{}()\[\]"`';:,]*/),
+          prec(
+            PREC().lowest,
+            /[^$\s\n\t\r{}()\[\]"`';:,][^\s\n\t\r{}()\[\]"`';:,]*/,
+          ),
         ),
       ),
 
     _val_table_body: general_body_rules("row", "val_list", "_entry_separator"),
     _table_head_separator: (_$) =>
-      token(prec(20, seq(/\s*/, PUNC().semicolon))),
+      token(prec(PREC().higher, seq(/\s*/, PUNC().semicolon))),
 
     val_table: ($) =>
       seq(
@@ -1248,7 +1255,7 @@ module.exports = grammar({
 function general_body_rules(field_name, entry, separator) {
   return (/** @type {{ [x: string]: RuleOrLiteral; }} */ $) =>
     prec(
-      20,
+      PREC().higher,
       seq(
         repeat($._newline),
         // Normal entries MUST have a separator
@@ -1780,9 +1787,9 @@ function _unquoted_rule(type) {
     /** @type {{ _val_number_decimal: RuleOrLiteral; _immediate_decimal: RuleOrLiteral; }} */ $,
   ) =>
     prec.left(
-      -69,
+      PREC().lowest,
       choice(
-        token(prec(-69, token(pattern))),
+        token(prec(PREC().lowest, token(pattern))),
 
         // distinguish between unquoted and val_range in cmd_arg
         seq(
@@ -2016,6 +2023,7 @@ function OPR() {
 /// taken from `nu_protocol::`
 function PREC() {
   return {
+    higher: 20,
     range: 15,
     power: 14,
     multiplicative: 13,
@@ -2031,6 +2039,7 @@ function PREC() {
     xor: 3,
     or: 2,
     assignment: 1,
+    lowest: -69,
   };
 }
 
