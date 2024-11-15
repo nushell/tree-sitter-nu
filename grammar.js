@@ -91,11 +91,11 @@ module.exports = grammar({
     // remove newline characters from extras to reduce ambiguity
     // manually controlled by adding the following to parenthesized rules
     _newline: (_$) => /\r?\n/,
-    _terminator: (_$) => choice(PUNC().semicolon, _$._newline),
     _space: (_$) => /[ \t]+/,
-    _separator: (_$) => choice(_$._space, _$._newline),
-    _pipe_separator: (_$) =>
-      repeat1(seq(repeat(_$._newline), token(PUNC().pipe))),
+    _separator: ($) => choice($._space, $._newline),
+    _terminator: ($) => choice(PUNC().semicolon, $._newline),
+    _pipe_separator: ($) =>
+      repeat1(seq(repeat($._newline), token(PUNC().pipe))),
 
     /// Top Level Items
 

@@ -907,19 +907,6 @@
       "type": "PATTERN",
       "value": "\\r?\\n"
     },
-    "_terminator": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": ";"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_newline"
-        }
-      ]
-    },
     "_space": {
       "type": "PATTERN",
       "value": "[ \\t]+"
@@ -930,6 +917,19 @@
         {
           "type": "SYMBOL",
           "name": "_space"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_newline"
+        }
+      ]
+    },
+    "_terminator": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": ";"
         },
         {
           "type": "SYMBOL",
