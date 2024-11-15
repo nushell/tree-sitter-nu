@@ -1498,10 +1498,11 @@ function _ctrl_try_rule(parenthesized) {
  */
 function _ctrl_if_rule(parenthesized) {
   return (/** @type {any} */ $) => {
+    const _expr = parenthesized ? $._expression_parenthesized : $._expression;
     const seq_else_array = [
       KEYWORD().else,
       choice(
-        field("else_block", choice($.block, $._expression, $.command)),
+        field("else_block", choice($.block, _expr, $.command)),
         field(
           "else_branch",
           parenthesized ? alias($.ctrl_if_parenthesized, $.ctrl_if) : $.ctrl_if,
@@ -1510,7 +1511,7 @@ function _ctrl_if_rule(parenthesized) {
     ];
     const seq_array = [
       KEYWORD().if,
-      field("condition", choice($._expression, $.identifier)),
+      field("condition", choice(_expr, $.identifier)),
       field("then_branch", $.block),
       optional(
         parenthesized
