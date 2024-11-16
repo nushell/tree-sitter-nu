@@ -38,8 +38,8 @@ do -c { thisisnotarealcommand } --env # flags on both sides
           (pipeline
             (pipe_element
               (command
-                (cmd_identifier)))))))
-    (comment))
+                (cmd_identifier))))))))
+  (comment)
   (pipeline
     (pipe_element
       (ctrl_do
@@ -51,8 +51,8 @@ do -c { thisisnotarealcommand } --env # flags on both sides
               (command
                 (cmd_identifier)))))
         (long_flag
-          (long_flag_identifier))))
-    (comment)))
+          (long_flag_identifier)))))
+  (comment))
 
 =====
 do-003-parameters
@@ -78,8 +78,8 @@ do {|x,y| $x} 77, -c unquoted # flags in-between
               (val_variable
                 (identifier)))))
         (val_number)
-        (val_number)))
-    (comment))
+        (val_number))))
+  (comment)
   (pipeline
     (pipe_element
       (ctrl_do
@@ -96,16 +96,19 @@ do {|x,y| $x} 77, -c unquoted # flags in-between
         (val_string)
         (short_flag
           (short_flag_identifier))
-        (val_string)))
-    (comment)))
+        (val_string))))
+  (comment))
 
 =====
 do-004-parenthesized
 =====
 
-$'(do {|x,y| $x} 77, # string
+$'(do
+{|x,y| $x} 77, # string
 ...2 # range
+
 -c # flag
+
 (1 + 1) foo('bar')
 unquoted; # string
 another_pipeline
@@ -156,3 +159,22 @@ another_pipeline
             (pipe_element
               (command
                 (cmd_identifier)))))))))
+
+=====
+do-005-parenthesized-no-arguments
+=====
+
+(do {} #lkj
+)
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (ctrl_do
+              (block))))
+        (comment)))))

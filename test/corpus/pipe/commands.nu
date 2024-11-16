@@ -216,7 +216,7 @@ let x = 42
 cmd-010-long-flag
 ======
 
-cmd --long-flag
+cmd --long-flag --42
 
 ------
 
@@ -225,6 +225,7 @@ cmd --long-flag
     (pipe_element
       (command
         (cmd_identifier)
+        (long_flag (long_flag_identifier))
         (long_flag (long_flag_identifier))))))
 
 ======
@@ -1016,3 +1017,4 @@ echo +..1()
         (cmd_identifier)
         (val_string
           (expr_parenthesized))))))
+

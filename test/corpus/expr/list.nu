@@ -465,8 +465,7 @@ list-013-unquoted-with-immediate-expr-parenthesized
   .1..=1()
   1...1..=1()
   ..=1.foo()
-  1...()
-]
+  1...()]
 
 -----
 

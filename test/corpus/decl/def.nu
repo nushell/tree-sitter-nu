@@ -343,7 +343,7 @@ def-010-short-flag
 ======
 
 def test [
-  -s
+  -?
 ] {}
 
 -----
