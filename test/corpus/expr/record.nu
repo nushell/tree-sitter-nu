@@ -225,6 +225,7 @@ record-009-duration
 
 =====
 record-010-key-value-seperation
+:error
 =====
 
 {
@@ -232,18 +233,6 @@ record-010-key-value-seperation
 }
 
 -----
-
-
-(nu_script
-  (pipeline
-    (pipe_element
-      (val_record
-        (record_body
-          (record_entry
-            (identifier)
-            (ERROR
-              (val_string))
-            (val_number)))))))
 
 =====
 record-011-immediate-comma
@@ -269,6 +258,7 @@ record-011-immediate-comma
 
 =====
 record-012-colon-in-unquoted-value
+:error
 =====
 
 {
@@ -277,25 +267,6 @@ record-012-colon-in-unquoted-value
 }
 
 -----
-
-(nu_script
-  (pipeline
-    (pipe_element
-      (val_record
-        (record_body
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_number))
-          (record_entry
-            (identifier)
-            (ERROR)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_number)))))))
 
 =====
 record-013-value-as-signed-number-or-range
