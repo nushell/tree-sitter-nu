@@ -12586,10 +12586,6 @@
       "_immediate_decimal"
     ],
     [
-      "_match_pattern_expression",
-      "_item_expression"
-    ],
-    [
       "_match_pattern_list",
       "val_list"
     ],
@@ -12609,24 +12605,17 @@
       "_parenthesized_body"
     ],
     [
-      "_terminator",
-      "_parenthesized_body"
-    ],
-    [
-      "_terminator",
+      "_block_body",
       "parameter_pipes",
       "record_body"
     ],
     [
-      "_terminator",
+      "_block_body",
       "parameter_pipes"
     ],
     [
-      "_terminator",
+      "_block_body",
       "shebang"
-    ],
-    [
-      "_terminator"
     ],
     [
       "_val_number_decimal"
@@ -12657,6 +12646,15 @@
   ],
   "precedences": [],
   "externals": [],
-  "inline": [],
+  "inline": [
+    "_do_expression",
+    "_item_expression",
+    "_match_expression",
+    "_separator",
+    "_spread_listish",
+    "_spread_recordish",
+    "_stringish",
+    "_terminator"
+  ],
   "supertypes": []
 }

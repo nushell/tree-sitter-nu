@@ -7,6 +7,17 @@ module.exports = grammar({
 
   extras: ($) => [/[ \t]/, $.comment],
 
+  inline: ($) => [
+    $._do_expression,
+    $._item_expression,
+    $._match_expression,
+    $._separator,
+    $._spread_listish,
+    $._spread_recordish,
+    $._stringish,
+    $._terminator,
+  ],
+
   // externals: $ => [
   //   $.long_flag_equals_value
   // ],
@@ -16,17 +27,14 @@ module.exports = grammar({
     [$._expression, $._expr_binary_expression],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._immediate_decimal],
-    [$._match_pattern_expression, $._item_expression],
     [$._match_pattern_list, $.val_list],
     [$._match_pattern_record, $.val_record],
     [$._match_pattern_record_variable, $._value],
     [$._match_pattern_value, $._value],
     [$._parenthesized_body],
-    [$._terminator, $._parenthesized_body],
-    [$._terminator, $.parameter_pipes, $.record_body],
-    [$._terminator, $.parameter_pipes],
-    [$._terminator, $.shebang],
-    [$._terminator],
+    [$._block_body, $.parameter_pipes, $.record_body],
+    [$._block_body, $.parameter_pipes],
+    [$._block_body, $.shebang],
     [$._val_number_decimal],
     [$.block, $.val_closure],
     [$.block, $.val_record],
