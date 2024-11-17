@@ -8,7 +8,7 @@ use file.nu
 
 (nu_script
   (decl_use
-    (unquoted)))
+    (val_string)))
 
 =====
 use-002-semicolon
@@ -20,7 +20,7 @@ use dir/file.nu;
 
 (nu_script
   (decl_use
-    (unquoted)))
+    (val_string)))
 
 =====
 use-003-pipe
@@ -71,7 +71,7 @@ use foo.nu [
 
 (nu_script
   (decl_use
-    (unquoted)
+    (val_string)
     (scope_pattern
       (command_list
         (cmd_identifier)

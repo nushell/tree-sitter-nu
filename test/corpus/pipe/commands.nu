@@ -225,8 +225,10 @@ cmd --long-flag --42
     (pipe_element
       (command
         (cmd_identifier)
-        (long_flag (long_flag_identifier))
-        (long_flag (long_flag_identifier))))))
+        (long_flag
+          (long_flag_identifier))
+        (long_flag
+          (long_flag_identifier))))))
 
 ======
 cmd-011-path-string-1-dot
@@ -244,21 +246,24 @@ cargo install --path ./dir
       (command
         (cmd_identifier)
         (val_string)
-        (long_flag (long_flag_identifier))
+        (long_flag
+          (long_flag_identifier))
         (val_string))))
   (pipeline
     (pipe_element
       (command
         (cmd_identifier)
         (val_string)
-        (long_flag (long_flag_identifier))
+        (long_flag
+          (long_flag_identifier))
         (val_string))))
   (pipeline
     (pipe_element
       (command
         (cmd_identifier)
         (val_string)
-        (long_flag (long_flag_identifier))
+        (long_flag
+          (long_flag_identifier))
         (val_string)))))
 
 ======
@@ -444,6 +449,7 @@ cmd-017-string-external
 ======
 
 ^'ls'
+^$"ls"
 
 ------
 
@@ -451,7 +457,12 @@ cmd-017-string-external
   (pipeline
     (pipe_element
       (command
-        head: (val_string)))))
+        head: (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        head: (val_interpolated
+          (escaped_interpolated_content))))))
 
 ======
 cmd-018-pipe-external
@@ -483,21 +494,21 @@ bla --weird-that=this --behaved-differently=than-this --level=2
     (pipe_element
       (command
         (cmd_identifier)
-          (long_flag
-            (long_flag_equals_value
-              (long_flag_identifier)
-              (long_flag_value
-                (val_string))))
-          (long_flag
-            (long_flag_equals_value
-              (long_flag_identifier)
-              (long_flag_value
-                (val_string))))
-          (long_flag
-            (long_flag_equals_value
-              (long_flag_identifier)
-              (long_flag_value
-                (val_number))))))))
+        (long_flag
+          (long_flag_equals_value
+            (long_flag_identifier)
+            (long_flag_value
+              (val_string))))
+        (long_flag
+          (long_flag_equals_value
+            (long_flag_identifier)
+            (long_flag_value
+              (val_string))))
+        (long_flag
+          (long_flag_equals_value
+            (long_flag_identifier)
+            (long_flag_value
+              (val_number))))))))
 
 ======
 cmd-020-variable-external
@@ -1017,4 +1028,3 @@ echo +..1()
         (cmd_identifier)
         (val_string
           (expr_parenthesized))))))
-
