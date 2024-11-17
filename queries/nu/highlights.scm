@@ -204,6 +204,9 @@ file_path: (val_string) @variable.parameter
     "(" ")"
     "{" "}"
     "[" "]"
+    "...["
+    "...("
+    "...{"
 ] @punctuation.bracket
 
 (val_record
@@ -274,7 +277,8 @@ key: (identifier) @property
 (stmt_let (identifier) @variable)
 
 (val_variable
-  "$" @punctuation.special
+  "$"? @punctuation.special
+  "...$"? @punctuation.special
   [
    (identifier) @variable
    "in" @special
