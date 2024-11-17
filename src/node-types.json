@@ -1497,6 +1497,10 @@
             "named": true
           },
           {
+            "type": "unquoted",
+            "named": true
+          },
+          {
             "type": "val_interpolated",
             "named": true
           },
@@ -4263,6 +4267,11 @@
         ]
       }
     }
+  },
+  {
+    "type": "unquoted",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "val_binary",

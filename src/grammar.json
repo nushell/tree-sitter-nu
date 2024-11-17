@@ -1227,13 +1227,8 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "unquoted"
-                  },
-                  "named": true,
-                  "value": "val_string"
+                  "type": "SYMBOL",
+                  "name": "unquoted"
                 },
                 {
                   "type": "SYMBOL",

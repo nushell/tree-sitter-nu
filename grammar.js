@@ -146,10 +146,7 @@ module.exports = grammar({
         seq(
           optional(MODIFIER().visibility),
           KEYWORD().use,
-          field(
-            "module",
-            choice(alias($.unquoted, $.val_string), $._stringish),
-          ),
+          field("module", choice($.unquoted, $._stringish)),
           optional(field("import_pattern", $.scope_pattern)),
         ),
       ),
