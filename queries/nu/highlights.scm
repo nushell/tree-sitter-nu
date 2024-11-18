@@ -189,9 +189,9 @@ file_path: (val_string) @variable.parameter
 
 (param_long_flag ["--"] @punctuation.delimiter)
 (long_flag ["--"] @punctuation.delimiter)
-(long_flag_equals_value ["--"] @punctuation.delimiter)
 (short_flag ["-"] @punctuation.delimiter)
-(long_flag_equals_value ["="] @punctuation.special)
+(long_flag ["="] @punctuation.special)
+(short_flag ["="] @punctuation.special)
 (param_short_flag ["-"] @punctuation.delimiter)
 (param_rest "..." @punctuation.delimiter)
 (param_type [":"] @punctuation.special)

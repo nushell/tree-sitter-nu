@@ -16,10 +16,10 @@ module.exports = grammar({
     $._spread_recordish,
     $._stringish,
     $._terminator,
+    $._flag_value,
   ],
 
   // externals: $ => [
-  //   $.long_flag_equals_value
   // ],
 
   conflicts: ($) => [
@@ -232,7 +232,20 @@ module.exports = grammar({
         field("completion", optional($.param_cmd)),
       ),
 
-    param_value: ($) => seq(PUNC().eq, field("param_value", $._expression)),
+    param_value: ($) =>
+      seq(
+        repeat($._newline),
+        PUNC().eq,
+        repeat($._newline),
+        field(
+          "param_value",
+          choice(
+            $._item_expression,
+            alias($._unquoted_in_list, $.val_string),
+            alias($._unquoted_in_list_with_expr, $.val_string),
+          ),
+        ),
+      ),
 
     _type_annotation: ($) =>
       field("type", choice($.list_type, $.collection_type, $.flat_type)),
@@ -254,7 +267,16 @@ module.exports = grammar({
           token.immediate(BRACK().open_angle),
           repeat(
             seq(
-              seq(key, optional(seq(PUNC().colon, $._all_type))),
+              seq(
+                key,
+                optional(
+                  seq(
+                    PUNC().colon,
+                    $._all_type,
+                    field("completion", optional($.param_cmd)),
+                  ),
+                ),
+              ),
               optional(PUNC().comma),
             ),
           ),
@@ -269,13 +291,16 @@ module.exports = grammar({
         seq(
           token.immediate(BRACK().open_angle),
           field("inner", optional($._all_type)),
+          field("completion", optional($.param_cmd)),
           BRACK().close_angle,
         ),
       ),
 
-    param_cmd: ($) => seq(PUNC().at, field("name", $._command_name)),
+    param_cmd: ($) =>
+      seq(token.immediate(PUNC().at), field("name", $._command_name)),
 
-    param_rest: ($) => seq(PUNC().rest, field("name", $.identifier)),
+    param_rest: ($) =>
+      seq(PUNC().rest, optional(PUNC().dollar), field("name", $.identifier)),
 
     param_opt: ($) =>
       seq(field("name", $.identifier), token.immediate(PUNC().question)),
@@ -1242,29 +1267,27 @@ module.exports = grammar({
 
     _flags_parenthesized: ($) => seq(repeat1($._separator), $._flag),
 
-    short_flag: ($) => seq(OPR().minus, $.short_flag_identifier),
+    _flag_value: ($) => choice($._value, alias($.unquoted, $.val_string)),
+
+    short_flag: ($) =>
+      seq(
+        OPR().minus,
+        optional(field("name", $.short_flag_identifier)),
+        optional(
+          seq(token.immediate(PUNC().eq), field("value", $._flag_value)),
+        ),
+      ),
 
     short_flag_identifier: (_$) => token.immediate(/[\p{XID_Continue}?@!%_-]+/),
 
     long_flag: ($) =>
-      prec.right(
-        10,
-        choice(
-          OPR().long_flag,
-          seq(OPR().long_flag, $.long_flag_identifier),
-          $.long_flag_equals_value,
-        ),
-      ),
-
-    long_flag_equals_value: ($) =>
       seq(
         OPR().long_flag,
-        $.long_flag_identifier,
-        PUNC().eq,
-        $.long_flag_value,
+        optional(field("name", $.long_flag_identifier)),
+        optional(
+          seq(token.immediate(PUNC().eq), field("value", $._flag_value)),
+        ),
       ),
-
-    long_flag_value: ($) => $._cmd_arg,
 
     _unquoted_naive: (_$) => token(/[^\s\n\t\r(){}\|;]+/),
     unquoted: _unquoted_rule("command"),

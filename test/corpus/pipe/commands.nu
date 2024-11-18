@@ -486,6 +486,7 @@ cmd-019-flags-with-values
 =====
 
 bla --weird-that=this --behaved-differently=than-this --level=2
+^dummy - -- -color=true
 
 -----
 
@@ -493,22 +494,25 @@ bla --weird-that=this --behaved-differently=than-this --level=2
   (pipeline
     (pipe_element
       (command
-        (cmd_identifier)
-        (long_flag
-          (long_flag_equals_value
-            (long_flag_identifier)
-            (long_flag_value
-              (val_string))))
-        (long_flag
-          (long_flag_equals_value
-            (long_flag_identifier)
-            (long_flag_value
-              (val_string))))
-        (long_flag
-          (long_flag_equals_value
-            (long_flag_identifier)
-            (long_flag_value
-              (val_number))))))))
+        head: (cmd_identifier)
+        flag: (long_flag
+          name: (long_flag_identifier)
+          value: (val_string))
+        flag: (long_flag
+          name: (long_flag_identifier)
+          value: (val_string))
+        flag: (long_flag
+          name: (long_flag_identifier)
+          value: (val_number)))))
+  (pipeline
+    (pipe_element
+      (command
+        head: (cmd_identifier)
+        flag: (short_flag)
+        flag: (long_flag)
+        flag: (short_flag
+          name: (short_flag_identifier)
+          value: (val_bool))))))
 
 ======
 cmd-020-variable-external

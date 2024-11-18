@@ -187,6 +187,16 @@
     "type": "collection_type",
     "named": true,
     "fields": {
+      "completion": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "param_cmd",
+            "named": true
+          }
+        ]
+      },
       "key": {
         "multiple": true,
         "required": false,
@@ -2517,6 +2527,16 @@
     "type": "list_type",
     "named": true,
     "fields": {
+      "completion": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "param_cmd",
+            "named": true
+          }
+        ]
+      },
       "inner": {
         "multiple": false,
         "required": false,
@@ -2558,53 +2578,21 @@
   {
     "type": "long_flag",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "long_flag_equals_value",
-          "named": true
-        },
-        {
-          "type": "long_flag_identifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "long_flag_equals_value",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "long_flag_identifier",
-          "named": true
-        },
-        {
-          "type": "long_flag_value",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "long_flag_value",
-    "named": true,
     "fields": {
-      "arg": {
+      "name": {
         "multiple": false,
         "required": false,
         "types": [
           {
-            "type": "expr_parenthesized",
+            "type": "long_flag_identifier",
             "named": true
-          },
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
           {
             "type": "val_binary",
             "named": true
@@ -2646,10 +2634,6 @@
             "named": true
           },
           {
-            "type": "val_range",
-            "named": true
-          },
-          {
             "type": "val_record",
             "named": true
           },
@@ -2663,58 +2647,6 @@
           },
           {
             "type": "val_variable",
-            "named": true
-          }
-        ]
-      },
-      "arg_spread": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "val_list",
-            "named": true
-          },
-          {
-            "type": "val_variable",
-            "named": true
-          }
-        ]
-      },
-      "arg_str": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
-      "flag": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "long_flag",
-            "named": true
-          },
-          {
-            "type": "short_flag",
-            "named": true
-          }
-        ]
-      },
-      "redir": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "redirection",
             "named": true
           }
         ]
@@ -3362,15 +3294,7 @@
         "required": true,
         "types": [
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
             "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
             "named": true
           },
           {
@@ -4018,16 +3942,79 @@
   {
     "type": "short_flag",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "short_flag_identifier",
-          "named": true
-        }
-      ]
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "short_flag_identifier",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "val_binary",
+            "named": true
+          },
+          {
+            "type": "val_bool",
+            "named": true
+          },
+          {
+            "type": "val_closure",
+            "named": true
+          },
+          {
+            "type": "val_date",
+            "named": true
+          },
+          {
+            "type": "val_duration",
+            "named": true
+          },
+          {
+            "type": "val_filesize",
+            "named": true
+          },
+          {
+            "type": "val_interpolated",
+            "named": true
+          },
+          {
+            "type": "val_list",
+            "named": true
+          },
+          {
+            "type": "val_nothing",
+            "named": true
+          },
+          {
+            "type": "val_number",
+            "named": true
+          },
+          {
+            "type": "val_record",
+            "named": true
+          },
+          {
+            "type": "val_string",
+            "named": true
+          },
+          {
+            "type": "val_table",
+            "named": true
+          },
+          {
+            "type": "val_variable",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
