@@ -1,6 +1,7 @@
 [
   (expr_parenthesized)
   (parameter_bracks)
+  (ctrl_match)
 
   (val_record)
   (val_list)
