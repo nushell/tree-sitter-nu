@@ -9,6 +9,7 @@ module.exports = grammar({
 
   inline: ($) => [
     $._do_expression,
+    $._flag_value,
     $._item_expression,
     $._match_expression,
     $._separator,
@@ -16,7 +17,6 @@ module.exports = grammar({
     $._spread_recordish,
     $._stringish,
     $._terminator,
-    $._flag_value,
   ],
 
   // externals: $ => [
@@ -32,8 +32,7 @@ module.exports = grammar({
     [$._match_pattern_record_variable, $._value],
     [$._match_pattern_value, $._value],
     [$._parenthesized_body],
-    [$._block_body, $.parameter_pipes, $.record_body],
-    [$._block_body, $.parameter_pipes],
+    [$._block_body, $.record_body],
     [$._block_body, $.shebang],
     [$._val_number_decimal],
     [$.block, $.val_closure],
@@ -74,12 +73,46 @@ module.exports = grammar({
 
     /// Identifiers
     // NOTE:
-    // for simplicity, i used the `rust` definition of an identifier and some symbols
-    // but in `nu` the rule is way more relaxed than this
+    // probably needs an external scanner for cmd_identifier
+    // to behave exactly the same as the nushell parser
+    cmd_identifier: ($) => {
+      const excluded = "\\[\\]\\{}<>=\"`':";
+      const pattern_repeat = repeat(none_of(excluded));
+      const pattern_one = repeat1(none_of(excluded));
+      return choice(
+        token(
+          prec(PREC().low, seq(none_of(excluded + "^#$\\-"), pattern_repeat)),
+        ),
+        ...Object.values(KEYWORD()).map((x) =>
+          token(seq(x, token.immediate(pattern_repeat))),
+        ),
+        ...Object.values(MODIFIER()).map((x) =>
+          token(seq(x, token.immediate(pattern_repeat))),
+        ),
+        ...Object.values(SPECIAL()).map((x) =>
+          seq(x, token.immediate(pattern_one)),
+        ),
+        seq(
+          seq(
+            $._val_number_decimal,
+            optional(
+              choice(
+                alias($.duration_unit, "_unit"),
+                alias($.filesize_unit, "_unit"),
+              ),
+            ),
+          ),
+          token.immediate(prec(PREC().lowest, pattern_one)),
+        ),
+      );
+    },
 
-    cmd_identifier: (_$) => token(/[_\p{XID_Start}][_\-\p{XID_Continue}!?.]*/),
-
-    identifier: (_$) => token(/[_\p{XID_Start}][_\p{XID_Continue}]*/),
+    identifier: (_$) => {
+      const excluded = "\\[\\]\\-{}<>=\"`'@?,:.";
+      return token(
+        seq(none_of(excluded + "&*!^+#$"), repeat(none_of(excluded))),
+      );
+    },
 
     long_flag_identifier: (_$) =>
       token.immediate(/[0-9\p{XID_Start}_][\p{XID_Continue}?_-]*/),
@@ -161,7 +194,7 @@ module.exports = grammar({
     _multiple_types: ($) =>
       seq(
         BRACK().open_brack,
-        repeat(seq($._one_type, optional(PUNC().comma))),
+        general_body_rules("", "_one_type", "_entry_separator")($),
         BRACK().close_brack,
       ),
 
@@ -184,13 +217,7 @@ module.exports = grammar({
       ),
 
     parameter_pipes: ($) =>
-      seq(
-        repeat($._newline),
-        PUNC().pipe,
-        repeat($.parameter),
-        repeat($._newline),
-        PUNC().pipe,
-      ),
+      seq(PUNC().pipe, repeat($.parameter), repeat($._newline), PUNC().pipe),
 
     parameter: ($) =>
       prec.right(
@@ -430,7 +457,7 @@ module.exports = grammar({
           "scrutinee",
           choice($._expression, alias($.unquoted, $.val_string)),
         ),
-        BRACK().open_brace,
+        open_brace(),
         repeat($.match_arm),
         optional($.default_arm),
         repeat($._newline),
@@ -523,7 +550,7 @@ module.exports = grammar({
 
     _match_pattern_record: ($) =>
       seq(
-        BRACK().open_brace,
+        open_brace(),
         repeat(
           field(
             "entry",
@@ -573,7 +600,7 @@ module.exports = grammar({
         seq($._expression_parenthesized, optional($.redirection)),
         $._ctrl_expression_parenthesized,
         alias($.where_command_parenthesized, $.where_command),
-        alias($._command_parenthesized_body, $.command),
+        alias($._command_parenthesized, $.command),
       ),
 
     /// Scope Statements
@@ -656,23 +683,19 @@ module.exports = grammar({
 
     wild_card: (_$) => token("*"),
 
-    _command_list_body: general_body_rules(
-      "cmd",
-      "_command_name",
-      "_entry_separator",
-    ),
-
     command_list: ($) =>
       seq(
         BRACK().open_brack,
-        optional($._command_list_body),
+        optional(
+          general_body_rules("cmd", "_command_name", "_entry_separator")($),
+        ),
         BRACK().close_brack,
       ),
 
     /// Block
 
     block: ($) =>
-      seq(BRACK().open_brace, optional($._block_body), BRACK().close_brace),
+      seq(open_brace(), optional($._block_body), BRACK().close_brace),
 
     _blosure: ($) => choice(prec.dynamic(10, $.block), $.val_closure),
 
@@ -1093,7 +1116,7 @@ module.exports = grammar({
 
     val_record: ($) =>
       seq(
-        BRACK().open_brace,
+        open_brace(),
         optional($.record_body),
         BRACK().close_brace,
         optional($.cell_path),
@@ -1132,11 +1155,11 @@ module.exports = grammar({
             choice(
               // Without $.cmd_identifier, cannot correctly distinguish between record and closure
               alias($.cmd_identifier, $.identifier),
+              alias($._record_key, $.identifier),
               $.val_string,
               $.val_number,
               $.val_variable,
               $.expr_parenthesized,
-              alias($._record_key, $.identifier),
 
               // This distinguish between record keys and keywords
               ...Object.values(KEYWORD()).map((x) => alias(x, $.identifier)),
@@ -1158,22 +1181,16 @@ module.exports = grammar({
         ),
       ),
 
-    _record_key: (_$) =>
-      choice(
-        // This distinguish number and identifier starting with -/+
-        seq(
-          choice(token(OPR().minus), token(OPR().plus)),
-          token.immediate(/[^\s\n\t\r{}()\[\]"`';:,]*/),
-        ),
-        token(
-          prec(
-            PREC().lowest,
-            /[^$\s\n\t\r{}()\[\]"`';:,][^\s\n\t\r{}()\[\]"`';:,]*/,
-          ),
-        ),
-      ),
+    _record_key: (_$) => {
+      const excluded = "\\[\\]{}\"`':,";
+      const pattern_repeat = repeat(none_of(excluded));
+      // This distinguish number and identifier starting with -/+
+      return seq(
+        choice(token(OPR().minus), token(OPR().plus)),
+        token.immediate(pattern_repeat),
+      );
+    },
 
-    _val_table_body: general_body_rules("row", "val_list", "_entry_separator"),
     _table_head_separator: (_$) =>
       token(prec(PREC().higher, seq(/\s*/, PUNC().semicolon))),
 
@@ -1182,14 +1199,14 @@ module.exports = grammar({
         BRACK().open_brack,
         repeat($._newline),
         field("head", seq($.val_list, $._table_head_separator)),
-        optional($._val_table_body),
+        optional(general_body_rules("row", "val_list", "_entry_separator")($)),
         BRACK().close_brack,
         optional($.cell_path),
       ),
 
     val_closure: ($) =>
       seq(
-        BRACK().open_brace,
+        open_brace(),
         optional(field("parameters", $.parameter_pipes)),
         $._block_body,
         BRACK().close_brace,
@@ -1201,7 +1218,7 @@ module.exports = grammar({
 
     path: ($) => {
       const path = choice(
-        token(prec(PREC().low, /[^\s\n\t\r\|(){}\[\].,:;?]+/)),
+        token.immediate(prec(PREC().low, repeat1(none_of("\\[\\]{}.,:?")))),
         alias($.val_string, "quoted"),
       );
 
@@ -1216,25 +1233,8 @@ module.exports = grammar({
 
     /// Commands
 
-    command: ($) =>
-      seq(
-        choice(
-          field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
-          field("head", seq(PUNC().caret, $._stringish)),
-        ),
-        prec.dynamic(10, repeat(seq($._space, optional($._cmd_arg)))),
-      ),
-
-    _command_parenthesized_body: ($) =>
-      prec.right(
-        seq(
-          choice(
-            field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
-            field("head", seq(PUNC().caret, $._stringish)),
-          ),
-          prec.dynamic(10, repeat(seq($._separator, optional($._cmd_arg)))),
-        ),
-      ),
+    command: _command_rule(false),
+    _command_parenthesized: _command_rule(true),
 
     _cmd_arg: ($) =>
       choice(
@@ -1289,7 +1289,7 @@ module.exports = grammar({
         ),
       ),
 
-    _unquoted_naive: (_$) => token(/[^\s\n\t\r(){}\|;]+/),
+    _unquoted_naive: (_$) => token(repeat1(none_of("{}"))),
     unquoted: _unquoted_rule("command"),
     _unquoted_in_list: _unquoted_rule("list"),
     _unquoted_in_record: _unquoted_rule("record"),
@@ -1324,17 +1324,20 @@ module.exports = grammar({
  * @param {string} separator
  */
 function general_body_rules(field_name, entry, separator) {
-  return (/** @type {{ [x: string]: RuleOrLiteral; }} */ $) =>
-    prec(
+  return (/** @type {{ [x: string]: RuleOrLiteral; }} */ $) => {
+    const field_entry =
+      field_name.length == 0 ? $[entry] : field(field_name, $[entry]);
+    return prec(
       PREC().higher,
       seq(
         repeat($._newline),
         // Normal entries MUST have a separator
-        repeat(seq(field(field_name, $[entry]), repeat1($[separator]))),
+        repeat(seq(field_entry, repeat1($[separator]))),
         // Final entry may or may not have separator
-        seq(field(field_name, $[entry]), repeat($[separator])),
+        seq(field_entry, repeat($[separator])),
       ),
     );
+  };
 }
 
 /**
@@ -1543,6 +1546,24 @@ function _insert_newline($, sequence, begin = false, end = true) {
 /**
  * @param {boolean} parenthesized
  */
+function _command_rule(parenthesized) {
+  return (/** @type {any} */ $) => {
+    const sep = parenthesized ? $._separator : $._space;
+    return prec.right(
+      seq(
+        choice(
+          field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
+          field("head", seq(PUNC().caret, $._stringish)),
+        ),
+        prec.dynamic(10, repeat(seq(sep, optional($._cmd_arg)))),
+      ),
+    );
+  };
+}
+
+/**
+ * @param {boolean} parenthesized
+ */
 function _ctrl_try_rule(parenthesized) {
   return (/** @type {any} */ $) => {
     const seq_catch_array = [
@@ -1582,7 +1603,7 @@ function _ctrl_if_rule(parenthesized) {
     ];
     const seq_array = [
       KEYWORD().if,
-      field("condition", choice(_expr, $.identifier)),
+      field("condition", _expr),
       field("then_branch", $.block),
       optional(
         parenthesized
@@ -1680,9 +1701,10 @@ function _decimal_rule(immediate) {
   const exponent = token.immediate(/[eE][-+]?[\d_]*\d[\d_]*/);
   const digits = token.immediate(/[\d_]*\d[\d_]*/);
   const head_token = immediate ? token.immediate : token;
+  const head_digits = head_token(/[\d_]*\d[\d_]*/);
   return (/** @type {any} */ _$) =>
     choice(
-      seq(head_token(/[\d_]*\d[\d_]*/), optional(exponent)),
+      seq(head_digits, optional(exponent)),
       seq(
         token(
           seq(choice(head_token(OPR().minus), head_token(OPR().plus)), digits),
@@ -1690,7 +1712,7 @@ function _decimal_rule(immediate) {
         optional(exponent),
       ),
       seq(
-        head_token(/[\d_]*\d[\d_]*/),
+        head_digits,
         token.immediate(PUNC().dot),
         optional(digits),
         optional(exponent),
@@ -1777,15 +1799,16 @@ function _range_rule(anonymous, with_end_decimal = false) {
  * @param {string} type
  */
 function _unquoted_with_expr_rule(type) {
-  var pattern_repeat = /[^\s\n\t\r();]*/;
+  var excluded = "";
   switch (type) {
     case "list":
-      pattern_repeat = /[^\s\n\t\r()\[\];,]*/;
+      excluded += "\\[\\],";
       break;
     case "record":
-      pattern_repeat = /[^\s\n\t\r{}();:,]*/;
+      excluded += "{}:,";
       break;
   }
+  const pattern_repeat = token(repeat(none_of(excluded)));
   return ($) => {
     var unquoted_head = $.unquoted;
     switch (type) {
@@ -1824,33 +1847,31 @@ function _unquoted_with_expr_rule(type) {
  * @param {string} type
  */
 function _unquoted_rule(type) {
-  var pattern = /[^-$\s\n\t\r{}()\[\]\|"`';][^\s\n\t\r{}()\[\]\|"`';]*/;
-  var pattern_repeat = /[^\s\n\t\r{}()\[\]\|"`';]*/;
-  var pattern_repeat1 = /[^\s\n\t\r{}()\[\]\|"`';]+/;
-  var pattern_once = /[^\s\n\t\r{}()\[\]\|"`';]/;
-  var pattern_with_dot = /[^\s\n\t\r{}()\[\]\|"`';.]/;
-  var pattern_with_le = /[^\s\n\t\r{}()\[\]\|"`';=<]/;
-  var pattern_with_dollar = /[^\s\n\t\r{}()\[\]\|"`';$]/;
+  var excluded_common = "\\[\\]{}\"`'";
+  var excluded_first = excluded_common + "$";
   switch (type) {
     case "list":
-      pattern = /[^$\s\n\t\r{}()\[\]\|"`';,][^\s\n\t\r{}()\[\]\|"`';,]*/;
-      pattern_repeat = /[^\s\n\t\r{}()\[\]\|"`';,]*/;
-      pattern_repeat1 = /[^\s\n\t\r{}()\[\]\|"`';,]+/;
-      pattern_once = /[^\s\n\t\r{}()\[\]\|"`';,]/;
-      pattern_with_dot = /[^\s\n\t\r{}()\[\]\|"`';,.]/;
-      pattern_with_le = /[^\s\n\t\r{}()\[\]\|"`';,=<]/;
-      pattern_with_dollar = /[^\s\n\t\r{}()\[\]\|"`';,$]/;
+      excluded_common += ",";
       break;
     case "record":
-      pattern = /[^$\s\n\t\r{}()\[\]\|"`';:,][^\s\n\t\r{}()\[\]\|"`';:,]*/;
-      pattern_repeat = /[^\s\n\t\r{}()\[\]\|"`';:,]*/;
-      pattern_repeat1 = /[^\s\n\t\r{}()\[\]\|"`';:,]+/;
-      pattern_once = /[^\s\n\t\r{}()\[\]\|"`';:,]/;
-      pattern_with_dot = /[^\s\n\t\r{}()\[\]\|"`';:,.]/;
-      pattern_with_le = /[^\s\n\t\r{}()\[\]\|"`';:,=<]/;
-      pattern_with_dollar = /[^\s\n\t\r{}()\[\]\|"`';:,$]/;
+      excluded_common += ":,";
+      break;
+    case "command":
+      excluded_first += "-";
+      break;
+    case "identifier":
+      excluded_common += "<>=:";
+      excluded_first += "<>=\\-#^";
       break;
   }
+  const pattern_once = none_of(excluded_common);
+  const pattern = token(seq(none_of(excluded_first), repeat(pattern_once)));
+  const pattern_repeat = token(repeat(pattern_once));
+  const pattern_repeat1 = token(repeat1(pattern_once));
+  const pattern_with_dot = none_of(excluded_common + ".");
+  const pattern_with_le = none_of(excluded_common + "<=");
+  const pattern_with_dollar = none_of(excluded_common + "$");
+
   // because this catches almost anything, we want to ensure it is
   // picked as the a last resort after everything else has failed.
   // so we give it a ridiculously low precedence and place it at the
@@ -2044,6 +2065,12 @@ function BRACK() {
   };
 }
 
+// group open_brace and following whitespace/newline together
+// so they won't participate in conflicts resolving between record and block
+function open_brace() {
+  return alias(token(seq(BRACK().open_brace, /\s*/)), BRACK().open_brace);
+}
+
 // operators
 function OPR() {
   return {
@@ -2217,4 +2244,16 @@ function FLAT_TYPES() {
   ];
 
   return choice(...types);
+}
+
+/**
+ * Returns a regular expression that matches any character except the ones
+ * provided.
+ *
+ * @param  {string} excluded
+ *
+ * @returns {RegExp}
+ */
+function none_of(excluded = "") {
+  return new RegExp("[^\\s\\r\\n\\t\\|();" + excluded + "]");
 }

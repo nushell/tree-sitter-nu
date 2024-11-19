@@ -184,6 +184,11 @@
     }
   },
   {
+    "type": "cmd_identifier",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "collection_type",
     "named": true,
     "fields": {
@@ -707,10 +712,6 @@
           },
           {
             "type": "expr_unary",
-            "named": true
-          },
-          {
-            "type": "identifier",
             "named": true
           },
           {
@@ -3856,7 +3857,7 @@
     "fields": {
       "type": {
         "multiple": true,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "collection_type",
@@ -5674,10 +5675,6 @@
   {
     "type": "closure",
     "named": false
-  },
-  {
-    "type": "cmd_identifier",
-    "named": true
   },
   {
     "type": "cond",

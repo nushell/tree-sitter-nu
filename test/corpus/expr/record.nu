@@ -234,6 +234,8 @@ record-010-key-value-seperation
 
 -----
 
+
+
 =====
 record-011-immediate-comma
 =====
@@ -267,6 +269,8 @@ record-012-colon-in-unquoted-value
 }
 
 -----
+
+
 
 =====
 record-013-value-as-signed-number-or-range
@@ -445,8 +449,12 @@ k4.9: 1...()}
 record-015-separated-colon-vs-closure
 =====
 
-{echo : 1}
+{echo% : 1}
 {echo 1:}
+{is-empty}
+{
+  echo : 1
+}
 
 -----
 
@@ -465,4 +473,18 @@ record-015-separated-colon-vs-closure
           (pipe_element
             (command
               (cmd_identifier)
-              (val_string))))))))
+              (val_string)))))))
+  (pipeline
+    (pipe_element
+      (val_closure
+        (pipeline
+          (pipe_element
+            (command
+              (cmd_identifier)))))))
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (val_number)))))))
