@@ -1289,8 +1289,6 @@ module.exports = grammar({
         ),
       ),
 
-    long_flag_value: ($) => $._cmd_arg,
-
     _unquoted_naive: (_$) => token(repeat1(none_of("{}"))),
     unquoted: _unquoted_rule("command"),
     _unquoted_in_list: _unquoted_rule("list"),

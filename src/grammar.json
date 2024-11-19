@@ -12444,10 +12444,6 @@
         }
       ]
     },
-    "long_flag_value": {
-      "type": "SYMBOL",
-      "name": "_cmd_arg"
-    },
     "_unquoted_naive": {
       "type": "TOKEN",
       "content": {
