@@ -1626,6 +1626,32 @@
     }
   },
   {
+    "type": "env_var",
+    "named": true,
+    "fields": {
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "val_string",
+            "named": true
+          }
+        ]
+      },
+      "variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "expr_binary",
     "named": true,
     "fields": {
@@ -3575,6 +3601,10 @@
           "named": true
         },
         {
+          "type": "env_var",
+          "named": true
+        },
+        {
           "type": "expr_binary",
           "named": true
         },
@@ -5384,11 +5414,6 @@
     }
   },
   {
-    "type": "wild_card",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "!=",
     "named": false
   },
@@ -6091,6 +6116,10 @@
   {
     "type": "while",
     "named": false
+  },
+  {
+    "type": "wild_card",
+    "named": true
   },
   {
     "type": "xor",
