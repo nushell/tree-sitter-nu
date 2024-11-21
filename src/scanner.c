@@ -109,7 +109,7 @@ static bool scan_raw_string_content(TSLexer *lexer, Scanner *s) {
         adv;
         uint8_t level = consume_chars(lexer, '#');
         lexer->log(lexer, "Consumed [%i] #\n", level);
-        if (level == s->level && len != 0) {
+        if (level == s->level) {
             lexer->log(lexer, "Detected end\n" );
             return true;
         } else if (level == s->level && len == 0) {

@@ -61,3 +61,19 @@ r#####'string '#'##'#####
           (raw_string_begin)
           (raw_string_content)
           (raw_string_end)))))
+
+=====
+raw-strings-005-empty-string
+=====
+
+r#''#
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_string
+          (raw_string_begin)
+          (raw_string_content)
+          (raw_string_end)))))
