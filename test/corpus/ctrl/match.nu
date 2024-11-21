@@ -424,7 +424,7 @@ _ => not true
 -----
 
 =====
-match-012-binary-not-allowed
+match-013-binary-not-allowed
 :error
 =====
 
