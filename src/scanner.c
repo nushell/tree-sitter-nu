@@ -125,8 +125,9 @@ static bool scan_raw_string_end(TSLexer *lexer, Scanner *s) {
     // HINT: scan_raw_string_content already determines the content's length
     // so we only advance to the end of the delimiter and return true.
     adv;
-    for (; s->level > 0; s->level--) {
+    while (s->level > 0) {
         adv;
+        s->level--;
     }
     return true;
 }
