@@ -120,7 +120,7 @@ static bool scan_raw_string_content(TSLexer *lexer, Scanner *s) {
     return false;
 }
 
-bool scan_raw_string_end(TSLexer *lexer, Scanner *s) {
+static bool scan_raw_string_end(TSLexer *lexer, Scanner *s) {
     lexer->log(lexer, "END\n");
     adv;
     uint8_t level = consume_chars(lexer, '#');
@@ -146,7 +146,7 @@ bool tree_sitter_nu_external_scanner_scan(
     Scanner *s = (Scanner *) payload;
     lexer->log(lexer, "Nu Scanner: level [%i]\n", s->level);
 
-    if (valid_symbols[RAW_STRING_BEGIN] && s->level == 0) {
+    if (valid_symbols[RAW_STRING_BEGIN] && lexer->lookahead == 'r') {
         lexer->result_symbol = RAW_STRING_BEGIN;
         return scan_raw_string_begin(lexer, s);
     }
