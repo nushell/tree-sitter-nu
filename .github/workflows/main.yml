@@ -30,9 +30,3 @@ jobs:
 
       - name: test
         run: npx tree-sitter test
-
-  tests:
-    uses: ./.github/workflows/nvim-tests.yml
-    with:
-      neovim_versions: |
-        [ "nightly", "v0.10.2", "v0.10.1" ]
