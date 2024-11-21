@@ -122,16 +122,13 @@ static bool scan_raw_string_content(TSLexer *lexer, Scanner *s) {
 
 static bool scan_raw_string_end(TSLexer *lexer, Scanner *s) {
     lexer->log(lexer, "END\n");
+    // HINT: scan_raw_string_content already determines the content's length
+    // so we only advance to the end of the delimiter and return true.
     adv;
-    uint8_t level = consume_chars(lexer, '#');
-    lexer->log(lexer, "Consumed [%i] #\n", level);
-    if (level == s->level) {
-        lexer->log(lexer, "Emitted end\n" );
-        s->level = 0;
-        return true;
+    for (; s->level > 0; s->level--) {
+        adv;
     }
-
-    return false;
+    return true;
 }
 
 bool tree_sitter_nu_external_scanner_scan(
