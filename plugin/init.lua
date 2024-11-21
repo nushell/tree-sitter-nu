@@ -9,10 +9,9 @@ vim.api.nvim_create_autocmd("FileType", {
 
 require("nvim-treesitter.parsers").get_parser_configs().nu = {
 	install_info = {
-		-- url = "https://github.com/mrdgo/tree-sitter-nu",
-		url = "~/git/tree-sitter-nu",
+		url = "https://github.com/nushell/tree-sitter-nu",
 		files = { "src/parser.c", "src/scanner.c" },
-		branch = "raw-strings-pt2",
+		branch = "main",
 	},
 	filetype = "nu",
 }
