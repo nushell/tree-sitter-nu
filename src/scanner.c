@@ -16,7 +16,6 @@ enum TokenType {
 
 typedef struct {
     uint8_t level;
-    bool emitted_content;
 } Scanner;
 
 static uint8_t consume_chars(TSLexer *lexer, char c) {
@@ -41,7 +40,6 @@ static uint32_t consume_until(TSLexer *lexer, char c) {
 void *tree_sitter_nu_external_scanner_create(void) {
     Scanner *scanner = ts_malloc(sizeof(Scanner));
     scanner->level = 0;
-    scanner->emitted_content = false;
     return scanner;
 }
 
@@ -57,8 +55,7 @@ unsigned tree_sitter_nu_external_scanner_serialize(
 ) {
     Scanner *s = (Scanner *) payload;
     buffer[0] = s->level;
-    buffer[1] = s->emitted_content;
-    return 2;
+    return 1;
 }
 
 
@@ -69,10 +66,8 @@ void tree_sitter_nu_external_scanner_deserialize(
 ) {
     Scanner *s = (Scanner *) payload;
     s->level = 0;
-    s->emitted_content = false;
-    if (length == 2) {
+    if (length == 1) {
         s->level = buffer[0];
-        s->emitted_content = buffer[1];
     }
 }
 
@@ -133,7 +128,6 @@ bool scan_raw_string_end(TSLexer *lexer, Scanner *s) {
     if (level == s->level) {
         lexer->log(lexer, "Emitted end\n" );
         s->level = 0;
-        s->emitted_content = false;
         return true;
     }
 
@@ -150,8 +144,7 @@ bool tree_sitter_nu_external_scanner_scan(
     }
 
     Scanner *s = (Scanner *) payload;
-    lexer->log(lexer, "Nu Scanner: level [%i], emitted [%b]\n", s->level,
-               s->emitted_content);
+    lexer->log(lexer, "Nu Scanner: level [%i]\n", s->level);
 
     if (valid_symbols[RAW_STRING_BEGIN] && s->level == 0) {
         lexer->result_symbol = RAW_STRING_BEGIN;
