@@ -274,3 +274,19 @@ $'foo(
                           (val_string)
                           (comment))))))))))
         (unescaped_interpolated_content)))))
+
+=====
+values-009-dummy-parenthesized
+=====
+
+(;;
+
+;
+)
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized))))
