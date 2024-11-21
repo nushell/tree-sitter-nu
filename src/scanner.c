@@ -71,29 +71,19 @@ void tree_sitter_nu_external_scanner_deserialize(
     }
 }
 
-static void skip_whitespace(TSLexer *lexer) {
-    while ((lexer->lookahead ==  ' ' || lexer->lookahead == '\t'
-            || lexer->lookahead == '\n') && !eof) {
-        skip;
-    }
-}
-
 static bool scan_raw_string_begin(TSLexer *lexer, Scanner *s) {
     lexer->log(lexer, "BEGIN\n");
     // scan for r#' r##' or more #
-    skip_whitespace(lexer);
 
-    if (lexer->lookahead == 'r') {
-        lexer->log(lexer, "Detected 'r'.\n");
+    lexer->log(lexer, "Detected 'r'.\n");
+    adv;
+    uint8_t level = consume_chars(lexer, '#');
+    lexer->log(lexer, "num #: %i\n", level);
+    if (lexer->lookahead == '\'') {
         adv;
-        uint8_t level = consume_chars(lexer, '#');
-        lexer->log(lexer, "num #: %i\n", level);
-        if (lexer->lookahead == '\'') {
-            adv;
-            lexer->log(lexer, "Detected level: %i\n", level);
-            s->level = level;
-            return true;
-        }
+        lexer->log(lexer, "Detected level: %i\n", level);
+        s->level = level;
+        return true;
     }
     return false;
 }
@@ -112,8 +102,6 @@ static bool scan_raw_string_content(TSLexer *lexer, Scanner *s) {
         if (level == s->level) {
             lexer->log(lexer, "Detected end\n" );
             return true;
-        } else if (level == s->level && len == 0) {
-            return false;
         }
     }
 
