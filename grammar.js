@@ -36,8 +36,10 @@ module.exports = grammar({
     [$.block, $.val_closure],
     [$.block, $.val_record],
     [$.ctrl_if_parenthesized],
+    [$.ctrl_match],
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
+    [$.parameter, $.param_type, $.param_value],
     [$.pipeline],
     [$.pipeline_parenthesized],
   ],
@@ -186,7 +188,7 @@ module.exports = grammar({
     _multiple_types: ($) =>
       seq(
         BRACK().open_brack,
-        general_body_rules("", "_one_type", "_entry_separator")($),
+        optional(general_body_rules("", "_one_type", "_entry_separator")($)),
         BRACK().close_brack,
       ),
 
@@ -195,45 +197,33 @@ module.exports = grammar({
     parameter_parens: ($) =>
       seq(
         BRACK().open_paren,
-        repeat($.parameter),
         repeat($._newline),
+        repeat($.parameter),
         BRACK().close_paren,
       ),
 
     parameter_bracks: ($) =>
       seq(
         BRACK().open_brack,
-        repeat($.parameter),
         repeat($._newline),
+        repeat($.parameter),
         BRACK().close_brack,
       ),
 
     parameter_pipes: ($) =>
-      seq(PUNC().pipe, repeat($.parameter), repeat($._newline), PUNC().pipe),
+      seq(PUNC().pipe, repeat($._newline), repeat($.parameter), PUNC().pipe),
 
     parameter: ($) =>
-      prec.right(
-        seq(
-          repeat($._newline),
-          choice(
-            $._param_name,
+      seq(
+        choice(
+          $._param_name,
+          seq(
             field("param_long_flag", $.param_long_flag),
-            field(
-              "param_long_flag",
-              seq($.param_long_flag, field("flag_capsule", $.flag_capsule)),
-            ),
+            field("flag_capsule", optional($.flag_capsule)),
           ),
-          optional(
-            choice(
-              $.param_type,
-              $.param_value,
-              seq($.param_value, $.param_type),
-              seq($.param_type, $.param_value),
-            ),
-          ),
-          repeat($._newline),
-          optional(PUNC().comma),
         ),
+        repeat(choice($.param_type, $.param_value)),
+        repeat(choice($._newline, PUNC().comma)),
       ),
 
     _param_name: ($) =>
@@ -246,7 +236,9 @@ module.exports = grammar({
 
     param_type: ($) =>
       seq(
+        repeat($._newline),
         PUNC().colon,
+        repeat($._newline),
         $._type_annotation,
         field("completion", optional($.param_cmd)),
       ),
@@ -447,34 +439,31 @@ module.exports = grammar({
         KEYWORD().match,
         field(
           "scrutinee",
-          choice($._expression, alias($.unquoted, $.val_string)),
+          choice($._item_expression, alias($.unquoted, $.val_string)),
         ),
         open_brace(),
-        repeat($.match_arm),
+        optional(general_body_rules("", "match_arm", "_entry_separator")($)),
         optional($.default_arm),
-        repeat($._newline),
         BRACK().close_brace,
       ),
 
     match_arm: ($) =>
       seq(
-        repeat($._newline),
         field("pattern", $.match_pattern),
         PUNC().fat_arrow,
         field("expression", $._match_expression),
-        optional(PUNC().comma),
       ),
 
     default_arm: ($) =>
       seq(
-        repeat($._newline),
         field("default_pattern", PUNC().underscore),
         PUNC().fat_arrow,
         field("expression", $._match_expression),
-        optional(PUNC().comma),
+        repeat($._entry_separator),
       ),
 
-    _match_expression: ($) => choice($._expression, prec.dynamic(10, $.block)),
+    _match_expression: ($) =>
+      choice($._item_expression, prec.dynamic(10, $.block)),
 
     match_pattern: ($) =>
       choice(
@@ -818,7 +807,7 @@ module.exports = grammar({
     expr_parenthesized: ($) =>
       seq(
         BRACK().open_paren,
-        $._parenthesized_body,
+        optional($._parenthesized_body),
         BRACK().close_paren,
         optional($.cell_path),
       ),
@@ -839,18 +828,22 @@ module.exports = grammar({
       ),
 
     _parenthesized_body: ($) =>
-      seq(
-        repeat($._terminator),
-        repeat(
-          seq(
-            $._block_body_statement_parenthesized,
-            // at least one ;
-            repeat1(seq(repeat($._newline), PUNC().semicolon)),
+      choice(
+        seq(
+          repeat($._terminator),
+          repeat(
+            seq(
+              $._block_body_statement_parenthesized,
+              // at least one ;
+              repeat1(seq(repeat($._newline), PUNC().semicolon)),
+            ),
           ),
+          repeat($._newline),
+          $._block_body_statement_parenthesized,
+          repeat($._terminator),
         ),
-        repeat($._newline),
-        $._block_body_statement_parenthesized,
-        repeat($._terminator),
+        // empty body
+        repeat1($._terminator),
       ),
 
     val_range: _range_rule(false),
@@ -1217,7 +1210,7 @@ module.exports = grammar({
 
     /// CellPaths
 
-    cell_path: ($) => prec.right(1, repeat1($.path)),
+    cell_path: ($) => repeat1($.path),
 
     path: ($) => {
       const path = choice(
@@ -1888,16 +1881,14 @@ function _unquoted_rule(type) {
   switch (type) {
     case "list":
       excluded_common += ",";
+      excluded_first += ",";
       break;
     case "record":
       excluded_common += ":,";
+      excluded_first += ":,";
       break;
     case "command":
       excluded_first += "-";
-      break;
-    case "identifier":
-      excluded_common += "<>=:";
-      excluded_first += "<>=\\-#^";
       break;
   }
   const pattern_once = none_of(excluded_common);
