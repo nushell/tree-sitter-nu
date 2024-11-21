@@ -27,9 +27,7 @@ module.exports = grammar({
 
   conflicts: ($) => [
     [$._binary_predicate_parenthesized],
-    [$._expression, $._expr_binary_expression],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
-    [$._immediate_decimal],
     [$._match_pattern_list, $.val_list],
     [$._match_pattern_record, $.val_record],
     [$._match_pattern_record_variable, $._value],
@@ -109,13 +107,7 @@ module.exports = grammar({
         ),
       );
     },
-
-    identifier: (_$) => {
-      const excluded = "\\[\\]\\-{}<>=\"`'@?,:.";
-      return token(
-        seq(none_of(excluded + "&*!^+#$"), repeat(none_of(excluded))),
-      );
-    },
+    identifier: (_$) => _identifier_rules(false),
 
     long_flag_identifier: (_$) =>
       token.immediate(/[0-9\p{XID_Start}_][\p{XID_Continue}?_-]*/),
@@ -592,18 +584,29 @@ module.exports = grammar({
 
     pipe_element: ($) =>
       choice(
-        seq($._expression, optional($.redirection)),
+        seq(
+          _env_variable_rule(false, $),
+          $._expression,
+          optional($.redirection),
+        ),
+        seq(_env_variable_rule(false, $), $.command),
         $._ctrl_expression,
         $.where_command,
-        $.command,
       ),
 
     pipe_element_parenthesized: ($) =>
       choice(
-        seq($._expression_parenthesized, optional($.redirection)),
+        seq(
+          _env_variable_rule(true, $),
+          $._expression_parenthesized,
+          optional($.redirection),
+        ),
+        seq(
+          _env_variable_rule(true, $),
+          alias($._command_parenthesized, $.command),
+        ),
         $._ctrl_expression_parenthesized,
         alias($.where_command_parenthesized, $.where_command),
-        alias($._command_parenthesized, $.command),
       ),
 
     /// Scope Statements
@@ -1242,6 +1245,20 @@ module.exports = grammar({
       );
     },
 
+    /// Single-use env variables: FOO=BAR cmd
+
+    env_var: ($) =>
+      seq(
+        field(
+          "variable",
+          alias(
+            token(prec(PREC().low, seq(_identifier_rules(false), PUNC().eq))),
+            $.identifier,
+          ),
+        ),
+        field("value", alias(_identifier_rules(true), $.val_string)),
+      ),
+
     /// Commands
 
     command: _command_rule(false),
@@ -1328,6 +1345,15 @@ module.exports = grammar({
     comment: (_$) => seq(PUNC().hash, /.*/),
   },
 });
+
+/**
+ * @param {boolean} immediate
+ */
+function _identifier_rules(immediate) {
+  const func = immediate ? token.immediate : token;
+  const excluded = "\\[\\]\\-{}<>=\"`'@?,:.";
+  return func(seq(none_of(excluded + "&*!^+#$"), repeat(none_of(excluded))));
+}
 
 /**
  * @param {string} field_name
@@ -1574,6 +1600,15 @@ function _command_rule(parenthesized) {
 
 /**
  * @param {boolean} parenthesized
+ * @param {any} $
+ */
+function _env_variable_rule(parenthesized, $) {
+  const sep = parenthesized ? $._separator : $._space;
+  return repeat(seq($.env_var, repeat1(sep)));
+}
+
+/**
+ * @param {boolean} parenthesized
  */
 function _ctrl_try_rule(parenthesized) {
   return (/** @type {any} */ $) => {
@@ -1640,7 +1675,7 @@ function _expr_binary_rule(parenthesized) {
       ...TABLE().map(([precedence, opr]) => {
         const seq_array = [
           field("lhs", _expr),
-          field("opr", opr),
+          field("opr", operator_with_separator(opr, parenthesized)),
           field(
             "rhs",
             choice(
@@ -1736,7 +1771,7 @@ function _decimal_rule(immediate) {
         optional(digits),
         optional(exponent),
       ),
-      seq(head_token(PUNC().dot), digits, optional(exponent)),
+      token(seq(head_token(PUNC().dot), digits, optional(exponent))),
       seq(
         token(
           seq(
@@ -1753,6 +1788,7 @@ function _decimal_rule(immediate) {
 
 /**
  * @param {boolean} anonymous
+ * @param {boolean} with_end_decimal
  */
 function _range_rule(anonymous, with_end_decimal = false) {
   // Divide each dot as a token to distinguish $.val_range and $.val_number
@@ -1879,9 +1915,6 @@ function _unquoted_rule(type) {
   const pattern = token(seq(none_of(excluded_first), repeat(pattern_once)));
   const pattern_repeat = token(repeat(pattern_once));
   const pattern_repeat1 = token(repeat1(pattern_once));
-  const pattern_with_dot = none_of(excluded_common + ".");
-  const pattern_with_le = none_of(excluded_common + "<=");
-  const pattern_with_dollar = none_of(excluded_common + "$");
 
   // because this catches almost anything, we want to ensure it is
   // picked as the a last resort after everything else has failed.
@@ -1895,61 +1928,24 @@ function _unquoted_rule(type) {
       choice(
         token(prec(PREC().lowest, token(pattern))),
 
-        // distinguish between unquoted and val_range in cmd_arg
-        seq(
-          $._val_range,
-          choice(
-            token.immediate(pattern_with_dot),
-            token.immediate(PUNC().dot),
-          ),
-          token.immediate(pattern_repeat),
-        ),
-        seq(
-          token(PUNC().dot),
-          token.immediate(pattern_with_dot),
-          token.immediate(pattern_repeat),
-        ),
-        seq(
-          OPR().range_inclusive,
-          token.immediate(pattern_with_le),
-          token.immediate(pattern_repeat),
-        ),
-        seq(
-          choice(OPR().range_inclusive2, OPR().range_exclusive),
-          token.immediate(pattern_with_dollar),
-          token.immediate(pattern_repeat),
-        ),
-        seq(
-          OPR().range_inclusive,
-          token.immediate(PUNC().dot),
-          token.immediate(pattern_repeat),
-        ),
-        choice(
-          OPR().range_inclusive,
-          OPR().range_inclusive2,
-          OPR().range_exclusive,
-        ),
-        seq(OPR().range_inclusive, optional(token.immediate(pattern_once))),
-        seq(token(PUNC().dot), optional(token.immediate(pattern_with_dot))),
-
-        // distinguish between $.val_number and unquoted string starting with numeric characters
         seq(
           choice(
+            $._val_range,
             $._val_number_decimal,
-            token(SPECIAL().pos_infinity),
-            token(SPECIAL().neg_infinity),
-            token(SPECIAL().not_a_number),
+            SPECIAL().pos_infinity,
+            SPECIAL().neg_infinity,
+            SPECIAL().not_a_number,
           ),
-          token.immediate(pattern_once),
-          token.immediate(pattern_repeat),
+          token.immediate(prec(PREC().lowest, pattern_repeat1)),
         ),
 
-        // recognize unquoted string starting with numeric characters
-        // e.g. 192.168.0.1
         seq(
-          $._val_number_decimal,
-          token.immediate(PUNC().dot),
-          token.immediate(pattern_repeat),
+          choice(
+            OPR().range_inclusive,
+            OPR().range_inclusive2,
+            OPR().range_exclusive,
+          ),
+          token.immediate(prec(PREC().lowest, pattern_repeat)),
         ),
 
         // recognize unquoted string starting with special patterns
@@ -2082,6 +2078,25 @@ function open_brace() {
   return alias(token(seq(BRACK().open_brace, /\s*/)), BRACK().open_brace);
 }
 
+/**
+ * group operator and its preceding/succeeding whitespace/newline
+ * @param {string} opr
+ * @param {boolean} parenthesized
+ */
+function operator_with_separator(opr, parenthesized) {
+  const sep = parenthesized ? choice(/[ \t]/, /\r?\n/) : /[ \t]/;
+  return alias(token(seq(repeat1(sep), opr, repeat1(sep))), opr);
+}
+
+/**
+ * [ele1, array<ele2>] -> array<[ele1, ele2]>
+ * @param {any} first
+ * @param {array<any>} last_array
+ */
+function flatten_ops(first, last_array) {
+  return last_array.map((x) => [first, x]);
+}
+
 // operators
 function OPR() {
   return {
@@ -2176,20 +2191,20 @@ function STATEMENT_PREC() {
 
 /// map of operators and their precedence
 function TABLE() {
-  const multiplicatives = choice(
+  const multiplicatives = [
     OPR().times,
     OPR().divide,
     OPR().modulo,
     OPR().floor,
-  );
+  ];
 
   // `range` is not included here and is handled separately
   return [
-    [PREC().power, choice(OPR().power, OPR().append)],
-    [PREC().multiplicative, multiplicatives],
-    [PREC().additive, choice(OPR().plus, OPR().minus)],
-    [PREC().bit_shift, choice(OPR().bit_shl, OPR().bit_shr)],
-    [PREC().regex, choice(OPR().regex_match, OPR().regex_not_match)],
+    ...flatten_ops(PREC().power, [OPR().power, OPR().append]),
+    ...flatten_ops(PREC().multiplicative, multiplicatives),
+    ...flatten_ops(PREC().additive, [OPR().plus, OPR().minus]),
+    ...flatten_ops(PREC().bit_shift, [OPR().bit_shl, OPR().bit_shr]),
+    ...flatten_ops(PREC().regex, [OPR().regex_match, OPR().regex_not_match]),
     [PREC().bit_and, OPR().bit_and],
     [PREC().bit_xor, OPR().bit_xor],
     [PREC().bit_or, OPR().bit_or],
@@ -2205,26 +2220,26 @@ function BINARY() {
 }
 
 function PREDICATE() {
-  const memberships = choice(
+  const memberships = [
     OPR().in,
     OPR().not_in,
     OPR().starts_with,
     OPR().ends_with,
-  );
+  ];
 
-  const comparatives = choice(
+  const comparatives = [
     OPR().equal,
     OPR().not_equal,
     OPR().less_than,
     OPR().less_than_equal,
     OPR().greater_than,
     OPR().greater_than_equal,
-  );
+  ];
 
   return [
-    [PREC().membership, memberships],
-    [PREC().comparative, comparatives],
-    [PREC().regex, choice(OPR().regex_match, OPR().regex_not_match)],
+    ...flatten_ops(PREC().membership, memberships),
+    ...flatten_ops(PREC().comparative, comparatives),
+    ...flatten_ops(PREC().regex, [OPR().regex_match, OPR().regex_not_match]),
   ];
 }
 

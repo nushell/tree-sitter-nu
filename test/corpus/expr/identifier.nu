@@ -140,6 +140,8 @@ null
 7b
 nan
 # commands
+1+1
+nottrue
 g++
 7z
 7mss
@@ -191,6 +193,14 @@ users
   (pipeline
     (pipe_element
       (command
+        (cmd_identifier))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier))))
+  (pipeline
+    (pipe_element
+      (command
         (cmd_identifier)))))
 
 ====
@@ -199,6 +209,8 @@ cmd-id-003-path
 
 /usr/bin/env nu
 ~/foo.nu
+./test
+\\test\exe
 
 -----
 
@@ -208,6 +220,14 @@ cmd-id-003-path
       (command
         (cmd_identifier)
         (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier))))
   (pipeline
     (pipe_element
       (command
