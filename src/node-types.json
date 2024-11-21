@@ -1550,15 +1550,7 @@
             "named": true
           },
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
             "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
             "named": true
           },
           {
@@ -2693,15 +2685,7 @@
             "named": true
           },
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
             "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
             "named": true
           },
           {

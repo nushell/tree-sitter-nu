@@ -313,8 +313,8 @@ match $x {
               (val_variable
                 (identifier))
               (record_entry
-                  (identifier)
-                  (val_string))))
+                (identifier)
+                (val_string))))
           (block))))))
 
 =====
@@ -344,3 +344,92 @@ match $x {
           (block))
         (default_arm
           (block))))))
+
+=====
+match-010-empty
+=====
+
+match [true] {}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_list
+          (list_body
+            (val_entry
+              (val_bool))))))))
+
+=====
+match-011-seperator
+=====
+
+match null {
+1 => 0 2unquote => 1
+# comment
+
+3 => $x.0.0, 4 => {$x.0}
+# comment
+,
+
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_nothing)
+        (match_arm
+          (match_pattern
+            (val_number))
+          (val_number))
+        (match_arm
+          (match_pattern
+            (val_string))
+          (val_number))
+        (comment)
+        (match_arm
+          (match_pattern
+            (val_number))
+          (val_variable
+            (identifier)
+            (cell_path
+              (path)
+              (path))))
+        (match_arm
+          (match_pattern
+            (val_number))
+          (block
+            (pipeline
+              (pipe_element
+                (val_variable
+                  (identifier)
+                  (cell_path
+                    (path)))))))
+        (comment)))))
+
+=====
+match-012-unary-not-allowed
+:error
+=====
+
+match 1 {
+_ => not true
+}
+
+-----
+
+=====
+match-012-binary-not-allowed
+:error
+=====
+
+match 1 {
+_ => 1 + 1
+}
+
+-----

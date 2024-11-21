@@ -36,6 +36,7 @@ module.exports = grammar({
     [$.block, $.val_closure],
     [$.block, $.val_record],
     [$.ctrl_if_parenthesized],
+    [$.ctrl_match],
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
     [$.pipeline],
@@ -186,7 +187,7 @@ module.exports = grammar({
     _multiple_types: ($) =>
       seq(
         BRACK().open_brack,
-        general_body_rules("", "_one_type", "_entry_separator")($),
+        optional(general_body_rules("", "_one_type", "_entry_separator")($)),
         BRACK().close_brack,
       ),
 
@@ -450,31 +451,28 @@ module.exports = grammar({
           choice($._expression, alias($.unquoted, $.val_string)),
         ),
         open_brace(),
-        repeat($.match_arm),
+        optional(general_body_rules("", "match_arm", "_entry_separator")($)),
         optional($.default_arm),
-        repeat($._newline),
         BRACK().close_brace,
       ),
 
     match_arm: ($) =>
       seq(
-        repeat($._newline),
         field("pattern", $.match_pattern),
         PUNC().fat_arrow,
         field("expression", $._match_expression),
-        optional(PUNC().comma),
       ),
 
     default_arm: ($) =>
       seq(
-        repeat($._newline),
         field("default_pattern", PUNC().underscore),
         PUNC().fat_arrow,
         field("expression", $._match_expression),
-        optional(PUNC().comma),
+        repeat($._entry_separator),
       ),
 
-    _match_expression: ($) => choice($._expression, prec.dynamic(10, $.block)),
+    _match_expression: ($) =>
+      choice($._item_expression, prec.dynamic(10, $.block)),
 
     match_pattern: ($) =>
       choice(
