@@ -246,3 +246,18 @@ a
             (identifier))
           (parameter
             (identifier)))))))
+
+=====
+closure-010-dummy-closure
+=====
+
+{
+;;
+  ;}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_closure))))
