@@ -35,4 +35,4 @@ jobs:
     uses: ./.github/workflows/nvim-tests.yml
     with:
       neovim_versions: |
-        [ "nightly", "v0.10.2", "v0.10.1", "v0.9.5" ]
+        [ "nightly", "v0.10.2", "v0.10.1" ]
