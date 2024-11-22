@@ -533,3 +533,20 @@ list-013-unquoted-with-immediate-expr-parenthesized
           (val_entry
             (val_string
               (expr_parenthesized))))))))
+
+======
+list-014-dummy-list
+======
+
+[
+,,
+  ,
+]
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_list
+        (list_body)))))
