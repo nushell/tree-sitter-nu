@@ -29,16 +29,6 @@
     "tree-sitter-cli": "^0.22.5",
     "prebuildify": "^6.0.0"
   },
-  "tree-sitter": [
-    {
-      "scope": "source.nu",
-      "file-types": [
-        "nu"
-      ],
-      "highlights": "queries/nu/highlights.scm",
-      "injections": "queries/nu/injections.scm"
-    }
-  ],
   "files": [
     "grammar.js",
     "binding.gyp",
