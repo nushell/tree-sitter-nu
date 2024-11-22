@@ -2524,7 +2524,7 @@
     "fields": {
       "entry": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "val_entry",
@@ -4818,7 +4818,7 @@
     "named": true,
     "fields": {
       "head": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
           {

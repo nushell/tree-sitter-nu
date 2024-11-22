@@ -24,21 +24,22 @@ module.exports = grammar({
 
   conflicts: ($) => [
     [$._binary_predicate_parenthesized],
+    [$._block_body, $.record_body, $.val_closure],
+    [$._block_body, $.shebang],
+    [$._block_body, $.val_closure],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
     [$._match_pattern_record, $.val_record],
     [$._match_pattern_record_variable, $._value],
     [$._match_pattern_value, $._value],
     [$._parenthesized_body],
-    [$._block_body, $.record_body],
-    [$._block_body, $.shebang],
     [$._val_number_decimal],
     [$.block, $.val_closure],
     [$.block, $.val_record],
     [$.ctrl_if_parenthesized],
-    [$.ctrl_match],
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
+    [$.list_body, $.val_table],
     [$.parameter, $.param_type, $.param_value],
     [$.pipeline],
     [$.pipeline_parenthesized],
@@ -53,22 +54,16 @@ module.exports = grammar({
 
     ...block_body_rules(),
 
-    // Because everything inside of the parentheses are treated as if they were written together,
-    // terminator must be semicolon.
     ...parenthesized_body_rules(),
 
     _block_body: ($) =>
-      choice(
-        seq(
-          repeat($._terminator),
-          prec.right(
-            repeat(seq($._block_body_statement, repeat1($._terminator))),
-          ),
-          $._block_body_statement,
-          repeat($._terminator),
-        ),
-        // empty blocks
-        repeat1($._terminator),
+      general_body_rules(
+        "",
+        $._block_body_statement,
+        $._terminator,
+        null,
+        null,
+        $._terminator,
       ),
 
     /// Identifiers
@@ -188,7 +183,9 @@ module.exports = grammar({
     _multiple_types: ($) =>
       seq(
         BRACK().open_brack,
-        optional(general_body_rules("", "_one_type", "_entry_separator")($)),
+        optional(
+          general_body_rules("", $._one_type, $._entry_separator, $._newline),
+        ),
         BRACK().close_brack,
       ),
 
@@ -441,9 +438,15 @@ module.exports = grammar({
           "scrutinee",
           choice($._item_expression, alias($.unquoted, $.val_string)),
         ),
-        open_brace(),
-        optional(general_body_rules("", "match_arm", "_entry_separator")($)),
-        optional($.default_arm),
+        BRACK().open_brace,
+        optional(
+          general_body_rules(
+            "",
+            choice($.match_arm, $.default_arm),
+            $._entry_separator,
+            $._newline,
+          ),
+        ),
         BRACK().close_brace,
       ),
 
@@ -459,7 +462,6 @@ module.exports = grammar({
         field("default_pattern", PUNC().underscore),
         PUNC().fat_arrow,
         field("expression", $._match_expression),
-        repeat($._entry_separator),
       ),
 
     _match_expression: ($) =>
@@ -531,7 +533,7 @@ module.exports = grammar({
 
     _match_pattern_record: ($) =>
       seq(
-        open_brace(),
+        BRACK().open_brace,
         repeat(
           field(
             "entry",
@@ -679,7 +681,12 @@ module.exports = grammar({
       seq(
         BRACK().open_brack,
         optional(
-          general_body_rules("cmd", "_command_name", "_entry_separator")($),
+          general_body_rules(
+            "cmd",
+            $._command_name,
+            $._entry_separator,
+            $._newline,
+          ),
         ),
         BRACK().close_brack,
       ),
@@ -687,7 +694,7 @@ module.exports = grammar({
     /// Block
 
     block: ($) =>
-      seq(open_brace(), optional($._block_body), BRACK().close_brace),
+      seq(BRACK().open_brace, optional($._block_body), BRACK().close_brace),
 
     _blosure: ($) => choice(prec.dynamic(10, $.block), $.val_closure),
 
@@ -828,22 +835,16 @@ module.exports = grammar({
       ),
 
     _parenthesized_body: ($) =>
-      choice(
-        seq(
-          repeat($._terminator),
-          repeat(
-            seq(
-              $._block_body_statement_parenthesized,
-              // at least one ;
-              repeat1(seq(repeat($._newline), PUNC().semicolon)),
-            ),
-          ),
+      general_body_rules(
+        "",
+        $._block_body_statement_parenthesized,
+        $._terminator,
+        null,
+        [
+          repeat1(seq(repeat($._newline), PUNC().semicolon)),
           repeat($._newline),
-          $._block_body_statement_parenthesized,
-          repeat($._terminator),
-        ),
-        // empty body
-        repeat1($._terminator),
+        ],
+        $._terminator,
       ),
 
     val_range: _range_rule(false),
@@ -1091,7 +1092,15 @@ module.exports = grammar({
         alias($._spread_parenthesized, $.expr_parenthesized),
       ),
 
-    list_body: general_body_rules("entry", "val_entry", "_entry_separator"),
+    list_body: ($) =>
+      general_body_rules(
+        "entry",
+        $.val_entry,
+        $._entry_separator,
+        $._newline,
+        null,
+        choice($._newline, PUNC().comma),
+      ),
 
     val_entry: ($) =>
       prec(
@@ -1112,7 +1121,7 @@ module.exports = grammar({
 
     val_record: ($) =>
       seq(
-        open_brace(),
+        BRACK().open_brace,
         optional($.record_body),
         BRACK().close_brace,
         optional($.cell_path),
@@ -1133,11 +1142,13 @@ module.exports = grammar({
         alias($._spread_parenthesized, $.expr_parenthesized),
       ),
 
-    record_body: general_body_rules(
-      "entry",
-      "record_entry",
-      "_entry_separator",
-    ),
+    record_body: ($) =>
+      general_body_rules(
+        "entry",
+        $.record_entry,
+        $._entry_separator,
+        $._newline,
+      ),
 
     _entry_separator: (_$) =>
       token(prec(PREC().higher, choice(PUNC().comma, /\s/))),
@@ -1194,15 +1205,19 @@ module.exports = grammar({
       seq(
         BRACK().open_brack,
         repeat($._newline),
-        field("head", seq($.val_list, $._table_head_separator)),
-        optional(general_body_rules("row", "val_list", "_entry_separator")($)),
+        field("head", $.val_list),
+        alias($._table_head_separator, PUNC().semicolon),
+        optional(
+          general_body_rules("row", $.val_list, $._entry_separator, $._newline),
+        ),
         BRACK().close_brack,
         optional($.cell_path),
       ),
 
     val_closure: ($) =>
       seq(
-        open_brace(),
+        BRACK().open_brace,
+        repeat($._newline),
         optional(field("parameters", $.parameter_pipes)),
         $._block_body,
         BRACK().close_brace,
@@ -1338,40 +1353,47 @@ function _identifier_rules(immediate) {
 }
 
 /**
+ * for rules of repeated pattern that require separator in-between
+ * e.g. list, record, blocks
  * @param {string} field_name
- * @param {string} entry
- * @param {string} separator
+ * @param {any} entry base build block
+ * @param {any} separator separator between entries
+ * @param {any} preceding separator before first entry, defaults to separator
+ * @param {array} alt_sep array of rules to override default separator
+ * @param {any} empty_unit optional for empty body
  */
-function general_body_rules(field_name, entry, separator) {
-  return (/** @type {{ [x: string]: RuleOrLiteral; }} */ $) => {
-    const field_entry =
-      field_name.length == 0 ? $[entry] : field(field_name, $[entry]);
-    return prec(
-      PREC().higher,
-      seq(
-        repeat($._newline),
-        // Normal entries MUST have a separator
-        repeat(seq(field_entry, repeat1($[separator]))),
-        // Final entry may or may not have separator
-        seq(field_entry, repeat($[separator])),
-      ),
-    );
-  };
+function general_body_rules(
+  field_name,
+  entry,
+  separator,
+  preceding = null,
+  alt_sep = null,
+  empty_unit = null,
+) {
+  const field_entry = field_name.length == 0 ? entry : field(field_name, entry);
+  const prec_sep = preceding || separator;
+  // Normal entries MUST have a separator
+  const sep_array = alt_sep || [repeat1(separator)];
+  const rule = prec(
+    PREC().higher,
+    seq(
+      repeat(prec_sep),
+      repeat(seq(field_entry, ...sep_array)),
+      field_entry,
+      // Final entry may or may not have separator
+      repeat(separator),
+    ),
+  );
+  return empty_unit ? choice(repeat1(empty_unit), rule) : rule;
 }
 
-/**
- * @param {string} suffix
- * @param {{ (_$: any): string; (_$: any): ChoiceRule; (arg0: any): RuleOrLiteral; }} terminator
- */
 function parenthesized_body_rules() {
   return {
     ..._block_body_rules("_parenthesized"),
 
     /// pipeline
 
-    pipeline_parenthesized: (
-      /** @type {{ pipe_element_parenthesized: RuleOrLiteral; pipe_element: string; }} */ $,
-    ) =>
+    pipeline_parenthesized: ($) =>
       seq(
         repeat(
           seq(
@@ -1385,17 +1407,13 @@ function parenthesized_body_rules() {
   };
 }
 
-/**
- * @param {string} suffix
- * @param {{ ($: { _terminator: any; }): any; ($: { _terminator: RuleOrLiteral; }): ChoiceRule; (arg0: any): RuleOrLiteral; }} terminator
- */
 function block_body_rules() {
   return {
     ..._block_body_rules(""),
 
     /// pipeline
 
-    pipeline: (/** @type {any} */ $) =>
+    pipeline: ($) =>
       seq(
         repeat(seq($.pipe_element, $._pipe_separator, optional($._newline))),
         $.pipe_element,
@@ -1574,7 +1592,7 @@ function _command_rule(parenthesized) {
           field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
           field("head", seq(PUNC().caret, $._stringish)),
         ),
-        prec.dynamic(10, repeat(seq(sep, optional($._cmd_arg)))),
+        repeat(seq(sep, optional($._cmd_arg))),
       ),
     );
   };
@@ -1825,6 +1843,7 @@ function _range_rule(anonymous, with_end_decimal = false) {
 }
 
 /**
+ * For expressions like: foo('bar')baz
  * @param {string} type
  */
 function _unquoted_with_expr_rule(type) {
@@ -2052,12 +2071,6 @@ function BRACK() {
   };
 }
 
-// group open_brace and following whitespace/newline together
-// so they won't participate in conflicts resolving between record and block
-function open_brace() {
-  return alias(token(seq(BRACK().open_brace, /\s*/)), BRACK().open_brace);
-}
-
 /**
  * group operator and its preceding/succeeding whitespace/newline
  * @param {string} opr
@@ -2065,7 +2078,7 @@ function open_brace() {
  */
 function operator_with_separator(opr, parenthesized) {
   const sep = parenthesized ? choice(/[ \t]/, /\r?\n/) : /[ \t]/;
-  return alias(token(seq(repeat1(sep), opr, repeat1(sep))), opr);
+  return alias(token(seq(sep, opr, sep)), opr);
 }
 
 /**

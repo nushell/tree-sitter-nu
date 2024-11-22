@@ -453,6 +453,7 @@ record-015-separated-colon-vs-closure
 {echo 1:}
 {is-empty}
 {
+  # comment
   echo : 1
 }
 
@@ -485,6 +486,7 @@ record-015-separated-colon-vs-closure
     (pipe_element
       (val_record
         (record_body
+          (comment)
           (record_entry
             (identifier)
             (val_number)))))))
