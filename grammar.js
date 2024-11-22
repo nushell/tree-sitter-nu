@@ -19,8 +19,11 @@ module.exports = grammar({
     $._terminator,
   ],
 
-  // externals: $ => [
-  // ],
+  externals: ($) => [
+    $.raw_string_begin,
+    $.raw_string_content,
+    $.raw_string_end,
+  ],
 
   conflicts: ($) => [
     [$._binary_predicate_parenthesized],
@@ -981,7 +984,15 @@ module.exports = grammar({
       ),
 
     val_string: ($) =>
-      choice($._str_double_quotes, $._str_single_quotes, $._str_back_ticks),
+      choice(
+        $._str_double_quotes,
+        $._str_single_quotes,
+        $._str_back_ticks,
+        $._raw_str,
+      ),
+
+    _raw_str: ($) =>
+      seq($.raw_string_begin, $.raw_string_content, $.raw_string_end),
 
     _str_double_quotes: ($) =>
       seq(
