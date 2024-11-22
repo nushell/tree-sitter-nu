@@ -29,16 +29,6 @@
     "prettier": "3.3.3",
     "tree-sitter-cli": "^0.23.0"
   },
-  "tree-sitter": [
-    {
-      "scope": "source.nu",
-      "file-types": [
-        "nu"
-      ],
-      "highlights": "queries/nu/highlights.scm",
-      "injections": "queries/nu/injections.scm"
-    }
-  ],
   "files": [
     "grammar.js",
     "binding.gyp",

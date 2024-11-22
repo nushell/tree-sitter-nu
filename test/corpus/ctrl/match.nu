@@ -423,6 +423,8 @@ _ => not true
 
 -----
 
+
+
 =====
 match-013-binary-not-allowed
 :error
@@ -433,3 +435,24 @@ _ => 1 + 1
 }
 
 -----
+
+
+
+=====
+match-014-default-only
+=====
+
+match 1 {#comment
+  _ => 1
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_number)
+        (comment)
+        (default_arm
+          (val_number))))))
