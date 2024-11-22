@@ -14886,6 +14886,27 @@
         {
           "type": "SYMBOL",
           "name": "_str_back_ticks"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_raw_str"
+        }
+      ]
+    },
+    "_raw_str": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "raw_string_begin"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "raw_string_content"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "raw_string_end"
         }
       ]
     },
@@ -17883,7 +17904,20 @@
     ]
   ],
   "precedences": [],
-  "externals": [],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "raw_string_begin"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "raw_string_content"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "raw_string_end"
+    }
+  ],
   "inline": [
     "_do_expression",
     "_flag_value",

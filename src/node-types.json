@@ -2514,6 +2514,18 @@
         {
           "type": "escape_sequence",
           "named": true
+        },
+        {
+          "type": "raw_string_begin",
+          "named": true
+        },
+        {
+          "type": "raw_string_content",
+          "named": true
+        },
+        {
+          "type": "raw_string_end",
+          "named": true
         }
       ]
     }
@@ -3689,6 +3701,18 @@
         {
           "type": "escape_sequence",
           "named": true
+        },
+        {
+          "type": "raw_string_begin",
+          "named": true
+        },
+        {
+          "type": "raw_string_content",
+          "named": true
+        },
+        {
+          "type": "raw_string_end",
+          "named": true
         }
       ]
     }
@@ -4808,6 +4832,18 @@
         },
         {
           "type": "expr_parenthesized",
+          "named": true
+        },
+        {
+          "type": "raw_string_begin",
+          "named": true
+        },
+        {
+          "type": "raw_string_content",
+          "named": true
+        },
+        {
+          "type": "raw_string_end",
           "named": true
         }
       ]
@@ -6016,6 +6052,18 @@
   {
     "type": "range",
     "named": false
+  },
+  {
+    "type": "raw_string_begin",
+    "named": true
+  },
+  {
+    "type": "raw_string_content",
+    "named": true
+  },
+  {
+    "type": "raw_string_end",
+    "named": true
   },
   {
     "type": "record",
