@@ -1874,7 +1874,7 @@
                 "type": "PREC",
                 "value": -1,
                 "content": {
-                  "type": "REPEAT1",
+                  "type": "REPEAT",
                   "content": {
                     "type": "PATTERN",
                     "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"

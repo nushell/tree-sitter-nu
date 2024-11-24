@@ -95,7 +95,7 @@ module.exports = grammar({
           ),
           // conflict with expr_binary
           optional(choice(...TABLE().map((x) => token.immediate(x[1])))),
-          token.immediate(prec(PREC().low, pattern_one)),
+          token.immediate(prec(PREC().low, pattern_repeat)),
         ),
       );
     },
