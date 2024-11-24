@@ -30,6 +30,7 @@ module.exports = grammar({
     [$._block_body, $.record_body, $.val_closure],
     [$._block_body, $.shebang],
     [$._block_body, $.val_closure],
+    [$._expression, $._expr_binary_expression],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
     [$._match_pattern_record, $.val_record],
@@ -81,26 +82,20 @@ module.exports = grammar({
         token(
           prec(PREC().low, seq(none_of(excluded + "^#$\\-"), pattern_repeat)),
         ),
-        ...Object.values(KEYWORD()).map((x) =>
-          token(seq(x, token.immediate(pattern_repeat))),
-        ),
-        ...Object.values(MODIFIER()).map((x) =>
-          token(seq(x, token.immediate(pattern_repeat))),
-        ),
-        ...Object.values(SPECIAL()).map((x) =>
-          seq(x, token.immediate(pattern_one)),
-        ),
+        ...Object.values(KEYWORD()).map((x) => token(seq(x, pattern_one))),
+        ...Object.values(MODIFIER()).map((x) => token(seq(x, pattern_one))),
+        ...Object.values(SPECIAL()).map((x) => token(seq(x, pattern_one))),
         seq(
-          seq(
-            $._val_number_decimal,
-            optional(
-              choice(
-                alias($.duration_unit, "_unit"),
-                alias($.filesize_unit, "_unit"),
-              ),
+          $._val_number_decimal,
+          optional(
+            choice(
+              alias($.duration_unit, "_unit"),
+              alias($.filesize_unit, "_unit"),
             ),
           ),
-          token.immediate(prec(PREC().lowest, pattern_one)),
+          // conflict with expr_binary
+          optional(choice(...TABLE().map((x) => token.immediate(x[1])))),
+          token.immediate(prec(PREC().low, pattern_one)),
         ),
       );
     },
@@ -643,32 +638,21 @@ module.exports = grammar({
     _stmt_overlay: ($) =>
       choice($.overlay_hide, $.overlay_list, $.overlay_new, $.overlay_use),
 
-    overlay_list: (_$) => seq(KEYWORD().overlay, MODIFIER().overlay_list),
+    overlay_list: (_$) => seq(KEYWORD().overlay, "list"),
 
     overlay_hide: ($) =>
-      prec.right(
-        5,
-        seq(
-          KEYWORD().overlay,
-          MODIFIER().overlay_hide,
-          field("overlay", $._command_name),
-        ),
-      ),
+      seq(KEYWORD().overlay, "hide", field("overlay", $._command_name)),
 
-    overlay_new: ($) =>
-      seq(KEYWORD().overlay, MODIFIER().overlay_new, $._command_name),
+    overlay_new: ($) => seq(KEYWORD().overlay, "new", $._command_name),
 
     overlay_use: ($) =>
-      prec.right(
-        1,
-        seq(
-          KEYWORD().overlay,
-          MODIFIER().overlay_use,
-          repeat($._flag),
-          field("overlay", $.identifier),
-          repeat($._flag),
-          optional(seq(KEYWORD().as, field("rename", $._command_name))),
-        ),
+      seq(
+        KEYWORD().overlay,
+        "use",
+        repeat($._flag),
+        field("overlay", $.identifier),
+        repeat($._flag),
+        optional(seq(KEYWORD().as, field("rename", $._command_name))),
       ),
 
     scope_pattern: ($) =>
@@ -1686,7 +1670,7 @@ function _expr_binary_rule(parenthesized) {
       ...TABLE().map(([precedence, opr]) => {
         const seq_array = [
           field("lhs", _expr),
-          field("opr", operator_with_separator(opr, parenthesized)),
+          field("opr", opr),
           field(
             "rhs",
             choice(
@@ -2013,13 +1997,7 @@ function KEYWORD() {
 // modifier keywords
 function MODIFIER() {
   return {
-    overlay_hide: "hide",
-    overlay_list: "list",
-    overlay_new: "new",
-    overlay_use: "use",
-
     error_make: "make",
-
     visibility: "export",
   };
 }
@@ -2080,16 +2058,6 @@ function BRACK() {
     open_paren: "(",
     close_paren: ")",
   };
-}
-
-/**
- * group operator and its preceding/succeeding whitespace/newline
- * @param {string} opr
- * @param {boolean} parenthesized
- */
-function operator_with_separator(opr, parenthesized) {
-  const sep = parenthesized ? choice(/[ \t]/, /\r?\n/) : /[ \t]/;
-  return alias(token(seq(sep, opr, sep)), opr);
 }
 
 /**
