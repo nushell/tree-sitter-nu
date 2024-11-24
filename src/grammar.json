@@ -876,13 +876,10 @@
                 "value": "def"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -898,13 +895,10 @@
                 "value": "alias"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -920,13 +914,10 @@
                 "value": "use"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -942,13 +933,10 @@
                 "value": "export-env"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -964,13 +952,10 @@
                 "value": "extern"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -986,13 +971,10 @@
                 "value": "module"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1008,13 +990,10 @@
                 "value": "let"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1030,13 +1009,10 @@
                 "value": "let-env"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1052,13 +1028,10 @@
                 "value": "mut"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1074,13 +1047,10 @@
                 "value": "const"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1096,13 +1066,10 @@
                 "value": "hide"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1118,13 +1085,10 @@
                 "value": "hide-env"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1140,13 +1104,10 @@
                 "value": "source"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1162,13 +1123,10 @@
                 "value": "source-env"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1184,13 +1142,10 @@
                 "value": "overlay"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1206,13 +1161,10 @@
                 "value": "register"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1228,13 +1180,10 @@
                 "value": "for"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1250,13 +1199,10 @@
                 "value": "loop"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1272,13 +1218,10 @@
                 "value": "while"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1294,13 +1237,10 @@
                 "value": "error"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1316,13 +1256,10 @@
                 "value": "do"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1338,13 +1275,10 @@
                 "value": "if"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1360,13 +1294,10 @@
                 "value": "else"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1382,13 +1313,10 @@
                 "value": "try"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1404,13 +1332,10 @@
                 "value": "catch"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1426,13 +1351,10 @@
                 "value": "match"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1448,13 +1370,10 @@
                 "value": "break"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1470,13 +1389,10 @@
                 "value": "continue"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1492,13 +1408,10 @@
                 "value": "return"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1514,13 +1427,10 @@
                 "value": "as"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1536,101 +1446,10 @@
                 "value": "in"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "hide"
-              },
-              {
-                "type": "IMMEDIATE_TOKEN",
-                "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "list"
-              },
-              {
-                "type": "IMMEDIATE_TOKEN",
-                "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "new"
-              },
-              {
-                "type": "IMMEDIATE_TOKEN",
-                "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "use"
-              },
-              {
-                "type": "IMMEDIATE_TOKEN",
-                "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1646,13 +1465,10 @@
                 "value": "make"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1668,13 +1484,124 @@
                 "value": "export"
               },
               {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "REPEAT1",
                 "content": {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                  }
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "true"
+              },
+              {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "false"
+              },
+              {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "null"
+              },
+              {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "[iI][nN][fF]([iI][nN][iI][tT][yY])?"
+              },
+              {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "-[iI][nN][fF]([iI][nN][iI][tT][yY])?"
+              },
+              {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "[nN][aA][nN]"
+              },
+              {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
                 }
               }
             ]
@@ -1684,156 +1611,260 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "true"
+              "type": "SYMBOL",
+              "name": "_val_number_decimal"
             },
             {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "REPEAT1",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                }
-              }
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "false"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "REPEAT1",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                }
-              }
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "null"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "REPEAT1",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                }
-              }
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "[iI][nN][fF]([iI][nN][iI][tT][yY])?"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "REPEAT1",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                }
-              }
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "-[iI][nN][fF]([iI][nN][iI][tT][yY])?"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "REPEAT1",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                }
-              }
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "[nN][aA][nN]"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "REPEAT1",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
-                }
-              }
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SEQ",
+              "type": "CHOICE",
               "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_val_number_decimal"
-                },
                 {
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "ALIAS",
-                          "content": {
-                            "type": "SYMBOL",
-                            "name": "duration_unit"
-                          },
-                          "named": false,
-                          "value": "_unit"
-                        },
-                        {
-                          "type": "ALIAS",
-                          "content": {
-                            "type": "SYMBOL",
-                            "name": "filesize_unit"
-                          },
-                          "named": false,
-                          "value": "_unit"
-                        }
-                      ]
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "duration_unit"
+                      },
+                      "named": false,
+                      "value": "_unit"
                     },
                     {
-                      "type": "BLANK"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "filesize_unit"
+                      },
+                      "named": false,
+                      "value": "_unit"
                     }
                   ]
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "**"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "++"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "*"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "/"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "mod"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "//"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "+"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "-"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "bit-shl"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "bit-shr"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "=~"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "!~"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "bit-and"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "bit-xor"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "bit-or"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "and"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "xor"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "or"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "in"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "not-in"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "starts-with"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "ends-with"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "=="
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "!="
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "<"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "<="
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": ">"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": ">="
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "=~"
+                      }
+                    },
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "!~"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "BLANK"
                 }
               ]
             },
@@ -1841,9 +1872,9 @@
               "type": "IMMEDIATE_TOKEN",
               "content": {
                 "type": "PREC",
-                "value": -69,
+                "value": -1,
                 "content": {
-                  "type": "REPEAT1",
+                  "type": "REPEAT",
                   "content": {
                     "type": "PATTERN",
                     "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':]"
@@ -4876,29 +4907,25 @@
       ]
     },
     "overlay_hide": {
-      "type": "PREC_RIGHT",
-      "value": 5,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "overlay"
-          },
-          {
-            "type": "STRING",
-            "value": "hide"
-          },
-          {
-            "type": "FIELD",
-            "name": "overlay",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_command_name"
-            }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "overlay"
+        },
+        {
+          "type": "STRING",
+          "value": "hide"
+        },
+        {
+          "type": "FIELD",
+          "name": "overlay",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_command_name"
           }
-        ]
-      }
+        }
+      ]
     },
     "overlay_new": {
       "type": "SEQ",
@@ -4918,68 +4945,64 @@
       ]
     },
     "overlay_use": {
-      "type": "PREC_RIGHT",
-      "value": 1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "overlay"
-          },
-          {
-            "type": "STRING",
-            "value": "use"
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_flag"
-            }
-          },
-          {
-            "type": "FIELD",
-            "name": "overlay",
-            "content": {
-              "type": "SYMBOL",
-              "name": "identifier"
-            }
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_flag"
-            }
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "as"
-                  },
-                  {
-                    "type": "FIELD",
-                    "name": "rename",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "_command_name"
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "overlay"
+        },
+        {
+          "type": "STRING",
+          "value": "use"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_flag"
           }
-        ]
-      }
+        },
+        {
+          "type": "FIELD",
+          "name": "overlay",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_flag"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "as"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "rename",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_command_name"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
     },
     "scope_pattern": {
       "type": "CHOICE",
@@ -6791,28 +6814,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "**"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "**"
                 }
               },
@@ -6868,28 +6870,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "++"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "++"
                 }
               },
@@ -6945,28 +6926,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "*"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "*"
                 }
               },
@@ -7022,28 +6982,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "/"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "/"
                 }
               },
@@ -7099,28 +7038,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "mod"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "mod"
                 }
               },
@@ -7176,28 +7094,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "//"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "//"
                 }
               },
@@ -7253,28 +7150,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "+"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "+"
                 }
               },
@@ -7330,28 +7206,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "-"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "-"
                 }
               },
@@ -7407,28 +7262,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "bit-shl"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "bit-shl"
                 }
               },
@@ -7484,28 +7318,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "bit-shr"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "bit-shr"
                 }
               },
@@ -7561,28 +7374,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "=~"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "=~"
                 }
               },
@@ -7638,28 +7430,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "!~"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "!~"
                 }
               },
@@ -7715,28 +7486,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "bit-and"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "bit-and"
                 }
               },
@@ -7792,28 +7542,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "bit-xor"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "bit-xor"
                 }
               },
@@ -7869,28 +7598,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "bit-or"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "bit-or"
                 }
               },
@@ -7946,28 +7654,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "and"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "and"
                 }
               },
@@ -8023,28 +7710,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "xor"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "xor"
                 }
               },
@@ -8100,28 +7766,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "or"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "or"
                 }
               },
@@ -8177,28 +7822,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "in"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "in"
                 }
               },
@@ -8254,28 +7878,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "not-in"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "not-in"
                 }
               },
@@ -8331,28 +7934,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "starts-with"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "starts-with"
                 }
               },
@@ -8408,28 +7990,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "ends-with"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "ends-with"
                 }
               },
@@ -8485,28 +8046,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "=="
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "=="
                 }
               },
@@ -8562,28 +8102,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "!="
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "!="
                 }
               },
@@ -8639,28 +8158,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "<"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "<"
                 }
               },
@@ -8716,28 +8214,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "<="
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "<="
                 }
               },
@@ -8793,28 +8270,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": ">"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": ">"
                 }
               },
@@ -8870,28 +8326,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": ">="
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": ">="
                 }
               },
@@ -8947,28 +8382,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "=~"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "=~"
                 }
               },
@@ -9024,28 +8438,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "!~"
-                        },
-                        {
-                          "type": "PATTERN",
-                          "value": "[ \\t]"
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "!~"
                 }
               },
@@ -9113,46 +8506,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "**"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "**"
                 }
               },
@@ -9229,46 +8583,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "++"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "++"
                 }
               },
@@ -9345,46 +8660,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "*"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "*"
                 }
               },
@@ -9461,46 +8737,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "/"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "/"
                 }
               },
@@ -9577,46 +8814,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "mod"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "mod"
                 }
               },
@@ -9693,46 +8891,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "//"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "//"
                 }
               },
@@ -9809,46 +8968,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "+"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "+"
                 }
               },
@@ -9925,46 +9045,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "-"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "-"
                 }
               },
@@ -10041,46 +9122,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "bit-shl"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "bit-shl"
                 }
               },
@@ -10157,46 +9199,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "bit-shr"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "bit-shr"
                 }
               },
@@ -10273,46 +9276,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "=~"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "=~"
                 }
               },
@@ -10389,46 +9353,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "!~"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "!~"
                 }
               },
@@ -10505,46 +9430,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "bit-and"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "bit-and"
                 }
               },
@@ -10621,46 +9507,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "bit-xor"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "bit-xor"
                 }
               },
@@ -10737,46 +9584,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "bit-or"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "bit-or"
                 }
               },
@@ -10853,46 +9661,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "and"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "and"
                 }
               },
@@ -10969,46 +9738,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "xor"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "xor"
                 }
               },
@@ -11085,46 +9815,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "or"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "or"
                 }
               },
@@ -11201,46 +9892,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "in"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "in"
                 }
               },
@@ -11317,46 +9969,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "not-in"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "not-in"
                 }
               },
@@ -11433,46 +10046,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "starts-with"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "starts-with"
                 }
               },
@@ -11549,46 +10123,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "ends-with"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "ends-with"
                 }
               },
@@ -11665,46 +10200,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "=="
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "=="
                 }
               },
@@ -11781,46 +10277,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "!="
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "!="
                 }
               },
@@ -11897,46 +10354,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "<"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "<"
                 }
               },
@@ -12013,46 +10431,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "<="
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "<="
                 }
               },
@@ -12129,46 +10508,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": ">"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": ">"
                 }
               },
@@ -12245,46 +10585,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": ">="
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": ">="
                 }
               },
@@ -12361,46 +10662,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "=~"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "=~"
                 }
               },
@@ -12477,46 +10739,7 @@
                 "type": "FIELD",
                 "name": "opr",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "!~"
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "PATTERN",
-                              "value": "[ \\t]"
-                            },
-                            {
-                              "type": "PATTERN",
-                              "value": "\\r?\\n"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "named": false,
+                  "type": "STRING",
                   "value": "!~"
                 }
               },
@@ -15914,42 +14137,6 @@
                     "type": "ALIAS",
                     "content": {
                       "type": "STRING",
-                      "value": "hide"
-                    },
-                    "named": true,
-                    "value": "identifier"
-                  },
-                  {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "STRING",
-                      "value": "list"
-                    },
-                    "named": true,
-                    "value": "identifier"
-                  },
-                  {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "STRING",
-                      "value": "new"
-                    },
-                    "named": true,
-                    "value": "identifier"
-                  },
-                  {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "STRING",
-                      "value": "use"
-                    },
-                    "named": true,
-                    "value": "identifier"
-                  },
-                  {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "STRING",
                       "value": "make"
                     },
                     "named": true,
@@ -17843,6 +16030,10 @@
     [
       "_block_body",
       "val_closure"
+    ],
+    [
+      "_expression",
+      "_expr_binary_expression"
     ],
     [
       "_expression_parenthesized",
