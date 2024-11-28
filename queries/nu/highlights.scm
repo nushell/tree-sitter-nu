@@ -1,41 +1,40 @@
 ;;; ---
 ;;; keywords
 [
-    "def"
     "alias"
-    "export-env"
-    "export"
-    "extern"
-    "module"
-
-    "let"
-    "let-env"
-    "mut"
+    "break"
     "const"
-
-    "hide-env"
-
+    "continue"
+    "def"
+    "export"
+    "export alias"
+    "export const"
+    "export def"
+    "export extern"
+    "export module"
+    "export use"
+    "export-env"
+    "extern"
+    "for"
+    "hide"
+    "if"
+    "let"
+    "loop"
+    "match"
+    "module"
+    "mut"
+    "overlay"
+    "overlay hide"
+    "overlay new"
+    "overlay use"
+    "plugin use"
+    "return"
     "source"
     "source-env"
-
-    "overlay"
-    "register"
-
-    "loop"
-    "while"
-    "error"
-
-    "do"
-    "if"
-    "else"
     "try"
-    "catch"
-    "match"
-
-    "break"
-    "continue"
-    "return"
-
+    "use"
+    "where"
+    "while"
 ] @keyword
 
 (hide_mod "hide" @keyword)
@@ -121,6 +120,15 @@ file_path: (val_string) @variable.parameter
     "not-in"
     "starts-with"
     "ends-with"
+    "="
+    "+="
+    "++="
+    "-="
+    "*="
+    "/="
+    "like"
+    "not-like"
+    "not"
 ] @operator )
 
 (where_command [
@@ -152,6 +160,15 @@ file_path: (val_string) @variable.parameter
     "not-in"
     "starts-with"
     "ends-with"
+    "="
+    "+="
+    "++="
+    "-="
+    "*="
+    "/="
+    "like"
+    "not-like"
+    "not"
 ] @operator)
 
 (assignment [
@@ -233,33 +250,108 @@ key: (identifier) @property
 (scope_pattern [(wild_card) @function])
 
 (cmd_identifier) @function
-; generated with Nu 0.93.0
-; > help commands
-;   | filter { $in.command_type == builtin and $in.category != core }
-;   | each {$'"($in.name | split row " " | $in.0)"'}
-;   | uniq
-;   | str join ' '
+; generated with Nu 0.100.1
+; help commands | 
+;    where command_type == built-in or command_type == plugin |
+;    get name | 
+;    each { $'"($in)"'} | 
+;    str join ' ' | 
+;    str wrap 
 (command
   head: [
     (cmd_identifier) @function.builtin
     (#any-of? @function.builtin
-     "all" "ansi" "any" "append" "ast" "bits" "bytes" "cal" "cd" "char" "clear"
-     "collect" "columns" "compact" "complete" "config" "cp" "date" "debug"
-     "decode" "default" "detect" "dfr" "drop" "du" "each" "encode" "enumerate"
-     "every" "exec" "exit" "explain" "explore" "export-env" "fill" "filter"
-     "find" "first" "flatten" "fmt" "format" "from" "generate" "get" "glob"
-     "grid" "group" "group-by" "hash" "headers" "histogram" "history" "http"
-     "input" "insert" "inspect" "interleave" "into" "is-empty" "is-not-empty"
-     "is-terminal" "items" "join" "keybindings" "kill" "last" "length"
-     "let-env" "lines" "load-env" "ls" "math" "merge" "metadata" "mkdir"
-     "mktemp" "move" "mv" "nu-check" "nu-highlight" "open" "panic" "par-each"
-     "parse" "path" "plugin" "port" "prepend" "print" "ps" "query" "random"
-     "range" "reduce" "reject" "rename" "reverse" "rm" "roll" "rotate"
-     "run-external" "save" "schema" "select" "seq" "shuffle" "skip" "sleep"
-     "sort" "sort-by" "split" "split-by" "start" "stor" "str" "sys" "table"
-     "take" "tee" "term" "timeit" "to" "touch" "transpose" "tutor" "ulimit"
-     "uname" "uniq" "uniq-by" "update" "upsert" "url" "values" "view" "watch"
-     "where" "which" "whoami" "window" "with-env" "wrap" "zip"
+        "all" "ansi" "ansi gradient" "ansi link" "ansi strip" "any" "append" "ast"
+        "bits" "bits and" "bits not" "bits or" "bits rol" "bits ror" "bits shl" "bits
+        shr" "bits xor" "bytes" "bytes add" "bytes at" "bytes build" "bytes collect"
+        "bytes ends-with" "bytes index-of" "bytes length" "bytes remove" "bytes replace"
+        "bytes reverse" "bytes starts-with" "cal" "cd" "char" "chunks" "clear" "collect"
+        "columns" "commandline" "commandline edit" "commandline get-cursor" "commandline
+        set-cursor" "compact" "complete" "config" "config env" "config nu" "config
+        reset" "cp" "date" "date format" "date humanize" "date list-timezone" "date now"
+        "date to-record" "date to-table" "date to-timezone" "debug" "debug info" "debug
+        profile" "decode" "decode base32" "decode base32hex" "decode base64" "decode
+        hex" "default" "describe" "detect columns" "do" "drop" "drop column" "drop nth"
+        "dt" "dt add" "dt diff" "dt format" "dt now" "dt part" "dt to" "dt utcnow" "du"
+        "each" "each while" "echo" "emoji" "encode" "encode base32" "encode base32hex"
+        "encode base64" "encode hex" "enumerate" "error make" "every" "exec" "exit"
+        "explain" "explore" "explore ir" "file" "fill" "filter" "find" "first" "flatten"
+        "fmt" "format" "format date" "format duration" "format filesize" "format
+        pattern" "from" "from bz2" "from csv" "from eml" "from gz" "from ics" "from ini"
+        "from json" "from msgpack" "from msgpackz" "from nuon" "from ods" "from parquet"
+        "from plist" "from png" "from ssv" "from toml" "from tsv" "from url" "from vcf"
+        "from xlsx" "from xml" "from xz" "from yaml" "from yml" "from zst" "generate"
+        "get" "gitql" "glob" "grid" "group-by" "gstat" "hash" "hash md5" "hash sha256"
+        "headers" "help" "help aliases" "help commands" "help escapes" "help externs"
+        "help modules" "help operators" "hide-env" "histogram" "history" "history
+        import" "history session" "http" "http delete" "http get" "http head" "http
+        options" "http patch" "http post" "http put" "ignore" "inc" "input" "input list"
+        "input listen" "insert" "inspect" "interleave" "into" "into binary" "into bits"
+        "into bool" "into cell-path" "into datetime" "into duration" "into filesize"
+        "into float" "into glob" "into int" "into record" "into sqlite" "into string"
+        "into value" "is-admin" "is-empty" "is-not-empty" "is-terminal" "items" "join"
+        "json path" "jwalk" "keybindings" "keybindings default" "keybindings list"
+        "keybindings listen" "kill" "last" "length" "let-env" "lines" "load-env" "math"
+        "math abs" "math arccos" "math arccosh" "math arcsin" "math arcsinh" "math
+        arctan" "math arctanh" "math avg" "math ceil" "math cos" "math cosh" "math exp"
+        "math floor" "math ln" "math log" "math max" "math median" "math min" "math
+        mode" "math product" "math round" "math sin" "math sinh" "math sqrt" "math
+        stddev" "math sum" "math tan" "math tanh" "math variance" "merge" "metadata"
+        "metadata access" "metadata set" "mkdir" "mktemp" "move" "mv" "nu-check" "nu-
+        highlight" "open" "overlay list" "panic" "par-each" "parse" "path" "path
+        basename" "path dirname" "path exists" "path expand" "path join" "path parse"
+        "path relative-to" "path split" "path type" "plugin" "plugin add" "plugin list"
+        "plugin rm" "plugin stop" "polars" "polars agg" "polars agg-groups" "polars all-
+        false" "polars all-true" "polars append" "polars arg-max" "polars arg-min"
+        "polars arg-sort" "polars arg-true" "polars arg-unique" "polars arg-where"
+        "polars as" "polars as-date" "polars as-datetime" "polars cache" "polars cast"
+        "polars col" "polars collect" "polars columns" "polars concat" "polars concat-
+        str" "polars contains" "polars count" "polars count-null" "polars cumulative"
+        "polars datepart" "polars decimal" "polars drop" "polars drop-duplicates"
+        "polars drop-nulls" "polars dummies" "polars explode" "polars expr-not" "polars
+        fetch" "polars fill-nan" "polars fill-null" "polars filter" "polars filter-with"
+        "polars first" "polars flatten" "polars get" "polars get-day" "polars get-hour"
+        "polars get-minute" "polars get-month" "polars get-nanosecond" "polars get-
+        ordinal" "polars get-second" "polars get-week" "polars get-weekday" "polars get-
+        year" "polars group-by" "polars implode" "polars integer" "polars into-df"
+        "polars into-lazy" "polars into-nu" "polars is-duplicated" "polars is-in"
+        "polars is-not-null" "polars is-null" "polars is-unique" "polars join" "polars
+        last" "polars len" "polars lit" "polars lowercase" "polars max" "polars mean"
+        "polars median" "polars min" "polars n-unique" "polars not" "polars open"
+        "polars otherwise" "polars pivot" "polars profile" "polars quantile" "polars
+        query" "polars rename" "polars replace" "polars replace-all" "polars reverse"
+        "polars rolling" "polars sample" "polars save" "polars schema" "polars select"
+        "polars set" "polars set-with-idx" "polars shape" "polars shift" "polars slice"
+        "polars sort-by" "polars std" "polars store-get" "polars store-ls" "polars
+        store-rm" "polars str-join" "polars str-lengths" "polars str-slice" "polars
+        strftime" "polars sum" "polars summary" "polars take" "polars unique" "polars
+        unnest" "polars unpivot" "polars uppercase" "polars value-counts" "polars var"
+        "polars when" "polars with-column" "port" "prepend" "print" "ps" "query" "query
+        db" "query git" "query json" "query web" "query webpage-info" "query xml"
+        "random" "random binary" "random bool" "random chars" "random dice" "random
+        float" "random int" "random uuid" "range" "reduce" "regex" "reject" "rename"
+        "reverse" "rm" "roll" "roll down" "roll left" "roll right" "roll up" "rotate"
+        "run-external" "save" "schema" "scope" "scope aliases" "scope commands" "scope
+        engine-stats" "scope externs" "scope modules" "scope variables" "select" "seq"
+        "seq char" "seq date" "shuffle" "skip" "skip until" "skip while" "sleep" "sort"
+        "sort-by" "split" "split cell-path" "split chars" "split column" "split list"
+        "split row" "split words" "split-by" "start" "stor" "stor create" "stor delete"
+        "stor export" "stor import" "stor insert" "stor open" "stor reset" "stor update"
+        "str" "str bexpand" "str camel-case" "str capitalize" "str compress" "str
+        contains" "str decompress" "str dedent" "str deunicode" "str distance" "str
+        downcase" "str ends-with" "str expand" "str indent" "str index-of" "str join"
+        "str kebab-case" "str length" "str pascal-case" "str replace" "str reverse" "str
+        screaming-snake-case" "str similarity" "str snake-case" "str starts-with" "str
+        stats" "str substring" "str title-case" "str trim" "str upcase" "str wrap" "sys"
+        "sys cpu" "sys disks" "sys host" "sys mem" "sys net" "sys temp" "sys users"
+        "table" "take" "take until" "take while" "tee" "term" "term query" "term size"
+        "timeit" "to" "to bz2" "to csv" "to gz" "to html" "to json" "to md" "to msgpack"
+        "to msgpackz" "to nuon" "to parquet" "to plist" "to png" "to text" "to toml" "to
+        tsv" "to xml" "to xz" "to yaml" "to zst" "touch" "transpose" "tutor" "ulimit"
+        "uname" "uniq" "uniq-by" "update" "update cells" "upsert" "url" "url build-
+        query" "url decode" "url encode" "url join" "url parse" "url split-query"
+        "utouch" "values" "version" "view" "view files" "view ir" "view source" "view
+        span" "watch" "which" "whoami" "window" "with-env" "wrap" "zip"
     )
   ])
 
