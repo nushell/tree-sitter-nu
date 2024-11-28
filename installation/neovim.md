@@ -8,10 +8,15 @@ Extend your lazy config with treesitter and the nu parser. The parser doesn't ha
 {
     "nvim-treesitter/nvim-treesitter",
     config = function()
-        -- setup treesitter with config
+        require("nvim-treesitter.configs").setup {
+            ensure_installed = { "nu" }, -- Ensure the "nu" parser is installed
+            highlight = {
+                enable = true,            -- Enable syntax highlighting
+            },
+        }
     end,
     dependencies = {
-        -- NOTE: additional parser
+        -- Additional Nushell parser
         { "nushell/tree-sitter-nu", build = ":TSUpdate nu" },
     },
     build = ":TSUpdate",
@@ -62,6 +67,8 @@ let file = "highlights.scm"
 mkdir $local
 http get ([$remote $file] | str join "/") | save --force ($local | path join $file)
 ```
+
+You need to run this snippet whenever the highlights change and `:TSUpdate nu` whenever there is a new version of the parser.
 
 [tree-sitter]: https://tree-sitter.github.io/tree-sitter/
 [nvim-treesitter]: https://github.com/nvim-treesitter/nvim-treesitter

@@ -74,7 +74,7 @@
 ) @number
 (val_bool) @constant.builtin
 (val_nothing) @constant.builtin
-(val_string) @variable.parameter
+(val_string) @string
 arg_str: (val_string) @variable.parameter
 file_path: (val_string) @variable.parameter
 (val_date) @number
@@ -193,9 +193,9 @@ file_path: (val_string) @variable.parameter
 
 (param_long_flag ["--"] @punctuation.delimiter)
 (long_flag ["--"] @punctuation.delimiter)
-(long_flag_equals_value ["--"] @punctuation.delimiter)
 (short_flag ["-"] @punctuation.delimiter)
-(long_flag_equals_value ["="] @punctuation.special)
+(long_flag ["="] @punctuation.special)
+(short_flag ["="] @punctuation.special)
 (param_short_flag ["-"] @punctuation.delimiter)
 (param_rest "..." @punctuation.delimiter)
 (param_type [":"] @punctuation.special)
@@ -208,6 +208,9 @@ file_path: (val_string) @variable.parameter
     "(" ")"
     "{" "}"
     "[" "]"
+    "...["
+    "...("
+    "...{"
 ] @punctuation.bracket
 
 (val_record
@@ -278,7 +281,8 @@ key: (identifier) @property
 (stmt_let (identifier) @variable)
 
 (val_variable
-  "$" @punctuation.special
+  "$"? @punctuation.special
+  "...$"? @punctuation.special
   [
    (identifier) @variable
    "in" @special

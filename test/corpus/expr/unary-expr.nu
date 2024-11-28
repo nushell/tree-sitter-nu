@@ -1,5 +1,5 @@
 =====
-expr-001-smoke-test
+unary-expr-001-not
 =====
 
 not true and not false
@@ -16,7 +16,7 @@ not true and not false
           (val_bool))))))
 
 =====
-expr-002-smoke-test
+unary-expr-002-minus
 =====
 
 -(4 + 8) == -12
@@ -34,3 +34,18 @@ expr-002-smoke-test
                 (val_number)
                 (val_number)))))
         (val_number)))))
+
+=====
+unary-expr-003-not-vs-unquoted
+=====
+
+1 == nothing
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_binary
+        (val_number)
+        (val_string)))))

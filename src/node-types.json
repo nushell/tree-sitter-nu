@@ -1,5 +1,15 @@
 [
   {
+    "type": "_head",
+    "named": false,
+    "fields": {}
+  },
+  {
+    "type": "_prefix",
+    "named": false,
+    "fields": {}
+  },
+  {
     "type": "assignment",
     "named": true,
     "fields": {
@@ -48,75 +58,7 @@
         "required": true,
         "types": [
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
-            "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
-            "named": true
-          },
-          {
-            "type": "val_binary",
-            "named": true
-          },
-          {
-            "type": "val_bool",
-            "named": true
-          },
-          {
-            "type": "val_closure",
-            "named": true
-          },
-          {
-            "type": "val_date",
-            "named": true
-          },
-          {
-            "type": "val_duration",
-            "named": true
-          },
-          {
-            "type": "val_filesize",
-            "named": true
-          },
-          {
-            "type": "val_interpolated",
-            "named": true
-          },
-          {
-            "type": "val_list",
-            "named": true
-          },
-          {
-            "type": "val_nothing",
-            "named": true
-          },
-          {
-            "type": "val_number",
-            "named": true
-          },
-          {
-            "type": "val_range",
-            "named": true
-          },
-          {
-            "type": "val_record",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          },
-          {
-            "type": "val_table",
-            "named": true
-          },
-          {
-            "type": "val_variable",
+            "type": "pipeline",
             "named": true
           }
         ]
@@ -242,9 +184,24 @@
     }
   },
   {
+    "type": "cmd_identifier",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "collection_type",
     "named": true,
     "fields": {
+      "completion": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "param_cmd",
+            "named": true
+          }
+        ]
+      },
       "key": {
         "multiple": true,
         "required": false,
@@ -349,6 +306,24 @@
           }
         ]
       },
+      "arg_spread": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
+            "type": "val_list",
+            "named": true
+          },
+          {
+            "type": "val_variable",
+            "named": true
+          }
+        ]
+      },
       "arg_str": {
         "multiple": true,
         "required": false,
@@ -390,7 +365,15 @@
             "named": true
           },
           {
+            "type": "val_interpolated",
+            "named": true
+          },
+          {
             "type": "val_string",
+            "named": true
+          },
+          {
+            "type": "val_variable",
             "named": true
           }
         ]
@@ -465,15 +448,7 @@
           "named": true
         },
         {
-          "type": "expr_binary",
-          "named": true
-        },
-        {
           "type": "expr_parenthesized",
-          "named": true
-        },
-        {
-          "type": "expr_unary",
           "named": true
         },
         {
@@ -740,10 +715,6 @@
             "named": true
           },
           {
-            "type": "identifier",
-            "named": true
-          },
-          {
             "type": "val_binary",
             "named": true
           },
@@ -938,15 +909,7 @@
         "required": true,
         "types": [
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
             "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
             "named": true
           },
           {
@@ -1547,6 +1510,10 @@
           {
             "type": "val_string",
             "named": true
+          },
+          {
+            "type": "val_variable",
+            "named": true
           }
         ]
       }
@@ -1575,15 +1542,7 @@
             "named": true
           },
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
             "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
             "named": true
           },
           {
@@ -1644,6 +1603,32 @@
           },
           {
             "type": "val_variable",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "env_var",
+    "named": true,
+    "fields": {
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "val_string",
+            "named": true
+          }
+        ]
+      },
+      "variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
             "named": true
           }
         ]
@@ -2452,6 +2437,20 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "long_flag",
+          "named": true
+        },
+        {
+          "type": "short_flag",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -2537,7 +2536,7 @@
     "fields": {
       "entry": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "val_entry",
@@ -2551,6 +2550,16 @@
     "type": "list_type",
     "named": true,
     "fields": {
+      "completion": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "param_cmd",
+            "named": true
+          }
+        ]
+      },
       "inner": {
         "multiple": false,
         "required": false,
@@ -2592,53 +2601,21 @@
   {
     "type": "long_flag",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "long_flag_equals_value",
-          "named": true
-        },
-        {
-          "type": "long_flag_identifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "long_flag_equals_value",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "long_flag_identifier",
-          "named": true
-        },
-        {
-          "type": "long_flag_value",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "long_flag_value",
-    "named": true,
     "fields": {
-      "arg": {
+      "name": {
         "multiple": false,
         "required": false,
         "types": [
           {
-            "type": "expr_parenthesized",
+            "type": "long_flag_identifier",
             "named": true
-          },
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
           {
             "type": "val_binary",
             "named": true
@@ -2680,10 +2657,6 @@
             "named": true
           },
           {
-            "type": "val_range",
-            "named": true
-          },
-          {
             "type": "val_record",
             "named": true
           },
@@ -2697,40 +2670,6 @@
           },
           {
             "type": "val_variable",
-            "named": true
-          }
-        ]
-      },
-      "arg_str": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
-      "flag": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "long_flag",
-            "named": true
-          },
-          {
-            "type": "short_flag",
-            "named": true
-          }
-        ]
-      },
-      "redir": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "redirection",
             "named": true
           }
         ]
@@ -2750,15 +2689,7 @@
             "named": true
           },
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
             "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
             "named": true
           },
           {
@@ -2931,10 +2862,6 @@
           "named": true
         },
         {
-          "type": "expr_unary",
-          "named": true
-        },
-        {
           "type": "match_guard",
           "named": true
         },
@@ -2996,6 +2923,7 @@
   {
     "type": "nu_script",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -3381,15 +3309,7 @@
         "required": true,
         "types": [
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
             "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
             "named": true
           },
           {
@@ -3594,30 +3514,22 @@
         "required": false,
         "types": [
           {
-            "type": "\"",
-            "named": false
-          },
-          {
             "type": "?",
             "named": false
           },
           {
-            "type": "escape_sequence",
-            "named": true
+            "type": "quoted",
+            "named": false
           }
         ]
       },
       "raw_path": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
           {
-            "type": "\"",
+            "type": "quoted",
             "named": false
-          },
-          {
-            "type": "escape_sequence",
-            "named": true
           }
         ]
       }
@@ -3649,7 +3561,7 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
@@ -3677,6 +3589,10 @@
           "named": true
         },
         {
+          "type": "env_var",
+          "named": true
+        },
+        {
           "type": "expr_binary",
           "named": true
         },
@@ -3686,6 +3602,10 @@
         },
         {
           "type": "expr_unary",
+          "named": true
+        },
+        {
+          "type": "redirection",
           "named": true
         },
         {
@@ -3771,6 +3691,33 @@
     }
   },
   {
+    "type": "quoted",
+    "named": false,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence",
+          "named": true
+        },
+        {
+          "type": "raw_string_begin",
+          "named": true
+        },
+        {
+          "type": "raw_string_content",
+          "named": true
+        },
+        {
+          "type": "raw_string_end",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "record_body",
     "named": true,
     "fields": {
@@ -3792,7 +3739,7 @@
     "fields": {
       "key": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "expr_parenthesized",
@@ -3816,20 +3763,30 @@
           }
         ]
       },
-      "value": {
+      "spread": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
-          {
-            "type": "expr_binary",
-            "named": true
-          },
           {
             "type": "expr_parenthesized",
             "named": true
           },
           {
-            "type": "expr_unary",
+            "type": "val_record",
+            "named": true
+          },
+          {
+            "type": "val_variable",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expr_parenthesized",
             "named": true
           },
           {
@@ -3902,42 +3859,10 @@
     "fields": {
       "file_path": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
-            "type": "expr_binary",
-            "named": true
-          },
-          {
             "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
-            "named": true
-          },
-          {
-            "type": "val_binary",
-            "named": true
-          },
-          {
-            "type": "val_bool",
-            "named": true
-          },
-          {
-            "type": "val_closure",
-            "named": true
-          },
-          {
-            "type": "val_date",
-            "named": true
-          },
-          {
-            "type": "val_duration",
-            "named": true
-          },
-          {
-            "type": "val_filesize",
             "named": true
           },
           {
@@ -3945,31 +3870,7 @@
             "named": true
           },
           {
-            "type": "val_list",
-            "named": true
-          },
-          {
-            "type": "val_nothing",
-            "named": true
-          },
-          {
-            "type": "val_number",
-            "named": true
-          },
-          {
-            "type": "val_range",
-            "named": true
-          },
-          {
-            "type": "val_record",
-            "named": true
-          },
-          {
             "type": "val_string",
-            "named": true
-          },
-          {
-            "type": "val_table",
             "named": true
           },
           {
@@ -4072,16 +3973,79 @@
   {
     "type": "short_flag",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "short_flag_identifier",
-          "named": true
-        }
-      ]
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "short_flag_identifier",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "val_binary",
+            "named": true
+          },
+          {
+            "type": "val_bool",
+            "named": true
+          },
+          {
+            "type": "val_closure",
+            "named": true
+          },
+          {
+            "type": "val_date",
+            "named": true
+          },
+          {
+            "type": "val_duration",
+            "named": true
+          },
+          {
+            "type": "val_filesize",
+            "named": true
+          },
+          {
+            "type": "val_interpolated",
+            "named": true
+          },
+          {
+            "type": "val_list",
+            "named": true
+          },
+          {
+            "type": "val_nothing",
+            "named": true
+          },
+          {
+            "type": "val_number",
+            "named": true
+          },
+          {
+            "type": "val_record",
+            "named": true
+          },
+          {
+            "type": "val_string",
+            "named": true
+          },
+          {
+            "type": "val_table",
+            "named": true
+          },
+          {
+            "type": "val_variable",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -4498,14 +4462,10 @@
     "fields": {
       "item": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
             "named": true
           },
           {
@@ -4569,6 +4529,24 @@
             "named": true
           }
         ]
+      },
+      "spread": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
+            "type": "val_list",
+            "named": true
+          },
+          {
+            "type": "val_variable",
+            "named": true
+          }
+        ]
       }
     }
   },
@@ -4578,7 +4556,7 @@
     "fields": {
       "unit": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "filesize_unit",
@@ -4588,7 +4566,7 @@
       },
       "value": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "val_number",
@@ -4649,10 +4627,6 @@
             "named": true
           },
           {
-            "type": "expr_unary",
-            "named": true
-          },
-          {
             "type": "val_binary",
             "named": true
           },
@@ -4707,11 +4681,11 @@
         ]
       },
       "rest": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
           {
-            "type": ".",
+            "type": "..",
             "named": false
           },
           {
@@ -4857,11 +4831,7 @@
           "named": true
         },
         {
-          "type": "long_flag_equals_value",
-          "named": true
-        },
-        {
-          "type": "long_flag_identifier",
+          "type": "expr_parenthesized",
           "named": true
         },
         {
@@ -4875,10 +4845,6 @@
         {
           "type": "raw_string_end",
           "named": true
-        },
-        {
-          "type": "short_flag_identifier",
-          "named": true
         }
       ]
     }
@@ -4888,13 +4854,9 @@
     "named": true,
     "fields": {
       "head": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": ";",
-            "named": false
-          },
           {
             "type": "val_list",
             "named": true
@@ -4974,7 +4936,43 @@
         "required": false,
         "types": [
           {
+            "type": "!=",
+            "named": false
+          },
+          {
+            "type": "!~",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": "<=",
+            "named": false
+          },
+          {
+            "type": "==",
+            "named": false
+          },
+          {
+            "type": "=~",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": ">=",
+            "named": false
+          },
+          {
             "type": "?",
+            "named": false
+          },
+          {
+            "type": "and",
             "named": false
           },
           {
@@ -4982,7 +4980,79 @@
             "named": true
           },
           {
+            "type": "ends-with",
+            "named": false
+          },
+          {
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
+            "type": "expr_unary",
+            "named": true
+          },
+          {
+            "type": "in",
+            "named": false
+          },
+          {
+            "type": "not-in",
+            "named": false
+          },
+          {
+            "type": "or",
+            "named": false
+          },
+          {
+            "type": "starts-with",
+            "named": false
+          },
+          {
+            "type": "val_binary",
+            "named": true
+          },
+          {
+            "type": "val_bool",
+            "named": true
+          },
+          {
+            "type": "val_closure",
+            "named": true
+          },
+          {
+            "type": "val_date",
+            "named": true
+          },
+          {
+            "type": "val_duration",
+            "named": true
+          },
+          {
+            "type": "val_filesize",
+            "named": true
+          },
+          {
+            "type": "val_interpolated",
+            "named": true
+          },
+          {
+            "type": "val_list",
+            "named": true
+          },
+          {
+            "type": "val_nothing",
+            "named": true
+          },
+          {
             "type": "val_number",
+            "named": true
+          },
+          {
+            "type": "val_range",
+            "named": true
+          },
+          {
+            "type": "val_record",
             "named": true
           },
           {
@@ -4990,8 +5060,16 @@
             "named": true
           },
           {
+            "type": "val_table",
+            "named": true
+          },
+          {
             "type": "val_variable",
             "named": true
+          },
+          {
+            "type": "xor",
+            "named": false
           }
         ]
       },
@@ -5005,34 +5083,6 @@
           },
           {
             "type": "!~",
-            "named": false
-          },
-          {
-            "type": "*",
-            "named": false
-          },
-          {
-            "type": "**",
-            "named": false
-          },
-          {
-            "type": "+",
-            "named": false
-          },
-          {
-            "type": "++",
-            "named": false
-          },
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "/",
-            "named": false
-          },
-          {
-            "type": "//",
             "named": false
           },
           {
@@ -5064,35 +5114,11 @@
             "named": false
           },
           {
-            "type": "bit-and",
-            "named": false
-          },
-          {
-            "type": "bit-or",
-            "named": false
-          },
-          {
-            "type": "bit-shl",
-            "named": false
-          },
-          {
-            "type": "bit-shr",
-            "named": false
-          },
-          {
-            "type": "bit-xor",
-            "named": false
-          },
-          {
             "type": "ends-with",
             "named": false
           },
           {
             "type": "in",
-            "named": false
-          },
-          {
-            "type": "mod",
             "named": false
           },
           {
@@ -5113,9 +5139,9 @@
           }
         ]
       },
-      "rhs": {
+      "predicate": {
         "multiple": true,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "!=",
@@ -5123,34 +5149,6 @@
           },
           {
             "type": "!~",
-            "named": false
-          },
-          {
-            "type": "*",
-            "named": false
-          },
-          {
-            "type": "**",
-            "named": false
-          },
-          {
-            "type": "+",
-            "named": false
-          },
-          {
-            "type": "++",
-            "named": false
-          },
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "/",
-            "named": false
-          },
-          {
-            "type": "//",
             "named": false
           },
           {
@@ -5186,36 +5184,12 @@
             "named": false
           },
           {
-            "type": "bit-and",
-            "named": false
-          },
-          {
-            "type": "bit-or",
-            "named": false
-          },
-          {
-            "type": "bit-shl",
-            "named": false
-          },
-          {
-            "type": "bit-shr",
-            "named": false
-          },
-          {
-            "type": "bit-xor",
-            "named": false
-          },
-          {
             "type": "cell_path",
             "named": true
           },
           {
             "type": "ends-with",
             "named": false
-          },
-          {
-            "type": "expr_binary",
-            "named": true
           },
           {
             "type": "expr_parenthesized",
@@ -5230,7 +5204,145 @@
             "named": false
           },
           {
-            "type": "mod",
+            "type": "not-in",
+            "named": false
+          },
+          {
+            "type": "or",
+            "named": false
+          },
+          {
+            "type": "starts-with",
+            "named": false
+          },
+          {
+            "type": "val_binary",
+            "named": true
+          },
+          {
+            "type": "val_bool",
+            "named": true
+          },
+          {
+            "type": "val_closure",
+            "named": true
+          },
+          {
+            "type": "val_date",
+            "named": true
+          },
+          {
+            "type": "val_duration",
+            "named": true
+          },
+          {
+            "type": "val_filesize",
+            "named": true
+          },
+          {
+            "type": "val_interpolated",
+            "named": true
+          },
+          {
+            "type": "val_list",
+            "named": true
+          },
+          {
+            "type": "val_nothing",
+            "named": true
+          },
+          {
+            "type": "val_number",
+            "named": true
+          },
+          {
+            "type": "val_range",
+            "named": true
+          },
+          {
+            "type": "val_record",
+            "named": true
+          },
+          {
+            "type": "val_string",
+            "named": true
+          },
+          {
+            "type": "val_table",
+            "named": true
+          },
+          {
+            "type": "val_variable",
+            "named": true
+          },
+          {
+            "type": "xor",
+            "named": false
+          }
+        ]
+      },
+      "rhs": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "!=",
+            "named": false
+          },
+          {
+            "type": "!~",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": "<=",
+            "named": false
+          },
+          {
+            "type": "==",
+            "named": false
+          },
+          {
+            "type": "=~",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": ">=",
+            "named": false
+          },
+          {
+            "type": "?",
+            "named": false
+          },
+          {
+            "type": "and",
+            "named": false
+          },
+          {
+            "type": "cell_path",
+            "named": true
+          },
+          {
+            "type": "ends-with",
+            "named": false
+          },
+          {
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
+            "type": "expr_unary",
+            "named": true
+          },
+          {
+            "type": "in",
             "named": false
           },
           {
@@ -5311,94 +5423,12 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "expr_binary",
-          "named": true
-        },
-        {
-          "type": "expr_parenthesized",
-          "named": true
-        },
-        {
-          "type": "expr_unary",
-          "named": true
-        },
-        {
-          "type": "val_binary",
-          "named": true
-        },
-        {
-          "type": "val_bool",
-          "named": true
-        },
-        {
-          "type": "val_closure",
-          "named": true
-        },
-        {
-          "type": "val_date",
-          "named": true
-        },
-        {
-          "type": "val_duration",
-          "named": true
-        },
-        {
-          "type": "val_filesize",
-          "named": true
-        },
-        {
-          "type": "val_interpolated",
-          "named": true
-        },
-        {
-          "type": "val_list",
-          "named": true
-        },
-        {
-          "type": "val_nothing",
-          "named": true
-        },
-        {
-          "type": "val_number",
-          "named": true
-        },
-        {
-          "type": "val_range",
-          "named": true
-        },
-        {
-          "type": "val_record",
-          "named": true
-        },
-        {
-          "type": "val_string",
-          "named": true
-        },
-        {
-          "type": "val_table",
-          "named": true
-        },
-        {
-          "type": "val_variable",
-          "named": true
-        }
-      ]
     }
   },
   {
     "type": "wild_card",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "\n",
-    "named": false
   },
   {
     "type": "!=",
@@ -5505,6 +5535,22 @@
     "named": false
   },
   {
+    "type": "...$",
+    "named": false
+  },
+  {
+    "type": "...(",
+    "named": false
+  },
+  {
+    "type": "...[",
+    "named": false
+  },
+  {
+    "type": "...{",
+    "named": false
+  },
+  {
     "type": "..<",
     "named": false
   },
@@ -5601,6 +5647,14 @@
     "named": false
   },
   {
+    "type": "_prefix",
+    "named": false
+  },
+  {
+    "type": "_unit",
+    "named": false
+  },
+  {
     "type": "alias",
     "named": false
   },
@@ -5665,10 +5719,6 @@
     "named": false
   },
   {
-    "type": "cmd_identifier",
-    "named": true
-  },
-  {
     "type": "cond",
     "named": false
   },
@@ -5713,7 +5763,23 @@
     "named": false
   },
   {
+    "type": "e+o>>",
+    "named": false
+  },
+  {
+    "type": "e+o>|",
+    "named": false
+  },
+  {
     "type": "e>",
+    "named": false
+  },
+  {
+    "type": "e>>",
+    "named": false
+  },
+  {
+    "type": "e>|",
     "named": false
   },
   {
@@ -5733,7 +5799,23 @@
     "named": false
   },
   {
+    "type": "err+out>>",
+    "named": false
+  },
+  {
+    "type": "err+out>|",
+    "named": false
+  },
+  {
     "type": "err>",
+    "named": false
+  },
+  {
+    "type": "err>>",
+    "named": false
+  },
+  {
+    "type": "err>|",
     "named": false
   },
   {
@@ -5905,7 +5987,23 @@
     "named": false
   },
   {
+    "type": "o+e>>",
+    "named": false
+  },
+  {
+    "type": "o+e>|",
+    "named": false
+  },
+  {
     "type": "o>",
+    "named": false
+  },
+  {
+    "type": "o>>",
+    "named": false
+  },
+  {
+    "type": "o>|",
     "named": false
   },
   {
@@ -5925,7 +6023,23 @@
     "named": false
   },
   {
+    "type": "out+err>>",
+    "named": false
+  },
+  {
+    "type": "out+err>|",
+    "named": false
+  },
+  {
     "type": "out>",
+    "named": false
+  },
+  {
+    "type": "out>>",
+    "named": false
+  },
+  {
+    "type": "out>|",
     "named": false
   },
   {

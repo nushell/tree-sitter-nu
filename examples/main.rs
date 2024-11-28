@@ -1,12 +1,16 @@
 extern crate tree_sitter_nu;
 use tree_sitter::{Language, Parser, TreeCursor};
 
+extern "C" {
+    fn tree_sitter_nu() -> Language;
+}
+
 fn main() {
     let src = include_str!("../example-file.nu");
-    let nu_lang: Language = tree_sitter_nu::language();
+    let nu_lang = unsafe { tree_sitter_nu() };
     let mut parser = Parser::new();
-    parser.set_language(nu_lang).unwrap();
-    let parse_tree = parser.parse(&src, None).unwrap();
+    parser.set_language(&nu_lang).unwrap();
+    let parse_tree = parser.parse(src, None).unwrap();
     println!("\nTree Walk 1");
     print_tree(&parse_tree);
     println!("\nTree Walk 2");
@@ -76,7 +80,9 @@ fn walk_tree(cursor: &mut TreeCursor, source: &str) {
             let start_pos = node.start_position();
             let end_pos = node.end_position();
             let kind = node.kind().trim();
-            let field_id = cursor.field_id().unwrap_or(0);
+            let field_id = cursor
+                .field_id()
+                .unwrap_or(core::num::NonZero::new(1).unwrap());
             let field_name = cursor.field_name().unwrap_or("");
             let node_string = node.utf8_text(source.as_bytes()).unwrap();
             println!(

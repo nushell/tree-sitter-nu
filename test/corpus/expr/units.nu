@@ -59,6 +59,7 @@ units-001-duration
 units-002-filesize
 ====
 
+0b
 1E+9b
 1e6kb
 1000mb
@@ -77,6 +78,9 @@ units-002-filesize
 -----
 
 (nu_script
+  (pipeline
+    (pipe_element
+      (val_filesize)))
   (pipeline
     (pipe_element
       (val_filesize
@@ -148,7 +152,10 @@ units-003-command-args
 ====
 
 sleep 1sec
+sleep 1 sec
 echo 1kb
+echo 0b
+echo 0 b
 
 -----
 
@@ -164,6 +171,23 @@ echo 1kb
     (pipe_element
       (command
         (cmd_identifier)
+        (val_number)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
         (val_filesize
           (val_number)
-          (filesize_unit))))))
+          (filesize_unit)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_filesize))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_number)
+        (val_string)))))

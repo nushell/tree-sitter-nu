@@ -53,13 +53,16 @@ def --wrapped --env bar [...args] {}
 
 (nu_script
   (decl_def
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks)
     (block))
   (decl_def
-    (long_flag (long_flag_identifier))
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -67,7 +70,8 @@ def --wrapped --env bar [...args] {}
           (identifier))))
     (block))
   (decl_def
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -75,8 +79,10 @@ def --wrapped --env bar [...args] {}
           (identifier))))
     (block))
   (decl_def
-    (long_flag (long_flag_identifier))
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -97,7 +103,8 @@ def --wrapped --env test [...args]: nothing -> string {}
 
 (nu_script
   (decl_def
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks)
     (returns
@@ -105,8 +112,10 @@ def --wrapped --env test [...args]: nothing -> string {}
       (flat_type))
     (block))
   (decl_def
-    (long_flag (long_flag_identifier))
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -117,7 +126,8 @@ def --wrapped --env test [...args]: nothing -> string {}
       (flat_type))
     (block))
   (decl_def
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -128,8 +138,10 @@ def --wrapped --env test [...args]: nothing -> string {}
       (flat_type))
     (block))
   (decl_def
-    (long_flag (long_flag_identifier))
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -138,8 +150,7 @@ def --wrapped --env test [...args]: nothing -> string {}
     (returns
       (flat_type)
       (flat_type))
-    (block))
-  )
+    (block)))
 
 ======
 def-005-env-with-multiple-return-types
@@ -154,7 +165,8 @@ def --wrapped test [...args]: [nothing -> string, nothing -> int] {}
 
 (nu_script
   (decl_def
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks)
     (returns
@@ -164,8 +176,10 @@ def --wrapped test [...args]: [nothing -> string, nothing -> int] {}
       (flat_type))
     (block))
   (decl_def
-    (long_flag (long_flag_identifier))
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -178,8 +192,10 @@ def --wrapped test [...args]: [nothing -> string, nothing -> int] {}
       (flat_type))
     (block))
   (decl_def
-    (long_flag (long_flag_identifier))
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -192,7 +208,8 @@ def --wrapped test [...args]: [nothing -> string, nothing -> int] {}
       (flat_type))
     (block))
   (decl_def
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -218,7 +235,8 @@ def --wrapped test [...args]: nothing -> record<a: string, b: int> {}
 
 (nu_script
   (decl_def
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks)
     (returns
@@ -230,8 +248,10 @@ def --wrapped test [...args]: nothing -> record<a: string, b: int> {}
         (flat_type)))
     (block))
   (decl_def
-    (long_flag (long_flag_identifier))
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -246,8 +266,10 @@ def --wrapped test [...args]: nothing -> record<a: string, b: int> {}
         (flat_type)))
     (block))
   (decl_def
-    (long_flag (long_flag_identifier))
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -262,7 +284,8 @@ def --wrapped test [...args]: nothing -> record<a: string, b: int> {}
         (flat_type)))
     (block))
   (decl_def
-    (long_flag (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
     (cmd_identifier)
     (parameter_bracks
       (parameter
@@ -314,7 +337,8 @@ def test [
         (param_long_flag
           (long_flag_identifier))
         (flag_capsule
-          (param_short_flag (param_short_flag_identifier)))))
+          (param_short_flag
+            (param_short_flag_identifier)))))
     (block)))
 
 ======
@@ -343,7 +367,7 @@ def-010-short-flag
 ======
 
 def test [
-  -s
+  -?
 ] {}
 
 -----
@@ -353,7 +377,8 @@ def test [
     (cmd_identifier)
     (parameter_bracks
       (parameter
-        (param_short_flag (param_short_flag_identifier))))
+        (param_short_flag
+          (param_short_flag_identifier))))
     (block)))
 
 ======
@@ -371,9 +396,10 @@ def test [
     (cmd_identifier)
     (parameter_bracks
       (parameter
-        (param_short_flag (param_short_flag_identifier))
-      (param_type
-        (flat_type))))
+        (param_short_flag
+          (param_short_flag_identifier))
+        (param_type
+          (flat_type))))
     (block)))
 
 ======
@@ -491,7 +517,8 @@ def test [
         (param_long_flag
           (long_flag_identifier))
         (flag_capsule
-          (param_short_flag (param_short_flag_identifier)))))
+          (param_short_flag
+            (param_short_flag_identifier)))))
     (block)))
 
 ======
@@ -512,7 +539,8 @@ def test [
         (param_long_flag
           (long_flag_identifier))
         (flag_capsule
-          (param_short_flag (param_short_flag_identifier)))
+          (param_short_flag
+            (param_short_flag_identifier)))
         (param_type
           (flat_type))))
     (block)))
@@ -890,3 +918,91 @@ def a_-!? [] {}
     (cmd_identifier)
     (parameter_bracks)
     (block)))
+
+======
+def-032-parameters-with-defaults
+======
+
+def test [
+  x: int = 42,
+  y: string = (true),
+  --zero(-z): string
+= hello,
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (flat_type))
+        (param_value
+          (val_number)))
+      (parameter
+        (identifier)
+        (param_type
+          (flat_type))
+        (param_value
+          (expr_parenthesized
+            (pipeline
+              (pipe_element
+                (val_bool))))))
+      (parameter
+        (param_long_flag
+          (long_flag_identifier))
+        (flag_capsule
+          (param_short_flag
+            (param_short_flag_identifier)))
+        (param_type
+          (flat_type))
+        (param_value
+          (val_string))))
+    (block)))
+
+======
+def-033-types-with-completion
+======
+
+def test [
+  x: int@cmd,
+  y: string@"cmd",
+  --zero(-z): list<string@cmd>
+= hello,
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    unquoted_name: (cmd_identifier)
+    parameters: (parameter_bracks
+      (parameter
+        param_name: (identifier)
+        (param_type
+          type: (flat_type)
+          completion: (param_cmd
+            unquoted_name: (cmd_identifier))))
+      (parameter
+        param_name: (identifier)
+        (param_type
+          type: (flat_type)
+          completion: (param_cmd
+            quoted_name: (val_string))))
+      (parameter
+        param_long_flag: (param_long_flag
+          (long_flag_identifier))
+        flag_capsule: (flag_capsule
+          (param_short_flag
+            name: (param_short_flag_identifier)))
+        (param_type
+          type: (list_type
+            type: (flat_type)
+            completion: (param_cmd
+              unquoted_name: (cmd_identifier))))
+        (param_value
+          param_value: (val_string))))
+    body: (block)))

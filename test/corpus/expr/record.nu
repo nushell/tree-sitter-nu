@@ -225,6 +225,7 @@ record-009-duration
 
 =====
 record-010-key-value-seperation
+:error
 =====
 
 {
@@ -234,6 +235,17 @@ record-010-key-value-seperation
 -----
 
 
+
+=====
+record-011-immediate-comma
+=====
+
+{
+    export: 556,key: 897
+}
+
+-----
+
 (nu_script
   (pipeline
     (pipe_element
@@ -241,6 +253,240 @@ record-010-key-value-seperation
         (record_body
           (record_entry
             (identifier)
-            (ERROR
-              (identifier))
+            (val_number))
+          (record_entry
+            (identifier)
+            (val_number)))))))
+
+=====
+record-012-colon-in-unquoted-value
+:error
+=====
+
+{
+  export: "556:error",key: 897
+  export: 556:error,key: 897
+}
+
+-----
+
+
+
+=====
+record-013-value-as-signed-number-or-range
+=====
+
+{k0.0: -_1_.,k0.1: +_1_.1,k0.2: _1._1e-10,
+k1.0: .._1.,k1.1: +_1_._1..=_2.,k1.2: _1_._1..<_2.
+k1.3: -._1..(._1 + 1._1)..=_2.}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (val_number))
+          (record_entry
+            (identifier)
+            (val_number))
+          (record_entry
+            (identifier)
+            (val_number))
+          (record_entry
+            (identifier)
+            (val_range
+              (val_number)))
+          (record_entry
+            (identifier)
+            (val_range
+              (val_number)
+              (val_number)))
+          (record_entry
+            (identifier)
+            (val_range
+              (val_number)
+              (val_number)))
+          (record_entry
+            (identifier)
+            (val_range
+              (val_number)
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (expr_binary
+                      (val_number)
+                      (val_number)))))
+              (val_number))))))))
+
+=====
+record-014-unquoted-value
+=====
+
+{
+👍: 👍
+k0.0: --long
+k0.1: -short
+k1.0: infms
+k1.1: nankb
+k1.2: true-foo
+k1.3: null-foo
+k2.0: 1ms-foo
+k2.1: 1mb-foo
+k2.2: 2024-01-01foo
+k3.0: .1foo
+k3.1: -__.__.1
+k3.2: .1.
+k3.3: -1.1e-10.
+k4.0: foo(
+  'bar')baz(
+  1)
+k4.1:foo('bar')()
+  k4.2: .()
+k4.3: true()
+k4.4: -()
+k4.5: ..=1()
+k4.6: ..1..<1()
+k4.9: 1...()}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_string))))
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_number))))))
+          (record_entry
+            (identifier)
+            (val_string
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_string))))
+              (expr_parenthesized)))
+          (record_entry
+            (identifier)
+            (val_string
+              (expr_parenthesized)))
+          (record_entry
+            (identifier)
+            (val_string
+              (expr_parenthesized)))
+          (record_entry
+            (identifier)
+            (val_string
+              (expr_parenthesized)))
+          (record_entry
+            (identifier)
+            (val_string
+              (expr_parenthesized)))
+          (record_entry
+            (identifier)
+            (val_string
+              (expr_parenthesized)))
+          (record_entry
+            (identifier)
+            (val_string
+              (expr_parenthesized))))))))
+
+=====
+record-015-separated-colon-vs-closure
+=====
+
+{echo% : 1}
+{echo 1:}
+{is-empty}
+{
+  # comment
+  echo : 1
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (val_number))))))
+  (pipeline
+    (pipe_element
+      (val_closure
+        (pipeline
+          (pipe_element
+            (command
+              (cmd_identifier)
+              (val_string)))))))
+  (pipeline
+    (pipe_element
+      (val_closure
+        (pipeline
+          (pipe_element
+            (command
+              (cmd_identifier)))))))
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (comment)
+          (record_entry
+            (identifier)
             (val_number)))))))

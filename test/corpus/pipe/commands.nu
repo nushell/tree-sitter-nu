@@ -216,7 +216,7 @@ let x = 42
 cmd-010-long-flag
 ======
 
-cmd --long-flag
+cmd --long-flag --42
 
 ------
 
@@ -225,7 +225,10 @@ cmd --long-flag
     (pipe_element
       (command
         (cmd_identifier)
-        (long_flag (long_flag_identifier))))))
+        (long_flag
+          (long_flag_identifier))
+        (long_flag
+          (long_flag_identifier))))))
 
 ======
 cmd-011-path-string-1-dot
@@ -243,21 +246,24 @@ cargo install --path ./dir
       (command
         (cmd_identifier)
         (val_string)
-        (long_flag (long_flag_identifier))
+        (long_flag
+          (long_flag_identifier))
         (val_string))))
   (pipeline
     (pipe_element
       (command
         (cmd_identifier)
         (val_string)
-        (long_flag (long_flag_identifier))
+        (long_flag
+          (long_flag_identifier))
         (val_string))))
   (pipeline
     (pipe_element
       (command
         (cmd_identifier)
         (val_string)
-        (long_flag (long_flag_identifier))
+        (long_flag
+          (long_flag_identifier))
         (val_string)))))
 
 ======
@@ -443,6 +449,7 @@ cmd-017-string-external
 ======
 
 ^'ls'
+^$"ls"
 
 ------
 
@@ -450,7 +457,12 @@ cmd-017-string-external
   (pipeline
     (pipe_element
       (command
-        head: (val_string)))))
+        head: (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        head: (val_interpolated
+          (escaped_interpolated_content))))))
 
 ======
 cmd-018-pipe-external
@@ -474,6 +486,7 @@ cmd-019-flags-with-values
 =====
 
 bla --weird-that=this --behaved-differently=than-this --level=2
+^dummy - -- -color=true
 
 -----
 
@@ -481,19 +494,541 @@ bla --weird-that=this --behaved-differently=than-this --level=2
   (pipeline
     (pipe_element
       (command
+        head: (cmd_identifier)
+        flag: (long_flag
+          name: (long_flag_identifier)
+          value: (val_string))
+        flag: (long_flag
+          name: (long_flag_identifier)
+          value: (val_string))
+        flag: (long_flag
+          name: (long_flag_identifier)
+          value: (val_number)))))
+  (pipeline
+    (pipe_element
+      (command
+        head: (cmd_identifier)
+        flag: (short_flag)
+        flag: (long_flag)
+        flag: (short_flag
+          name: (short_flag_identifier)
+          value: (val_bool))))))
+
+======
+cmd-020-variable-external
+======
+
+^$cmd
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (val_variable
+          (identifier))))))
+
+======
+cmd-021-variable-external-parenthesized
+======
+
+(^$cmd
+  arg
+)
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (command
+              (val_variable
+                (identifier))
+              (val_string))))))))
+
+======
+cmd-022-unquoted-string-vs-type
+======
+
+echo infms
+echo nankb
+echo true-foo
+echo null-foo
+echo e>foo
+echo 1ms-foo
+echo 1mb-foo
+echo .1foo
+echo 1.foo
+echo 1.1foo
+echo 1.1e-10.
+echo 1991-02-02foo
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
         (cmd_identifier)
-          (long_flag
-            (long_flag_equals_value
-              (long_flag_identifier)
-              (long_flag_value
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))
+
+======
+cmd-023-unquoted-string-vs-range
+======
+
+echo .1...
+echo ..2.2
+echo .0...0
+echo ..1..=2.2
+echo .1...0..=0.
+# unquoted following
+echo .1..foo
+echo .1...2foo
+echo .1...1...2foo
+echo .1...0..=0.foo
+echo 1...2foo
+echo ..=.2foo
+echo ..1..=2.foo
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)
+          (val_number)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)
+          (val_number)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)
+          (val_number)
+          (val_number)))))
+  (comment)
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))
+
+======
+cmd-024-unquoted-string-vs-range-followed-by-dot
+======
+
+echo .1...foo
+echo 1...2.foo
+echo .1...0.
+echo ..=.2.
+echo ..<22.2.
+echo ..1..=2..
+echo .1...0..=0..
+echo .1...0..=0..foo
+echo .1...1..<2.foo
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))
+
+======
+cmd-025-unquoted-string-with-immediate-expr-parenthesized
+======
+
+echo foo(
+'bar')baz(
+1)
+echo foo('bar')()
+echo .()
+echo true()
+echo null()
+echo .1ms()
+echo .1mb()
+echo 2024-01-01()
+echo .1()
+echo e>()
+echo ..=1()
+echo ..1..<1()
+echo .1..=1()
+echo 1...1..=1()
+echo ..=1.foo()
+echo 1...()
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized
+            (pipeline
+              (pipe_element
                 (val_string))))
-          (long_flag
-            (long_flag_equals_value
-              (long_flag_identifier)
-              (long_flag_value
-                (val_string))))
-          (long_flag
-            (long_flag_equals_value
-              (long_flag_identifier)
-              (long_flag_value
+          (expr_parenthesized
+            (pipeline
+              (pipe_element
                 (val_number))))))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized
+            (pipeline
+              (pipe_element
+                (val_string))))
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized))))))
+
+======
+cmd-026-unquoted-string-with-leading-plus
+======
+
+echo +100
+echo +_.1
+echo +1.
+echo +1..
+echo +.1..()
+# unquoted below
+chmod +x
+echo +1.f
+echo +.1f
+echo +..1
+echo +
+echo +-
+echo ++1
+echo +.x
+echo +()
+echo +.1()
+echo +..1()
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_number))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_number))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_number))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_range
+          (val_number)
+          (expr_parenthesized)))))
+  (comment)
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized))))))

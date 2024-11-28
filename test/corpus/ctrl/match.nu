@@ -313,6 +313,146 @@ match $x {
               (val_variable
                 (identifier))
               (record_entry
-                  (identifier)
-                  (val_string))))
+                (identifier)
+                (val_string))))
           (block))))))
+
+=====
+match-009-defaults
+=====
+
+match $x {
+   _ if $x == 4 => {},
+   _ => {}
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_variable
+          (identifier))
+        (match_arm
+          (match_pattern
+            (match_guard
+              (expr_binary
+                (val_variable
+                  (identifier))
+                (val_number))))
+          (block))
+        (default_arm
+          (block))))))
+
+=====
+match-010-empty
+=====
+
+match [true] {}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_list
+          (list_body
+            (val_entry
+              (val_bool))))))))
+
+=====
+match-011-seperator
+=====
+
+match null {
+1 => 0 2unquote => 1
+# comment
+
+3 => $x.0.0, 4 => {$x.0}
+# comment
+,
+
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_nothing)
+        (match_arm
+          (match_pattern
+            (val_number))
+          (val_number))
+        (match_arm
+          (match_pattern
+            (val_string))
+          (val_number))
+        (comment)
+        (match_arm
+          (match_pattern
+            (val_number))
+          (val_variable
+            (identifier)
+            (cell_path
+              (path)
+              (path))))
+        (match_arm
+          (match_pattern
+            (val_number))
+          (block
+            (pipeline
+              (pipe_element
+                (val_variable
+                  (identifier)
+                  (cell_path
+                    (path)))))))
+        (comment)))))
+
+=====
+match-012-unary-not-allowed
+:error
+=====
+
+match 1 {
+_ => not true
+}
+
+-----
+
+
+
+=====
+match-013-binary-not-allowed
+:error
+=====
+
+match 1 {
+_ => 1 + 1
+}
+
+-----
+
+
+
+=====
+match-014-default-only
+=====
+
+match 1 {#comment
+  _ => 1
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_number)
+        (comment)
+        (default_arm
+          (val_number))))))

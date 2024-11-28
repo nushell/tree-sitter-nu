@@ -1,8 +1,6 @@
 #include "tree_sitter/parser.h"
 #include "tree_sitter/alloc.h"
-#include "tree_sitter/array.h"
-#include <stdbool.h>
-#include <stdint.h>
+#include <wctype.h>
 
 #define skip lexer->advance(lexer, true)
 #define adv lexer->advance(lexer, false)
@@ -17,7 +15,6 @@ enum TokenType {
 
 typedef struct {
     uint8_t level;
-    bool emitted_content;
 } Scanner;
 
 static uint8_t consume_chars(TSLexer *lexer, char c) {
@@ -38,11 +35,16 @@ static uint32_t consume_until(TSLexer *lexer, char c) {
     return count;
 }
 
+static void skip_whitespace(TSLexer *lexer) {
+    while (iswspace(lexer->lookahead) && !eof) {
+        skip;
+    }
+}
+
 
 void *tree_sitter_nu_external_scanner_create(void) {
     Scanner *scanner = ts_malloc(sizeof(Scanner));
     scanner->level = 0;
-    scanner->emitted_content = false;
     return scanner;
 }
 
@@ -58,8 +60,7 @@ unsigned tree_sitter_nu_external_scanner_serialize(
 ) {
     Scanner *s = (Scanner *) payload;
     buffer[0] = s->level;
-    buffer[1] = s->emitted_content;
-    return 2;
+    return 1;
 }
 
 
@@ -70,17 +71,8 @@ void tree_sitter_nu_external_scanner_deserialize(
 ) {
     Scanner *s = (Scanner *) payload;
     s->level = 0;
-    s->emitted_content = false;
-    if (length == 2) {
+    if (length == 1) {
         s->level = buffer[0];
-        s->emitted_content = buffer[1];
-    }
-}
-
-static void skip_whitespace(TSLexer *lexer) {
-    while (lexer->lookahead ==  ' ' || lexer->lookahead == '\t'
-            || lexer->lookahead == '\n' && !eof) {
-        skip;
     }
 }
 
@@ -89,17 +81,18 @@ static bool scan_raw_string_begin(TSLexer *lexer, Scanner *s) {
     // scan for r#' r##' or more #
     skip_whitespace(lexer);
 
-    if (lexer->lookahead == 'r') {
-        lexer->log(lexer, "Detected 'r'.\n");
+    if (lexer->lookahead != 'r') {
+        return false;
+    }
+    lexer->log(lexer, "Detected 'r'.\n");
+    adv;
+    uint8_t level = consume_chars(lexer, '#');
+    lexer->log(lexer, "num #: %i\n", level);
+    if (lexer->lookahead == '\'') {
         adv;
-        uint8_t level = consume_chars(lexer, '#');
-        lexer->log(lexer, "num #: %i\n", level);
-        if (lexer->lookahead == '\'') {
-            adv;
-            lexer->log(lexer, "Detected level: %i\n", level);
-            s->level = level;
-            return true;
-        }
+        lexer->log(lexer, "Detected level: %i\n", level);
+        s->level = level;
+        return true;
     }
     return false;
 }
@@ -115,30 +108,25 @@ static bool scan_raw_string_content(TSLexer *lexer, Scanner *s) {
         adv;
         uint8_t level = consume_chars(lexer, '#');
         lexer->log(lexer, "Consumed [%i] #\n", level);
-        if (level == s->level && len != 0) {
+        if (level == s->level) {
             lexer->log(lexer, "Detected end\n" );
             return true;
-        } else if (level == s->level && len == 0) {
-            return false;
         }
     }
 
     return false;
 }
 
-bool scan_raw_string_end(TSLexer *lexer, Scanner *s) {
+static bool scan_raw_string_end(TSLexer *lexer, Scanner *s) {
     lexer->log(lexer, "END\n");
+    // HINT: scan_raw_string_content already determines the content's length
+    // so we only advance to the end of the delimiter and return true.
     adv;
-    uint8_t level = consume_chars(lexer, '#');
-    lexer->log(lexer, "Consumed [%i] #\n", level);
-    if (level == s->level) {
-        lexer->log(lexer, "Emitted end\n" );
-        s->level = 0;
-        s->emitted_content = false;
-        return true;
+    while (s->level > 0) {
+        adv;
+        s->level--;
     }
-
-    return false;
+    return true;
 }
 
 bool tree_sitter_nu_external_scanner_scan(
@@ -151,8 +139,7 @@ bool tree_sitter_nu_external_scanner_scan(
     }
 
     Scanner *s = (Scanner *) payload;
-    lexer->log(lexer, "Nu Scanner: level [%i], emitted [%b]\n", s->level,
-               s->emitted_content);
+    lexer->log(lexer, "Nu Scanner: level [%i]\n", s->level);
 
     if (valid_symbols[RAW_STRING_BEGIN] && s->level == 0) {
         lexer->result_symbol = RAW_STRING_BEGIN;
