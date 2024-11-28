@@ -33,8 +33,8 @@
 
 ; Conditional inner counts the last one, rather than the current one.
 (ctrl_if
-;   then_branch: (_) @conditional.inner
-;   else_block: (_)? @conditional.inner
+  then_branch: (_) @conditional.inner
+  else_block: (_)? @conditional.inner
   ) @conditional.outer
 
 (parameter) @parameter.outer
