@@ -173,8 +173,8 @@ binary-expr-008-multiline-precedence
                 (comment)
                 (expr_binary
                   (val_number)
-                  (val_number)))
-              (comment)
+                  (val_number)
+                  (comment)))
               (val_number))))))))
 
 ====

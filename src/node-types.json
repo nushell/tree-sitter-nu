@@ -5426,6 +5426,11 @@
     }
   },
   {
+    "type": "wild_card",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "!=",
     "named": false
   },
@@ -6140,10 +6145,6 @@
   {
     "type": "while",
     "named": false
-  },
-  {
-    "type": "wild_card",
-    "named": true
   },
   {
     "type": "xor",

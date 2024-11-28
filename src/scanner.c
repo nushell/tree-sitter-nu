@@ -1,7 +1,6 @@
 #include "tree_sitter/parser.h"
 #include "tree_sitter/alloc.h"
-#include <stdbool.h>
-#include <stdint.h>
+#include <wctype.h>
 
 #define skip lexer->advance(lexer, true)
 #define adv lexer->advance(lexer, false)
@@ -34,6 +33,12 @@ static uint32_t consume_until(TSLexer *lexer, char c) {
         count++;
     }
     return count;
+}
+
+static void skip_whitespace(TSLexer *lexer) {
+    while (iswspace(lexer->lookahead) && !eof) {
+        skip;
+    }
 }
 
 
@@ -74,7 +79,11 @@ void tree_sitter_nu_external_scanner_deserialize(
 static bool scan_raw_string_begin(TSLexer *lexer, Scanner *s) {
     lexer->log(lexer, "BEGIN\n");
     // scan for r#' r##' or more #
+    skip_whitespace(lexer);
 
+    if (lexer->lookahead != 'r') {
+        return false;
+    }
     lexer->log(lexer, "Detected 'r'.\n");
     adv;
     uint8_t level = consume_chars(lexer, '#');
@@ -132,7 +141,7 @@ bool tree_sitter_nu_external_scanner_scan(
     Scanner *s = (Scanner *) payload;
     lexer->log(lexer, "Nu Scanner: level [%i]\n", s->level);
 
-    if (valid_symbols[RAW_STRING_BEGIN] && lexer->lookahead == 'r') {
+    if (valid_symbols[RAW_STRING_BEGIN] && s->level == 0) {
         lexer->result_symbol = RAW_STRING_BEGIN;
         return scan_raw_string_begin(lexer, s);
     }
