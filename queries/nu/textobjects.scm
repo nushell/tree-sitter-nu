@@ -46,7 +46,7 @@
 
 ; define pipeline first, because it should only match as a fallback
 ; e.g., `let a = date now` should match the whole assignment.
-; `date now` should also match a statement
+; But a standalone `date now` should also match a statement
 (pipeline) @statement.outer
 
 (stmt_let) @statement.outer
