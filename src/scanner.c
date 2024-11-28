@@ -1,7 +1,6 @@
 #include "tree_sitter/parser.h"
 #include "tree_sitter/alloc.h"
-#include <stdbool.h>
-#include <stdint.h>
+#include <wctype.h>
 
 #define skip lexer->advance(lexer, true)
 #define adv lexer->advance(lexer, false)
@@ -37,8 +36,7 @@ static uint32_t consume_until(TSLexer *lexer, char c) {
 }
 
 static void skip_whitespace(TSLexer *lexer) {
-    while ((lexer->lookahead ==  ' ' || lexer->lookahead == '\t' ||
-            lexer->lookahead == '\r' || lexer->lookahead == '\n') && !eof) {
+    while (iswspace(lexer->lookahead) && !eof) {
         skip;
     }
 }
