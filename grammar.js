@@ -9,6 +9,7 @@ module.exports = grammar({
 
   inline: ($) => [
     $._do_expression,
+    $._flag,
     $._flag_value,
     $._item_expression,
     $._match_expression,
@@ -273,14 +274,12 @@ module.exports = grammar({
           token.immediate(BRACK().open_angle),
           repeat(
             seq(
-              seq(
-                key,
-                optional(
-                  seq(
-                    PUNC().colon,
-                    $._all_type,
-                    field("completion", optional($.param_cmd)),
-                  ),
+              key,
+              optional(
+                seq(
+                  PUNC().colon,
+                  $._all_type,
+                  field("completion", optional($.param_cmd)),
                 ),
               ),
               optional(PUNC().comma),
@@ -419,7 +418,7 @@ module.exports = grammar({
         PREC().low,
         seq(
           KEYWORD().do,
-          optional(seq(repeat($._flags_parenthesized))),
+          repeat($._flags_parenthesized),
           repeat1($._separator),
           choice($._blosure, $.val_variable),
           repeat(seq(repeat($._newline), $._do_expression)),
@@ -1283,7 +1282,7 @@ module.exports = grammar({
         ),
       ),
 
-    _flag: ($) => prec.right(5, choice($.short_flag, $.long_flag)),
+    _flag: ($) => choice($.short_flag, $.long_flag),
 
     _flags_parenthesized: ($) => seq(repeat1($._separator), $._flag),
 
