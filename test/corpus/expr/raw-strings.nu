@@ -2,6 +2,7 @@
 raw-strings-001-simple
 =====
 
+  r#'string'#
 r#'string'#
 
 -----
@@ -10,9 +11,15 @@ r#'string'#
   (pipeline
     (pipe_element
       (val_string
-          (raw_string_begin)
-          (raw_string_content)
-          (raw_string_end)))))
+        (raw_string_begin)
+        (raw_string_content)
+        (raw_string_end))))
+  (pipeline
+    (pipe_element
+      (val_string
+        (raw_string_begin)
+        (raw_string_content)
+        (raw_string_end)))))
 
 =====
 raw-strings-002-simple
@@ -26,9 +33,9 @@ r##'raw string: r#'bla'#'##
   (pipeline
     (pipe_element
       (val_string
-          (raw_string_begin)
-          (raw_string_content)
-          (raw_string_end)))))
+        (raw_string_begin)
+        (raw_string_content)
+        (raw_string_end)))))
 
 =====
 raw-strings-003-simple
@@ -42,9 +49,9 @@ r#####'string'#####
   (pipeline
     (pipe_element
       (val_string
-          (raw_string_begin)
-          (raw_string_content)
-          (raw_string_end)))))
+        (raw_string_begin)
+        (raw_string_content)
+        (raw_string_end)))))
 
 =====
 raw-strings-004-with-ticks-and-tags
@@ -58,9 +65,9 @@ r#####'string '#'##'#####
   (pipeline
     (pipe_element
       (val_string
-          (raw_string_begin)
-          (raw_string_content)
-          (raw_string_end)))))
+        (raw_string_begin)
+        (raw_string_content)
+        (raw_string_end)))))
 
 =====
 raw-strings-005-empty-string
@@ -74,6 +81,6 @@ r#''#
   (pipeline
     (pipe_element
       (val_string
-          (raw_string_begin)
-          (raw_string_content)
-          (raw_string_end)))))
+        (raw_string_begin)
+        (raw_string_content)
+        (raw_string_end)))))
