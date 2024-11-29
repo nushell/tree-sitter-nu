@@ -733,8 +733,7 @@ range ($n + 1)..($n + 3)..=([$a $b] | math max)
                         (identifier))))))
               (pipe_element
                 (command
-                  (cmd_identifier)
-                  (val_string))))))))))
+                  (cmd_identifier))))))))))
 
 =====
 range-018-cmd-subexpr-without-end
@@ -825,5 +824,4 @@ range ..($n + 3)..=([$a $b] | math max)
                         (identifier))))))
               (pipe_element
                 (command
-                  (cmd_identifier)
-                  (val_string))))))))))
+                  (cmd_identifier))))))))))

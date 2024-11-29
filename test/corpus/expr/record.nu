@@ -136,7 +136,6 @@ record-006-subexpression-key
                 (pipe_element
                   (command
                     (cmd_identifier)
-                    (val_string)
                     (val_string)))))
             (val_string)))))))
 

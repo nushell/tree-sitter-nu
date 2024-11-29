@@ -79,8 +79,7 @@ spread-002-record-literals
               (pipeline
                 (pipe_element
                   (command
-                    head: (cmd_identifier)
-                    arg_str: (val_string)))))))))))
+                    head: (cmd_identifier)))))))))))
 
 ====
 spread-003-command-arguments

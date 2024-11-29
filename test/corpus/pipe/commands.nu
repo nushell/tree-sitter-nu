@@ -376,8 +376,7 @@ print 192.168.0.1
   (pipeline
     (pipe_element
       (command
-        (cmd_identifier)
-        (val_string))))
+        (cmd_identifier))))
   (pipeline
     (pipe_element
       (command
