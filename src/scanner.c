@@ -77,20 +77,16 @@ void tree_sitter_nu_external_scanner_deserialize(
 }
 
 static bool scan_raw_string_begin(TSLexer *lexer, Scanner *s) {
-    lexer->log(lexer, "BEGIN\n");
     // scan for r#' r##' or more #
     skip_whitespace(lexer);
 
     if (lexer->lookahead != 'r') {
         return false;
     }
-    lexer->log(lexer, "Detected 'r'.\n");
     adv;
     uint8_t level = consume_chars(lexer, '#');
-    lexer->log(lexer, "num #: %i\n", level);
     if (lexer->lookahead == '\'') {
         adv;
-        lexer->log(lexer, "Detected level: %i\n", level);
         s->level = level;
         return true;
     }
@@ -99,17 +95,13 @@ static bool scan_raw_string_begin(TSLexer *lexer, Scanner *s) {
 
 static bool scan_raw_string_content(TSLexer *lexer, Scanner *s) {
     uint32_t len = 0;
-    lexer->log(lexer, "CONTENT\n");
     while (!eof) {
         uint32_t num = consume_until(lexer, '\'');
-        lexer->log(lexer, "Set mark\n");
         lexer->mark_end(lexer);
         len += num;
         adv;
         uint8_t level = consume_chars(lexer, '#');
-        lexer->log(lexer, "Consumed [%i] #\n", level);
         if (level == s->level) {
-            lexer->log(lexer, "Detected end\n" );
             return true;
         }
     }
@@ -118,7 +110,6 @@ static bool scan_raw_string_content(TSLexer *lexer, Scanner *s) {
 }
 
 static bool scan_raw_string_end(TSLexer *lexer, Scanner *s) {
-    lexer->log(lexer, "END\n");
     // HINT: scan_raw_string_content already determines the content's length
     // so we only advance to the end of the delimiter and return true.
     adv;
@@ -139,7 +130,6 @@ bool tree_sitter_nu_external_scanner_scan(
     }
 
     Scanner *s = (Scanner *) payload;
-    lexer->log(lexer, "Nu Scanner: level [%i]\n", s->level);
 
     if (valid_symbols[RAW_STRING_BEGIN] && s->level == 0) {
         lexer->result_symbol = RAW_STRING_BEGIN;
