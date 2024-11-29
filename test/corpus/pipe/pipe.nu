@@ -37,12 +37,10 @@ echo this
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string)
         (val_string)))
     (pipe_element
       (command
-        (cmd_identifier)
-        (val_string)))))
+        (cmd_identifier)))))
 
 =====
 pipe-003-crossing-too-much-lines
@@ -67,12 +65,10 @@ echo this
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string)
         (val_string)))
     (pipe_element
       (command
-        (cmd_identifier)
-        (val_string)))
+        (cmd_identifier)))
     (pipe_element
       (command
         (cmd_identifier)
@@ -97,12 +93,10 @@ echo this
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string)
         (val_string)))
     (pipe_element
       (command
-        (cmd_identifier)
-        (val_string)))))
+        (cmd_identifier)))))
 
 =====
 pipe-005-unquoted-1-character
@@ -119,7 +113,6 @@ pipe-005-unquoted-1-character
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string)
         (val_string)))))
 
 =====
