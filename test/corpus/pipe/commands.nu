@@ -245,7 +245,6 @@ cargo install --path ./dir
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string)
         (long_flag
           (long_flag_identifier))
         (val_string))))
@@ -253,7 +252,6 @@ cargo install --path ./dir
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string)
         (long_flag
           (long_flag_identifier))
         (val_string))))
@@ -261,7 +259,6 @@ cargo install --path ./dir
     (pipe_element
       (command
         (cmd_identifier)
-        (val_string)
         (long_flag
           (long_flag_identifier))
         (val_string)))))

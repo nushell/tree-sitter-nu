@@ -14729,6 +14729,82 @@
                             },
                             {
                               "type": "STRING",
+                              "value": "cargo add"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo bench"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo build"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo check"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo clean"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo clippy"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo doc"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo help"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo init"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo install"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo install-update"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo metadata"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo new"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo publish"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo run"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo search"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo test"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo uninstall"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo update"
+                            },
+                            {
+                              "type": "STRING",
                               "value": "commandline edit"
                             },
                             {
@@ -14986,6 +15062,346 @@
                             {
                               "type": "STRING",
                               "value": "from zst"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh alias"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh api"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh auth"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh browse"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh cache"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh codespace"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh completion"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh config"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh extension"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist clone"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist create"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist delete"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist edit"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist list"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist rename"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist view"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gpg-key"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh issue"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh label"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh org"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh pr"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh pr checkout"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh project"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh release"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh repo"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh repo clone"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh repo create"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh repo fork"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh repo list"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh repo view"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh ruleset"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh run"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh search"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh secret"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh ssh-key"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh status"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh variable"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh workflow"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git add"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git bisect bad"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git bisect good"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git bisect reset"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git bisect skip"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git bisect start"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git branch"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git checkout"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git cherry-pick"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git clone"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git commit"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git diff"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git fetch"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git grep"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git help"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git init"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git log"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git prune"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git pull"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git push"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git rebase"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git reflog"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git remote"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git remote add"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git remote get-url"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git remote remove"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git remote rename"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git remote set-url"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git restore"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git rm"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git stash drop"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git stash list"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git stash pop"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git stash push"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git stash show"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git status"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git switch"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git tag"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree add"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree list"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree lock"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree move"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree prune"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree remove"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree unlock"
                             },
                             {
                               "type": "STRING",
@@ -15310,6 +15726,10 @@
                             {
                               "type": "STRING",
                               "value": "plugin stop"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "plugin use"
                             },
                             {
                               "type": "STRING",
@@ -15830,6 +16250,98 @@
                             {
                               "type": "STRING",
                               "value": "roll up"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup completions"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup completions cargo"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup completions rustup"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup component"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup component add"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup component remove"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup default"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup help"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup override"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup override set"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup override unset"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup run"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup self"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup set"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup set auto-self-update"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup set profile"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup target"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup target add"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup target remove"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup toolchain"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup toolchain install"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup toolchain uninstall"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup update"
                             },
                             {
                               "type": "STRING",
@@ -16407,6 +16919,82 @@
                             },
                             {
                               "type": "STRING",
+                              "value": "cargo add"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo bench"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo build"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo check"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo clean"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo clippy"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo doc"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo help"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo init"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo install"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo install-update"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo metadata"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo new"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo publish"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo run"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo search"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo test"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo uninstall"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "cargo update"
+                            },
+                            {
+                              "type": "STRING",
                               "value": "commandline edit"
                             },
                             {
@@ -16664,6 +17252,346 @@
                             {
                               "type": "STRING",
                               "value": "from zst"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh alias"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh api"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh auth"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh browse"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh cache"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh codespace"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh completion"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh config"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh extension"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist clone"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist create"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist delete"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist edit"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist list"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist rename"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gist view"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh gpg-key"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh issue"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh label"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh org"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh pr"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh pr checkout"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh project"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh release"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh repo"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh repo clone"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh repo create"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh repo fork"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh repo list"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh repo view"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh ruleset"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh run"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh search"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh secret"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh ssh-key"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh status"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh variable"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "gh workflow"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git add"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git bisect bad"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git bisect good"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git bisect reset"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git bisect skip"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git bisect start"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git branch"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git checkout"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git cherry-pick"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git clone"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git commit"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git diff"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git fetch"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git grep"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git help"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git init"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git log"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git prune"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git pull"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git push"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git rebase"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git reflog"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git remote"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git remote add"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git remote get-url"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git remote remove"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git remote rename"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git remote set-url"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git restore"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git rm"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git stash drop"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git stash list"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git stash pop"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git stash push"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git stash show"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git status"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git switch"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git tag"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree add"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree list"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree lock"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree move"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree prune"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree remove"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "git worktree unlock"
                             },
                             {
                               "type": "STRING",
@@ -16988,6 +17916,10 @@
                             {
                               "type": "STRING",
                               "value": "plugin stop"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "plugin use"
                             },
                             {
                               "type": "STRING",
@@ -17508,6 +18440,98 @@
                             {
                               "type": "STRING",
                               "value": "roll up"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup completions"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup completions cargo"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup completions rustup"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup component"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup component add"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup component remove"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup default"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup help"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup override"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup override set"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup override unset"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup run"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup self"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup set"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup set auto-self-update"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup set profile"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup target"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup target add"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup target remove"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup toolchain"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup toolchain install"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup toolchain uninstall"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "rustup update"
                             },
                             {
                               "type": "STRING",
