@@ -2709,7 +2709,7 @@
                 "type": "ALIAS",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_unquoted_in_list"
+                  "name": "_unquoted_in_record"
                 },
                 "named": true,
                 "value": "val_string"
@@ -2718,7 +2718,7 @@
                 "type": "ALIAS",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_unquoted_in_list_with_expr"
+                  "name": "_unquoted_in_record_with_expr"
                 },
                 "named": true,
                 "value": "val_string"
@@ -2950,83 +2950,178 @@
               }
             },
             {
-              "type": "REPEAT",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "FIELD",
-                    "name": "key",
-                    "content": {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "SYMBOL",
-                          "name": "identifier"
-                        },
-                        {
-                          "type": "ALIAS",
-                          "content": {
-                            "type": "SYMBOL",
-                            "name": "val_string"
-                          },
-                          "named": true,
-                          "value": "identifier"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "CHOICE",
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "PREC",
+                  "value": 20,
+                  "content": {
+                    "type": "SEQ",
                     "members": [
+                      {
+                        "type": "REPEAT",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_newline"
+                        }
+                      },
+                      {
+                        "type": "REPEAT",
+                        "content": {
+                          "type": "SEQ",
+                          "members": [
+                            {
+                              "type": "SEQ",
+                              "members": [
+                                {
+                                  "type": "FIELD",
+                                  "name": "key",
+                                  "content": {
+                                    "type": "CHOICE",
+                                    "members": [
+                                      {
+                                        "type": "SYMBOL",
+                                        "name": "identifier"
+                                      },
+                                      {
+                                        "type": "ALIAS",
+                                        "content": {
+                                          "type": "SYMBOL",
+                                          "name": "val_string"
+                                        },
+                                        "named": true,
+                                        "value": "identifier"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "CHOICE",
+                                  "members": [
+                                    {
+                                      "type": "SEQ",
+                                      "members": [
+                                        {
+                                          "type": "STRING",
+                                          "value": ":"
+                                        },
+                                        {
+                                          "type": "SYMBOL",
+                                          "name": "_all_type"
+                                        },
+                                        {
+                                          "type": "FIELD",
+                                          "name": "completion",
+                                          "content": {
+                                            "type": "CHOICE",
+                                            "members": [
+                                              {
+                                                "type": "SYMBOL",
+                                                "name": "param_cmd"
+                                              },
+                                              {
+                                                "type": "BLANK"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "BLANK"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "REPEAT1",
+                              "content": {
+                                "type": "SYMBOL",
+                                "name": "_entry_separator"
+                              }
+                            }
+                          ]
+                        }
+                      },
                       {
                         "type": "SEQ",
                         "members": [
                           {
-                            "type": "STRING",
-                            "value": ":"
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "_all_type"
-                          },
-                          {
                             "type": "FIELD",
-                            "name": "completion",
+                            "name": "key",
                             "content": {
                               "type": "CHOICE",
                               "members": [
                                 {
                                   "type": "SYMBOL",
-                                  "name": "param_cmd"
+                                  "name": "identifier"
                                 },
                                 {
-                                  "type": "BLANK"
+                                  "type": "ALIAS",
+                                  "content": {
+                                    "type": "SYMBOL",
+                                    "name": "val_string"
+                                  },
+                                  "named": true,
+                                  "value": "identifier"
                                 }
                               ]
                             }
+                          },
+                          {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "STRING",
+                                    "value": ":"
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_all_type"
+                                  },
+                                  {
+                                    "type": "FIELD",
+                                    "name": "completion",
+                                    "content": {
+                                      "type": "CHOICE",
+                                      "members": [
+                                        {
+                                          "type": "SYMBOL",
+                                          "name": "param_cmd"
+                                        },
+                                        {
+                                          "type": "BLANK"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "BLANK"
+                              }
+                            ]
                           }
                         ]
                       },
                       {
-                        "type": "BLANK"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": ","
-                      },
-                      {
-                        "type": "BLANK"
+                        "type": "REPEAT",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_entry_separator"
+                        }
                       }
                     ]
                   }
-                ]
-              }
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "STRING",
@@ -10784,6 +10879,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "val_range"
+        },
+        {
+          "type": "SYMBOL",
           "name": "expr_binary"
         },
         {
@@ -10802,6 +10901,10 @@
         {
           "type": "SYMBOL",
           "name": "_value"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "val_range"
         },
         {
           "type": "ALIAS",
@@ -14941,10 +15044,6 @@
                             },
                             {
                               "type": "STRING",
-                              "value": "error make"
-                            },
-                            {
-                              "type": "STRING",
                               "value": "explore ir"
                             },
                             {
@@ -17131,10 +17230,6 @@
                             },
                             {
                               "type": "STRING",
-                              "value": "error make"
-                            },
-                            {
-                              "type": "STRING",
                               "value": "explore ir"
                             },
                             {
@@ -19140,35 +19235,30 @@
           ]
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_space"
-            },
-            {
-              "type": "FIELD",
-              "name": "file_path",
-              "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "_unquoted_naive"
-                    },
-                    "named": true,
-                    "value": "val_string"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_stringish"
-                  }
-                ]
+          "type": "SYMBOL",
+          "name": "_space"
+        },
+        {
+          "type": "FIELD",
+          "name": "file_path",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_unquoted_naive"
+                },
+                "named": true,
+                "value": "val_string"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_stringish"
               }
-            }
-          ]
+            ]
+          }
         }
       ]
     },

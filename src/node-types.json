@@ -1696,6 +1696,10 @@
             "named": true
           },
           {
+            "type": "val_range",
+            "named": true
+          },
+          {
             "type": "val_record",
             "named": true
           },
@@ -1885,6 +1889,10 @@
           },
           {
             "type": "val_number",
+            "named": true
+          },
+          {
+            "type": "val_range",
             "named": true
           },
           {

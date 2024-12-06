@@ -73,7 +73,6 @@ encode base32
 encode base32hex
 encode base64
 encode hex
-error make
 explore ir
 format date
 format duration

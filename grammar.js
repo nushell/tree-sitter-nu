@@ -254,8 +254,8 @@ module.exports = grammar({
           "param_value",
           choice(
             $._item_expression,
-            alias($._unquoted_in_list, $.val_string),
-            alias($._unquoted_in_list_with_expr, $.val_string),
+            alias($._unquoted_in_record, $.val_string),
+            alias($._unquoted_in_record_with_expr, $.val_string),
           ),
         ),
       ),
@@ -269,27 +269,22 @@ module.exports = grammar({
     flat_type: (_$) => field("flat_type", FLAT_TYPES()),
 
     collection_type: ($) => {
-      const key = field(
-        "key",
-        choice($.identifier, alias($.val_string, $.identifier)),
+      const type_and_completion = seq(
+        PUNC().colon,
+        $._all_type,
+        field("completion", optional($.param_cmd)),
+      );
+      const entry = seq(
+        field("key", choice($.identifier, alias($.val_string, $.identifier))),
+        optional(type_and_completion),
       );
 
       return seq(
         choice("record", "table"),
         seq(
           token.immediate(BRACK().open_angle),
-          repeat(
-            seq(
-              key,
-              optional(
-                seq(
-                  PUNC().colon,
-                  $._all_type,
-                  field("completion", optional($.param_cmd)),
-                ),
-              ),
-              optional(PUNC().comma),
-            ),
+          optional(
+            general_body_rules("", entry, $._entry_separator, $._newline),
           ),
           BRACK().close_angle,
         ),
@@ -793,11 +788,18 @@ module.exports = grammar({
     expr_binary_parenthesized: _expr_binary_rule(true),
 
     _expr_binary_expression: ($) =>
-      choice($._value, $.expr_binary, $.expr_unary, $.expr_parenthesized),
+      choice(
+        $._value,
+        $.val_range,
+        $.expr_binary,
+        $.expr_unary,
+        $.expr_parenthesized,
+      ),
 
     _expr_binary_expression_parenthesized: ($) =>
       choice(
         $._value,
+        $.val_range,
         alias($.expr_binary_parenthesized, $.expr_binary),
         $.expr_unary,
         $.expr_parenthesized,
@@ -1279,12 +1281,10 @@ module.exports = grammar({
     redirection: ($) =>
       seq(
         choice(...REDIR_APPEND()),
-        seq(
-          $._space,
-          field(
-            "file_path",
-            choice(alias($._unquoted_naive, $.val_string), $._stringish),
-          ),
+        $._space,
+        field(
+          "file_path",
+          choice(alias($._unquoted_naive, $.val_string), $._stringish),
         ),
       ),
 

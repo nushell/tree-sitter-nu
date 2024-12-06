@@ -972,6 +972,7 @@ def test [
   y: string@"cmd",
   --zero(-z): list<string@cmd>
 = hello,
+  --one=one: int
 ] {}
 
 -----
@@ -1004,5 +1005,42 @@ def test [
             completion: (param_cmd
               unquoted_name: (cmd_identifier))))
         (param_value
-          param_value: (val_string))))
+          param_value: (val_string)))
+      (parameter
+        param_long_flag: (param_long_flag
+          (long_flag_identifier))
+        (param_value
+          param_value: (val_string))
+        (param_type
+          type: (flat_type))))
     body: (block)))
+
+======
+def-034-types-multiline-collection
+======
+
+def open-pr [
+    pr: record<
+        branch: string
+        title: string
+        body: string
+    >
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (flat_type)
+            (identifier)
+            (flat_type)
+            (identifier)
+            (flat_type)))))
+    (block)))
