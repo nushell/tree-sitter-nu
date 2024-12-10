@@ -37,16 +37,15 @@ module.exports = grammar({
     [$._block_body, $.record_body, $.val_closure],
     [$._block_body, $.shebang],
     [$._block_body, $.val_closure],
-    [$._expression, $._expr_binary_expression],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
     [$._match_pattern_record, $.val_record],
     [$._match_pattern_record_variable, $._value],
     [$._match_pattern_value, $._value],
     [$._parenthesized_body],
-    [$._val_number_decimal],
     [$.block, $.val_closure],
     [$.block, $.val_record],
+    [$.command, $.record_entry],
     [$.ctrl_if_parenthesized],
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
@@ -365,15 +364,10 @@ module.exports = grammar({
 
     ctrl_for: ($) =>
       seq(
-        // `for` has the `--numbered` flag
         KEYWORD().for,
-        optional($._flag),
         field("looping_var", $._variable_name),
-        optional($._flag),
         KEYWORD().in,
-        optional($._flag),
         field("iterable", $._expression),
-        optional($._flag),
         field("body", $.block),
       ),
 
@@ -591,6 +585,7 @@ module.exports = grammar({
           _env_variable_rule(true, $),
           alias($._command_parenthesized, $.command),
         ),
+
         $._ctrl_expression_parenthesized,
         alias($.where_command_parenthesized, $.where_command),
       ),
@@ -1163,7 +1158,7 @@ module.exports = grammar({
             "key",
             choice(
               // Without $.cmd_identifier, cannot correctly distinguish between record and closure
-              alias($.cmd_identifier, $.identifier),
+              seq(alias($.cmd_identifier, $.identifier), repeat($._separator)),
               alias($._record_key, $.identifier),
               $.val_string,
               $.val_number,
@@ -1175,10 +1170,7 @@ module.exports = grammar({
               ...Object.values(MODIFIER()).map((x) => alias(x, $.identifier)),
             ),
           ),
-          alias(
-            token(prec(PREC().higher, seq(/\s*/, PUNC().colon))),
-            PUNC().colon,
-          ),
+          token(prec(PREC().higher, PUNC().colon)),
           field(
             "value",
             choice(
@@ -1236,7 +1228,7 @@ module.exports = grammar({
       );
 
       return seq(
-        token.immediate(PUNC().dot),
+        PUNC().dot,
         choice(
           field("raw_path", path),
           field("protected_path", seq(path, PUNC().question)),
