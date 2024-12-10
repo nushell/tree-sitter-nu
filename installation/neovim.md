@@ -15,7 +15,7 @@ Extend your lazy config with treesitter and the nu parser. The parser doesn't ha
             },
             -- OPTIONAL!! These enable ts-specific textobjects.
             -- So you can hit `yaf` to copy the closest function,
-            -- `dif` to clear the contet of the closest function,
+            -- `dif` to clear the content of the closest function,
             -- or whatever keys you map to what query.
             textobjects = {
                 select = {
