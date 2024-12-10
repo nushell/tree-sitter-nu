@@ -45,7 +45,6 @@ where-002-parenthesized
             (pipe_element
               (command
                 (cmd_identifier)
-                (val_string)
                 (val_string)))))))))
 
 =====

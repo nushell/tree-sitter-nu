@@ -203,3 +203,20 @@ and true
                   (val_number)
                   (val_number)))
               (val_bool))))))))
+
+====
+binary-expr-010-range
+====
+
+1 in 1..=3
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_binary
+        (val_number)
+        (val_range
+          (val_number)
+          (val_number))))))

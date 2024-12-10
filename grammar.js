@@ -1,3 +1,9 @@
+const fs = require("fs");
+const internals = fs
+  .readFileSync("./internal.txt", "utf-8")
+  .split("\n")
+  .filter((x) => x.length > 0);
+
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 module.exports = grammar({
@@ -31,16 +37,15 @@ module.exports = grammar({
     [$._block_body, $.record_body, $.val_closure],
     [$._block_body, $.shebang],
     [$._block_body, $.val_closure],
-    [$._expression, $._expr_binary_expression],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
     [$._match_pattern_record, $.val_record],
     [$._match_pattern_record_variable, $._value],
     [$._match_pattern_value, $._value],
     [$._parenthesized_body],
-    [$._val_number_decimal],
     [$.block, $.val_closure],
     [$.block, $.val_record],
+    [$.command, $.record_entry],
     [$.ctrl_if_parenthesized],
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
@@ -248,8 +253,8 @@ module.exports = grammar({
           "param_value",
           choice(
             $._item_expression,
-            alias($._unquoted_in_list, $.val_string),
-            alias($._unquoted_in_list_with_expr, $.val_string),
+            alias($._unquoted_in_record, $.val_string),
+            alias($._unquoted_in_record_with_expr, $.val_string),
           ),
         ),
       ),
@@ -263,27 +268,22 @@ module.exports = grammar({
     flat_type: (_$) => field("flat_type", FLAT_TYPES()),
 
     collection_type: ($) => {
-      const key = field(
-        "key",
-        choice($.identifier, alias($.val_string, $.identifier)),
+      const type_and_completion = seq(
+        PUNC().colon,
+        $._all_type,
+        field("completion", optional($.param_cmd)),
+      );
+      const entry = seq(
+        field("key", choice($.identifier, alias($.val_string, $.identifier))),
+        optional(type_and_completion),
       );
 
       return seq(
         choice("record", "table"),
         seq(
           token.immediate(BRACK().open_angle),
-          repeat(
-            seq(
-              key,
-              optional(
-                seq(
-                  PUNC().colon,
-                  $._all_type,
-                  field("completion", optional($.param_cmd)),
-                ),
-              ),
-              optional(PUNC().comma),
-            ),
+          optional(
+            general_body_rules("", entry, $._entry_separator, $._newline),
           ),
           BRACK().close_angle,
         ),
@@ -364,15 +364,10 @@ module.exports = grammar({
 
     ctrl_for: ($) =>
       seq(
-        // `for` has the `--numbered` flag
         KEYWORD().for,
-        optional($._flag),
         field("looping_var", $._variable_name),
-        optional($._flag),
         KEYWORD().in,
-        optional($._flag),
         field("iterable", $._expression),
-        optional($._flag),
         field("body", $.block),
       ),
 
@@ -590,6 +585,7 @@ module.exports = grammar({
           _env_variable_rule(true, $),
           alias($._command_parenthesized, $.command),
         ),
+
         $._ctrl_expression_parenthesized,
         alias($.where_command_parenthesized, $.where_command),
       ),
@@ -787,11 +783,18 @@ module.exports = grammar({
     expr_binary_parenthesized: _expr_binary_rule(true),
 
     _expr_binary_expression: ($) =>
-      choice($._value, $.expr_binary, $.expr_unary, $.expr_parenthesized),
+      choice(
+        $._value,
+        $.val_range,
+        $.expr_binary,
+        $.expr_unary,
+        $.expr_parenthesized,
+      ),
 
     _expr_binary_expression_parenthesized: ($) =>
       choice(
         $._value,
+        $.val_range,
         alias($.expr_binary_parenthesized, $.expr_binary),
         $.expr_unary,
         $.expr_parenthesized,
@@ -1155,7 +1158,7 @@ module.exports = grammar({
             "key",
             choice(
               // Without $.cmd_identifier, cannot correctly distinguish between record and closure
-              alias($.cmd_identifier, $.identifier),
+              seq(alias($.cmd_identifier, $.identifier), repeat($._separator)),
               alias($._record_key, $.identifier),
               $.val_string,
               $.val_number,
@@ -1167,10 +1170,7 @@ module.exports = grammar({
               ...Object.values(MODIFIER()).map((x) => alias(x, $.identifier)),
             ),
           ),
-          alias(
-            token(prec(PREC().higher, seq(/\s*/, PUNC().colon))),
-            PUNC().colon,
-          ),
+          token(prec(PREC().higher, PUNC().colon)),
           field(
             "value",
             choice(
@@ -1228,7 +1228,7 @@ module.exports = grammar({
       );
 
       return seq(
-        token.immediate(PUNC().dot),
+        PUNC().dot,
         choice(
           field("raw_path", path),
           field("protected_path", seq(path, PUNC().question)),
@@ -1273,12 +1273,10 @@ module.exports = grammar({
     redirection: ($) =>
       seq(
         choice(...REDIR_APPEND()),
-        seq(
-          $._space,
-          field(
-            "file_path",
-            choice(alias($._unquoted_naive, $.val_string), $._stringish),
-          ),
+        $._space,
+        field(
+          "file_path",
+          choice(alias($._unquoted_naive, $.val_string), $._stringish),
         ),
       ),
 
@@ -1585,6 +1583,13 @@ function _command_rule(parenthesized) {
         choice(
           field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
           field("head", seq(PUNC().caret, $._stringish)),
+          field(
+            "head",
+            alias(
+              token(seq(choice(...internals), /[_a-zA-Z-]*/)),
+              $.cmd_identifier,
+            ),
+          ),
         ),
         repeat(seq(sep, optional($._cmd_arg))),
       ),

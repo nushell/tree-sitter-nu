@@ -13,6 +13,32 @@ Extend your lazy config with treesitter and the nu parser. The parser doesn't ha
             highlight = {
                 enable = true,            -- Enable syntax highlighting
             },
+            -- OPTIONAL!! These enable ts-specific textobjects.
+            -- So you can hit `yaf` to copy the closest function,
+            -- `dif` to clear the contet of the closest function,
+            -- or whatever keys you map to what query.
+            textobjects = {
+                select = {
+                    enable = true,
+                    keymaps = {
+                        -- You can use the capture groups defined in textobjects.scm
+                        -- For example:
+                        -- Nushell only
+                        ["aP"] = "@pipeline.outer",
+                        ["iP"] = "@pipeline.inner",
+
+                        -- supported in other languages as well
+                        ["af"] = "@function.outer",
+                        ["if"] = "@function.inner",
+                        ["al"] = "@loop.outer",
+                        ["il"] = "@loop.inner",
+                        ["aC"] = "@conditional.outer",
+                        ["iC"] = "@conditional.inner",
+                        ["iS"] = "@statement.inner",
+                        ["aS"] = "@statement.outer",
+                    }, -- keymaps
+                }, -- select
+            }, -- textobjects
         }
     end,
     dependencies = {

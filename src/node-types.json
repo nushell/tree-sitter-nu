@@ -678,20 +678,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "long_flag",
-          "named": true
-        },
-        {
-          "type": "short_flag",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -1696,6 +1682,10 @@
             "named": true
           },
           {
+            "type": "val_range",
+            "named": true
+          },
+          {
             "type": "val_record",
             "named": true
           },
@@ -1885,6 +1875,10 @@
           },
           {
             "type": "val_number",
+            "named": true
+          },
+          {
+            "type": "val_range",
             "named": true
           },
           {
@@ -3738,7 +3732,7 @@
     "named": true,
     "fields": {
       "key": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
