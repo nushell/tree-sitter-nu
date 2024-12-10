@@ -3454,18 +3454,6 @@
           "value": "for"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_flag"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
           "type": "FIELD",
           "name": "looping_var",
           "content": {
@@ -3474,32 +3462,8 @@
           }
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_flag"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
           "type": "STRING",
           "value": "in"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_flag"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
         },
         {
           "type": "FIELD",
@@ -3508,18 +3472,6 @@
             "type": "SYMBOL",
             "name": "_expression"
           }
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_flag"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
         },
         {
           "type": "FIELD",
@@ -13906,13 +13858,25 @@
                 "type": "CHOICE",
                 "members": [
                   {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "cmd_identifier"
-                    },
-                    "named": true,
-                    "value": "identifier"
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "cmd_identifier"
+                        },
+                        "named": true,
+                        "value": "identifier"
+                      },
+                      {
+                        "type": "REPEAT",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_separator"
+                        }
+                      }
+                    ]
                   },
                   {
                     "type": "ALIAS",
@@ -14240,29 +14204,15 @@
               }
             },
             {
-              "type": "ALIAS",
+              "type": "TOKEN",
               "content": {
-                "type": "TOKEN",
+                "type": "PREC",
+                "value": 20,
                 "content": {
-                  "type": "PREC",
-                  "value": 20,
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "PATTERN",
-                        "value": "\\s*"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": ":"
-                      }
-                    ]
-                  }
+                  "type": "STRING",
+                  "value": ":"
                 }
-              },
-              "named": false,
-              "value": ":"
+              }
             },
             {
               "type": "FIELD",
@@ -14515,11 +14465,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "IMMEDIATE_TOKEN",
-          "content": {
-            "type": "STRING",
-            "value": "."
-          }
+          "type": "STRING",
+          "value": "."
         },
         {
           "type": "CHOICE",
@@ -20320,10 +20267,6 @@
       "val_closure"
     ],
     [
-      "_expression",
-      "_expr_binary_expression"
-    ],
-    [
       "_expression_parenthesized",
       "_expr_binary_expression_parenthesized"
     ],
@@ -20347,15 +20290,16 @@
       "_parenthesized_body"
     ],
     [
-      "_val_number_decimal"
-    ],
-    [
       "block",
       "val_closure"
     ],
     [
       "block",
       "val_record"
+    ],
+    [
+      "command",
+      "record_entry"
     ],
     [
       "ctrl_if_parenthesized"

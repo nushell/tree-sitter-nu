@@ -678,20 +678,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "long_flag",
-          "named": true
-        },
-        {
-          "type": "short_flag",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -3746,7 +3732,7 @@
     "named": true,
     "fields": {
       "key": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
