@@ -15,7 +15,6 @@ module.exports = grammar({
 
   inline: ($) => [
     $._do_expression,
-    $._flag,
     $._flag_value,
     $._item_expression,
     $._match_expression,
