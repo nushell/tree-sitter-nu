@@ -15,7 +15,7 @@ Extend your lazy config with treesitter and the nu parser. The parser doesn't ha
             },
             -- OPTIONAL!! These enable ts-specific textobjects.
             -- So you can hit `yaf` to copy the closest function,
-            -- `dif` to clear the contet of the closest function,
+            -- `dif` to clear the content of the closest function,
             -- or whatever keys you map to what query.
             textobjects = {
                 select = {
@@ -42,8 +42,9 @@ Extend your lazy config with treesitter and the nu parser. The parser doesn't ha
         }
     end,
     dependencies = {
-        -- Additional Nushell parser
-        { "nushell/tree-sitter-nu", build = ":TSUpdate nu" },
+        -- Install official queries and filetype detection
+        -- alternatively, see section "Install official queries only"
+        { "nushell/tree-sitter-nu" },
     },
     build = ":TSUpdate",
 },
@@ -51,27 +52,71 @@ Extend your lazy config with treesitter and the nu parser. The parser doesn't ha
 
 ## Manual installation
 
-The ability to add syntax highlighting can be provided by [tree-sitter] using
-[nvim-treesitter]  (please refer to its own installation instructions).
+This repository is now tracked in [nvim-treesitter].
+Therefore, manual installation is not recommended.
+However, you can install this repo as a neovim plugin to get the official queries.
+
+## Use your own version of ts-nu
+
+In this section, you will find how to test your checkout or fork of this parser in neovim.
+The fact that this repo is tracked in [nvim-treesitter] makes it a bit more tricky:
+
+> Nvim-ts is not a general purpose installer; you can shoehorn additional parsers but it's not designed for replacing tracked parsers.
+
+Therefore, this requires multiple steps: use an own version of [nvim-treesitter], override `install_info` and `revision`, use your own [nvim-treesitter], and finally install your desired version of `nushell/tree-sitter-nu`.
+
+### Step 1
+
+Clone [nvim-treesitter].
+
+### Step 2
+
+In there, you need to update `lua/nvim-treesitter/parsers.lua`:
 
 ```lua
-local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-
-parser_config.nu = {
+list.nu = {
   install_info = {
-    url = "https://github.com/nushell/tree-sitter-nu",
+    url = "local or remote path to your version",
     files = { "src/parser.c", "src/scanner.c" },
-    branch = "main",
+    branch = "your branch, if not main",
   },
-  filetype = "nu",
+  maintainers = { "@abhisheksingh0x558" },
 }
 ```
 
-Run `:TSInstall nu` in neovim to install the above parser.
+### Step 3
 
-> **Note**
-> To get an overview of how [tree-sitter] is parsing [nushell] code, I recommend
-> poking around with [nvim-treesitter/playground].
+Update `lockfile.json`:
+
+```json
+  "nu": {
+    "revision": "your commit hash (the full hash!)"
+  },
+```
+
+### Step 4
+
+Install your local, modified [nvim-treesitter]. Where you did the installation from the very top of this page:
+
+```lua
+{
+    -- from
+    "nvim-treesitter/nvim-treesitter",
+    -- either
+    "url to your fork, if you want to pull from a repo",
+    -- or
+    dir = "path/to/your/checked-out/tree-sitter-nu",
+    config = function()
+        -- ...
+    end,
+}
+```
+
+### Step 5
+
+Run `:TSInstall nu` in neovim to install your parser.
+
+## Install official queries only
 
 With [tree-sitter] available, you can now add [highlights queries] to associate
 highlight groups with tree-sitter nodes. Run `:highlight` in neovim for a list
@@ -80,7 +125,7 @@ of highlight groups.
 If you are using the `lazy` package manager for *neovim*, you can run the
 following snippet to install the highlights file and enable the highlighting:
 
-```nushell
+```nu
 let remote = "https://raw.githubusercontent.com/nushell/tree-sitter-nu/main/queries/nu/"
 let local = (
     $env.XDG_DATA_HOME?
@@ -88,13 +133,18 @@ let local = (
     | path join "nvim" "lazy" "nvim-treesitter" "queries" "nu"
 )
 
-let file = "highlights.scm"
+let files = ["highlights.scm" "indents.scm" "injections.scm" "textobjects.scm"]
 
 mkdir $local
-http get ([$remote $file] | str join "/") | save --force ($local | path join $file)
+$files | par-each {|file| http get ([$remote $file] | str join "/") | save --force ($local | path join $file) }
 ```
 
 You need to run this snippet whenever the highlights change and `:TSUpdate nu` whenever there is a new version of the parser.
+
+> **Note**
+> To get an overview of how [tree-sitter] is parsing [nushell] code, I recommend
+> poking around with [nvim-treesitter/playground].
+
 
 [tree-sitter]: https://tree-sitter.github.io/tree-sitter/
 [nvim-treesitter]: https://github.com/nvim-treesitter/nvim-treesitter
