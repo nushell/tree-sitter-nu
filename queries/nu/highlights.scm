@@ -313,9 +313,11 @@ key: (identifier) @property
 (comment) @comment
 (
  (comment) @comment.documentation
+ .
  (decl_def)
 )
 (
  (parameter)
+ .
  (comment) @comment.documentation
 )
