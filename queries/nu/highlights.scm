@@ -311,13 +311,9 @@ key: (identifier) @property
 
 (shebang) @keyword.directive
 (comment) @comment
-(
- (comment)+ @comment.documentation
- .
- (decl_def)
-)
-(
- (parameter)
- .
- (comment) @comment.documentation
-)
+((comment)+ @comment.documentation @spell
+  .
+  (decl_def))
+
+(parameter
+  (comment) @comment.documentation @spell)
