@@ -182,6 +182,14 @@ file_path: (val_string) @variable.parameter
     "e>"   "err>"
     "e+o>" "err+out>"
     "o+e>" "out+err>"
+    "o>>"   "out>>"
+    "e>>"   "err>>"
+    "e+o>>" "err+out>>"
+    "o+e>>" "out+err>>"
+    "o>|"   "out>|"
+    "e>|"   "err>|"
+    "e+o>|" "err+out>|"
+    "o+e>|" "out+err>|"
 ] @operator
 
 ;;; ---
