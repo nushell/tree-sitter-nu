@@ -1305,7 +1305,7 @@ module.exports = grammar({
         ),
       ),
 
-    _unquoted_naive: (_$) => token(repeat1(none_of("{}"))),
+    _unquoted_naive: (_$) => token(prec(PREC().low, repeat1(none_of("{}")))),
     unquoted: _unquoted_rule("command"),
     _unquoted_in_list: _unquoted_rule("list"),
     _unquoted_in_record: _unquoted_rule("record"),
