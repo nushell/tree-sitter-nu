@@ -3,7 +3,7 @@ redir-001-command-redirection
 =====
 
 echo this o> /dev/null
-echo this e>> foo
+echo this e>> $foo
 echo this e+o>> ./foo
 echo this err+out> 32
 
@@ -23,7 +23,8 @@ echo this err+out> 32
         (cmd_identifier)
         (val_string)
         (redirection
-          (val_string)))))
+          (val_variable
+            (identifier))))))
   (pipeline
     (pipe_element
       (command
