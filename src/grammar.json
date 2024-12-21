@@ -3311,23 +3311,6 @@
         "value": "[\\p{Punctuation}\\p{Symbol}\\p{XID_Continue}]"
       }
     },
-    "_control": {
-      "type": "PREC",
-      "value": 1,
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "_ctrl_statement"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_ctrl_expression"
-          }
-        ]
-      }
-    },
     "_ctrl_statement": {
       "type": "CHOICE",
       "members": [
@@ -3590,103 +3573,95 @@
       ]
     },
     "ctrl_do": {
-      "type": "PREC_LEFT",
-      "value": -1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "do"
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_flag"
-            }
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_blosure"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "val_variable"
-              }
-            ]
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_do_expression"
-            }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "do"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_flag"
           }
-        ]
-      }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_blosure"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "val_variable"
+            }
+          ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_do_expression"
+          }
+        }
+      ]
     },
     "ctrl_do_parenthesized": {
-      "type": "PREC_LEFT",
-      "value": -1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "do"
-          },
-          {
-            "type": "REPEAT",
-            "content": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "do"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_flags_parenthesized"
+          }
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_separator"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
               "type": "SYMBOL",
-              "name": "_flags_parenthesized"
-            }
-          },
-          {
-            "type": "REPEAT1",
-            "content": {
+              "name": "_blosure"
+            },
+            {
               "type": "SYMBOL",
-              "name": "_separator"
+              "name": "val_variable"
             }
-          },
-          {
-            "type": "CHOICE",
+          ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_blosure"
+                "type": "REPEAT",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_newline"
+                }
               },
               {
                 "type": "SYMBOL",
-                "name": "val_variable"
+                "name": "_do_expression"
               }
             ]
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_newline"
-                  }
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_do_expression"
-                }
-              ]
-            }
           }
-        ]
-      }
+        }
+      ]
     },
     "ctrl_if": {
       "type": "SEQ",
@@ -20304,6 +20279,9 @@
     [
       "command",
       "record_entry"
+    ],
+    [
+      "ctrl_do_parenthesized"
     ],
     [
       "ctrl_if_parenthesized"

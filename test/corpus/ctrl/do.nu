@@ -114,6 +114,13 @@ unquoted; # string
 another_pipeline
 )'
 
+(
+  do {|foo, bar|
+    $foo}
+  foo
+bar
+)
+
 -----
 
 (nu_script
@@ -158,7 +165,25 @@ another_pipeline
           (pipeline
             (pipe_element
               (command
-                (cmd_identifier)))))))))
+                (cmd_identifier))))))))
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (ctrl_do
+              (val_closure
+                (parameter_pipes
+                  (parameter
+                    (identifier))
+                  (parameter
+                    (identifier)))
+                (pipeline
+                  (pipe_element
+                    (val_variable
+                      (identifier)))))
+              (val_string)
+              (val_string))))))))
 
 =====
 do-005-parenthesized-no-arguments
