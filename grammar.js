@@ -45,6 +45,7 @@ module.exports = grammar({
     [$.block, $.val_closure],
     [$.block, $.val_record],
     [$.command, $.record_entry],
+    [$.ctrl_do_parenthesized],
     [$.ctrl_if_parenthesized],
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
@@ -322,12 +323,6 @@ module.exports = grammar({
 
     /// Controls
 
-    _control: ($) =>
-      prec(
-        STATEMENT_PREC().control,
-        choice($._ctrl_statement, $._ctrl_expression),
-      ),
-
     // control statements cannot be used in pipeline because they
     // do not return values
     _ctrl_statement: ($) =>
@@ -397,26 +392,20 @@ module.exports = grammar({
       ),
 
     ctrl_do: ($) =>
-      prec.left(
-        PREC().low,
-        seq(
-          KEYWORD().do,
-          repeat($._flag),
-          choice($._blosure, $.val_variable),
-          repeat($._do_expression),
-        ),
+      seq(
+        KEYWORD().do,
+        repeat($._flag),
+        choice($._blosure, $.val_variable),
+        repeat($._do_expression),
       ),
 
     ctrl_do_parenthesized: ($) =>
-      prec.left(
-        PREC().low,
-        seq(
-          KEYWORD().do,
-          repeat($._flags_parenthesized),
-          repeat1($._separator),
-          choice($._blosure, $.val_variable),
-          repeat(seq(repeat($._newline), $._do_expression)),
-        ),
+      seq(
+        KEYWORD().do,
+        repeat($._flags_parenthesized),
+        repeat1($._separator),
+        choice($._blosure, $.val_variable),
+        repeat(seq(repeat($._newline), $._do_expression)),
       ),
 
     ctrl_if: _ctrl_if_rule(false),
