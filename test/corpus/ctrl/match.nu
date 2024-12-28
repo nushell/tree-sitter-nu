@@ -283,6 +283,7 @@ match $x {
   {$y} => {}
   {$foo, $bar} => {}
   {$a, b: c} => {}
+  {a: b, b: c} => {}
 }
 
 -----
@@ -312,6 +313,16 @@ match $x {
             (val_record
               (val_variable
                 (identifier))
+              (record_entry
+                (identifier)
+                (val_string))))
+          (block))
+        (match_arm
+          (match_pattern
+            (val_record
+              (record_entry
+                (identifier)
+                (val_string))
               (record_entry
                 (identifier)
                 (val_string))))
