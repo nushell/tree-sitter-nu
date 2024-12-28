@@ -38,8 +38,8 @@ module.exports = grammar({
     [$._block_body, $.val_closure],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
+    [$._match_pattern_record, $._value],
     [$._match_pattern_record, $.val_record],
-    [$._match_pattern_record_variable, $._value],
     [$._match_pattern_value, $._value],
     [$._parenthesized_body],
     [$.block, $.val_closure],
@@ -482,15 +482,15 @@ module.exports = grammar({
       seq(
         BRACK().open_brack,
         repeat(
-          field(
-            "item",
-            seq(
+          seq(
+            field(
+              "entry",
               choice(
                 $._match_pattern_expression,
                 alias($._unquoted_in_list, $.val_string),
               ),
-              optional(PUNC().comma),
             ),
+            optional(PUNC().comma),
           ),
         ),
         optional(
@@ -515,17 +515,14 @@ module.exports = grammar({
       seq(
         BRACK().open_brace,
         repeat(
-          field(
-            "entry",
-            choice($.record_entry, $._match_pattern_record_variable),
+          seq(
+            field("entry", choice($.record_entry, $.val_variable)),
+            optional(PUNC().comma),
           ),
         ),
         BRACK().close_brace,
         optional($.cell_path),
       ),
-
-    _match_pattern_record_variable: ($) =>
-      seq($.val_variable, optional(PUNC().comma)),
 
     ctrl_try: _ctrl_try_rule(false),
     ctrl_try_parenthesized: _ctrl_try_rule(true),
