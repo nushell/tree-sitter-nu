@@ -1146,6 +1146,7 @@ module.exports = grammar({
               seq(alias($.cmd_identifier, $.identifier), repeat($._separator)),
               alias($._record_key, $.identifier),
               $.val_string,
+              $.val_interpolated,
               $.val_number,
               $.val_variable,
               $.expr_parenthesized,

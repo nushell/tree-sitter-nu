@@ -489,3 +489,34 @@ record-015-separated-colon-vs-closure
           (record_entry
             (identifier)
             (val_number)))))))
+
+=====
+record-016-interpolated-key
+=====
+
+{
+  $"(1)": foo
+  $'(1)': bar
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          entry: (record_entry
+            key: (val_interpolated
+              expr: (expr_interpolated
+                (pipeline
+                  (pipe_element
+                    (val_number)))))
+            value: (val_string))
+          entry: (record_entry
+            key: (val_interpolated
+              expr: (expr_interpolated
+                (pipeline
+                  (pipe_element
+                    (val_number)))))
+            value: (val_string)))))))
