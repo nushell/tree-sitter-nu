@@ -621,7 +621,13 @@ module.exports = grammar({
     overlay_list: (_$) => seq(KEYWORD().overlay, "list"),
 
     overlay_hide: ($) =>
-      seq(KEYWORD().overlay, "hide", field("overlay", $._command_name)),
+      seq(
+        KEYWORD().overlay,
+        "hide",
+        repeat(choice($._flag, $.val_list)),
+        field("overlay", choice($.unquoted, $._stringish)),
+        repeat(choice($._flag, $.val_list)),
+      ),
 
     overlay_new: ($) => seq(KEYWORD().overlay, "new", $._command_name),
 
@@ -630,9 +636,9 @@ module.exports = grammar({
         KEYWORD().overlay,
         "use",
         repeat($._flag),
-        field("overlay", $.identifier),
-        repeat($._flag),
+        field("overlay", choice($.unquoted, $._stringish)),
         optional(seq(KEYWORD().as, field("rename", $._command_name))),
+        repeat($._flag),
       ),
 
     scope_pattern: ($) =>

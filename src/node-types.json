@@ -3031,35 +3031,45 @@
         "required": true,
         "types": [
           {
-            "type": "cmd_identifier",
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
+            "type": "unquoted",
+            "named": true
+          },
+          {
+            "type": "val_interpolated",
             "named": true
           },
           {
             "type": "val_string",
             "named": true
-          }
-        ]
-      },
-      "quoted_name": {
-        "multiple": false,
-        "required": false,
-        "types": [
+          },
           {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
-      "unquoted_name": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "cmd_identifier",
+            "type": "val_variable",
             "named": true
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "long_flag",
+          "named": true
+        },
+        {
+          "type": "short_flag",
+          "named": true
+        },
+        {
+          "type": "val_list",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -3102,7 +3112,23 @@
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
+            "type": "unquoted",
+            "named": true
+          },
+          {
+            "type": "val_interpolated",
+            "named": true
+          },
+          {
+            "type": "val_string",
+            "named": true
+          },
+          {
+            "type": "val_variable",
             "named": true
           }
         ]

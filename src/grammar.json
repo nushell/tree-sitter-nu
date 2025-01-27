@@ -4918,11 +4918,52 @@
           "value": "hide"
         },
         {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_flag"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "val_list"
+              }
+            ]
+          }
+        },
+        {
           "type": "FIELD",
           "name": "overlay",
           "content": {
-            "type": "SYMBOL",
-            "name": "_command_name"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "unquoted"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_stringish"
+              }
+            ]
+          }
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_flag"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "val_list"
+              }
+            ]
           }
         }
       ]
@@ -4966,15 +5007,17 @@
           "type": "FIELD",
           "name": "overlay",
           "content": {
-            "type": "SYMBOL",
-            "name": "identifier"
-          }
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_flag"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "unquoted"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_stringish"
+              }
+            ]
           }
         },
         {
@@ -5001,6 +5044,13 @@
               "type": "BLANK"
             }
           ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_flag"
+          }
         }
       ]
     },
