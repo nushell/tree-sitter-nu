@@ -19,7 +19,6 @@
     "source-env"
 
     "overlay"
-    "register"
 
     "loop"
     "while"
@@ -96,67 +95,11 @@ file_path: (val_string) @variable.parameter
 
 ;;; ---
 ;;; operators
-(expr_binary [
-    "+"
-    "-"
-    "*"
-    "/"
-    "mod"
-    "//"
-    "++"
-    "**"
-    "=="
-    "!="
-    "<"
-    "<="
-    ">"
-    ">="
-    "=~"
-    "!~"
-    "and"
-    "or"
-    "xor"
-    "bit-or"
-    "bit-xor"
-    "bit-and"
-    "bit-shl"
-    "bit-shr"
-    "in"
-    "not-in"
-    "starts-with"
-    "ends-with"
-] @operator )
+(expr_binary
+  opr: _ @operator)
 
-(where_command [
-    "+"
-    "-"
-    "*"
-    "/"
-    "mod"
-    "//"
-    "++"
-    "**"
-    "=="
-    "!="
-    "<"
-    "<="
-    ">"
-    ">="
-    "=~"
-    "!~"
-    "and"
-    "or"
-    "xor"
-    "bit-or"
-    "bit-xor"
-    "bit-and"
-    "bit-shl"
-    "bit-shr"
-    "in"
-    "not-in"
-    "starts-with"
-    "ends-with"
-] @operator)
+(where_command
+  opr: _ @operator)
 
 (assignment [
     "="
