@@ -583,19 +583,6 @@ module.exports = grammar({
         field("file", choice(alias($.unquoted, $.val_string), $._stringish)),
       ),
 
-    stmt_register: ($) =>
-      prec.left(
-        PREC().low,
-        seq(
-          KEYWORD().register,
-          field(
-            "plugin",
-            choice(alias($.unquoted, $.val_string), $.val_variable),
-          ),
-          field("signature", optional($.val_record)),
-        ),
-      ),
-
     _stmt_hide: ($) => choice($.hide_mod, $.hide_env),
 
     hide_mod: ($) =>
@@ -1530,13 +1517,12 @@ function _block_body_rules(suffix) {
     /// Statements
 
     ["_statement" + suffix]: (
-      /**⋅@type {any} */ /** @type {{ [x: string]: string; _ctrl_statement?: any; _stmt_hide?: any; _stmt_overlay?: any; stmt_register?: any; stmt_source?: any; assignment?: any; }} */ $,
+      /**⋅@type {any} */ /** @type {{ [x: string]: string; _ctrl_statement?: any; _stmt_hide?: any; _stmt_overlay?: any; stmt_source?: any; assignment?: any; }} */ $,
     ) =>
       choice(
         $._ctrl_statement,
         $._stmt_hide,
         $._stmt_overlay,
-        $.stmt_register,
         $.stmt_source,
         alias_for_suffix($, "assignment", suffix),
         alias_for_suffix($, "stmt_let", suffix),
@@ -2109,6 +2095,8 @@ function OPR() {
     // membership tests
     in: "in",
     not_in: "not-in",
+    has: "has",
+    not_has: "not-has",
     starts_with: "starts-with",
     ends_with: "ends-with",
 
@@ -2151,12 +2139,6 @@ function PREC() {
   };
 }
 
-function STATEMENT_PREC() {
-  return {
-    control: 1,
-  };
-}
-
 /// map of operators and their precedence
 function TABLE() {
   const multiplicatives = [
@@ -2191,6 +2173,8 @@ function PREDICATE() {
   const memberships = [
     OPR().in,
     OPR().not_in,
+    OPR().has,
+    OPR().not_has,
     OPR().starts_with,
     OPR().ends_with,
   ];

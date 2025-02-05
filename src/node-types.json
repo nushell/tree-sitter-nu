@@ -158,10 +158,6 @@
           "named": true
         },
         {
-          "type": "stmt_register",
-          "named": true
-        },
-        {
           "type": "stmt_source",
           "named": true
         }
@@ -1796,11 +1792,19 @@
             "named": false
           },
           {
+            "type": "has",
+            "named": false
+          },
+          {
             "type": "in",
             "named": false
           },
           {
             "type": "mod",
+            "named": false
+          },
+          {
+            "type": "not-has",
             "named": false
           },
           {
@@ -1994,10 +1998,6 @@
           "named": true
         },
         {
-          "type": "stmt_register",
-          "named": true
-        },
-        {
           "type": "stmt_source",
           "named": true
         }
@@ -2098,10 +2098,6 @@
         },
         {
           "type": "stmt_mut",
-          "named": true
-        },
-        {
-          "type": "stmt_register",
           "named": true
         },
         {
@@ -2209,10 +2205,6 @@
         },
         {
           "type": "stmt_mut",
-          "named": true
-        },
-        {
-          "type": "stmt_register",
           "named": true
         },
         {
@@ -3009,10 +3001,6 @@
         },
         {
           "type": "stmt_mut",
-          "named": true
-        },
-        {
-          "type": "stmt_register",
           "named": true
         },
         {
@@ -4253,36 +4241,6 @@
     }
   },
   {
-    "type": "stmt_register",
-    "named": true,
-    "fields": {
-      "plugin": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "val_string",
-            "named": true
-          },
-          {
-            "type": "val_variable",
-            "named": true
-          }
-        ]
-      },
-      "signature": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "val_record",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "stmt_source",
     "named": true,
     "fields": {
@@ -4441,10 +4399,6 @@
         },
         {
           "type": "stmt_mut",
-          "named": true
-        },
-        {
-          "type": "stmt_register",
           "named": true
         },
         {
@@ -5008,7 +4962,15 @@
             "named": true
           },
           {
+            "type": "has",
+            "named": false
+          },
+          {
             "type": "in",
+            "named": false
+          },
+          {
+            "type": "not-has",
             "named": false
           },
           {
@@ -5134,7 +5096,15 @@
             "named": false
           },
           {
+            "type": "has",
+            "named": false
+          },
+          {
             "type": "in",
+            "named": false
+          },
+          {
+            "type": "not-has",
             "named": false
           },
           {
@@ -5216,7 +5186,15 @@
             "named": true
           },
           {
+            "type": "has",
+            "named": false
+          },
+          {
             "type": "in",
+            "named": false
+          },
+          {
+            "type": "not-has",
             "named": false
           },
           {
@@ -5358,7 +5336,15 @@
             "named": true
           },
           {
+            "type": "has",
+            "named": false
+          },
+          {
             "type": "in",
+            "named": false
+          },
+          {
+            "type": "not-has",
             "named": false
           },
           {
@@ -5891,6 +5877,10 @@
     "named": false
   },
   {
+    "type": "has",
+    "named": false
+  },
+  {
     "type": "hex_digit",
     "named": true
   },
@@ -5976,6 +5966,10 @@
   },
   {
     "type": "not",
+    "named": false
+  },
+  {
+    "type": "not-has",
     "named": false
   },
   {
@@ -6088,10 +6082,6 @@
   },
   {
     "type": "record",
-    "named": false
-  },
-  {
-    "type": "register",
     "named": false
   },
   {

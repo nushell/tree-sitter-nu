@@ -203,3 +203,30 @@ name !~ foo
               (val_bool)
               (val_string)
               (val_string))))))))
+
+=====
+where-008-operators
+=====
+
+ls | where name has "e"
+ls | where name not-has "e"
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        head: (cmd_identifier)))
+    (pipe_element
+      (where_command
+        lhs: (val_string)
+        rhs: (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        head: (cmd_identifier)))
+    (pipe_element
+      (where_command
+        lhs: (val_string)
+        rhs: (val_string)))))
