@@ -180,6 +180,7 @@ key: (identifier) @property
 
 (param_long_flag (long_flag_identifier) @attribute)
 (param_short_flag (param_short_flag_identifier) @attribute)
+(attribute (attribute_identifier) @attribute)
 
 (short_flag (short_flag_identifier) @attribute)
 (long_flag_identifier) @attribute
