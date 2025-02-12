@@ -151,6 +151,7 @@ file_path: (val_string) @variable.parameter
 (param_type [":"] @punctuation.special)
 (param_value ["="] @punctuation.special)
 (param_cmd ["@"] @punctuation.special)
+(attribute ["@"] @punctuation.special)
 (param_opt ["?"] @punctuation.special)
 (returns "->" @punctuation.special)
 

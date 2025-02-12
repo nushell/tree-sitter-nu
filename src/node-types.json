@@ -192,13 +192,9 @@
         ]
       },
       "type": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "@",
-            "named": false
-          },
           {
             "type": "attribute_identifier",
             "named": true

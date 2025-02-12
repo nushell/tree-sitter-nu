@@ -138,7 +138,8 @@ module.exports = grammar({
       token.immediate(/[0-9\p{XID_Start}][0-9\p{XID_Continue}_-]*/),
     attribute: ($) =>
       seq(
-        field("type", seq(PUNC().at, $.attribute_identifier)),
+        PUNC().at,
+        field("type", $.attribute_identifier),
         repeat(seq($._space, optional($._cmd_arg))),
       ),
 
