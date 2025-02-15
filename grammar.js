@@ -131,10 +131,22 @@ module.exports = grammar({
     _pipe_separator: ($) =>
       repeat1(seq(repeat($._newline), choice(PUNC().pipe, ...REDIR_PIPE()))),
 
-    /// Top Level Items
+    /// Attributes
+    attribute_list: ($) =>
+      repeat1(seq($.attribute, choice(PUNC().semicolon, $._newline))),
+    attribute_identifier: (_$) =>
+      token.immediate(/[0-9\p{XID_Start}][0-9\p{XID_Continue}_-]*/),
+    attribute: ($) =>
+      seq(
+        PUNC().at,
+        field("type", $.attribute_identifier),
+        repeat(seq($._space, optional($._cmd_arg))),
+      ),
 
+    /// Top Level Items
     decl_def: ($) =>
       seq(
+        optional($.attribute_list),
         optional(MODIFIER().visibility),
         KEYWORD().def,
         repeat($.long_flag),
