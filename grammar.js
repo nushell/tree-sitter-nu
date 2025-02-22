@@ -43,7 +43,7 @@ module.exports = grammar({
     [$.ctrl_if_parenthesized],
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
-    [$.list_body, $.val_table],
+    [$.list_body, $._table_head],
     [$.parameter, $.param_type, $.param_value],
     [$.pipeline],
     [$.pipeline_parenthesized],
@@ -54,7 +54,7 @@ module.exports = grammar({
 
     nu_script: ($) => seq(optional($.shebang), optional($._block_body)),
 
-    shebang: (_$) => seq(repeat(_$._newline), "#!", /.*\r?\n?/),
+    shebang: ($) => seq(repeat($._newline), "#!", /.*\r?\n?/),
 
     ...block_body_rules(),
 
@@ -1180,12 +1180,17 @@ module.exports = grammar({
     _table_head_separator: (_$) =>
       token(prec(PREC().higher, seq(/\s*/, PUNC().semicolon))),
 
-    val_table: ($) =>
+    _table_head: ($) =>
       seq(
-        BRACK().open_brack,
         repeat($._newline),
         field("head", $.val_list),
         alias($._table_head_separator, PUNC().semicolon),
+      ),
+
+    val_table: ($) =>
+      seq(
+        BRACK().open_brack,
+        $._table_head,
         optional(
           general_body_rules("row", $.val_list, $._entry_separator, $._newline),
         ),
