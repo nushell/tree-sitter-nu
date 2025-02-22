@@ -14796,13 +14796,9 @@
         }
       }
     },
-    "val_table": {
+    "_table_head": {
       "type": "SEQ",
       "members": [
-        {
-          "type": "STRING",
-          "value": "["
-        },
         {
           "type": "REPEAT",
           "content": {
@@ -14826,6 +14822,19 @@
           },
           "named": false,
           "value": ";"
+        }
+      ]
+    },
+    "val_table": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "["
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_table_head"
         },
         {
           "type": "CHOICE",
@@ -16600,7 +16609,7 @@
     ],
     [
       "list_body",
-      "val_table"
+      "_table_head"
     ],
     [
       "parameter",
