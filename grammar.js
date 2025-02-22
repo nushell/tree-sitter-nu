@@ -1,9 +1,3 @@
-const fs = require("fs");
-const internals = fs
-  .readFileSync("./internal.txt", "utf-8")
-  .split("\n")
-  .filter((x) => x.length > 0);
-
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 module.exports = grammar({
@@ -1573,13 +1567,6 @@ function _command_rule(parenthesized) {
         choice(
           field("head", seq(optional(PUNC().caret), $.cmd_identifier)),
           field("head", seq(PUNC().caret, $._stringish)),
-          field(
-            "head",
-            alias(
-              token(seq(choice(...internals), /[_a-zA-Z-]*/)),
-              $.cmd_identifier,
-            ),
-          ),
         ),
         repeat(seq(sep, optional($._cmd_arg))),
       ),

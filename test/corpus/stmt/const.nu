@@ -45,7 +45,8 @@ const x = 42 | math sin
         (val_number))
       (pipe_element
         (command
-          (cmd_identifier))))))
+          (cmd_identifier)
+          (val_string))))))
 
 =====
 const-004-exported

@@ -92,6 +92,7 @@ subexpr-004-pipeline-multiline
             (command
               (cmd_identifier)
               (val_string)
+              (val_string)
               (val_string))))))))
 
 =====
