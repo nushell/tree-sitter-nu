@@ -44,6 +44,7 @@ module.exports = grammar({
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
     [$.list_body, $._table_head],
+    [$.list_body],
     [$.parameter, $.param_type, $.param_value],
     [$.pipeline],
     [$.pipeline_parenthesized],
@@ -54,7 +55,7 @@ module.exports = grammar({
 
     nu_script: ($) => seq(optional($.shebang), optional($._block_body)),
 
-    shebang: ($) => seq(repeat($._newline), "#!", /.*\r?\n?/),
+    shebang: ($) => seq(optional($._repeat_newline), "#!", /.*\r?\n?/),
 
     ...block_body_rules(),
 
@@ -119,11 +120,14 @@ module.exports = grammar({
     // remove newline characters from extras to reduce ambiguity
     // manually controlled by adding the following to parenthesized rules
     _newline: (_$) => /\r?\n/,
+    _repeat_newline: ($) => repeat1($._newline),
     _space: (_$) => /[ \t]+/,
     _separator: ($) => choice($._space, $._newline),
     _terminator: ($) => choice(PUNC().semicolon, $._newline),
     _pipe_separator: ($) =>
-      repeat1(seq(repeat($._newline), choice(PUNC().pipe, ...REDIR_PIPE()))),
+      repeat1(
+        seq(optional($._repeat_newline), choice(PUNC().pipe, ...REDIR_PIPE())),
+      ),
 
     /// Attributes
     attribute_list: ($) =>
@@ -190,21 +194,18 @@ module.exports = grammar({
     _one_type: ($) =>
       seq($._type_annotation, PUNC().thin_arrow, $._type_annotation),
 
+    _types_body: ($) =>
+      general_body_rules("", $._one_type, $._entry_separator, $._newline),
+
     _multiple_types: ($) =>
-      seq(
-        BRACK().open_brack,
-        optional(
-          general_body_rules("", $._one_type, $._entry_separator, $._newline),
-        ),
-        BRACK().close_brack,
-      ),
+      seq(BRACK().open_brack, optional($._types_body), BRACK().close_brack),
 
     /// Parameters
 
     parameter_parens: ($) =>
       seq(
         BRACK().open_paren,
-        repeat($._newline),
+        optional($._repeat_newline),
         repeat($.parameter),
         BRACK().close_paren,
       ),
@@ -212,13 +213,18 @@ module.exports = grammar({
     parameter_bracks: ($) =>
       seq(
         BRACK().open_brack,
-        repeat($._newline),
+        optional($._repeat_newline),
         repeat($.parameter),
         BRACK().close_brack,
       ),
 
     parameter_pipes: ($) =>
-      seq(PUNC().pipe, repeat($._newline), repeat($.parameter), PUNC().pipe),
+      seq(
+        PUNC().pipe,
+        optional($._repeat_newline),
+        repeat($.parameter),
+        PUNC().pipe,
+      ),
 
     parameter: ($) =>
       seq(
@@ -243,18 +249,18 @@ module.exports = grammar({
 
     param_type: ($) =>
       seq(
-        repeat($._newline),
+        optional($._repeat_newline),
         PUNC().colon,
-        repeat($._newline),
+        optional($._repeat_newline),
         $._type_annotation,
         field("completion", optional($.param_cmd)),
       ),
 
     param_value: ($) =>
       seq(
-        repeat($._newline),
+        optional($._repeat_newline),
         PUNC().eq,
-        repeat($._newline),
+        optional($._repeat_newline),
         field(
           "param_value",
           choice(
@@ -273,28 +279,33 @@ module.exports = grammar({
 
     flat_type: (_$) => field("flat_type", FLAT_TYPES()),
 
-    collection_type: ($) => {
-      const type_and_completion = seq(
+    _collection_annotation: ($) =>
+      seq(
         PUNC().colon,
         $._all_type,
         field("completion", optional($.param_cmd)),
-      );
-      const entry = seq(
+      ),
+    _collection_entry: ($) =>
+      seq(
         field("key", choice($.identifier, alias($.val_string, $.identifier))),
-        optional(type_and_completion),
-      );
-
-      return seq(
+        optional($._collection_annotation),
+      ),
+    _collection_body: ($) =>
+      general_body_rules(
+        "",
+        $._collection_entry,
+        $._entry_separator,
+        $._newline,
+      ),
+    collection_type: ($) =>
+      seq(
         choice("record", "table"),
         seq(
           token.immediate(BRACK().open_angle),
-          optional(
-            general_body_rules("", entry, $._entry_separator, $._newline),
-          ),
+          optional($._collection_body),
           BRACK().close_angle,
         ),
-      );
-    },
+      ),
 
     list_type: ($) =>
       seq(
@@ -411,11 +422,19 @@ module.exports = grammar({
         repeat($._flags_parenthesized),
         repeat1($._separator),
         choice($._blosure, $.val_variable),
-        repeat(seq(repeat($._newline), $._do_expression)),
+        repeat(seq(optional($._repeat_newline), $._do_expression)),
       ),
 
     ctrl_if: _ctrl_if_rule(false),
     ctrl_if_parenthesized: _ctrl_if_rule(true),
+
+    _ctrl_match_body: ($) =>
+      general_body_rules(
+        "",
+        choice($.match_arm, $.default_arm),
+        $._entry_separator,
+        $._newline,
+      ),
 
     ctrl_match: ($) =>
       seq(
@@ -425,14 +444,7 @@ module.exports = grammar({
           choice($._item_expression, alias($.unquoted, $.val_string)),
         ),
         BRACK().open_brace,
-        optional(
-          general_body_rules(
-            "",
-            choice($.match_arm, $.default_arm),
-            $._entry_separator,
-            $._newline,
-          ),
-        ),
+        optional($._ctrl_match_body),
         BRACK().close_brace,
       ),
 
@@ -643,17 +655,18 @@ module.exports = grammar({
 
     wild_card: (_$) => token("*"),
 
+    _command_list_body: ($) =>
+      general_body_rules(
+        "cmd",
+        $._command_name,
+        $._entry_separator,
+        $._newline,
+      ),
+
     command_list: ($) =>
       seq(
         BRACK().open_brack,
-        optional(
-          general_body_rules(
-            "cmd",
-            $._command_name,
-            $._entry_separator,
-            $._newline,
-          ),
-        ),
+        optional($._command_list_body),
         BRACK().close_brack,
       ),
 
@@ -814,15 +827,14 @@ module.exports = grammar({
         $._terminator,
         null,
         [
-          repeat1(seq(repeat($._newline), PUNC().semicolon)),
-          repeat($._newline),
+          repeat1(seq(optional($._repeat_newline), PUNC().semicolon)),
+          optional($._repeat_newline),
         ],
         $._terminator,
       ),
 
     val_range: _range_rule(false),
     _val_range: _range_rule(true),
-    _val_range_with_end: _range_rule(true, true),
 
     _immediate_decimal: _decimal_rule(true),
 
@@ -1182,18 +1194,19 @@ module.exports = grammar({
 
     _table_head: ($) =>
       seq(
-        repeat($._newline),
+        optional($._repeat_newline),
         field("head", $.val_list),
         alias($._table_head_separator, PUNC().semicolon),
       ),
+
+    _table_body: ($) =>
+      general_body_rules("row", $.val_list, $._entry_separator, $._newline),
 
     val_table: ($) =>
       seq(
         BRACK().open_brack,
         $._table_head,
-        optional(
-          general_body_rules("row", $.val_list, $._entry_separator, $._newline),
-        ),
+        optional($._table_body),
         BRACK().close_brack,
         optional($.cell_path),
       ),
@@ -1201,7 +1214,7 @@ module.exports = grammar({
     val_closure: ($) =>
       seq(
         BRACK().open_brace,
-        repeat($._newline),
+        optional($._repeat_newline),
         optional(field("parameters", $.parameter_pipes)),
         $._block_body,
         BRACK().close_brace,
@@ -1381,7 +1394,7 @@ function parenthesized_body_rules() {
           seq(
             alias($.pipe_element_parenthesized, $.pipe_element),
             $._pipe_separator,
-            repeat($._newline),
+            optional($._repeat_newline),
           ),
         ),
         alias($.pipe_element_parenthesized, $.pipe_element),
@@ -1545,16 +1558,16 @@ function _block_body_rules(suffix) {
 }
 
 /**
- * Insert repeat($._newline) in-between
+ * Insert optional($._repeat_newline) in-between
  * @param {array} sequence
  * @param {boolean} begin allow newline in beginning
  * @param {boolean} end allow newline in end
  */
 function _insert_newline($, sequence, begin = false, end = true) {
-  var result = [repeat($._newline)];
+  var result = [optional($._repeat_newline)];
   for (const item of sequence) {
     result.push(item);
-    result.push(repeat($._newline));
+    result.push(optional($._repeat_newline));
   }
   result = begin ? result : result.slice(1);
   result = end ? result : result.slice(0, -1);
@@ -1730,30 +1743,24 @@ function _decimal_rule(immediate) {
   const head_token = immediate ? token.immediate : token;
   const head_digits = head_token(/[\d_]*\d[\d_]*/);
   return (/** @type {any} */ _$) =>
-    choice(
-      seq(head_digits, optional(exponent)),
-      seq(
-        token(
-          seq(choice(head_token(OPR().minus), head_token(OPR().plus)), digits),
-        ),
-        optional(exponent),
-      ),
-      seq(
+    seq(
+      choice(
         head_digits,
-        token.immediate(PUNC().dot),
-        optional(digits),
-        optional(exponent),
-      ),
-      seq(
         token(
           seq(choice(head_token(OPR().minus), head_token(OPR().plus)), digits),
         ),
-        token.immediate(PUNC().dot),
-        optional(digits),
-        optional(exponent),
-      ),
-      token(seq(head_token(PUNC().dot), digits, optional(exponent))),
-      seq(
+        seq(head_digits, token.immediate(PUNC().dot), optional(digits)),
+        seq(
+          token(
+            seq(
+              choice(head_token(OPR().minus), head_token(OPR().plus)),
+              digits,
+            ),
+          ),
+          token.immediate(PUNC().dot),
+          optional(digits),
+        ),
+        token(seq(head_token(PUNC().dot), digits)),
         token(
           seq(
             choice(head_token(OPR().minus), head_token(OPR().plus)),
@@ -1762,16 +1769,15 @@ function _decimal_rule(immediate) {
             digits,
           ),
         ),
-        optional(exponent),
       ),
+      optional(exponent),
     );
 }
 
 /**
  * @param {boolean} anonymous
- * @param {boolean} with_end_decimal
  */
-function _range_rule(anonymous, with_end_decimal = false) {
+function _range_rule(anonymous) {
   // Divide each dot as a token to distinguish $.val_range and $.val_number
   const create_opr = (/** @type {boolean} */ immediate) => {
     const head_token = immediate ? token.immediate : token;
@@ -1802,6 +1808,7 @@ function _range_rule(anonymous, with_end_decimal = false) {
     var start = field("start", member);
     var end = field("end", step_or_end);
     var step = field("step", step_or_end);
+
     if (anonymous) {
       start = $._val_number_decimal;
       step = $._immediate_decimal;
@@ -1814,11 +1821,10 @@ function _range_rule(anonymous, with_end_decimal = false) {
       seq(opr_step, step, opr_imm, end),
     ];
     const seq_with_start = [start, optional(seq(opr_step_imm, step)), opr_imm];
-    const end_pattern = with_end_decimal ? end : optional(end);
 
     return prec.right(
       anonymous ? PREC().range - 1 : PREC().range,
-      choice(...common_choices, seq(...seq_with_start, end_pattern)),
+      choice(...common_choices, seq(...seq_with_start, optional(end))),
     );
   };
 }
@@ -1854,7 +1860,7 @@ function _unquoted_with_expr_rule(type) {
         choice(
           $._unquoted_anonymous_prefix,
           $._val_number_decimal,
-          $._val_range_with_end,
+          $._val_range,
           alias(unquoted_head, "_head"),
         ),
         alias($._expr_parenthesized_immediate, $.expr_parenthesized),
