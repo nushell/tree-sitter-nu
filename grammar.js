@@ -1,3 +1,4 @@
+const f = 1;
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 module.exports = grammar({
@@ -273,28 +274,27 @@ module.exports = grammar({
 
     flat_type: (_$) => field("flat_type", FLAT_TYPES()),
 
-    collection_type: ($) => {
-      const type_and_completion = seq(
+    _collection_annotation: ($) =>
+      seq(
         PUNC().colon,
         $._all_type,
         field("completion", optional($.param_cmd)),
-      );
-      const entry = seq(
+      ),
+    _collection_entry: ($) =>
+      seq(
         field("key", choice($.identifier, alias($.val_string, $.identifier))),
-        optional(type_and_completion),
-      );
-
-      return seq(
-        choice("record", "table"),
-        seq(
-          token.immediate(BRACK().open_angle),
-          optional(
-            general_body_rules("", entry, $._entry_separator, $._newline),
-          ),
-          BRACK().close_angle,
+        optional($._collection_annotation),
+      ),
+    collection_type: ($) => seq(
+      choice("record", "table"),
+      seq(
+        token.immediate(BRACK().open_angle),
+        optional(
+          general_body_rules("", $._collection_entry, $._entry_separator, $._newline),
         ),
-      );
-    },
+        BRACK().close_angle,
+      ),
+    ),
 
     list_type: ($) =>
       seq(
@@ -822,7 +822,6 @@ module.exports = grammar({
 
     val_range: _range_rule(false),
     _val_range: _range_rule(true),
-    _val_range_with_end: _range_rule(true, true),
 
     _immediate_decimal: _decimal_rule(true),
 
@@ -1730,30 +1729,23 @@ function _decimal_rule(immediate) {
   const head_token = immediate ? token.immediate : token;
   const head_digits = head_token(/[\d_]*\d[\d_]*/);
   return (/** @type {any} */ _$) =>
-    choice(
-      seq(head_digits, optional(exponent)),
-      seq(
-        token(
-          seq(choice(head_token(OPR().minus), head_token(OPR().plus)), digits),
-        ),
-        optional(exponent),
-      ),
-      seq(
+    seq(
+      choice(
         head_digits,
-        token.immediate(PUNC().dot),
-        optional(digits),
-        optional(exponent),
-      ),
-      seq(
-        token(
-          seq(choice(head_token(OPR().minus), head_token(OPR().plus)), digits),
+        token(seq(choice(head_token(OPR().minus), head_token(OPR().plus)), digits)),
+        seq(
+          head_digits,
+          token.immediate(PUNC().dot),
+          optional(digits),
         ),
-        token.immediate(PUNC().dot),
-        optional(digits),
-        optional(exponent),
-      ),
-      token(seq(head_token(PUNC().dot), digits, optional(exponent))),
-      seq(
+        seq(
+          token(
+            seq(choice(head_token(OPR().minus), head_token(OPR().plus)), digits),
+          ),
+          token.immediate(PUNC().dot),
+          optional(digits),
+        ),
+        token(seq(head_token(PUNC().dot), digits)),
         token(
           seq(
             choice(head_token(OPR().minus), head_token(OPR().plus)),
@@ -1762,16 +1754,15 @@ function _decimal_rule(immediate) {
             digits,
           ),
         ),
-        optional(exponent),
       ),
+      optional(exponent),
     );
 }
 
 /**
  * @param {boolean} anonymous
- * @param {boolean} with_end_decimal
  */
-function _range_rule(anonymous, with_end_decimal = false) {
+function _range_rule(anonymous) {
   // Divide each dot as a token to distinguish $.val_range and $.val_number
   const create_opr = (/** @type {boolean} */ immediate) => {
     const head_token = immediate ? token.immediate : token;
@@ -1802,6 +1793,7 @@ function _range_rule(anonymous, with_end_decimal = false) {
     var start = field("start", member);
     var end = field("end", step_or_end);
     var step = field("step", step_or_end);
+
     if (anonymous) {
       start = $._val_number_decimal;
       step = $._immediate_decimal;
@@ -1814,11 +1806,10 @@ function _range_rule(anonymous, with_end_decimal = false) {
       seq(opr_step, step, opr_imm, end),
     ];
     const seq_with_start = [start, optional(seq(opr_step_imm, step)), opr_imm];
-    const end_pattern = with_end_decimal ? end : optional(end);
 
     return prec.right(
       anonymous ? PREC().range - 1 : PREC().range,
-      choice(...common_choices, seq(...seq_with_start, end_pattern)),
+      choice(...common_choices, seq(...seq_with_start, optional(end))),
     );
   };
 }
@@ -1854,7 +1845,7 @@ function _unquoted_with_expr_rule(type) {
         choice(
           $._unquoted_anonymous_prefix,
           $._val_number_decimal,
-          $._val_range_with_end,
+          $._val_range,
           alias(unquoted_head, "_head"),
         ),
         alias($._expr_parenthesized_immediate, $.expr_parenthesized),
