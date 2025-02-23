@@ -195,14 +195,11 @@ module.exports = grammar({
     _one_type: ($) =>
       seq($._type_annotation, PUNC().thin_arrow, $._type_annotation),
 
+    _types_body: ($) =>
+      general_body_rules("", $._one_type, $._entry_separator, $._newline),
+
     _multiple_types: ($) =>
-      seq(
-        BRACK().open_brack,
-        optional(
-          general_body_rules("", $._one_type, $._entry_separator, $._newline),
-        ),
-        BRACK().close_brack,
-      ),
+      seq(BRACK().open_brack, optional($._types_body), BRACK().close_brack),
 
     /// Parameters
 
@@ -294,19 +291,19 @@ module.exports = grammar({
         field("key", choice($.identifier, alias($.val_string, $.identifier))),
         optional($._collection_annotation),
       ),
+    _collection_body: ($) =>
+      general_body_rules(
+        "",
+        $._collection_entry,
+        $._entry_separator,
+        $._newline,
+      ),
     collection_type: ($) =>
       seq(
         choice("record", "table"),
         seq(
           token.immediate(BRACK().open_angle),
-          optional(
-            general_body_rules(
-              "",
-              $._collection_entry,
-              $._entry_separator,
-              $._newline,
-            ),
-          ),
+          optional($._collection_body),
           BRACK().close_angle,
         ),
       ),
@@ -432,6 +429,14 @@ module.exports = grammar({
     ctrl_if: _ctrl_if_rule(false),
     ctrl_if_parenthesized: _ctrl_if_rule(true),
 
+    _ctrl_match_body: ($) =>
+      general_body_rules(
+        "",
+        choice($.match_arm, $.default_arm),
+        $._entry_separator,
+        $._newline,
+      ),
+
     ctrl_match: ($) =>
       seq(
         KEYWORD().match,
@@ -440,14 +445,7 @@ module.exports = grammar({
           choice($._item_expression, alias($.unquoted, $.val_string)),
         ),
         BRACK().open_brace,
-        optional(
-          general_body_rules(
-            "",
-            choice($.match_arm, $.default_arm),
-            $._entry_separator,
-            $._newline,
-          ),
-        ),
+        optional($._ctrl_match_body),
         BRACK().close_brace,
       ),
 
@@ -658,17 +656,18 @@ module.exports = grammar({
 
     wild_card: (_$) => token("*"),
 
+    _command_list_body: ($) =>
+      general_body_rules(
+        "cmd",
+        $._command_name,
+        $._entry_separator,
+        $._newline,
+      ),
+
     command_list: ($) =>
       seq(
         BRACK().open_brack,
-        optional(
-          general_body_rules(
-            "cmd",
-            $._command_name,
-            $._entry_separator,
-            $._newline,
-          ),
-        ),
+        optional($._command_list_body),
         BRACK().close_brack,
       ),
 
@@ -1201,13 +1200,14 @@ module.exports = grammar({
         alias($._table_head_separator, PUNC().semicolon),
       ),
 
+    _table_body: ($) =>
+      general_body_rules("row", $.val_list, $._entry_separator, $._newline),
+
     val_table: ($) =>
       seq(
         BRACK().open_brack,
         $._table_head,
-        optional(
-          general_body_rules("row", $.val_list, $._entry_separator, $._newline),
-        ),
+        optional($._table_body),
         BRACK().close_brack,
         optional($.cell_path),
       ),
