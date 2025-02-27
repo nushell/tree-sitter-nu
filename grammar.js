@@ -1,3 +1,4 @@
+const f = 1;
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 module.exports = grammar({
@@ -1289,13 +1290,13 @@ module.exports = grammar({
 
     _flag_value: ($) => choice($._value, alias($.unquoted, $.val_string)),
 
+    _flag_equals_value: ($) => seq(token.immediate(PUNC().eq), field("value", $._flag_value)),
+
     short_flag: ($) =>
       seq(
         OPR().minus,
         optional(field("name", $.short_flag_identifier)),
-        optional(
-          seq(token.immediate(PUNC().eq), field("value", $._flag_value)),
-        ),
+        optional($._flag_equals_value),
       ),
 
     short_flag_identifier: (_$) => token.immediate(/[\p{XID_Continue}?@!%_-]+/),
@@ -1304,9 +1305,7 @@ module.exports = grammar({
       seq(
         OPR().long_flag,
         optional(field("name", $.long_flag_identifier)),
-        optional(
-          seq(token.immediate(PUNC().eq), field("value", $._flag_value)),
-        ),
+        optional($._flag_equals_value),
       ),
 
     _unquoted_naive: (_$) => token(prec(PREC().low, repeat1(none_of("{}")))),
