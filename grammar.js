@@ -1924,8 +1924,8 @@ function _unquoted_pattern_rule(type, first) {
  * @param {string} type
  */
 function _unquoted_rule(type) {
-  var excluded_common = _unquoted_pattern_rule(type, false);
-  var excluded_first = _unquoted_pattern_rule(type, true);
+  const excluded_common = _unquoted_pattern_rule(type, false);
+  const excluded_first = _unquoted_pattern_rule(type, true);
   const pattern_once = none_of(excluded_common);
   const pattern = token(seq(none_of(excluded_first), repeat(pattern_once)));
   const pattern_repeat = token(repeat(pattern_once));
