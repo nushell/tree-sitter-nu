@@ -15973,6 +15973,144 @@
         }
       }
     },
+    "_unquoted_naive": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "REPEAT1",
+          "content": {
+            "type": "PATTERN",
+            "value": "[^\\s\\r\\n\\t\\|();{}]"
+          }
+        }
+      }
+    },
+    "unquoted": {
+      "type": "PREC_LEFT",
+      "value": -69,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "TOKEN",
+            "content": {
+              "type": "PREC",
+              "value": -69,
+              "content": {
+                "type": "TOKEN",
+                "content": {
+                  "type": "TOKEN",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "PATTERN",
+                        "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}\"`'$-]"
+                      },
+                      {
+                        "type": "REPEAT",
+                        "content": {
+                          "type": "PATTERN",
+                          "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}\"`']"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_val_range"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_val_number_decimal"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "[iI][nN][fF]([iI][nN][iI][tT][yY])?"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "-[iI][nN][fF]([iI][nN][iI][tT][yY])?"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "[nN][aA][nN]"
+                  }
+                ]
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_unquoted_pattern"
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": ".."
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "..="
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "..<"
+                  }
+                ]
+              },
+              {
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "PREC",
+                  "value": -69,
+                  "content": {
+                    "type": "TOKEN",
+                    "content": {
+                      "type": "REPEAT",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}\"`']"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_unquoted_anonymous_prefix"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_unquoted_pattern"
+              }
+            ]
+          }
+        ]
+      }
+    },
     "_unquoted_in_list": {
       "type": "PREC_LEFT",
       "value": -69,
@@ -16215,144 +16353,6 @@
               {
                 "type": "SYMBOL",
                 "name": "_unquoted_pattern_in_record"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "_unquoted_naive": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": -1,
-        "content": {
-          "type": "REPEAT1",
-          "content": {
-            "type": "PATTERN",
-            "value": "[^\\s\\r\\n\\t\\|();{}]"
-          }
-        }
-      }
-    },
-    "unquoted": {
-      "type": "PREC_LEFT",
-      "value": -69,
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PREC",
-              "value": -69,
-              "content": {
-                "type": "TOKEN",
-                "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "PATTERN",
-                        "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}\"`'$-]"
-                      },
-                      {
-                        "type": "REPEAT",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}\"`']"
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_val_range"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_val_number_decimal"
-                  },
-                  {
-                    "type": "PATTERN",
-                    "value": "[iI][nN][fF]([iI][nN][iI][tT][yY])?"
-                  },
-                  {
-                    "type": "PATTERN",
-                    "value": "-[iI][nN][fF]([iI][nN][iI][tT][yY])?"
-                  },
-                  {
-                    "type": "PATTERN",
-                    "value": "[nN][aA][nN]"
-                  }
-                ]
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_unquoted_pattern"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": ".."
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "..="
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "..<"
-                  }
-                ]
-              },
-              {
-                "type": "IMMEDIATE_TOKEN",
-                "content": {
-                  "type": "PREC",
-                  "value": -69,
-                  "content": {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "REPEAT",
-                      "content": {
-                        "type": "PATTERN",
-                        "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}\"`']"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_unquoted_anonymous_prefix"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_unquoted_pattern"
               }
             ]
           }

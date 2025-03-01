@@ -1,4 +1,3 @@
-const f = 1;
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 module.exports = grammar({
@@ -1330,9 +1329,6 @@ module.exports = grammar({
           repeat1(none_of(_unquoted_pattern_rule("record", false))),
         ),
       ),
-
-    _unquoted_in_list: _unquoted_rule("list"),
-    _unquoted_in_record: _unquoted_rule("record"),
 
     _unquoted_naive: (_$) => token(prec(PREC().low, repeat1(none_of("{}")))),
     unquoted: _unquoted_rule("command"),
