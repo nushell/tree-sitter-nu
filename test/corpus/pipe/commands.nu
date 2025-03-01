@@ -558,7 +558,6 @@ echo infms
 echo nankb
 echo true-foo
 echo null-foo
-echo e>foo
 echo 1ms-foo
 echo 1mb-foo
 echo .1foo
@@ -570,11 +569,6 @@ echo 1991-02-02foo
 ------
 
 (nu_script
-  (pipeline
-    (pipe_element
-      (command
-        (cmd_identifier)
-        (val_string))))
   (pipeline
     (pipe_element
       (command
@@ -801,7 +795,6 @@ echo .1ms()
 echo .1mb()
 echo 2024-01-01()
 echo .1()
-echo e>()
 echo ..=1()
 echo ..1..<1()
 echo .1..=1()
@@ -834,12 +827,6 @@ echo 1...()
             (pipeline
               (pipe_element
                 (val_string))))
-          (expr_parenthesized)))))
-  (pipeline
-    (pipe_element
-      (command
-        (cmd_identifier)
-        (val_string
           (expr_parenthesized)))))
   (pipeline
     (pipe_element
