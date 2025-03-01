@@ -1289,13 +1289,14 @@ module.exports = grammar({
 
     _flag_value: ($) => choice($._value, alias($.unquoted, $.val_string)),
 
+    _flag_equals_value: ($) =>
+      seq(token.immediate(PUNC().eq), field("value", $._flag_value)),
+
     short_flag: ($) =>
       seq(
         OPR().minus,
         optional(field("name", $.short_flag_identifier)),
-        optional(
-          seq(token.immediate(PUNC().eq), field("value", $._flag_value)),
-        ),
+        optional($._flag_equals_value),
       ),
 
     short_flag_identifier: (_$) => token.immediate(/[\p{XID_Continue}?@!%_-]+/),
@@ -1304,8 +1305,28 @@ module.exports = grammar({
       seq(
         OPR().long_flag,
         optional(field("name", $.long_flag_identifier)),
-        optional(
-          seq(token.immediate(PUNC().eq), field("value", $._flag_value)),
+        optional($._flag_equals_value),
+      ),
+
+    _unquoted_pattern: (_$) =>
+      token.immediate(
+        prec(
+          PREC().lowest,
+          repeat1(none_of(_unquoted_pattern_rule("command", false))),
+        ),
+      ),
+    _unquoted_pattern_in_list: (_$) =>
+      token.immediate(
+        prec(
+          PREC().lowest,
+          repeat1(none_of(_unquoted_pattern_rule("list", false))),
+        ),
+      ),
+    _unquoted_pattern_in_record: (_$) =>
+      token.immediate(
+        prec(
+          PREC().lowest,
+          repeat1(none_of(_unquoted_pattern_rule("record", false))),
         ),
       ),
 
@@ -1313,13 +1334,13 @@ module.exports = grammar({
     unquoted: _unquoted_rule("command"),
     _unquoted_in_list: _unquoted_rule("list"),
     _unquoted_in_record: _unquoted_rule("record"),
+
     _unquoted_with_expr: _unquoted_with_expr_rule("command"),
     _unquoted_in_list_with_expr: _unquoted_with_expr_rule("list"),
     _unquoted_in_record_with_expr: _unquoted_with_expr_rule("record"),
 
     _unquoted_anonymous_prefix: ($) =>
       choice(
-        ...REDIR_APPEND(),
         SPECIAL().null,
         alias($.val_bool, "_prefix"),
         alias($.val_date, "_prefix"),
@@ -1880,36 +1901,50 @@ function _unquoted_with_expr_rule(type) {
 
 /**
  * @param {string} type
+ * @param {boolean} first
  */
-function _unquoted_rule(type) {
-  var excluded_common = "\\[\\]{}\"`'";
-  var excluded_first = excluded_common + "$";
+function _unquoted_pattern_rule(type, first) {
+  var excluded = "\\[\\]{}\"`'";
+  if (first) excluded += "$";
   switch (type) {
     case "list":
-      excluded_common += ",";
-      excluded_first += ",";
+      excluded += ",";
       break;
     case "record":
-      excluded_common += ":,";
-      excluded_first += ":,";
+      excluded += ":,";
       break;
     case "command":
-      excluded_first += "-";
+      if (first) excluded += "-";
       break;
   }
+  return excluded;
+}
+
+/**
+ * @param {string} type
+ */
+function _unquoted_rule(type) {
+  const excluded_common = _unquoted_pattern_rule(type, false);
+  const excluded_first = _unquoted_pattern_rule(type, true);
   const pattern_once = none_of(excluded_common);
   const pattern = token(seq(none_of(excluded_first), repeat(pattern_once)));
   const pattern_repeat = token(repeat(pattern_once));
-  const pattern_repeat1 = token(repeat1(pattern_once));
 
   // because this catches almost anything, we want to ensure it is
   // picked as the a last resort after everything else has failed.
   // so we give it a ridiculously low precedence and place it at the
   // very end
-  return (
-    /** @type {{ _val_number_decimal: RuleOrLiteral; _immediate_decimal: RuleOrLiteral; }} */ $,
-  ) =>
-    prec.left(
+  return ($) => {
+    var pattern_repeat1 = $._unquoted_pattern;
+    switch (type) {
+      case "list":
+        pattern_repeat1 = $._unquoted_pattern_in_list;
+        break;
+      case "record":
+        pattern_repeat1 = $._unquoted_pattern_in_record;
+        break;
+    }
+    return prec.left(
       PREC().lowest,
       choice(
         token(prec(PREC().lowest, token(pattern))),
@@ -1922,7 +1957,7 @@ function _unquoted_rule(type) {
             SPECIAL().neg_infinity,
             SPECIAL().not_a_number,
           ),
-          token.immediate(prec(PREC().lowest, pattern_repeat1)),
+          pattern_repeat1,
         ),
 
         seq(
@@ -1936,9 +1971,10 @@ function _unquoted_rule(type) {
 
         // recognize unquoted string starting with special patterns
         // e.g. true-foo, e>bar, 1ms-baz ...
-        seq($._unquoted_anonymous_prefix, token.immediate(pattern_repeat1)),
+        seq($._unquoted_anonymous_prefix, pattern_repeat1),
       ),
     );
+  };
 }
 
 /// nushell keywords
