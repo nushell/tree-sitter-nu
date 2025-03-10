@@ -2547,7 +2547,7 @@
     "named": true,
     "fields": {
       "dollar_name": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
@@ -2557,25 +2557,11 @@
         ]
       },
       "var_name": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
             "type": "identifier",
-            "named": true
-          }
-        ]
-      },
-      "variable": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "val_variable",
             "named": true
           }
         ]

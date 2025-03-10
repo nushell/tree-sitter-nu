@@ -614,11 +614,7 @@ module.exports = grammar({
       ),
 
     hide_env: ($) =>
-      seq(
-        KEYWORD().hide_env,
-        repeat($._flag),
-        field("variable", $._variable_name),
-      ),
+      seq(KEYWORD().hide_env, repeat($._flag), repeat1($._variable_name)),
 
     _stmt_overlay: ($) =>
       choice($.overlay_hide, $.overlay_list, $.overlay_new, $.overlay_use),
