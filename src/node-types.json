@@ -1957,6 +1957,10 @@
             "named": false
           },
           {
+            "type": "like",
+            "named": false
+          },
+          {
             "type": "mod",
             "named": false
           },
@@ -1966,6 +1970,10 @@
           },
           {
             "type": "not-in",
+            "named": false
+          },
+          {
+            "type": "not-like",
             "named": false
           },
           {
@@ -5113,11 +5121,19 @@
             "named": false
           },
           {
+            "type": "like",
+            "named": false
+          },
+          {
             "type": "not-has",
             "named": false
           },
           {
             "type": "not-in",
+            "named": false
+          },
+          {
+            "type": "not-like",
             "named": false
           },
           {
@@ -5247,11 +5263,19 @@
             "named": false
           },
           {
+            "type": "like",
+            "named": false
+          },
+          {
             "type": "not-has",
             "named": false
           },
           {
             "type": "not-in",
+            "named": false
+          },
+          {
+            "type": "not-like",
             "named": false
           },
           {
@@ -5337,11 +5361,19 @@
             "named": false
           },
           {
+            "type": "like",
+            "named": false
+          },
+          {
             "type": "not-has",
             "named": false
           },
           {
             "type": "not-in",
+            "named": false
+          },
+          {
+            "type": "not-like",
             "named": false
           },
           {
@@ -5487,11 +5519,19 @@
             "named": false
           },
           {
+            "type": "like",
+            "named": false
+          },
+          {
             "type": "not-has",
             "named": false
           },
           {
             "type": "not-in",
+            "named": false
+          },
+          {
+            "type": "not-like",
             "named": false
           },
           {
@@ -6072,6 +6112,10 @@
     "named": false
   },
   {
+    "type": "like",
+    "named": false
+  },
+  {
     "type": "list",
     "named": false
   },
@@ -6121,6 +6165,10 @@
   },
   {
     "type": "not-in",
+    "named": false
+  },
+  {
+    "type": "not-like",
     "named": false
   },
   {
