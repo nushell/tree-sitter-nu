@@ -3700,6 +3700,10 @@
             {
               "type": "SYMBOL",
               "name": "val_variable"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "expr_parenthesized"
             }
           ]
         },
@@ -3743,6 +3747,10 @@
             {
               "type": "SYMBOL",
               "name": "val_variable"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "expr_parenthesized"
             }
           ]
         },
