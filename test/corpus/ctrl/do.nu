@@ -203,3 +203,25 @@ do-005-parenthesized-no-arguments
             (ctrl_do
               (block))))
         (comment)))))
+
+=====
+do-006-closure-in-parenthesis
+=====
+
+do ({echo hello})
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_do
+        (expr_parenthesized
+          (pipeline
+            (pipe_element
+              (val_closure
+                (pipeline
+                  (pipe_element
+                    (command
+                      (cmd_identifier)
+                      (val_string))))))))))))
