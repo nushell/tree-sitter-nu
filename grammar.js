@@ -1,3 +1,4 @@
+const _ = 1;
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 module.exports = grammar({
@@ -2126,6 +2127,8 @@ function OPR() {
     // regex matching
     regex_match: "=~",
     regex_not_match: "!~",
+    like: "like",
+    not_like: "not-like",
 
     // logical
     not: "not",
@@ -2203,6 +2206,7 @@ function TABLE() {
     ...flatten_ops(PREC().additive, [OPR().plus, OPR().minus]),
     ...flatten_ops(PREC().bit_shift, [OPR().bit_shl, OPR().bit_shr]),
     ...flatten_ops(PREC().regex, [OPR().regex_match, OPR().regex_not_match]),
+    ...flatten_ops(PREC().regex, [OPR().like, OPR().not_like]),
     [PREC().bit_and, OPR().bit_and],
     [PREC().bit_xor, OPR().bit_xor],
     [PREC().bit_or, OPR().bit_or],
@@ -2240,6 +2244,7 @@ function PREDICATE() {
     ...flatten_ops(PREC().membership, memberships),
     ...flatten_ops(PREC().comparative, comparatives),
     ...flatten_ops(PREC().regex, [OPR().regex_match, OPR().regex_not_match]),
+    ...flatten_ops(PREC().regex, [OPR().like, OPR().not_like]),
   ];
 }
 

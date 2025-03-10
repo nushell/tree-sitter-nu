@@ -220,3 +220,36 @@ binary-expr-010-range
         (val_range
           (val_number)
           (val_number))))))
+
+====
+binary-expr-011-regex
+====
+
+'foo' like 'bar'
+'foo' not-like 'bar'
+'foo' =~ 'bar'
+'foo' !~ 'bar'
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_binary
+        lhs: (val_string)
+        rhs: (val_string))))
+  (pipeline
+    (pipe_element
+      (expr_binary
+        lhs: (val_string)
+        rhs: (val_string))))
+  (pipeline
+    (pipe_element
+      (expr_binary
+        lhs: (val_string)
+        rhs: (val_string))))
+  (pipeline
+    (pipe_element
+      (expr_binary
+        lhs: (val_string)
+        rhs: (val_string)))))
