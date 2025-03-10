@@ -4970,8 +4970,7 @@
           }
         },
         {
-          "type": "FIELD",
-          "name": "variable",
+          "type": "REPEAT1",
           "content": {
             "type": "SYMBOL",
             "name": "_variable_name"

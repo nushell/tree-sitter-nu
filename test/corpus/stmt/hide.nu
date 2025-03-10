@@ -64,3 +64,22 @@ hide-env --ignore-errors FOO;
     (long_flag
       (long_flag_identifier))
     (identifier)))
+
+=====
+hide-env-004-multiple-names
+=====
+
+hide-env -i FOO BAR;
+hide-env FOO BAR;
+
+-----
+
+(nu_script
+  (hide_env
+    (short_flag
+      name: (short_flag_identifier))
+    var_name: (identifier)
+    var_name: (identifier))
+  (hide_env
+    var_name: (identifier)
+    var_name: (identifier)))
