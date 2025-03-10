@@ -1,4 +1,3 @@
-const _ = 1;
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 module.exports = grammar({
