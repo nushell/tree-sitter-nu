@@ -418,7 +418,7 @@ module.exports = grammar({
       seq(
         KEYWORD().do,
         repeat($._flag),
-        choice($._blosure, $.val_variable),
+        choice($._blosure, $.val_variable, $.expr_parenthesized),
         repeat($._do_expression),
       ),
 
@@ -427,7 +427,7 @@ module.exports = grammar({
         KEYWORD().do,
         repeat($._flags_parenthesized),
         repeat1($._separator),
-        choice($._blosure, $.val_variable),
+        choice($._blosure, $.val_variable, $.expr_parenthesized),
         repeat(seq(optional($._repeat_newline), $._do_expression)),
       ),
 
