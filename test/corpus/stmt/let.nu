@@ -69,21 +69,21 @@ let x: string = 'tree-sitter'
 let-005-with-complex-type
 =====
 
-let x: record<name: string> = { name: 'tree-sitter' }
+let x: record<foo-bar: string> = { foo-bar: 'tree-sitter' }
 
 -----
 
 (nu_script
   (stmt_let
-    (identifier)
-    (param_type
-      (collection_type
-        (identifier)
-        (flat_type)))
-    (pipeline
+    var_name: (identifier)
+    type: (param_type
+      type: (collection_type
+        key: (identifier)
+        type: (flat_type)))
+    value: (pipeline
       (pipe_element
         (val_record
           (record_body
-            (record_entry
-              (identifier)
-              (val_string))))))))
+            entry: (record_entry
+              key: (identifier)
+              value: (val_string))))))))

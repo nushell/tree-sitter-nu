@@ -3114,8 +3114,13 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "identifier"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_unquoted_in_record"
+                },
+                "named": true,
+                "value": "identifier"
               },
               {
                 "type": "ALIAS",
