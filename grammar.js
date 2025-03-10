@@ -287,7 +287,13 @@ module.exports = grammar({
       ),
     _collection_entry: ($) =>
       seq(
-        field("key", choice($.identifier, alias($.val_string, $.identifier))),
+        field(
+          "key",
+          choice(
+            alias($._unquoted_in_record, $.identifier),
+            alias($.val_string, $.identifier),
+          ),
+        ),
         optional($._collection_annotation),
       ),
     _collection_body: ($) =>
