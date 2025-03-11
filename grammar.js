@@ -33,11 +33,12 @@ module.exports = grammar({
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
     [$._match_pattern_record, $._value],
+    [$._match_pattern_record, $.val_record, $.val_closure],
     [$._match_pattern_record, $.val_record],
     [$._match_pattern_value, $._value],
     [$._parenthesized_body],
     [$.block, $.val_closure],
-    [$.block, $.val_record],
+    [$.block, $.val_record, $.val_closure],
     [$.command, $.record_entry],
     [$.ctrl_do_parenthesized],
     [$.ctrl_if_parenthesized],
@@ -48,6 +49,7 @@ module.exports = grammar({
     [$.parameter, $.param_type, $.param_value],
     [$.pipeline],
     [$.pipeline_parenthesized],
+    [$.val_record, $.val_closure],
   ],
 
   rules: {
@@ -677,7 +679,7 @@ module.exports = grammar({
     block: ($) =>
       seq(BRACK().open_brace, optional($._block_body), BRACK().close_brace),
 
-    _blosure: ($) => choice(prec.dynamic(10, $.block), $.val_closure),
+    _blosure: ($) => choice($.block, $.val_closure),
 
     // the where command has a unique argument pattern that breaks the
     // general command parsing, so we handle it separately
@@ -1218,7 +1220,7 @@ module.exports = grammar({
         BRACK().open_brace,
         optional($._repeat_newline),
         optional(field("parameters", $.parameter_pipes)),
-        $._block_body,
+        optional($._block_body),
         BRACK().close_brace,
       ),
 
