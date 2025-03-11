@@ -5345,12 +5345,8 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "PREC_DYNAMIC",
-          "value": 10,
-          "content": {
-            "type": "SYMBOL",
-            "name": "block"
-          }
+          "type": "SYMBOL",
+          "name": "block"
         },
         {
           "type": "SYMBOL",
@@ -16025,8 +16021,16 @@
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "_block_body"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_block_body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -17552,6 +17556,11 @@
     ],
     [
       "_match_pattern_record",
+      "val_record",
+      "val_closure"
+    ],
+    [
+      "_match_pattern_record",
       "val_record"
     ],
     [
@@ -17567,7 +17576,8 @@
     ],
     [
       "block",
-      "val_record"
+      "val_record",
+      "val_closure"
     ],
     [
       "command",
@@ -17602,6 +17612,10 @@
     ],
     [
       "pipeline_parenthesized"
+    ],
+    [
+      "val_record",
+      "val_closure"
     ]
   ],
   "precedences": [],

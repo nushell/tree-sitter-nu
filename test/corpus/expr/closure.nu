@@ -261,3 +261,26 @@ closure-010-dummy-closure
   (pipeline
     (pipe_element
       (val_closure))))
+
+=====
+closure-011-empty-closure
+=====
+
+{|| }
+{
+||
+# comment
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_closure
+        parameters: (parameter_pipes))))
+  (pipeline
+    (pipe_element
+      (val_closure
+        parameters: (parameter_pipes)
+        (comment)))))
