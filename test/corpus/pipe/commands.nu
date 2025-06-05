@@ -485,7 +485,7 @@ cmd-018-pipe-external
 cmd-019-flags-with-values
 =====
 
-bla --weird-that=this --behaved-differently=than-this --level=2
+bla --weird-that=this --behaved-differently=than-this --level=2 --expr=(1 + 1)
 ^dummy - -- -color=true
 
 -----
@@ -503,7 +503,15 @@ bla --weird-that=this --behaved-differently=than-this --level=2
           value: (val_string))
         flag: (long_flag
           name: (long_flag_identifier)
-          value: (val_number)))))
+          value: (val_number))
+        flag: (long_flag
+          name: (long_flag_identifier)
+          value: (expr_parenthesized
+            (pipeline
+              (pipe_element
+                (expr_binary
+                  lhs: (val_number)
+                  rhs: (val_number)))))))))
   (pipeline
     (pipe_element
       (command
