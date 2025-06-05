@@ -1304,7 +1304,12 @@ module.exports = grammar({
 
     _flags_parenthesized: ($) => seq(repeat1($._separator), $._flag),
 
-    _flag_value: ($) => choice($._value, alias($.unquoted, $.val_string)),
+    _flag_value: ($) =>
+      choice(
+        $._value,
+        alias($.unquoted, $.val_string),
+        alias($._expr_parenthesized_immediate, $.expr_parenthesized),
+      ),
 
     _flag_equals_value: ($) =>
       seq(token.immediate(PUNC().eq), field("value", $._flag_value)),

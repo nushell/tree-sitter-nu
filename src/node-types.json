@@ -2794,6 +2794,10 @@
         "required": false,
         "types": [
           {
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
             "type": "val_binary",
             "named": true
           },
@@ -4199,6 +4203,10 @@
         "multiple": false,
         "required": false,
         "types": [
+          {
+            "type": "expr_parenthesized",
+            "named": true
+          },
           {
             "type": "val_binary",
             "named": true
