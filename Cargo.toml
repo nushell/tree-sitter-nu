@@ -27,8 +27,8 @@ path = "bindings/rust/lib.rs"
 cc = "1.1.30"
 
 [dependencies]
-tree-sitter-language = "0.1.2"
-tree-sitter = "0.24.3"
+tree-sitter-language = "0.1"
+tree-sitter = "0.25"
 
 [build-dependencies]
 cc = "1.1.30"
