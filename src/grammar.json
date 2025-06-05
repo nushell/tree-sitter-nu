@@ -16625,6 +16625,15 @@
           },
           "named": true,
           "value": "val_string"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expr_parenthesized_immediate"
+          },
+          "named": true,
+          "value": "expr_parenthesized"
         }
       ]
     },
@@ -17644,5 +17653,6 @@
     "_stringish",
     "_terminator"
   ],
-  "supertypes": []
+  "supertypes": [],
+  "reserved": {}
 }
