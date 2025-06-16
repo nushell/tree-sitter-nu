@@ -17644,5 +17644,6 @@
     "_stringish",
     "_terminator"
   ],
-  "supertypes": []
+  "supertypes": [],
+  "reserved": {}
 }
