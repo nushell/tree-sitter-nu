@@ -70,6 +70,7 @@ let-005-with-complex-type
 =====
 
 let x: record<foo-bar: string> = { foo-bar: 'tree-sitter' }
+let y: oneof<int, list<record>> = 1
 
 -----
 
@@ -86,4 +87,14 @@ let x: record<foo-bar: string> = { foo-bar: 'tree-sitter' }
           (record_body
             entry: (record_entry
               key: (identifier)
-              value: (val_string))))))))
+              value: (val_string)))))))
+  (stmt_let
+    var_name: (identifier)
+    type: (param_type
+      type: (composite_type
+        type: (flat_type)
+        type: (list_type
+          type: (flat_type))))
+    value: (pipeline
+      (pipe_element
+        (val_number)))))
