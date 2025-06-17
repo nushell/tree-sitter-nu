@@ -370,6 +370,10 @@
             "named": true
           },
           {
+            "type": "composite_type",
+            "named": true
+          },
+          {
             "type": "flat_type",
             "named": true
           },
@@ -583,6 +587,34 @@
     "type": "comment",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "composite_type",
+    "named": true,
+    "fields": {
+      "type": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "collection_type",
+            "named": true
+          },
+          {
+            "type": "composite_type",
+            "named": true
+          },
+          {
+            "type": "flat_type",
+            "named": true
+          },
+          {
+            "type": "list_type",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "ctrl_do",
@@ -2706,6 +2738,10 @@
             "named": true
           },
           {
+            "type": "composite_type",
+            "named": true
+          },
+          {
             "type": "flat_type",
             "named": true
           },
@@ -2721,6 +2757,10 @@
         "types": [
           {
             "type": "collection_type",
+            "named": true
+          },
+          {
+            "type": "composite_type",
             "named": true
           },
           {
@@ -3448,6 +3488,10 @@
             "named": true
           },
           {
+            "type": "composite_type",
+            "named": true
+          },
+          {
             "type": "flat_type",
             "named": true
           },
@@ -4054,6 +4098,10 @@
         "types": [
           {
             "type": "collection_type",
+            "named": true
+          },
+          {
+            "type": "composite_type",
             "named": true
           },
           {
@@ -6213,6 +6261,10 @@
   },
   {
     "type": "one-of",
+    "named": false
+  },
+  {
+    "type": "oneof",
     "named": false
   },
   {

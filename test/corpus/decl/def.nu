@@ -1044,3 +1044,39 @@ def open-pr [
             (identifier)
             (flat_type)))))
     (block)))
+
+======
+def-035-composite-types
+======
+
+def composite-type [
+    input: oneof<
+      int
+      list<record>
+    >
+]: oneof<int, bool> -> oneof<nothing,
+oneof<int, bool>> {}
+
+-----
+
+(nu_script
+  (decl_def
+    unquoted_name: (cmd_identifier)
+    parameters: (parameter_bracks
+      (parameter
+        param_name: (identifier)
+        (param_type
+          type: (composite_type
+            type: (flat_type)
+            type: (list_type
+              type: (flat_type))))))
+    return_type: (returns
+      type: (composite_type
+        type: (flat_type)
+        type: (flat_type))
+      type: (composite_type
+        type: (flat_type)
+        type: (composite_type
+          type: (flat_type)
+          type: (flat_type))))
+    body: (block)))

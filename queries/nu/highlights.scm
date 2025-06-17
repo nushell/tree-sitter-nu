@@ -260,6 +260,10 @@ key: (identifier) @property
     ["," ":"] @punctuation.special
     ">" @punctuation.bracket
 )
+(composite_type
+    "oneof" @type.enum
+    ["<" ">"] @punctuation.bracket
+)
 
 (shebang) @keyword.directive
 (comment) @comment

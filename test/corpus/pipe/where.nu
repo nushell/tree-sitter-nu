@@ -231,3 +231,27 @@ ls | where name not-has "e"
       (where_command
         lhs: (val_string)
         rhs: (val_string)))))
+
+=====
+where-009-variable
+=====
+
+ls | where $foo.bar and $foo.baz
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        head: (cmd_identifier)))
+    (pipe_element
+      (where_command
+        lhs: (val_variable
+          name: (identifier)
+          (cell_path
+            (path)))
+        rhs: (val_variable
+          name: (identifier)
+          (cell_path
+            (path)))))))

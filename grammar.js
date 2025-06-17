@@ -274,10 +274,16 @@ module.exports = grammar({
       ),
 
     _type_annotation: ($) =>
-      field("type", choice($.list_type, $.collection_type, $.flat_type)),
+      field(
+        "type",
+        choice($.list_type, $.collection_type, $.flat_type, $.composite_type),
+      ),
 
     _all_type: ($) =>
-      field("type", choice($.list_type, $.collection_type, $.flat_type)),
+      field(
+        "type",
+        choice($.list_type, $.collection_type, $.flat_type, $.composite_type),
+      ),
 
     flat_type: (_$) => field("flat_type", FLAT_TYPES()),
 
@@ -308,22 +314,28 @@ module.exports = grammar({
     collection_type: ($) =>
       seq(
         choice("record", "table"),
-        seq(
-          token.immediate(BRACK().open_angle),
-          optional($._collection_body),
-          BRACK().close_angle,
-        ),
+        token.immediate(BRACK().open_angle),
+        optional($._collection_body),
+        BRACK().close_angle,
       ),
 
     list_type: ($) =>
       seq(
         "list",
-        seq(
-          token.immediate(BRACK().open_angle),
-          field("inner", optional($._all_type)),
-          field("completion", optional($.param_cmd)),
-          BRACK().close_angle,
-        ),
+        token.immediate(BRACK().open_angle),
+        field("inner", optional($._all_type)),
+        field("completion", optional($.param_cmd)),
+        BRACK().close_angle,
+      ),
+
+    _composite_argument_body: ($) =>
+      general_body_rules("", $._all_type, $._entry_separator, $._newline),
+    composite_type: ($) =>
+      seq(
+        "oneof",
+        token.immediate(BRACK().open_angle),
+        $._composite_argument_body,
+        BRACK().close_angle,
       ),
 
     param_cmd: ($) =>
@@ -699,6 +711,7 @@ module.exports = grammar({
     _predicate: ($) =>
       choice(
         $.val_bool,
+        $.val_variable,
         $.expr_unary,
         $.expr_parenthesized,
         ...PREDICATE().map(([precedence, opr]) =>
