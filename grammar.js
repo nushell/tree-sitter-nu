@@ -860,6 +860,7 @@ module.exports = grammar({
     _value: ($) =>
       choice(
         $.val_variable,
+        $.val_cellpath,
         $.val_nothing,
         $.val_bool,
         $.val_number,
@@ -897,6 +898,8 @@ module.exports = grammar({
         field("name", choice("nu", "in", "env", $.identifier)),
         optional($.cell_path),
       ),
+
+    val_cellpath: ($) => seq(PUNC().dollar, $.cell_path),
 
     val_number: ($) => $._val_number,
 
@@ -1243,15 +1246,20 @@ module.exports = grammar({
 
     path: ($) => {
       const path = choice(
-        token.immediate(prec(PREC().low, repeat1(none_of("\\[\\]{}.,:?")))),
+        token.immediate(prec(PREC().low, repeat1(none_of("\\[\\]{}.,:?!")))),
         alias($.val_string, "quoted"),
       );
 
       return seq(
         PUNC().dot,
-        choice(
-          field("raw_path", path),
-          field("protected_path", seq(path, PUNC().question)),
+        path,
+        optional(
+          choice(
+            PUNC().question,
+            PUNC().exclamation,
+            seq(PUNC().question, PUNC().exclamation),
+            seq(PUNC().exclamation, PUNC().question),
+          ),
         ),
       );
     },
@@ -2084,6 +2092,7 @@ function PUNC() {
     fat_arrow: "=>",
     thin_arrow: "->",
     question: "?",
+    exclamation: "!",
     underscore: "_",
 
     semicolon: ";",
