@@ -145,7 +145,7 @@ cellpath-006-immediate-punctuation
 cellpath-007-allowed-punctuation
 ====
 
-$env.$var.$!@#% # comment
+$env.$var.$@#% # comment
 
 -----
 
@@ -156,4 +156,67 @@ $env.$var.$!@#% # comment
         (cell_path
           (path)
           (path)))))
+  (comment))
+
+====
+cellpath-008-cellpath-literal
+====
+
+$varname.foo.bar?.baz!.qux?!
+$.aa."b b".0.-1.cc?.dd!.ee!?.'f f'!?.`g g`
+echo $.foo # arg
+[$.foo] # in list
+{key: $.foo} # record value
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_variable
+        name: (identifier)
+        (cell_path
+          (path)
+          (path)
+          (path)
+          (path)))))
+  (pipeline
+    (pipe_element
+      (val_cellpath
+        (cell_path
+          (path)
+          (path)
+          (path)
+          (path)
+          (path)
+          (path)
+          (path)
+          (path)
+          (path)))))
+  (pipeline
+    (pipe_element
+      (command
+        head: (cmd_identifier)
+        arg: (val_cellpath
+          (cell_path
+            (path))))))
+  (comment)
+  (pipeline
+    (pipe_element
+      (val_list
+        (list_body
+          entry: (val_entry
+            item: (val_cellpath
+              (cell_path
+                (path))))))))
+  (comment)
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          entry: (record_entry
+            key: (identifier)
+            value: (val_cellpath
+              (cell_path
+                (path))))))))
   (comment))

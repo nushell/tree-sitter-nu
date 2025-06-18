@@ -13818,6 +13818,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "val_cellpath"
+        },
+        {
+          "type": "SYMBOL",
           "name": "val_nothing"
         },
         {
@@ -13983,6 +13987,19 @@
               "type": "BLANK"
             }
           ]
+        }
+      ]
+    },
+    "val_cellpath": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "$"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "cell_path"
         }
       ]
     },
@@ -16128,77 +16145,74 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "FIELD",
-              "name": "raw_path",
+              "type": "IMMEDIATE_TOKEN",
               "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "IMMEDIATE_TOKEN",
-                    "content": {
-                      "type": "PREC",
-                      "value": -1,
-                      "content": {
-                        "type": "REPEAT1",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}.,:?]"
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "val_string"
-                    },
-                    "named": false,
-                    "value": "quoted"
+                "type": "PREC",
+                "value": -1,
+                "content": {
+                  "type": "REPEAT1",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}.,:?!]"
                   }
-                ]
+                }
               }
             },
             {
-              "type": "FIELD",
-              "name": "protected_path",
+              "type": "ALIAS",
               "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "IMMEDIATE_TOKEN",
-                        "content": {
-                          "type": "PREC",
-                          "value": -1,
-                          "content": {
-                            "type": "REPEAT1",
-                            "content": {
-                              "type": "PATTERN",
-                              "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}.,:?]"
-                            }
-                          }
-                        }
-                      },
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "SYMBOL",
-                          "name": "val_string"
-                        },
-                        "named": false,
-                        "value": "quoted"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "?"
-                  }
-                ]
-              }
+                "type": "SYMBOL",
+                "name": "val_string"
+              },
+              "named": false,
+              "value": "quoted"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "?"
+                },
+                {
+                  "type": "STRING",
+                  "value": "!"
+                },
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "?"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "!"
+                    }
+                  ]
+                },
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "!"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "?"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
             }
           ]
         }

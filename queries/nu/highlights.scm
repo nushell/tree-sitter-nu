@@ -227,7 +227,7 @@ key: (identifier) @property
 "where" @function.builtin
 
 (path
-  ["." "?"] @punctuation.delimiter
+  ["." "?" "!"] @punctuation.delimiter
 ) @variable.parameter
 
 (stmt_let (identifier) @variable)
@@ -242,6 +242,9 @@ key: (identifier) @property
    "env" @constant
   ]
 ) @none
+
+(val_cellpath
+  "$" @punctuation.special)
 
 (record_entry
   ":" @punctuation.special)
