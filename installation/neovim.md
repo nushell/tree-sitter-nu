@@ -1,8 +1,8 @@
 # neovim
 
-## Lazy.nvim installation
+## Installation with a plugin manager, e.g. lazy.nvim
 
-Extend your lazy config with treesitter and the nu parser. The parser doesn't have to be listed under dependencies.
+Extend your lazy config with treesitter and the nu parser.
 
 ```lua
 {
@@ -41,89 +41,57 @@ Extend your lazy config with treesitter and the nu parser. The parser doesn't ha
             }, -- textobjects
         }
     end,
-    dependencies = {
-        -- Install official queries and filetype detection
-        -- alternatively, see section "Install official queries only"
-        { "nushell/tree-sitter-nu" },
-    },
     build = ":TSUpdate",
 },
 ```
 
 ## Manual installation
 
-This repository is now tracked in [nvim-treesitter].
-Therefore, manual installation is not recommended.
-However, you can install this repo as a neovim plugin to get the official queries.
+> [!CAUTION]
+>
+> This repository is now tracked in [nvim-treesitter].
+> Therefore, manual installation is not recommended for normal users.
+>
+> This section is for advanced users/parser developers to test different revs of the parser/query files.
+> Here are the overall steps, each of which is described in the following sub sections with more details:
+>
+> 1. Override the `install_info` in the configuration of [nvim-treesitter].
+> 2. Download the compatible query files.
 
-## Use your own version of ts-nu
+### Override the intall_info
 
-In this section, you will find how to test your checkout or fork of this parser in neovim.
-The fact that this repo is tracked in [nvim-treesitter] makes it a bit more tricky:
-
-> Nvim-ts is not a general purpose installer; you can shoehorn additional parsers but it's not designed for replacing tracked parsers.
-
-Therefore, this requires multiple steps: use an own version of [nvim-treesitter], override `install_info` and `revision`, use your own [nvim-treesitter], and finally install your desired version of `nushell/tree-sitter-nu`.
-
-### Step 1
-
-Clone [nvim-treesitter].
-
-### Step 2
-
-In there, you need to update `lua/nvim-treesitter/parsers.lua`:
-
-```lua
-list.nu = {
-  install_info = {
-    url = "local or remote path to your version",
-    files = { "src/parser.c", "src/scanner.c" },
-    branch = "your branch, if not main",
-  },
-  maintainers = { "@abhisheksingh0x558" },
-}
-```
-
-### Step 3
-
-Update `lockfile.json`:
-
-```json
-  "nu": {
-    "revision": "your commit hash (the full hash!)"
-  },
-```
-
-### Step 4
-
-Install your local, modified [nvim-treesitter]. Where you did the installation from the very top of this page:
+Add something similar to the following snippet to the lua code above:
 
 ```lua
 {
     -- from
     "nvim-treesitter/nvim-treesitter",
-    -- either
-    "url to your fork, if you want to pull from a repo",
-    -- or
-    dir = "path/to/your/checked-out/tree-sitter-nu",
-    config = function()
-        -- ...
+    config = function(_, opts)
+      -- ...
+      ---@type table<string, any>
+      local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+      parser_config.nu = {
+        install_info = {
+          url = "https://github.com/nushell/tree-sitter-nu", -- local path or git repo
+          files = { "src/parser.c", "src/scanner.c" }, -- note that some parsers also require src/scanner.c or src/scanner.cc
+          branch = "main", -- default branch in case of git repo if different from master
+          generate_requires_npm = false, -- if stand-alone parser without npm dependencies
+          requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
+        },
+        filetype = "nu", -- if filetype does not match the parser name
+      }
+      vim.treesitter.language.register("nu", "nushell")
+      require("nvim-treesitter.configs").setup(opts)
+      -- ...
     end,
 }
 ```
 
-### Step 5
+Restart neovim and run `:TSUpdate nu` to update the parser.
 
-Run `:TSInstall nu` in neovim to install your parser.
+### Download the query files
 
-## Install official queries only
-
-With [tree-sitter] available, you can now add [highlights queries] to associate
-highlight groups with tree-sitter nodes. Run `:highlight` in neovim for a list
-of highlight groups.
-
-If you are using the `lazy` package manager for *neovim*, you can run the
-following snippet to install the highlights file and enable the highlighting:
+This is for testing the query files maintained by this repo, which can be slightly different from those of [nvim-treesitter].
 
 ```nu
 let remote = "https://raw.githubusercontent.com/nushell/tree-sitter-nu/main/queries/nu/"
@@ -133,21 +101,17 @@ let local = (
     | path join "nvim" "lazy" "nvim-treesitter" "queries" "nu"
 )
 
-let files = ["highlights.scm" "indents.scm" "injections.scm" "textobjects.scm"]
+let files = ["folds.scm" "highlights.scm" "indents.scm" "injections.scm" "textobjects.scm"]
 
 mkdir $local
 $files | par-each {|file| http get ([$remote $file] | str join "/") | save --force ($local | path join $file) }
 ```
 
-You need to run this snippet whenever the highlights change and `:TSUpdate nu` whenever there is a new version of the parser.
-
 > **Note**
 > To get an overview of how [tree-sitter] is parsing [nushell] code, I recommend
 > poking around with [nvim-treesitter/playground].
-
 
 [tree-sitter]: https://tree-sitter.github.io/tree-sitter/
 [nvim-treesitter]: https://github.com/nvim-treesitter/nvim-treesitter
 [nvim-treesitter/playground]: https://github.com/nvim-treesitter/playground
 [nushell]: https://github.com/nushell/nushell
-[highlights queries]: https://tree-sitter.github.io/tree-sitter/syntax-highlighting#highlights
