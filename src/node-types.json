@@ -5178,56 +5178,32 @@
     "type": "where_command",
     "named": true,
     "fields": {
+      "predicate": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "val_closure",
+            "named": true
+          },
+          {
+            "type": "where_predicate",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "where_predicate",
+    "named": true,
+    "fields": {
       "lhs": {
         "multiple": true,
         "required": false,
         "types": [
           {
-            "type": "!=",
-            "named": false
-          },
-          {
-            "type": "!~",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "==",
-            "named": false
-          },
-          {
-            "type": "=~",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
-          {
-            "type": "?",
-            "named": false
-          },
-          {
             "type": "and",
-            "named": false
-          },
-          {
-            "type": "cell_path",
-            "named": true
-          },
-          {
-            "type": "ends-with",
             "named": false
           },
           {
@@ -5235,103 +5211,19 @@
             "named": true
           },
           {
-            "type": "expr_unary",
-            "named": true
-          },
-          {
-            "type": "has",
-            "named": false
-          },
-          {
-            "type": "in",
-            "named": false
-          },
-          {
-            "type": "like",
-            "named": false
-          },
-          {
-            "type": "not-has",
-            "named": false
-          },
-          {
-            "type": "not-in",
-            "named": false
-          },
-          {
-            "type": "not-like",
-            "named": false
-          },
-          {
             "type": "or",
             "named": false
           },
           {
-            "type": "starts-with",
-            "named": false
-          },
-          {
-            "type": "val_binary",
-            "named": true
-          },
-          {
-            "type": "val_bool",
-            "named": true
-          },
-          {
-            "type": "val_cellpath",
-            "named": true
-          },
-          {
-            "type": "val_closure",
-            "named": true
-          },
-          {
-            "type": "val_date",
-            "named": true
-          },
-          {
-            "type": "val_duration",
-            "named": true
-          },
-          {
-            "type": "val_filesize",
-            "named": true
-          },
-          {
-            "type": "val_interpolated",
-            "named": true
-          },
-          {
-            "type": "val_list",
-            "named": true
-          },
-          {
-            "type": "val_nothing",
-            "named": true
-          },
-          {
-            "type": "val_number",
-            "named": true
-          },
-          {
-            "type": "val_range",
-            "named": true
-          },
-          {
-            "type": "val_record",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          },
-          {
-            "type": "val_table",
+            "type": "path",
             "named": true
           },
           {
             "type": "val_variable",
+            "named": true
+          },
+          {
+            "type": "where_predicate",
             "named": true
           },
           {
@@ -5422,218 +5314,12 @@
           }
         ]
       },
-      "predicate": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "!=",
-            "named": false
-          },
-          {
-            "type": "!~",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "==",
-            "named": false
-          },
-          {
-            "type": "=~",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
-          {
-            "type": "?",
-            "named": false
-          },
-          {
-            "type": "and",
-            "named": false
-          },
-          {
-            "type": "cell_path",
-            "named": true
-          },
-          {
-            "type": "ends-with",
-            "named": false
-          },
-          {
-            "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "expr_unary",
-            "named": true
-          },
-          {
-            "type": "has",
-            "named": false
-          },
-          {
-            "type": "in",
-            "named": false
-          },
-          {
-            "type": "like",
-            "named": false
-          },
-          {
-            "type": "not-has",
-            "named": false
-          },
-          {
-            "type": "not-in",
-            "named": false
-          },
-          {
-            "type": "not-like",
-            "named": false
-          },
-          {
-            "type": "or",
-            "named": false
-          },
-          {
-            "type": "starts-with",
-            "named": false
-          },
-          {
-            "type": "val_binary",
-            "named": true
-          },
-          {
-            "type": "val_bool",
-            "named": true
-          },
-          {
-            "type": "val_cellpath",
-            "named": true
-          },
-          {
-            "type": "val_closure",
-            "named": true
-          },
-          {
-            "type": "val_date",
-            "named": true
-          },
-          {
-            "type": "val_duration",
-            "named": true
-          },
-          {
-            "type": "val_filesize",
-            "named": true
-          },
-          {
-            "type": "val_interpolated",
-            "named": true
-          },
-          {
-            "type": "val_list",
-            "named": true
-          },
-          {
-            "type": "val_nothing",
-            "named": true
-          },
-          {
-            "type": "val_number",
-            "named": true
-          },
-          {
-            "type": "val_range",
-            "named": true
-          },
-          {
-            "type": "val_record",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          },
-          {
-            "type": "val_table",
-            "named": true
-          },
-          {
-            "type": "val_variable",
-            "named": true
-          },
-          {
-            "type": "xor",
-            "named": false
-          }
-        ]
-      },
       "rhs": {
         "multiple": true,
         "required": false,
         "types": [
           {
-            "type": "!=",
-            "named": false
-          },
-          {
-            "type": "!~",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "==",
-            "named": false
-          },
-          {
-            "type": "=~",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
-          {
-            "type": "?",
-            "named": false
-          },
-          {
             "type": "and",
-            "named": false
-          },
-          {
-            "type": "cell_path",
-            "named": true
-          },
-          {
-            "type": "ends-with",
             "named": false
           },
           {
@@ -5645,35 +5331,7 @@
             "named": true
           },
           {
-            "type": "has",
-            "named": false
-          },
-          {
-            "type": "in",
-            "named": false
-          },
-          {
-            "type": "like",
-            "named": false
-          },
-          {
-            "type": "not-has",
-            "named": false
-          },
-          {
-            "type": "not-in",
-            "named": false
-          },
-          {
-            "type": "not-like",
-            "named": false
-          },
-          {
             "type": "or",
-            "named": false
-          },
-          {
-            "type": "starts-with",
             "named": false
           },
           {
@@ -5738,6 +5396,10 @@
           },
           {
             "type": "val_variable",
+            "named": true
+          },
+          {
+            "type": "where_predicate",
             "named": true
           },
           {
@@ -5746,6 +5408,28 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "expr_parenthesized",
+          "named": true
+        },
+        {
+          "type": "expr_unary",
+          "named": true
+        },
+        {
+          "type": "val_bool",
+          "named": true
+        },
+        {
+          "type": "val_variable",
+          "named": true
+        }
+      ]
     }
   },
   {

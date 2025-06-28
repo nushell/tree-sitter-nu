@@ -5422,36 +5422,34 @@
         }
       ]
     },
-    "_where_predicate_lhs": {
+    "_where_predicate_lhs_path_head": {
       "type": "SEQ",
       "members": [
         {
           "type": "CHOICE",
           "members": [
             {
+              "type": "TOKEN",
+              "content": {
+                "type": "PREC",
+                "value": -1,
+                "content": {
+                  "type": "REPEAT1",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}.,:?!]"
+                  }
+                }
+              }
+            },
+            {
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "identifier"
+                "name": "val_string"
               },
-              "named": true,
-              "value": "val_string"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "val_number"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "?"
-            },
-            {
-              "type": "BLANK"
+              "named": false,
+              "value": "quoted"
             }
           ]
         },
@@ -5460,12 +5458,33 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "cell_path"
+              "name": "_path_suffix"
             },
             {
               "type": "BLANK"
             }
           ]
+        }
+      ]
+    },
+    "_where_predicate_lhs": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_where_predicate_lhs_path_head"
+          },
+          "named": true,
+          "value": "path"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "path"
+          }
         }
       ]
     },
@@ -5484,15 +5503,20 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "_predicate"
+                "name": "where_predicate"
               },
               {
                 "type": "SYMBOL",
                 "name": "val_closure"
               },
               {
-                "type": "SYMBOL",
-                "name": "_binary_predicate"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_binary_predicate"
+                },
+                "named": true,
+                "value": "where_predicate"
               }
             ]
           }
@@ -5529,15 +5553,20 @@
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "_predicate"
+                  "name": "where_predicate"
                 },
                 {
                   "type": "SYMBOL",
                   "name": "val_closure"
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "_binary_predicate_parenthesized"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_binary_predicate_parenthesized"
+                  },
+                  "named": true,
+                  "value": "where_predicate"
                 }
               ]
             }
@@ -5574,7 +5603,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_predicate"
+                      "name": "where_predicate"
                     },
                     {
                       "type": "SYMBOL",
@@ -5599,7 +5628,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_predicate"
+                      "name": "where_predicate"
                     },
                     {
                       "type": "SYMBOL",
@@ -5625,7 +5654,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_predicate"
+                      "name": "where_predicate"
                     },
                     {
                       "type": "SYMBOL",
@@ -5650,7 +5679,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_predicate"
+                      "name": "where_predicate"
                     },
                     {
                       "type": "SYMBOL",
@@ -5676,7 +5705,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_predicate"
+                      "name": "where_predicate"
                     },
                     {
                       "type": "SYMBOL",
@@ -5701,7 +5730,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_predicate"
+                      "name": "where_predicate"
                     },
                     {
                       "type": "SYMBOL",
@@ -5732,7 +5761,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_predicate"
+                      "name": "where_predicate"
                     },
                     {
                       "type": "SYMBOL",
@@ -5781,7 +5810,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_predicate"
+                      "name": "where_predicate"
                     },
                     {
                       "type": "SYMBOL",
@@ -5819,7 +5848,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_predicate"
+                      "name": "where_predicate"
                     },
                     {
                       "type": "SYMBOL",
@@ -5868,7 +5897,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_predicate"
+                      "name": "where_predicate"
                     },
                     {
                       "type": "SYMBOL",
@@ -5906,7 +5935,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_predicate"
+                      "name": "where_predicate"
                     },
                     {
                       "type": "SYMBOL",
@@ -5955,7 +5984,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_predicate"
+                      "name": "where_predicate"
                     },
                     {
                       "type": "SYMBOL",
@@ -5981,7 +6010,7 @@
         }
       ]
     },
-    "_predicate": {
+    "where_predicate": {
       "type": "CHOICE",
       "members": [
         {
@@ -16134,6 +16163,45 @@
         "name": "path"
       }
     },
+    "_path_suffix": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "?"
+        },
+        {
+          "type": "STRING",
+          "value": "!"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "?"
+            },
+            {
+              "type": "STRING",
+              "value": "!"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "!"
+            },
+            {
+              "type": "STRING",
+              "value": "?"
+            }
+          ]
+        }
+      ]
+    },
     "path": {
       "type": "SEQ",
       "members": [
@@ -16173,43 +16241,8 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "?"
-                },
-                {
-                  "type": "STRING",
-                  "value": "!"
-                },
-                {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "STRING",
-                      "value": "?"
-                    },
-                    {
-                      "type": "STRING",
-                      "value": "!"
-                    }
-                  ]
-                },
-                {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "STRING",
-                      "value": "!"
-                    },
-                    {
-                      "type": "STRING",
-                      "value": "?"
-                    }
-                  ]
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "_path_suffix"
             },
             {
               "type": "BLANK"

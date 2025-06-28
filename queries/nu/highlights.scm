@@ -98,9 +98,6 @@ file_path: (val_string) @variable.parameter
 (expr_binary
   opr: _ @operator)
 
-(where_command
-  opr: _ @operator)
-
 (assignment [
     "="
     "+="
@@ -226,8 +223,11 @@ key: (identifier) @property
 
 "where" @function.builtin
 
+(where_predicate
+  ["?" "!"] @punctuation.delimiter)
+
 (path
-  ["." "?" "!"] @punctuation.delimiter
+  ["." "?" "!"]? @punctuation.delimiter
 ) @variable.parameter
 
 (stmt_let (identifier) @variable)
