@@ -59,10 +59,11 @@ subexpr-003-pipeline
               (cmd_identifier)))
           (pipe_element
             (where_command
-              (val_string)
-              (val_filesize
-                (val_number)
-                (filesize_unit)))))))))
+              (where_predicate
+                (path)
+                (val_filesize
+                  (val_number)
+                  (filesize_unit))))))))))
 
 =====
 subexpr-004-pipeline-multiline

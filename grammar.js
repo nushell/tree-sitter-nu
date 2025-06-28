@@ -693,14 +693,19 @@ module.exports = grammar({
 
     _blosure: ($) => choice($.block, $.val_closure),
 
+    _where_predicate_lhs_path_head: ($) =>
+      seq(
+        choice(
+          token(prec(PREC().low, repeat1(none_of("\\[\\]{}.,:?!")))),
+          alias($.val_string, "quoted"),
+        ),
+        optional($._path_suffix),
+      ),
+
     // the where command has a unique argument pattern that breaks the
     // general command parsing, so we handle it separately
     _where_predicate_lhs: ($) =>
-      seq(
-        choice(alias($.identifier, $.val_string), $.val_number),
-        optional(PUNC().question),
-        optional($.cell_path),
-      ),
+      seq(alias($._where_predicate_lhs_path_head, $.path), repeat($.path)),
 
     where_command: _where_clause_rule(false),
     where_command_parenthesized: _where_clause_rule(true),
@@ -708,7 +713,7 @@ module.exports = grammar({
     _binary_predicate: _binary_predicate_rule(false),
     _binary_predicate_parenthesized: _binary_predicate_rule(true),
 
-    _predicate: ($) =>
+    where_predicate: ($) =>
       choice(
         $.val_bool,
         $.val_variable,
@@ -860,6 +865,7 @@ module.exports = grammar({
     _value: ($) =>
       choice(
         $.val_variable,
+        $.val_cellpath,
         $.val_nothing,
         $.val_bool,
         $.val_number,
@@ -897,6 +903,8 @@ module.exports = grammar({
         field("name", choice("nu", "in", "env", $.identifier)),
         optional($.cell_path),
       ),
+
+    val_cellpath: ($) => seq(PUNC().dollar, $.cell_path),
 
     val_number: ($) => $._val_number,
 
@@ -1241,19 +1249,21 @@ module.exports = grammar({
 
     cell_path: ($) => repeat1($.path),
 
+    _path_suffix: ($) =>
+      choice(
+        PUNC().question,
+        PUNC().exclamation,
+        seq(PUNC().question, PUNC().exclamation),
+        seq(PUNC().exclamation, PUNC().question),
+      ),
+
     path: ($) => {
       const path = choice(
-        token.immediate(prec(PREC().low, repeat1(none_of("\\[\\]{}.,:?")))),
+        token.immediate(prec(PREC().low, repeat1(none_of("\\[\\]{}.,:?!")))),
         alias($.val_string, "quoted"),
       );
 
-      return seq(
-        PUNC().dot,
-        choice(
-          field("raw_path", path),
-          field("protected_path", seq(path, PUNC().question)),
-        ),
-      );
+      return seq(PUNC().dot, path, optional($._path_suffix));
     },
 
     /// Single-use env variables: FOO=BAR cmd
@@ -1741,9 +1751,9 @@ function _binary_predicate_rule(parenthesized) {
     return choice(
       ...BINARY().map(([precedence, opr]) => {
         const seq_array = [
-          field("lhs", choice($._predicate, _expr)),
+          field("lhs", choice($.where_predicate, _expr)),
           field("opr", opr),
-          field("rhs", choice($._predicate, _expr)),
+          field("rhs", choice($.where_predicate, _expr)),
         ];
         return parenthesized
           ? prec.left(precedence, _insert_newline($, seq_array))
@@ -1763,11 +1773,14 @@ function _where_clause_rule(parenthesized) {
       field(
         "predicate",
         choice(
-          $._predicate,
+          $.where_predicate,
           $.val_closure,
-          parenthesized
-            ? $._binary_predicate_parenthesized
-            : $._binary_predicate,
+          alias(
+            parenthesized
+              ? $._binary_predicate_parenthesized
+              : $._binary_predicate,
+            $.where_predicate,
+          ),
         ),
       ),
     ];
@@ -2084,6 +2097,7 @@ function PUNC() {
     fat_arrow: "=>",
     thin_arrow: "->",
     question: "?",
+    exclamation: "!",
     underscore: "_",
 
     semicolon: ";",

@@ -13,10 +13,11 @@ ls | where size > 10kb
         (cmd_identifier)))
     (pipe_element
       (where_command
-        (val_string)
-        (val_filesize
-          (val_number)
-          (filesize_unit))))))
+        (where_predicate
+          (path)
+          (val_filesize
+            (val_number)
+            (filesize_unit)))))))
 
 =====
 where-002-parenthesized
@@ -37,16 +38,17 @@ where-002-parenthesized
             (val_string)))))
     (pipe_element
       (where_command
-        (expr_parenthesized
-          (pipeline
-            (pipe_element
-              (val_variable
-                (identifier)))
-            (pipe_element
-              (command
-                (cmd_identifier)
-                (val_string)
-                (val_string)))))))))
+        (where_predicate
+          (expr_parenthesized
+            (pipeline
+              (pipe_element
+                (val_variable
+                  (identifier)))
+              (pipe_element
+                (command
+                  (cmd_identifier)
+                  (val_string)
+                  (val_string))))))))))
 
 =====
 where-003-closure
@@ -93,14 +95,17 @@ ls | where size > 10kb and size < 100kb
         (cmd_identifier)))
     (pipe_element
       (where_command
-        (val_string)
-        (val_filesize
-          (val_number)
-          (filesize_unit))
-        (val_string)
-        (val_filesize
-          (val_number)
-          (filesize_unit))))))
+        (where_predicate
+          (where_predicate
+            (path)
+            (val_filesize
+              (val_number)
+              (filesize_unit)))
+          (where_predicate
+            (path)
+            (val_filesize
+              (val_number)
+              (filesize_unit))))))))
 
 =====
 where-005-parenthesized-binary-predicate
@@ -127,19 +132,23 @@ where
               (cmd_identifier)))
           (pipe_element
             (where_command
-              (val_string)
-              (val_filesize
-                (val_number)
-                (filesize_unit))
-              (comment)
-              (comment)
-              (val_string)
-              (val_filesize
-                (val_number)
-                (filesize_unit))
-              (comment)
-              (val_string)
-              (val_string))))))))
+              (where_predicate
+                (where_predicate
+                  (path)
+                  (val_filesize
+                    (val_number)
+                    (filesize_unit)))
+                (comment)
+                (comment)
+                (where_predicate
+                  (path)
+                  (val_filesize
+                    (val_number)
+                    (filesize_unit)))
+                (comment)
+                (where_predicate
+                  (path)
+                  (val_string))))))))))
 
 =====
 where-006-binary-predicate-with-expression
@@ -156,16 +165,19 @@ ls | where (size > 10kb) and true
         (cmd_identifier)))
     (pipe_element
       (where_command
-        (expr_parenthesized
-          (pipeline
-            (pipe_element
-              (command
-                (cmd_identifier)
-                (val_string)
-                (val_filesize
-                  (val_number)
-                  (filesize_unit))))))
-        (val_bool)))))
+        (where_predicate
+          (where_predicate
+            (expr_parenthesized
+              (pipeline
+                (pipe_element
+                  (command
+                    (cmd_identifier)
+                    (val_string)
+                    (val_filesize
+                      (val_number)
+                      (filesize_unit)))))))
+          (where_predicate
+            (val_bool)))))))
 
 =====
 where-007-unary
@@ -186,24 +198,29 @@ name !~ foo
   (pipeline
     (pipe_element
       (where_command
-        (val_bool))))
+        (where_predicate
+          (val_bool)))))
   (pipeline
     (pipe_element
       (where_command
-        (expr_unary
-          (expr_parenthesized
-            (pipeline
-              (pipe_element
-                (val_variable))))))))
+        (where_predicate
+          (expr_unary
+            (expr_parenthesized
+              (pipeline
+                (pipe_element
+                  (val_variable)))))))))
   (pipeline
     (pipe_element
       (expr_parenthesized
         (pipeline
           (pipe_element
             (where_command
-              (val_bool)
-              (val_string)
-              (val_string))))))))
+              (where_predicate
+                (where_predicate
+                  (val_bool))
+                (where_predicate
+                  (path)
+                  (val_string))))))))))
 
 =====
 where-008-operators
@@ -211,6 +228,8 @@ where-008-operators
 
 ls | where name has "e"
 ls | where name not-has "e"
+$foo | where foo-bar?! == 'baz'
+$foo | where 'foo-bar'?.'baz' == 'quz'
 
 -----
 
@@ -221,16 +240,37 @@ ls | where name not-has "e"
         head: (cmd_identifier)))
     (pipe_element
       (where_command
-        lhs: (val_string)
-        rhs: (val_string))))
+        predicate: (where_predicate
+          lhs: (path)
+          rhs: (val_string)))))
   (pipeline
     (pipe_element
       (command
         head: (cmd_identifier)))
     (pipe_element
       (where_command
-        lhs: (val_string)
-        rhs: (val_string)))))
+        predicate: (where_predicate
+          lhs: (path)
+          rhs: (val_string)))))
+  (pipeline
+    (pipe_element
+      (val_variable
+        name: (identifier)))
+    (pipe_element
+      (where_command
+        predicate: (where_predicate
+          lhs: (path)
+          rhs: (val_string)))))
+  (pipeline
+    (pipe_element
+      (val_variable
+        name: (identifier)))
+    (pipe_element
+      (where_command
+        predicate: (where_predicate
+          lhs: (path)
+          lhs: (path)
+          rhs: (val_string))))))
 
 =====
 where-009-variable
@@ -247,11 +287,14 @@ ls | where $foo.bar and $foo.baz
         head: (cmd_identifier)))
     (pipe_element
       (where_command
-        lhs: (val_variable
-          name: (identifier)
-          (cell_path
-            (path)))
-        rhs: (val_variable
-          name: (identifier)
-          (cell_path
-            (path)))))))
+        predicate: (where_predicate
+          lhs: (where_predicate
+            (val_variable
+              name: (identifier)
+              (cell_path
+                (path))))
+          rhs: (where_predicate
+            (val_variable
+              name: (identifier)
+              (cell_path
+                (path)))))))))
