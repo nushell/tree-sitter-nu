@@ -89,6 +89,9 @@ file_path: (val_string) @variable.parameter
 (escaped_interpolated_content) @string
 (expr_interpolated ["(" ")"] @variable.parameter)
 
+(raw_string_begin) @punctuation.special
+(raw_string_end) @punctuation.special
+
 ;;; ---
 ;;; operators
 (expr_binary
@@ -272,6 +275,3 @@ key: (identifier) @property
 
 (parameter
   (comment) @comment.documentation @spell)
-
-(raw_string_begin) @punctuation.special
-(raw_string_end) @punctuation.special
