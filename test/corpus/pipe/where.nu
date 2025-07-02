@@ -33,9 +33,11 @@ where-002-parenthesized
       (val_list
         (list_body
           (val_entry
-            (val_string))
+            (val_string
+              (string_content)))
           (val_entry
-            (val_string)))))
+            (val_string
+              (string_content))))))
     (pipe_element
       (where_command
         (where_predicate
@@ -48,7 +50,8 @@ where-002-parenthesized
                 (command
                   (cmd_identifier)
                   (val_string)
-                  (val_string))))))))))
+                  (val_string
+                    (string_content)))))))))))
 
 =====
 where-003-closure
@@ -148,7 +151,8 @@ where
                 (comment)
                 (where_predicate
                   (path)
-                  (val_string))))))))))
+                  (val_string
+                    (string_content)))))))))))
 
 =====
 where-006-binary-predicate-with-expression
@@ -242,7 +246,8 @@ $foo | where 'foo-bar'?.'baz' == 'quz'
       (where_command
         predicate: (where_predicate
           lhs: (path)
-          rhs: (val_string)))))
+          rhs: (val_string
+            (string_content))))))
   (pipeline
     (pipe_element
       (command
@@ -251,7 +256,8 @@ $foo | where 'foo-bar'?.'baz' == 'quz'
       (where_command
         predicate: (where_predicate
           lhs: (path)
-          rhs: (val_string)))))
+          rhs: (val_string
+            (string_content))))))
   (pipeline
     (pipe_element
       (val_variable
@@ -260,7 +266,8 @@ $foo | where 'foo-bar'?.'baz' == 'quz'
       (where_command
         predicate: (where_predicate
           lhs: (path)
-          rhs: (val_string)))))
+          rhs: (val_string
+            (string_content))))))
   (pipeline
     (pipe_element
       (val_variable
@@ -268,9 +275,12 @@ $foo | where 'foo-bar'?.'baz' == 'quz'
     (pipe_element
       (where_command
         predicate: (where_predicate
-          lhs: (path)
-          lhs: (path)
-          rhs: (val_string))))))
+          lhs: (path
+            (string_content))
+          lhs: (path
+            (string_content))
+          rhs: (val_string
+            (string_content)))))))
 
 =====
 where-009-variable

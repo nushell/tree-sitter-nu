@@ -22,9 +22,11 @@ list-001-item-string
           (val_entry
             (val_string))
           (val_entry
-            (val_string))
+            (val_string
+              (string_content)))
           (val_entry
-            (val_string))
+            (val_string
+              (string_content)))
           (val_entry
             (val_string))
           (val_entry
@@ -479,7 +481,8 @@ list-013-unquoted-with-immediate-expr-parenthesized
               (expr_parenthesized
                 (pipeline
                   (pipe_element
-                    (val_string))))
+                    (val_string
+                      (string_content)))))
               (expr_parenthesized
                 (pipeline
                   (pipe_element
@@ -489,7 +492,8 @@ list-013-unquoted-with-immediate-expr-parenthesized
               (expr_parenthesized
                 (pipeline
                   (pipe_element
-                    (val_string))))
+                    (val_string
+                      (string_content)))))
               (expr_parenthesized)))
           (val_entry
             (val_string

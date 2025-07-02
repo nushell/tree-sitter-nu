@@ -175,7 +175,8 @@ echo $a)
           (identifier)
           (pipeline
             (pipe_element
-              (val_string))))
+              (val_string
+                (string_content)))))
         (pipeline
           (pipe_element
             (command
@@ -254,13 +255,15 @@ else { echo 'bar' }
                   (pipe_element
                     (command
                       (cmd_identifier)
-                      (val_string)))))
+                      (val_string
+                        (string_content))))))
               (block
                 (pipeline
                   (pipe_element
                     (command
                       (cmd_identifier)
-                      (val_string))))))))))))
+                      (val_string
+                        (string_content)))))))))))))
 
 =====
 subexpr-011-newline-before-else-if
@@ -288,7 +291,8 @@ else { echo 'foo bar' }
                   (pipe_element
                     (command
                       (cmd_identifier)
-                      (val_string)))))
+                      (val_string
+                        (string_content))))))
               (ctrl_if
                 (val_variable
                   (identifier))
@@ -297,13 +301,15 @@ else { echo 'foo bar' }
                     (pipe_element
                       (command
                         (cmd_identifier)
-                        (val_string)))))
+                        (val_string
+                          (string_content))))))
                 (block
                   (pipeline
                     (pipe_element
                       (command
                         (cmd_identifier)
-                        (val_string)))))))))))))
+                        (val_string
+                          (string_content))))))))))))))
 
 =====
 subexpr-012-newline-before-catch
@@ -328,13 +334,15 @@ catch { echo 'bar' }
                   (pipe_element
                     (command
                       (cmd_identifier)
-                      (val_string)))))
+                      (val_string
+                        (string_content))))))
               (block
                 (pipeline
                   (pipe_element
                     (command
                       (cmd_identifier)
-                      (val_string))))))))))))
+                      (val_string
+                        (string_content)))))))))))))
 
 =====
 subexpr-013-immediate-closing

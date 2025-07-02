@@ -35,7 +35,8 @@ use ('file.nu')
     module: (expr_parenthesized
       (pipeline
         (pipe_element
-          (val_string))))))
+          (val_string
+            (string_content)))))))
 
 =====
 use-004-interpolated-string
@@ -53,9 +54,12 @@ use $"('s' + 't' + 'd')"
           (pipe_element
             (expr_binary
               (expr_binary
-                (val_string)
-                (val_string))
-              (val_string))))))))
+                (val_string
+                  (string_content))
+                (val_string
+                  (string_content)))
+              (val_string
+                (string_content)))))))))
 
 =====
 use-005-multiple-commands

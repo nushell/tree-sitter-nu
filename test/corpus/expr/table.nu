@@ -30,12 +30,16 @@ table-001-empty-lines
         (val_list
           (list_body
             (val_entry
-              (val_string))
+              (val_string
+                (string_content)))
             (val_entry
-              (val_string))))
+              (val_string
+                (string_content)))))
         (val_list
           (list_body
             (val_entry
-              (val_string))
+              (val_string
+                (string_content)))
             (val_entry
-              (val_string))))))))
+              (val_string
+                (string_content)))))))))

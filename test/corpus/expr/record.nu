@@ -12,8 +12,10 @@ record-001-basic
       (val_record
         (record_body
           (record_entry
-            (val_string)
-            (val_string)))))))
+            (val_string
+              (string_content))
+            (val_string
+              (string_content))))))))
 
 =====
 record-002-empty
@@ -79,16 +81,20 @@ record-004-key-using-symbol
             (val_string))
           (record_entry
             (identifier)
-            (val_string))
+            (val_string
+              (string_content)))
           (record_entry
             (identifier)
-            (val_string))
+            (val_string
+              (string_content)))
           (record_entry
             (identifier)
-            (val_string))
+            (val_string
+              (string_content)))
           (record_entry
             (identifier)
-            (val_string)))))))
+            (val_string
+              (string_content))))))))
 
 =====
 record-005-variable-key
@@ -137,7 +143,8 @@ record-006-subexpression-key
                   (command
                     (cmd_identifier)
                     (val_string)
-                    (val_string)))))
+                    (val_string
+                      (string_content))))))
             (val_string)))))))
 
 =====
@@ -158,7 +165,8 @@ record-007-keyword-key
         (record_body
           (record_entry
             (identifier)
-            (val_string))
+            (val_string
+              (string_content)))
           (record_entry
             (identifier)
             (val_record
@@ -407,7 +415,8 @@ k4.9: 1...()}
               (expr_parenthesized
                 (pipeline
                   (pipe_element
-                    (val_string))))
+                    (val_string
+                      (string_content)))))
               (expr_parenthesized
                 (pipeline
                   (pipe_element
@@ -418,7 +427,8 @@ k4.9: 1...()}
               (expr_parenthesized
                 (pipeline
                   (pipe_element
-                    (val_string))))
+                    (val_string
+                      (string_content)))))
               (expr_parenthesized)))
           (record_entry
             (identifier)

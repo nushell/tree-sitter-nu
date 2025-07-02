@@ -66,4 +66,5 @@ let foo = "foo"
     (identifier)
     (pipeline
       (pipe_element
-        (val_string)))))
+        (val_string
+          (string_content))))))

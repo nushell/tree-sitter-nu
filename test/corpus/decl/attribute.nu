@@ -48,7 +48,8 @@ export def --env "path add" [
     (attribute_list
       (attribute
         type: (attribute_identifier)
-        arg: (val_string)
+        arg: (val_string
+          (string_content))
         arg: (val_closure
           (pipeline
             (pipe_element
@@ -65,7 +66,8 @@ export def --env "path add" [
                       (command
                         head: (cmd_identifier)
                         arg_str: (val_string)
-                        arg: (val_string)
+                        arg: (val_string
+                          (string_content))
                         flag: (long_flag
                           name: (long_flag_identifier))))))))))
         flag: (long_flag
@@ -76,7 +78,8 @@ export def --env "path add" [
               item: (val_string)))))
       (attribute
         type: (attribute_identifier)
-        arg: (val_string)
+        arg: (val_string
+          (string_content))
         arg: (val_closure
           (pipeline
             (pipe_element
@@ -87,10 +90,12 @@ export def --env "path add" [
                   (record_body
                     entry: (record_entry
                       key: (identifier)
-                      value: (val_string))))))))))
+                      value: (val_string
+                        (string_content)))))))))))
     (long_flag
       name: (long_flag_identifier))
-    quoted_name: (val_string)
+    quoted_name: (val_string
+      (string_content))
     parameters: (parameter_bracks
       (parameter
         param_long_flag: (param_long_flag
@@ -126,7 +131,8 @@ attr-003-mixed
         arg_str: (val_string))
       (attribute
         type: (attribute_identifier)
-        arg: (val_string)
+        arg: (val_string
+          (string_content))
         arg: (val_closure
           (pipeline
             (pipe_element

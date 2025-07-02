@@ -63,7 +63,8 @@ let x: string = 'tree-sitter'
       (flat_type))
     (pipeline
       (pipe_element
-        (val_string)))))
+        (val_string
+          (string_content))))))
 
 =====
 let-005-with-complex-type
@@ -87,7 +88,8 @@ let y: oneof<int, list<record>> = 1
           (record_body
             entry: (record_entry
               key: (identifier)
-              value: (val_string)))))))
+              value: (val_string
+                (string_content))))))))
   (stmt_let
     var_name: (identifier)
     type: (param_type

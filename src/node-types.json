@@ -2729,19 +2729,15 @@
       "required": false,
       "types": [
         {
-          "type": "escape_sequence",
-          "named": true
-        },
-        {
           "type": "raw_string_begin",
           "named": true
         },
         {
-          "type": "raw_string_content",
+          "type": "raw_string_end",
           "named": true
         },
         {
-          "type": "raw_string_end",
+          "type": "string_content",
           "named": true
         }
       ]
@@ -3949,19 +3945,15 @@
       "required": false,
       "types": [
         {
-          "type": "escape_sequence",
-          "named": true
-        },
-        {
           "type": "raw_string_begin",
           "named": true
         },
         {
-          "type": "raw_string_content",
+          "type": "raw_string_end",
           "named": true
         },
         {
-          "type": "raw_string_end",
+          "type": "string_content",
           "named": true
         }
       ]
@@ -4527,6 +4519,21 @@
     }
   },
   {
+    "type": "string_content",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "unquoted",
     "named": true,
     "fields": {}
@@ -5074,10 +5081,6 @@
       "required": false,
       "types": [
         {
-          "type": "escape_sequence",
-          "named": true
-        },
-        {
           "type": "expr_parenthesized",
           "named": true
         },
@@ -5086,11 +5089,11 @@
           "named": true
         },
         {
-          "type": "raw_string_content",
+          "type": "raw_string_end",
           "named": true
         },
         {
-          "type": "raw_string_end",
+          "type": "string_content",
           "named": true
         }
       ]
@@ -5666,6 +5669,10 @@
     "named": false
   },
   {
+    "type": "`",
+    "named": false
+  },
+  {
     "type": "alias",
     "named": false
   },
@@ -6095,10 +6102,6 @@
   },
   {
     "type": "raw_string_begin",
-    "named": true
-  },
-  {
-    "type": "raw_string_content",
     "named": true
   },
   {

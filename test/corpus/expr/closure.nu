@@ -105,11 +105,13 @@ custom-cmd {|| 'hello' } { 'world' }
           (parameter_pipes)
           (pipeline
             (pipe_element
-              (val_string))))
+              (val_string
+                (string_content)))))
         (val_closure
           (pipeline
             (pipe_element
-              (val_string))))))))
+              (val_string
+                (string_content)))))))))
 
 =====
 closure-005-let
@@ -129,7 +131,8 @@ let cl = {
         (val_closure
           (pipeline
             (pipe_element
-              (val_string))))))))
+              (val_string
+                (string_content)))))))))
 
 =====
 closure-006-let-parameter-pipes
@@ -190,7 +193,8 @@ closure-007-record-value
             (val_closure
               (pipeline
                 (pipe_element
-                  (val_string))))))))))
+                  (val_string
+                    (string_content)))))))))))
 
 =====
 closure-008-while
