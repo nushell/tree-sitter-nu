@@ -185,14 +185,17 @@ echo $.foo # arg
       (val_cellpath
         (cell_path
           (path)
+          (path
+            (string_content))
           (path)
           (path)
           (path)
           (path)
           (path)
-          (path)
-          (path)
-          (path)))))
+          (path
+            (string_content))
+          (path
+            (string_content))))))
   (pipeline
     (pipe_element
       (command

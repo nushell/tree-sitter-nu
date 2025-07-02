@@ -90,7 +90,6 @@ file_path: (val_string) @variable.parameter
 (expr_interpolated ["(" ")"] @variable.parameter)
 
 (raw_string_begin) @punctuation.special
-(raw_string_content) @string
 (raw_string_end) @punctuation.special
 
 ;;; ---

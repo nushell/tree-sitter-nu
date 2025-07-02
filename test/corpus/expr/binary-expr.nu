@@ -42,7 +42,8 @@ binary-expr-003-rhs-unquoted
   (pipeline
     (pipe_element
       (expr_binary
-        (val_string)
+        (val_string
+          (string_content))
         (val_string)))))
 
 ====
@@ -57,12 +58,14 @@ binary-expr-004-rhs-unquoted-with-expr
   (pipeline
     (pipe_element
       (expr_binary
-        (val_string)
+        (val_string
+          (string_content))
         (val_string
           (expr_parenthesized
             (pipeline
               (pipe_element
-                (val_string)))))))))
+                (val_string
+                  (string_content))))))))))
 
 ====
 binary-expr-005-multiline-fail-without-parenthesis
@@ -236,20 +239,28 @@ binary-expr-011-regex
   (pipeline
     (pipe_element
       (expr_binary
-        lhs: (val_string)
-        rhs: (val_string))))
+        lhs: (val_string
+          (string_content))
+        rhs: (val_string
+          (string_content)))))
   (pipeline
     (pipe_element
       (expr_binary
-        lhs: (val_string)
-        rhs: (val_string))))
+        lhs: (val_string
+          (string_content))
+        rhs: (val_string
+          (string_content)))))
   (pipeline
     (pipe_element
       (expr_binary
-        lhs: (val_string)
-        rhs: (val_string))))
+        lhs: (val_string
+          (string_content))
+        rhs: (val_string
+          (string_content)))))
   (pipeline
     (pipe_element
       (expr_binary
-        lhs: (val_string)
-        rhs: (val_string)))))
+        lhs: (val_string
+          (string_content))
+        rhs: (val_string
+          (string_content))))))

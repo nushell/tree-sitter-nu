@@ -12,13 +12,13 @@ r#'string'#
     (pipe_element
       (val_string
         (raw_string_begin)
-        (raw_string_content)
+        (string_content)
         (raw_string_end))))
   (pipeline
     (pipe_element
       (val_string
         (raw_string_begin)
-        (raw_string_content)
+        (string_content)
         (raw_string_end)))))
 
 =====
@@ -34,7 +34,7 @@ r##'raw string: r#'bla'#'##
     (pipe_element
       (val_string
         (raw_string_begin)
-        (raw_string_content)
+        (string_content)
         (raw_string_end)))))
 
 =====
@@ -50,7 +50,7 @@ r#####'string'#####
     (pipe_element
       (val_string
         (raw_string_begin)
-        (raw_string_content)
+        (string_content)
         (raw_string_end)))))
 
 =====
@@ -66,7 +66,7 @@ r#####'string '#'##'#####
     (pipe_element
       (val_string
         (raw_string_begin)
-        (raw_string_content)
+        (string_content)
         (raw_string_end)))))
 
 =====
@@ -82,5 +82,5 @@ r#''#
     (pipe_element
       (val_string
         (raw_string_begin)
-        (raw_string_content)
+        (string_content)
         (raw_string_end)))))

@@ -999,26 +999,39 @@ module.exports = grammar({
       ),
 
     _raw_str: ($) =>
-      seq($.raw_string_begin, $.raw_string_content, $.raw_string_end),
-
-    _str_double_quotes: ($) =>
       seq(
-        '"',
-        repeat(
-          choice(
-            $._escaped_str_content,
-            // double quoted strings accept escapes
-            $.escape_sequence,
-          ),
-        ),
-        '"',
+        $.raw_string_begin,
+        alias($.raw_string_content, $.string_content),
+        $.raw_string_end,
       ),
 
-    _escaped_str_content: (_$) => token.immediate(prec(1, /[^"\\]+/)),
+    string_content: ($) =>
+      repeat1(
+        choice(
+          $._escaped_str_content,
+          // double quoted strings accept escapes
+          $.escape_sequence,
+        ),
+      ),
 
-    _str_single_quotes: (_$) => /'[^']*'/,
+    _str_double_quotes: ($) => seq('"', optional($.string_content), '"'),
 
-    _str_back_ticks: (_$) => /`[^`]*`/,
+    _escaped_str_content: (_$) =>
+      token.immediate(prec(PREC().string, /[^"\\]+/)),
+
+    _str_single_quotes: ($) =>
+      seq(
+        "'",
+        alias(token.immediate(prec(PREC().string, /[^']*/)), $.string_content),
+        token.immediate("'"),
+      ),
+
+    _str_back_ticks: ($) =>
+      seq(
+        "`",
+        alias(token.immediate(prec(PREC().string, /[^`]*/)), $.string_content),
+        token.immediate("`"),
+      ),
 
     escape_sequence: (_$) =>
       token.immediate(
@@ -1038,9 +1051,11 @@ module.exports = grammar({
     val_interpolated: ($) =>
       choice($._inter_single_quotes, $._inter_double_quotes),
 
-    escaped_interpolated_content: (_$) => token.immediate(prec(1, /[^"\\(]+/)),
+    escaped_interpolated_content: (_$) =>
+      token.immediate(prec(PREC().string, /[^"\\(]+/)),
 
-    unescaped_interpolated_content: (_$) => token.immediate(prec(1, /[^'(]+/)),
+    unescaped_interpolated_content: (_$) =>
+      token.immediate(prec(PREC().string, /[^'(]+/)),
 
     _inter_single_quotes: ($) =>
       seq(
@@ -2218,6 +2233,7 @@ function PREC() {
     xor: 3,
     or: 2,
     assignment: 1,
+    string: 1,
     low: -1,
     lowest: -69,
   };

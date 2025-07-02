@@ -16,7 +16,8 @@ echo this | str split "i"
       (command
         (cmd_identifier)
         (val_string)
-        (val_string)))))
+        (val_string
+          (string_content))))))
 
 =====
 pipe-002-across-the-line
@@ -38,7 +39,8 @@ echo this
       (command
         (cmd_identifier)
         (val_string)
-        (val_string)))
+        (val_string
+          (string_content))))
     (pipe_element
       (command
         (cmd_identifier)
@@ -68,7 +70,8 @@ echo this
       (command
         (cmd_identifier)
         (val_string)
-        (val_string)))
+        (val_string
+          (string_content))))
     (pipe_element
       (command
         (cmd_identifier)
@@ -98,7 +101,8 @@ echo this
       (command
         (cmd_identifier)
         (val_string)
-        (val_string)))
+        (val_string
+          (string_content))))
     (pipe_element
       (command
         (cmd_identifier)
@@ -115,7 +119,8 @@ pipe-005-unquoted-1-character
 (nu_script
   (pipeline
     (pipe_element
-      (val_string))
+      (val_string
+        (string_content)))
     (pipe_element
       (command
         (cmd_identifier)

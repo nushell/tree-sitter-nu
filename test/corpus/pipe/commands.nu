@@ -457,7 +457,8 @@ cmd-017-string-external
   (pipeline
     (pipe_element
       (command
-        head: (val_string))))
+        head: (val_string
+          (string_content)))))
   (pipeline
     (pipe_element
       (command
@@ -479,7 +480,8 @@ cmd-018-pipe-external
         head: (expr_parenthesized
           (pipeline
             (pipe_element
-              (val_string))))))))
+              (val_string
+                (string_content)))))))))
 
 =====
 cmd-019-flags-with-values
@@ -821,7 +823,8 @@ echo 1...()
           (expr_parenthesized
             (pipeline
               (pipe_element
-                (val_string))))
+                (val_string
+                  (string_content)))))
           (expr_parenthesized
             (pipeline
               (pipe_element
@@ -834,7 +837,8 @@ echo 1...()
           (expr_parenthesized
             (pipeline
               (pipe_element
-                (val_string))))
+                (val_string
+                  (string_content)))))
           (expr_parenthesized)))))
   (pipeline
     (pipe_element

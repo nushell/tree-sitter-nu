@@ -45,7 +45,8 @@ source 'file.nu'
 
 (nu_script
   (stmt_source
-    (val_string)))
+    (val_string
+      (string_content))))
 
 =====
 source-005-pipe
@@ -60,7 +61,8 @@ source ('file.nu')
     (expr_parenthesized
       (pipeline
         (pipe_element
-          (val_string))))))
+          (val_string
+            (string_content)))))))
 
 =====
 source-006-interpolated

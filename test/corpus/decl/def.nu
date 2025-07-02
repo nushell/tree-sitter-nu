@@ -992,7 +992,8 @@ def test [
         (param_type
           type: (flat_type)
           completion: (param_cmd
-            quoted_name: (val_string))))
+            quoted_name: (val_string
+              (string_content)))))
       (parameter
         param_long_flag: (param_long_flag
           (long_flag_identifier))

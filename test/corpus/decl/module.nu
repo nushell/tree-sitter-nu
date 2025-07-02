@@ -52,6 +52,7 @@ export module others
   (decl_module
     (cmd_identifier))
   (decl_module
-    (val_string))
+    (val_string
+      (string_content)))
   (decl_module
     (cmd_identifier)))

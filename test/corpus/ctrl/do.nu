@@ -159,7 +159,8 @@ bar
                   (expr_parenthesized
                     (pipeline
                       (pipe_element
-                        (val_string)))))
+                        (val_string
+                          (string_content))))))
                 (val_string))))
           (comment)
           (pipeline

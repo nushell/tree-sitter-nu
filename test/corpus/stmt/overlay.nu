@@ -80,7 +80,8 @@ overlay use --prefix foo
 (nu_script
   (overlay_use
     (unquoted)
-    (val_string))
+    (val_string
+      (string_content)))
   (overlay_use
     (long_flag
       (long_flag_identifier))
