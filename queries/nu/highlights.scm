@@ -275,3 +275,27 @@ key: (identifier) @property
 
 (parameter
   (comment) @comment.documentation @spell)
+
+((command
+    head: ((cmd_identifier) @_cmd (#any-of? @_cmd
+        "find"
+        "parse"
+        "split"
+        "str"
+        " find"
+        " parse"
+        " split"
+        " str"
+    ))
+    flag: [
+        (short_flag name: (_) @_sflag (#eq? @_sflag "r"))
+        (long_flag name: (_) @_lflag (#eq? @_lflag "regex"))
+    ]
+    .
+    arg: (_ (string_content) @string.regexp)
+))
+
+((_
+    opr: ["=~" "!~" "like" "not-like"]
+    rhs: (_ (string_content) @string.regexp)
+))
