@@ -33,3 +33,17 @@
   arg: (_
     (string_content) @injection.content
     (#set! injection.language "nu")))
+
+; arbitrary language injection
+; ("sql"; r#'select * from table'#)
+(expr_parenthesized
+  .
+  (pipeline
+    (pipe_element
+      (_
+        (string_content) @injection.language)))
+  .
+  (pipeline
+    (pipe_element
+      (_
+        (string_content) @injection.content))) .)

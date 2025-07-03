@@ -305,3 +305,17 @@ key: (identifier) @property
   .
   arg: (_
     (string_content) @string.code))
+
+; arbitrary language injection
+; ("sql"; r#'select * from table'#)
+(expr_parenthesized
+  .
+  (pipeline
+    (pipe_element
+      (_
+        (string_content))))
+  .
+  (pipeline
+    (pipe_element
+      (_
+        (string_content) @string.code))) .)
