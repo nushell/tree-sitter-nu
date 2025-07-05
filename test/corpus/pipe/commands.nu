@@ -796,8 +796,10 @@ cmd-025-unquoted-string-with-immediate-expr-parenthesized
 
 echo foo(
 'bar')baz(
-1)
+1)qux
 echo foo('bar')()
+echo (1)(2)
+echo (1)foo
 echo .()
 echo true()
 echo null()
@@ -840,6 +842,28 @@ echo 1...()
                 (val_string
                   (string_content)))))
           (expr_parenthesized)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized
+            (pipeline
+              (pipe_element
+                (val_number))))
+          (expr_parenthesized
+            (pipeline
+              (pipe_element
+                (val_number))))))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string
+          (expr_parenthesized
+            (pipeline
+              (pipe_element
+                (val_number))))))))
   (pipeline
     (pipe_element
       (command

@@ -452,8 +452,10 @@ list-013-unquoted-with-immediate-expr-parenthesized
 [
   foo(
 'bar')baz(
-1)
+1)qux
   foo('bar')()
+  (1)(1)
+  (1)foo
   .()
   true()
   null()
@@ -476,8 +478,8 @@ list-013-unquoted-with-immediate-expr-parenthesized
     (pipe_element
       (val_list
         (list_body
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized
                 (pipeline
                   (pipe_element
@@ -487,55 +489,71 @@ list-013-unquoted-with-immediate-expr-parenthesized
                 (pipeline
                   (pipe_element
                     (val_number))))))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized
                 (pipeline
                   (pipe_element
                     (val_string
                       (string_content)))))
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_number))))
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_number))))))
+          entry: (val_entry
+            item: (val_string
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_number))))))
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized)))
-          (val_entry
-            (val_string
+          entry: (val_entry
+            item: (val_string
               (expr_parenthesized))))))))
 
 ======

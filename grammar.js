@@ -1914,7 +1914,8 @@ function _unquoted_with_expr_rule(type) {
       excluded += "{}:,";
       break;
   }
-  const pattern_repeat = token(repeat(none_of(excluded)));
+  const pattern_repeat = token.immediate(repeat(none_of(excluded)));
+  const pattern_repeat1 = token.immediate(repeat1(none_of(excluded)));
   return ($) => {
     var unquoted_head = $.unquoted;
     switch (type) {
@@ -1925,26 +1926,32 @@ function _unquoted_with_expr_rule(type) {
         unquoted_head = $._unquoted_in_record;
         break;
     }
-    return prec(
-      PREC().low,
-      seq(
-        choice(
-          $._unquoted_anonymous_prefix,
-          $._val_number_decimal,
-          $._val_range,
-          alias(unquoted_head, "_head"),
+    return seq(
+      choice(
+        seq(
+          choice(
+            $._unquoted_anonymous_prefix,
+            $._val_number_decimal,
+            $._val_range,
+            alias(unquoted_head, "_head"),
+          ),
+          alias($._expr_parenthesized_immediate, $.expr_parenthesized),
         ),
-        alias($._expr_parenthesized_immediate, $.expr_parenthesized),
-        optional(
-          repeat(
-            seq(
-              token.immediate(pattern_repeat),
-              alias($._expr_parenthesized_immediate, $.expr_parenthesized),
-            ),
+        seq(
+          $.expr_parenthesized,
+          choice(
+            pattern_repeat1,
+            alias($._expr_parenthesized_immediate, $.expr_parenthesized),
           ),
         ),
-        token.immediate(pattern_repeat),
       ),
+      repeat(
+        seq(
+          pattern_repeat,
+          alias($._expr_parenthesized_immediate, $.expr_parenthesized),
+        ),
+      ),
+      pattern_repeat,
     );
   };
 }
@@ -1977,8 +1984,8 @@ function _unquoted_rule(type) {
   const excluded_common = _unquoted_pattern_rule(type, false);
   const excluded_first = _unquoted_pattern_rule(type, true);
   const pattern_once = none_of(excluded_common);
-  const pattern = token(seq(none_of(excluded_first), repeat(pattern_once)));
-  const pattern_repeat = token(repeat(pattern_once));
+  const pattern = seq(none_of(excluded_first), repeat(pattern_once));
+  const pattern_repeat = repeat(pattern_once);
 
   // because this catches almost anything, we want to ensure it is
   // picked as the a last resort after everything else has failed.
@@ -1997,7 +2004,7 @@ function _unquoted_rule(type) {
     return prec.left(
       PREC().lowest,
       choice(
-        token(prec(PREC().lowest, token(pattern))),
+        token(prec(PREC().lowest, pattern)),
 
         seq(
           choice(
