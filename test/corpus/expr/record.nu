@@ -351,14 +351,17 @@ k3.2: .1.
 k3.3: -1.1e-10.
 k4.0: foo(
   'bar')baz(
-  1)
+  1)qux
 k4.1:foo('bar')()
-  k4.2: .()
+k4.2: .()
 k4.3: true()
 k4.4: -()
 k4.5: ..=1()
 k4.6: ..1..<1()
-k4.9: 1...()}
+k4.9: 1...()
+k4.10: (1)foo
+k4.11: (1)(1)
+}
 
 -----
 
@@ -367,51 +370,51 @@ k4.9: 1...()}
     (pipe_element
       (val_record
         (record_body
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string))
-          (record_entry
-            (identifier)
-            (val_string
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string
               (expr_parenthesized
                 (pipeline
                   (pipe_element
@@ -421,39 +424,57 @@ k4.9: 1...()}
                 (pipeline
                   (pipe_element
                     (val_number))))))
-          (record_entry
-            (identifier)
-            (val_string
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string
               (expr_parenthesized
                 (pipeline
                   (pipe_element
                     (val_string
                       (string_content)))))
               (expr_parenthesized)))
-          (record_entry
-            (identifier)
-            (val_string
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string
               (expr_parenthesized)))
-          (record_entry
-            (identifier)
-            (val_string
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string
               (expr_parenthesized)))
-          (record_entry
-            (identifier)
-            (val_string
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string
               (expr_parenthesized)))
-          (record_entry
-            (identifier)
-            (val_string
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string
               (expr_parenthesized)))
-          (record_entry
-            (identifier)
-            (val_string
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string
               (expr_parenthesized)))
-          (record_entry
-            (identifier)
-            (val_string
-              (expr_parenthesized))))))))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string
+              (expr_parenthesized)))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_number))))))
+          entry: (record_entry
+            key: (identifier)
+            value: (val_string
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_number))))
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_number)))))))))))
 
 =====
 record-015-separated-colon-vs-closure
