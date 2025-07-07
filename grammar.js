@@ -80,7 +80,7 @@ module.exports = grammar({
     cmd_identifier: ($) => {
       const excluded = '\\[\\]\\{}<>="`\':';
       const pattern_repeat = repeat(none_of(excluded));
-      const pattern_one = repeat1(none_of(excluded));
+      const pattern_suffix = token.immediate(repeat1(none_of(excluded)));
       return choice(
         token(
           prec(
@@ -88,9 +88,9 @@ module.exports = grammar({
             seq(none_of(excluded + '^#$\\-'), pattern_repeat),
           ),
         ),
-        ...Object.values(keyword()).map((x) => token(seq(x, pattern_one))),
-        ...Object.values(modifier()).map((x) => token(seq(x, pattern_one))),
-        ...Object.values(special()).map((x) => token(seq(x, pattern_one))),
+        ...Object.values(keyword()).map((x) => seq(x, pattern_suffix)),
+        ...Object.values(modifier()).map((x) => seq(x, pattern_suffix)),
+        ...Object.values(special()).map((x) => seq(x, pattern_suffix)),
         seq(
           $._val_number_decimal,
           optional(
