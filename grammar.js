@@ -1933,27 +1933,22 @@ function _range_rule(anonymous) {
  * @param {string} type
  */
 function _unquoted_with_expr_rule(type) {
-  let excluded = '';
-  switch (type) {
-    case 'list':
-      excluded += '\\[\\],';
-      break;
-    case 'record':
-      excluded += '{}:,';
-      break;
-  }
-  const pattern_repeat = token.immediate(repeat(none_of(excluded)));
-  const pattern_repeat1 = token.immediate(repeat1(none_of(excluded)));
   return ($) => {
     let unquoted_head = $.unquoted;
+    let excluded = '';
     switch (type) {
       case 'list':
         unquoted_head = $._unquoted_in_list;
+        excluded += '\\[\\],';
         break;
       case 'record':
         unquoted_head = $._unquoted_in_record;
+        excluded += '{}:,';
         break;
     }
+    const pattern_once = token.immediate(none_of(excluded));
+    const pattern_repeat = token.immediate(repeat(none_of(excluded)));
+
     return seq(
       choice(
         seq(
@@ -1968,7 +1963,7 @@ function _unquoted_with_expr_rule(type) {
         seq(
           $.expr_parenthesized,
           choice(
-            pattern_repeat1,
+            pattern_once,
             alias($._expr_parenthesized_immediate, $.expr_parenthesized),
           ),
         ),

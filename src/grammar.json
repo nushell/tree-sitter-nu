@@ -17390,11 +17390,8 @@
                     {
                       "type": "IMMEDIATE_TOKEN",
                       "content": {
-                        "type": "REPEAT1",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "[^\\s\\r\\n\\t\\|();]"
-                        }
+                        "type": "PATTERN",
+                        "value": "[^\\s\\r\\n\\t\\|();]"
                       }
                     },
                     {
@@ -17510,11 +17507,8 @@
                     {
                       "type": "IMMEDIATE_TOKEN",
                       "content": {
-                        "type": "REPEAT1",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "[^\\s\\r\\n\\t\\|();\\[\\],]"
-                        }
+                        "type": "PATTERN",
+                        "value": "[^\\s\\r\\n\\t\\|();\\[\\],]"
                       }
                     },
                     {
@@ -17630,11 +17624,8 @@
                     {
                       "type": "IMMEDIATE_TOKEN",
                       "content": {
-                        "type": "REPEAT1",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "[^\\s\\r\\n\\t\\|();{}:,]"
-                        }
+                        "type": "PATTERN",
+                        "value": "[^\\s\\r\\n\\t\\|();{}:,]"
                       }
                     },
                     {
