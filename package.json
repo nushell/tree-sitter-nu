@@ -2,39 +2,51 @@
   "name": "tree-sitter-nu",
   "version": "0.0.1",
   "description": "nu-lang",
+  "repository": "https://github.com/nushell/tree-sitter-nu",
+  "license": "MIT",
+  "author": {
+    "name": "The Nushell Contributors"
+  },
   "main": "bindings/node",
   "types": "bindings/node",
-  "scripts": {
-    "install": "node-gyp-build",
-    "prestart": "tree-sitter build --wasm",
-    "start": "tree-sitter playground",
-    "test": "node --test bindings/node/*_test.js"
-  },
-  "author": "The Nushell Contributors",
-  "license": "MIT",
+  "keywords": [
+    "incremental",
+    "parsing",
+    "tree-sitter",
+    "nu"
+  ],
+  "files": [
+    "grammar.js",
+    "tree-sitter.json",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**",
+    "*.wasm"
+  ],
   "dependencies": {
-    "node-addon-api": "^8.1.0",
+    "node-addon-api": "^8.2.1",
     "node-gyp-build": "^4.8.2"
+  },
+  "devDependencies": {
+    "eslint": "^9.12.0",
+    "eslint-config-treesitter": "^1.0.2",
+    "prebuildify": "^6.0.1",
+    "tree-sitter-cli": "^0.25.4"
   },
   "peerDependencies": {
     "tree-sitter": "^0.25.0"
   },
   "peerDependenciesMeta": {
-    "tree_sitter": {
+    "tree-sitter": {
       "optional": true
     }
   },
-  "devDependencies": {
-    "prebuildify": "^6.0.0",
-    "prettier": "3.3.3",
-    "tree-sitter-cli": "^0.25.6"
-  },
-  "files": [
-    "grammar.js",
-    "binding.gyp",
-    "prebuilds/**",
-    "bindings/node/*",
-    "queries/*",
-    "src/**"
-  ]
+  "scripts": {
+    "install": "node-gyp-build",
+    "prestart": "tree-sitter build --wasm",
+    "start": "tree-sitter playground",
+    "test": "node --test bindings/node/*_test.js"
+  }
 }

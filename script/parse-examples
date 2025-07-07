@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+clone() {
+	if [[ -d examples/$1 ]]; then
+		git -C "examples/$1" fetch origin "$3:$3" -f -u --depth=1
+	else
+		git clone "$2" "examples/$1" -b "$3" --single-branch --depth=1
+	fi
+}
+
+clone nu_scripts https://github.com/nushell/nu_scripts main
+
+find examples -name '*.nu' -and -type f -print >script/example-files.txt
+
+tree-sitter parse -q -s --paths script/example-files.txt |
+	tee >(awk '/ERROR|MISSING/{print $1}' | sort >script/known-failures.txt)

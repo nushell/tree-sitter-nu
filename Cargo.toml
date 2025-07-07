@@ -4,7 +4,7 @@ description = "nu grammar for the tree-sitter parsing library"
 version = "0.0.1"
 keywords = ["incremental", "parsing", "nu"]
 categories = ["parsing", "text-editors"]
-repository = "https://github.com/tree-sitter/tree-sitter-nu"
+repository = "https://github.com/nushell/tree-sitter-nu"
 edition = "2018"
 license = "MIT"
 

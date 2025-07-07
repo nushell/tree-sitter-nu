@@ -22,7 +22,7 @@
       }
     ],
     "links": {
-      "repository": "https://github.com/tree-sitter/tree-sitter-nu"
+      "repository": "https://github.com/nushell/tree-sitter-nu"
     }
   },
   "bindings": {
