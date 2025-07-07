@@ -26,15 +26,6 @@ static uint8_t consume_chars(TSLexer *lexer, char c) {
     return count;
 }
 
-static uint32_t consume_until(TSLexer *lexer, char c) {
-    uint32_t count = 0;
-    while (lexer->lookahead != c && !eof) {
-        adv;
-        count++;
-    }
-    return count;
-}
-
 static void skip_whitespace(TSLexer *lexer) {
     while (iswspace(lexer->lookahead) && !eof) {
         skip;
@@ -94,11 +85,8 @@ static bool scan_raw_string_begin(TSLexer *lexer, Scanner *s) {
 }
 
 static bool scan_raw_string_content(TSLexer *lexer, Scanner *s) {
-    uint32_t len = 0;
     while (!eof) {
-        uint32_t num = consume_until(lexer, '\'');
         lexer->mark_end(lexer);
-        len += num;
         adv;
         uint8_t level = consume_chars(lexer, '#');
         if (level == s->level) {
