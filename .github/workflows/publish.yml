@@ -2,7 +2,7 @@ name: Publish packages
 
 on:
   push:
-    tags: ["*"]
+    tags: ['*']
 
 permissions:
   contents: write
