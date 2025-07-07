@@ -1298,11 +1298,9 @@ module.exports = grammar({
       seq(
         field(
           'variable',
-          alias(
-            token(
-              prec(prec_map().low, seq(_identifier_rules(false), punc().eq)),
-            ),
-            $.identifier,
+          seq(
+            alias($.cmd_identifier, $.identifier),
+            token.immediate(punc().eq),
           ),
         ),
         field('value', alias(_identifier_rules(true), $.val_string)),
@@ -1933,26 +1931,20 @@ function _range_rule(anonymous) {
  * @param {string} type
  */
 function _unquoted_with_expr_rule(type) {
-  let excluded = '';
-  switch (type) {
-    case 'list':
-      excluded += '\\[\\],';
-      break;
-    case 'record':
-      excluded += '{}:,';
-      break;
-  }
-  const pattern_repeat = token(repeat(none_of(excluded)));
   return ($) => {
+    let excluded = '';
     let unquoted_head = $.unquoted;
     switch (type) {
       case 'list':
+        excluded += '\\[\\],';
         unquoted_head = $._unquoted_in_list;
         break;
       case 'record':
+        excluded += '{}:,';
         unquoted_head = $._unquoted_in_record;
         break;
     }
+    const pattern_repeat = token.immediate(repeat(none_of(excluded)));
     return prec(
       prec_map().low,
       seq(
@@ -1963,15 +1955,13 @@ function _unquoted_with_expr_rule(type) {
           alias(unquoted_head, '_head'),
         ),
         alias($._expr_parenthesized_immediate, $.expr_parenthesized),
-        optional(
-          repeat(
-            seq(
-              token.immediate(pattern_repeat),
-              alias($._expr_parenthesized_immediate, $.expr_parenthesized),
-            ),
+        repeat(
+          seq(
+            pattern_repeat,
+            alias($._expr_parenthesized_immediate, $.expr_parenthesized),
           ),
         ),
-        token.immediate(pattern_repeat),
+        pattern_repeat,
       ),
     );
   };
