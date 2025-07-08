@@ -6117,10 +6117,6 @@
     "named": false
   },
   {
-    "type": "register",
-    "named": false
-  },
-  {
     "type": "return",
     "named": false
   },

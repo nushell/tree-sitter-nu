@@ -85,12 +85,18 @@ module.exports = grammar({
         token(
           prec(
             prec_map().low,
-            seq(none_of(excluded + '^#$\\-'), pattern_repeat),
+            seq(none_of(excluded + '^@#$\\-'), pattern_repeat),
           ),
         ),
-        ...Object.values(keyword()).map((x) => seq(x, pattern_suffix)),
-        ...Object.values(modifier()).map((x) => seq(x, pattern_suffix)),
-        ...Object.values(special()).map((x) => seq(x, pattern_suffix)),
+        ...Object.values(keyword()).map((x) =>
+          seq(alias(x, '_prefix'), pattern_suffix),
+        ),
+        ...Object.values(modifier()).map((x) =>
+          seq(alias(x, '_prefix'), pattern_suffix),
+        ),
+        ...Object.values(special()).map((x) =>
+          seq(alias(x, '_prefix'), pattern_suffix),
+        ),
         seq(
           $._val_number_decimal,
           optional(

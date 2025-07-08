@@ -855,7 +855,7 @@
               "members": [
                 {
                   "type": "PATTERN",
-                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':^#$\\-]"
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':^@#$\\-]"
                 },
                 {
                   "type": "REPEAT",
@@ -872,8 +872,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "def"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "def"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -891,8 +896,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "alias"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "alias"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -910,8 +920,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "use"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "use"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -929,8 +944,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "export-env"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "export-env"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -948,8 +968,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "extern"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "extern"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -967,8 +992,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "module"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "module"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -986,8 +1016,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "let"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "let"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1005,8 +1040,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "let-env"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "let-env"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1024,8 +1064,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "mut"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "mut"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1043,8 +1088,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "const"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "const"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1062,8 +1112,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "hide"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "hide"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1081,8 +1136,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "hide-env"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "hide-env"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1100,8 +1160,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "source"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "source"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1119,8 +1184,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "source-env"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "source-env"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1138,8 +1208,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "overlay"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "overlay"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1157,8 +1232,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "register"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "register"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1176,8 +1256,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "for"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "for"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1195,8 +1280,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "loop"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "loop"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1214,8 +1304,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "while"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "while"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1233,8 +1328,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "error"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "error"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1252,8 +1352,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "do"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "do"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1271,8 +1376,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "if"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "if"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1290,8 +1400,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "else"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "else"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1309,8 +1424,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "try"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "try"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1328,8 +1448,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "catch"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "catch"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1347,8 +1472,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "match"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "match"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1366,8 +1496,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "break"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "break"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1385,8 +1520,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "continue"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "continue"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1404,8 +1544,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "return"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "return"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1423,8 +1568,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "as"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "as"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1442,8 +1592,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "in"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "in"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1461,8 +1616,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "make"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "make"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1480,8 +1640,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "export"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "export"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1499,8 +1664,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "true"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "true"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1518,8 +1688,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "false"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "false"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1537,8 +1712,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "null"
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "null"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1556,8 +1736,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "PATTERN",
-              "value": "[iI][nN][fF]([iI][nN][iI][tT][yY])?"
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "[iI][nN][fF]([iI][nN][iI][tT][yY])?"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1575,8 +1760,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "PATTERN",
-              "value": "-[iI][nN][fF]([iI][nN][iI][tT][yY])?"
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "-[iI][nN][fF]([iI][nN][iI][tT][yY])?"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -1594,8 +1784,13 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "PATTERN",
-              "value": "[nN][aA][nN]"
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "[nN][aA][nN]"
+              },
+              "named": false,
+              "value": "_prefix"
             },
             {
               "type": "IMMEDIATE_TOKEN",
