@@ -2,7 +2,7 @@
 hide-mod-001-smoke-test
 =====
 
-hide module
+hide modulename
 
 -----
 
@@ -14,7 +14,7 @@ hide module
 hide-mod-002-semicolon
 =====
 
-hide module;
+hide modulename;
 
 -----
 
