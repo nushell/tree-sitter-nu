@@ -97,6 +97,9 @@ file_path: (val_string) @variable.parameter
 (expr_binary
   opr: _ @operator)
 
+(where_predicate
+  opr: _ @operator)
+
 (assignment [
     "="
     "+="
