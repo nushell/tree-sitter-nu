@@ -1302,14 +1302,16 @@ module.exports = grammar({
 
     env_var: ($) =>
       seq(
+        field('variable', alias($.cmd_identifier, $.identifier)),
+        token.immediate(punc().eq),
         field(
-          'variable',
-          seq(
-            alias($.cmd_identifier, $.identifier),
-            token.immediate(punc().eq),
+          'value',
+          choice(
+            alias(_identifier_rules(true), $.val_string),
+            $.val_string,
+            $.val_interpolated,
           ),
         ),
-        field('value', alias(_identifier_rules(true), $.val_string)),
       ),
 
     /// Commands

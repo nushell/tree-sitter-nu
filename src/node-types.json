@@ -1829,19 +1829,19 @@
         "required": true,
         "types": [
           {
+            "type": "val_interpolated",
+            "named": true
+          },
+          {
             "type": "val_string",
             "named": true
           }
         ]
       },
       "variable": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "=",
-            "named": false
-          },
           {
             "type": "identifier",
             "named": true
