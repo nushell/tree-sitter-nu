@@ -131,3 +131,35 @@ _SHELL_=🤖 hello=42 hello=你好 foo
         value: (val_string))
       (command
         head: (cmd_identifier)))))
+
+====
+env-005-string
+====
+
+FOO='bar' baz
+FOO=$"bar(baz)" qux
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (env_var
+        variable: (identifier)
+        value: (val_string
+          (string_content)))
+      (command
+        head: (cmd_identifier))))
+  (pipeline
+    (pipe_element
+      (env_var
+        variable: (identifier)
+        value: (val_interpolated
+          (escaped_interpolated_content)
+          expr: (expr_interpolated
+            (pipeline
+              (pipe_element
+                (command
+                  head: (cmd_identifier)))))))
+      (command
+        head: (cmd_identifier)))))
