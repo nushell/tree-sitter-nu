@@ -8,7 +8,6 @@ module.exports = grammar({
   extras: ($) => [/[ \t]/, $.comment],
 
   inline: ($) => [
-    $._do_expression,
     $._flag_value,
     $._item_expression,
     $._match_expression,
@@ -30,6 +29,7 @@ module.exports = grammar({
     [$._block_body, $.record_body, $.val_closure],
     [$._block_body, $.shebang],
     [$._block_body, $.val_closure],
+    [$._block_body],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
     [$._match_pattern_record, $._value],
@@ -40,7 +40,6 @@ module.exports = grammar({
     [$.block, $.val_closure],
     [$.block, $.val_record, $.val_closure],
     [$.command, $.record_entry],
-    [$.ctrl_do_parenthesized],
     [$.ctrl_if_parenthesized],
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
@@ -168,15 +167,12 @@ module.exports = grammar({
     decl_export: ($) => seq(keyword().export_env, field('body', $.block)),
 
     decl_extern: ($) =>
-      prec.right(
-        1,
-        seq(
-          optional(modifier().visibility),
-          keyword().extern,
-          field('name', $._command_name),
-          field('signature', choice($.parameter_parens, $.parameter_bracks)),
-          field('body', optional($.block)),
-        ),
+      seq(
+        optional(modifier().visibility),
+        keyword().extern,
+        field('name', $._command_name),
+        field('signature', choice($.parameter_parens, $.parameter_bracks)),
+        field('body', optional($.block)),
       ),
 
     decl_module: ($) =>
@@ -188,14 +184,11 @@ module.exports = grammar({
       ),
 
     decl_use: ($) =>
-      prec.right(
-        1,
-        seq(
-          optional(modifier().visibility),
-          keyword().use,
-          field('module', choice($.unquoted, $._stringish)),
-          optional(field('import_pattern', $.scope_pattern)),
-        ),
+      seq(
+        optional(modifier().visibility),
+        keyword().use,
+        field('module', choice($.unquoted, $._stringish)),
+        optional(field('import_pattern', $.scope_pattern)),
       ),
 
     /// Return types
@@ -371,33 +364,19 @@ module.exports = grammar({
 
     // control statements cannot be used in pipeline because they
     // do not return values
-    _ctrl_statement: ($) =>
-      choice($.ctrl_for, $.ctrl_loop, $.ctrl_while, $.ctrl_error),
+    _ctrl_statement: ($) => choice($.ctrl_for, $.ctrl_loop, $.ctrl_while),
 
     // control expressions *return values and can be used in pipelines
     //
     // * `break` and `continue` do not return values (yet?) but can be
     // used in pipelines
-    _ctrl_expression: ($) =>
-      choice(
-        field('ctrl_break', keyword().break),
-        field('ctrl_continue', keyword().continue),
-        $.ctrl_do,
-        $.ctrl_if,
-        $.ctrl_try,
-        $.ctrl_match,
-        $.ctrl_return,
-      ),
+    _ctrl_expression: ($) => choice($.ctrl_if, $.ctrl_try, $.ctrl_match),
 
     _ctrl_expression_parenthesized: ($) =>
       choice(
-        field('ctrl_break', keyword().break),
-        field('ctrl_continue', keyword().continue),
-        alias($.ctrl_do_parenthesized, $.ctrl_do),
         alias($.ctrl_if_parenthesized, $.ctrl_if),
         alias($.ctrl_try_parenthesized, $.ctrl_try),
         $.ctrl_match,
-        $.ctrl_return,
       ),
 
     // Standalone Controls
@@ -413,45 +392,11 @@ module.exports = grammar({
 
     ctrl_loop: ($) => seq(keyword().loop, field('body', $.block)),
 
-    ctrl_error: ($) =>
-      seq(
-        keyword().error,
-        modifier().error_make,
-        optional($._flag),
-        field('error_record', $.val_record),
-      ),
-
     ctrl_while: ($) =>
       seq(
         keyword().while,
         field('condition', $._expression),
         field('body', $.block),
-      ),
-
-    // Nestable Controls
-    _do_expression: ($) =>
-      choice(
-        $._item_expression,
-        $._flag,
-        alias($.unquoted, $.val_string),
-        alias($._unquoted_with_expr, $.val_string),
-      ),
-
-    ctrl_do: ($) =>
-      seq(
-        keyword().do,
-        repeat($._flag),
-        choice($._blosure, $.val_variable, $.expr_parenthesized),
-        repeat($._do_expression),
-      ),
-
-    ctrl_do_parenthesized: ($) =>
-      seq(
-        keyword().do,
-        repeat($._flags_parenthesized),
-        repeat1($._separator),
-        choice($._blosure, $.val_variable, $.expr_parenthesized),
-        repeat(seq(optional($._repeat_newline), $._do_expression)),
       ),
 
     ctrl_if: _ctrl_if_rule(false),
@@ -574,24 +519,6 @@ module.exports = grammar({
     ctrl_try: _ctrl_try_rule(false),
     ctrl_try_parenthesized: _ctrl_try_rule(true),
 
-    ctrl_return: ($) =>
-      choice(
-        prec(
-          1,
-          seq(
-            keyword().return,
-            choice(
-              $._expression,
-              $.ctrl_do,
-              $.ctrl_if,
-              $.ctrl_try,
-              $.ctrl_match,
-            ),
-          ),
-        ),
-        keyword().return,
-      ),
-
     /// Pipelines
 
     pipe_element: ($) =>
@@ -623,53 +550,6 @@ module.exports = grammar({
       ),
 
     /// Scope Statements
-
-    stmt_source: ($) =>
-      seq(
-        choice(keyword().source, keyword().source_env),
-        field('file', choice(alias($.unquoted, $.val_string), $._stringish)),
-      ),
-
-    _stmt_hide: ($) => choice($.hide_mod, $.hide_env),
-
-    hide_mod: ($) =>
-      prec.right(
-        1,
-        seq(
-          keyword().hide,
-          field('module', $._command_name),
-          optional($.scope_pattern),
-        ),
-      ),
-
-    hide_env: ($) =>
-      seq(keyword().hide_env, repeat($._flag), repeat1($._variable_name)),
-
-    _stmt_overlay: ($) =>
-      choice($.overlay_hide, $.overlay_list, $.overlay_new, $.overlay_use),
-
-    overlay_list: (_$) => seq(keyword().overlay, 'list'),
-
-    overlay_hide: ($) =>
-      seq(
-        keyword().overlay,
-        'hide',
-        repeat(choice($._flag, $.val_list)),
-        field('overlay', choice($.unquoted, $._stringish)),
-        repeat(choice($._flag, $.val_list)),
-      ),
-
-    overlay_new: ($) => seq(keyword().overlay, 'new', $._command_name),
-
-    overlay_use: ($) =>
-      seq(
-        keyword().overlay,
-        'use',
-        repeat($._flag),
-        field('overlay', choice($.unquoted, $._stringish)),
-        optional(seq(keyword().as, field('rename', $._command_name))),
-        repeat($._flag),
-      ),
 
     scope_pattern: ($) =>
       choice(
@@ -1579,7 +1459,7 @@ function _block_body_rules(suffix) {
       prec.right(
         prec_map().assignment,
         seq(
-          choice(keyword().let, keyword().let_env),
+          keyword().let,
           $['_assignment_pattern' + suffix],
         ),
       ),
@@ -1641,9 +1521,6 @@ function _block_body_rules(suffix) {
     ['_statement' + suffix]: (/** @type {any} */ $) =>
       choice(
         $._ctrl_statement,
-        $._stmt_hide,
-        $._stmt_overlay,
-        $.stmt_source,
         alias_for_suffix($, 'assignment', suffix),
         alias_for_suffix($, 'stmt_let', suffix),
         alias_for_suffix($, 'stmt_mut', suffix),
@@ -2067,36 +1944,19 @@ function keyword() {
     module: 'module',
 
     let: 'let',
-    let_env: 'let-env',
     mut: 'mut',
     const: 'const',
-
-    hide: 'hide',
-    hide_env: 'hide-env',
-
-    source: 'source',
-    source_env: 'source-env',
-
-    overlay: 'overlay',
-    register: 'register',
 
     for: 'for',
     loop: 'loop',
     while: 'while',
-    error: 'error',
 
-    do: 'do',
     if: 'if',
     else: 'else',
     try: 'try',
     catch: 'catch',
     match: 'match',
 
-    break: 'break',
-    continue: 'continue',
-    return: 'return',
-
-    as: 'as',
     in: 'in',
   };
 }
@@ -2107,7 +1967,6 @@ function keyword() {
  */
 function modifier() {
   return {
-    error_make: 'make',
     visibility: 'export',
   };
 }
