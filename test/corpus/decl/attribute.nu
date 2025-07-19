@@ -153,3 +153,20 @@ attr-003-mixed
           (expr_binary
             lhs: (val_variable)
             rhs: (val_number)))))))
+
+=====
+attr-004-externs
+=====
+
+@test
+extern eza []
+
+-----
+
+(nu_script
+  (decl_extern
+    (attribute_list
+      (attribute
+        (attribute_identifier)))
+    (cmd_identifier)
+    (parameter_bracks)))

@@ -235,10 +235,6 @@
           "named": true
         },
         {
-          "type": "ctrl_error",
-          "named": true
-        },
-        {
           "type": "ctrl_for",
           "named": true
         },
@@ -275,30 +271,6 @@
           "named": true
         },
         {
-          "type": "hide_env",
-          "named": true
-        },
-        {
-          "type": "hide_mod",
-          "named": true
-        },
-        {
-          "type": "overlay_hide",
-          "named": true
-        },
-        {
-          "type": "overlay_list",
-          "named": true
-        },
-        {
-          "type": "overlay_new",
-          "named": true
-        },
-        {
-          "type": "overlay_use",
-          "named": true
-        },
-        {
           "type": "pipeline",
           "named": true
         },
@@ -312,10 +284,6 @@
         },
         {
           "type": "stmt_mut",
-          "named": true
-        },
-        {
-          "type": "stmt_source",
           "named": true
         }
       ]
@@ -622,127 +590,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "ctrl_do",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "block",
-          "named": true
-        },
-        {
-          "type": "expr_parenthesized",
-          "named": true
-        },
-        {
-          "type": "long_flag",
-          "named": true
-        },
-        {
-          "type": "short_flag",
-          "named": true
-        },
-        {
-          "type": "val_binary",
-          "named": true
-        },
-        {
-          "type": "val_bool",
-          "named": true
-        },
-        {
-          "type": "val_cellpath",
-          "named": true
-        },
-        {
-          "type": "val_closure",
-          "named": true
-        },
-        {
-          "type": "val_date",
-          "named": true
-        },
-        {
-          "type": "val_duration",
-          "named": true
-        },
-        {
-          "type": "val_filesize",
-          "named": true
-        },
-        {
-          "type": "val_interpolated",
-          "named": true
-        },
-        {
-          "type": "val_list",
-          "named": true
-        },
-        {
-          "type": "val_nothing",
-          "named": true
-        },
-        {
-          "type": "val_number",
-          "named": true
-        },
-        {
-          "type": "val_range",
-          "named": true
-        },
-        {
-          "type": "val_record",
-          "named": true
-        },
-        {
-          "type": "val_string",
-          "named": true
-        },
-        {
-          "type": "val_table",
-          "named": true
-        },
-        {
-          "type": "val_variable",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ctrl_error",
-    "named": true,
-    "fields": {
-      "error_record": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "val_record",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "long_flag",
-          "named": true
-        },
-        {
-          "type": "short_flag",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -1186,109 +1033,6 @@
     }
   },
   {
-    "type": "ctrl_return",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "ctrl_do",
-          "named": true
-        },
-        {
-          "type": "ctrl_if",
-          "named": true
-        },
-        {
-          "type": "ctrl_match",
-          "named": true
-        },
-        {
-          "type": "ctrl_try",
-          "named": true
-        },
-        {
-          "type": "expr_binary",
-          "named": true
-        },
-        {
-          "type": "expr_parenthesized",
-          "named": true
-        },
-        {
-          "type": "expr_unary",
-          "named": true
-        },
-        {
-          "type": "val_binary",
-          "named": true
-        },
-        {
-          "type": "val_bool",
-          "named": true
-        },
-        {
-          "type": "val_cellpath",
-          "named": true
-        },
-        {
-          "type": "val_closure",
-          "named": true
-        },
-        {
-          "type": "val_date",
-          "named": true
-        },
-        {
-          "type": "val_duration",
-          "named": true
-        },
-        {
-          "type": "val_filesize",
-          "named": true
-        },
-        {
-          "type": "val_interpolated",
-          "named": true
-        },
-        {
-          "type": "val_list",
-          "named": true
-        },
-        {
-          "type": "val_nothing",
-          "named": true
-        },
-        {
-          "type": "val_number",
-          "named": true
-        },
-        {
-          "type": "val_range",
-          "named": true
-        },
-        {
-          "type": "val_record",
-          "named": true
-        },
-        {
-          "type": "val_string",
-          "named": true
-        },
-        {
-          "type": "val_table",
-          "named": true
-        },
-        {
-          "type": "val_variable",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "ctrl_try",
     "named": true,
     "fields": {
@@ -1632,6 +1376,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "attribute_list",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -2167,10 +1921,6 @@
           "named": true
         },
         {
-          "type": "ctrl_error",
-          "named": true
-        },
-        {
           "type": "ctrl_for",
           "named": true
         },
@@ -2207,30 +1957,6 @@
           "named": true
         },
         {
-          "type": "hide_env",
-          "named": true
-        },
-        {
-          "type": "hide_mod",
-          "named": true
-        },
-        {
-          "type": "overlay_hide",
-          "named": true
-        },
-        {
-          "type": "overlay_list",
-          "named": true
-        },
-        {
-          "type": "overlay_new",
-          "named": true
-        },
-        {
-          "type": "overlay_use",
-          "named": true
-        },
-        {
           "type": "pipeline",
           "named": true
         },
@@ -2244,10 +1970,6 @@
         },
         {
           "type": "stmt_mut",
-          "named": true
-        },
-        {
-          "type": "stmt_source",
           "named": true
         }
       ]
@@ -2270,10 +1992,6 @@
           "named": true
         },
         {
-          "type": "ctrl_error",
-          "named": true
-        },
-        {
           "type": "ctrl_for",
           "named": true
         },
@@ -2310,30 +2028,6 @@
           "named": true
         },
         {
-          "type": "hide_env",
-          "named": true
-        },
-        {
-          "type": "hide_mod",
-          "named": true
-        },
-        {
-          "type": "overlay_hide",
-          "named": true
-        },
-        {
-          "type": "overlay_list",
-          "named": true
-        },
-        {
-          "type": "overlay_new",
-          "named": true
-        },
-        {
-          "type": "overlay_use",
-          "named": true
-        },
-        {
           "type": "pipeline",
           "named": true
         },
@@ -2347,10 +2041,6 @@
         },
         {
           "type": "stmt_mut",
-          "named": true
-        },
-        {
-          "type": "stmt_source",
           "named": true
         }
       ]
@@ -2366,10 +2056,6 @@
       "types": [
         {
           "type": "assignment",
-          "named": true
-        },
-        {
-          "type": "ctrl_error",
           "named": true
         },
         {
@@ -2417,30 +2103,6 @@
           "named": true
         },
         {
-          "type": "hide_env",
-          "named": true
-        },
-        {
-          "type": "hide_mod",
-          "named": true
-        },
-        {
-          "type": "overlay_hide",
-          "named": true
-        },
-        {
-          "type": "overlay_list",
-          "named": true
-        },
-        {
-          "type": "overlay_new",
-          "named": true
-        },
-        {
-          "type": "overlay_use",
-          "named": true
-        },
-        {
           "type": "pipeline",
           "named": true
         },
@@ -2454,10 +2116,6 @@
         },
         {
           "type": "stmt_mut",
-          "named": true
-        },
-        {
-          "type": "stmt_source",
           "named": true
         },
         {
@@ -2632,96 +2290,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "hide_env",
-    "named": true,
-    "fields": {
-      "dollar_name": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "val_variable",
-            "named": true
-          }
-        ]
-      },
-      "var_name": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "long_flag",
-          "named": true
-        },
-        {
-          "type": "short_flag",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "hide_mod",
-    "named": true,
-    "fields": {
-      "module": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
-      "quoted_name": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
-      "unquoted_name": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "scope_pattern",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -3175,10 +2743,6 @@
           "named": true
         },
         {
-          "type": "ctrl_error",
-          "named": true
-        },
-        {
           "type": "ctrl_for",
           "named": true
         },
@@ -3215,30 +2779,6 @@
           "named": true
         },
         {
-          "type": "hide_env",
-          "named": true
-        },
-        {
-          "type": "hide_mod",
-          "named": true
-        },
-        {
-          "type": "overlay_hide",
-          "named": true
-        },
-        {
-          "type": "overlay_list",
-          "named": true
-        },
-        {
-          "type": "overlay_new",
-          "named": true
-        },
-        {
-          "type": "overlay_use",
-          "named": true
-        },
-        {
           "type": "pipeline",
           "named": true
         },
@@ -3256,171 +2796,6 @@
         },
         {
           "type": "stmt_mut",
-          "named": true
-        },
-        {
-          "type": "stmt_source",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "overlay_hide",
-    "named": true,
-    "fields": {
-      "overlay": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "unquoted",
-            "named": true
-          },
-          {
-            "type": "val_interpolated",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          },
-          {
-            "type": "val_variable",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "long_flag",
-          "named": true
-        },
-        {
-          "type": "short_flag",
-          "named": true
-        },
-        {
-          "type": "val_list",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "overlay_list",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "overlay_new",
-    "named": true,
-    "fields": {
-      "quoted_name": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
-      "unquoted_name": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "overlay_use",
-    "named": true,
-    "fields": {
-      "overlay": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "unquoted",
-            "named": true
-          },
-          {
-            "type": "val_interpolated",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          },
-          {
-            "type": "val_variable",
-            "named": true
-          }
-        ]
-      },
-      "quoted_name": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
-      "rename": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
-      "unquoted_name": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "long_flag",
-          "named": true
-        },
-        {
-          "type": "short_flag",
           "named": true
         }
       ]
@@ -3784,38 +3159,13 @@
   {
     "type": "pipe_element",
     "named": true,
-    "fields": {
-      "ctrl_break": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "break",
-            "named": false
-          }
-        ]
-      },
-      "ctrl_continue": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "continue",
-            "named": false
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "command",
-          "named": true
-        },
-        {
-          "type": "ctrl_do",
           "named": true
         },
         {
@@ -3824,10 +3174,6 @@
         },
         {
           "type": "ctrl_match",
-          "named": true
-        },
-        {
-          "type": "ctrl_return",
           "named": true
         },
         {
@@ -4495,34 +3841,6 @@
     }
   },
   {
-    "type": "stmt_source",
-    "named": true,
-    "fields": {
-      "file": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "val_interpolated",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          },
-          {
-            "type": "val_variable",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "string_content",
     "named": true,
     "fields": {},
@@ -4606,10 +3924,6 @@
           "named": true
         },
         {
-          "type": "ctrl_error",
-          "named": true
-        },
-        {
           "type": "ctrl_for",
           "named": true
         },
@@ -4646,30 +3960,6 @@
           "named": true
         },
         {
-          "type": "hide_env",
-          "named": true
-        },
-        {
-          "type": "hide_mod",
-          "named": true
-        },
-        {
-          "type": "overlay_hide",
-          "named": true
-        },
-        {
-          "type": "overlay_list",
-          "named": true
-        },
-        {
-          "type": "overlay_new",
-          "named": true
-        },
-        {
-          "type": "overlay_use",
-          "named": true
-        },
-        {
           "type": "pipeline",
           "named": true
         },
@@ -4683,10 +3973,6 @@
         },
         {
           "type": "stmt_mut",
-          "named": true
-        },
-        {
-          "type": "stmt_source",
           "named": true
         }
       ]
@@ -5689,10 +4975,6 @@
     "named": false
   },
   {
-    "type": "as",
-    "named": false
-  },
-  {
     "type": "attribute_identifier",
     "named": true
   },
@@ -5729,10 +5011,6 @@
     "named": false
   },
   {
-    "type": "break",
-    "named": false
-  },
-  {
     "type": "catch",
     "named": false
   },
@@ -5753,10 +5031,6 @@
     "named": false
   },
   {
-    "type": "continue",
-    "named": false
-  },
-  {
     "type": "datetime",
     "named": false
   },
@@ -5770,10 +5044,6 @@
   },
   {
     "type": "directory",
-    "named": false
-  },
-  {
-    "type": "do",
     "named": false
   },
   {
@@ -5909,14 +5179,6 @@
     "named": true
   },
   {
-    "type": "hide",
-    "named": false
-  },
-  {
-    "type": "hide-env",
-    "named": false
-  },
-  {
     "type": "if",
     "named": false
   },
@@ -5945,10 +5207,6 @@
     "named": false
   },
   {
-    "type": "let-env",
-    "named": false
-  },
-  {
     "type": "like",
     "named": false
   },
@@ -5962,10 +5220,6 @@
   },
   {
     "type": "loop",
-    "named": false
-  },
-  {
-    "type": "make",
     "named": false
   },
   {
@@ -5986,10 +5240,6 @@
   },
   {
     "type": "mut",
-    "named": false
-  },
-  {
-    "type": "new",
     "named": false
   },
   {
@@ -6089,10 +5339,6 @@
     "named": false
   },
   {
-    "type": "overlay",
-    "named": false
-  },
-  {
     "type": "param_short_flag_identifier",
     "named": true
   },
@@ -6117,23 +5363,11 @@
     "named": false
   },
   {
-    "type": "return",
-    "named": false
-  },
-  {
     "type": "short_flag_identifier",
     "named": true
   },
   {
     "type": "signature",
-    "named": false
-  },
-  {
-    "type": "source",
-    "named": false
-  },
-  {
-    "type": "source-env",
     "named": false
   },
   {
