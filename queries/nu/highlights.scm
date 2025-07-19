@@ -271,36 +271,41 @@ key: (identifier) @property
 ;   | uniq
 ;   | str join ' '
 (command
-  head: [
-    (cmd_identifier) @function.builtin
-    (#any-of? @function.builtin
-      "all" "ansi" "any" "append" "ast" "bits" "bytes" "cal" "cd" "char" "clear" "collect" "columns"
-      "compact" "complete" "config" "cp" "date" "debug" "decode" "default" "detect" "dfr" "drop"
-      "du" "each" "encode" "enumerate" "every" "exec" "exit" "explain" "explore" "export-env" "fill"
-      "filter" "find" "first" "flatten" "fmt" "format" "from" "generate" "get" "glob" "grid" "group"
-      "group-by" "hash" "headers" "histogram" "history" "http" "input" "insert" "inspect"
-      "interleave" "into" "is-empty" "is-not-empty" "is-terminal" "items" "join" "keybindings"
-      "kill" "last" "length" "let-env" "lines" "load-env" "ls" "math" "merge" "metadata" "mkdir"
-      "mktemp" "move" "mv" "nu-check" "nu-highlight" "open" "panic" "par-each" "parse" "path"
-      "plugin" "port" "prepend" "print" "ps" "query" "random" "range" "reduce" "reject" "rename"
-      "reverse" "rm" "roll" "rotate" "run-external" "save" "schema" "select" "seq" "shuffle" "skip"
-      "sleep" "sort" "sort-by" "split" "split-by" "start" "stor" "str" "sys" "table" "take" "tee"
-      "term" "timeit" "to" "touch" "transpose" "tutor" "ulimit" "uname" "uniq" "uniq-by" "update"
-      "upsert" "url" "values" "view" "watch" "where" "which" "whoami" "window" "with-env" "wrap"
-      "zip")
-  ])
+  head: (cmd_identifier) @function.builtin
+  (#any-of? @function.builtin
+    "all" "ansi" "any" "append" "ast" "bits" "bytes" "cal" "cd" "char" "clear" "collect" "columns"
+    "compact" "complete" "config" "cp" "date" "debug" "decode" "default" "detect" "dfr" "drop" "du"
+    "each" "encode" "enumerate" "every" "exec" "exit" "explain" "explore" "export-env" "fill"
+    "filter" "find" "first" "flatten" "fmt" "format" "from" "generate" "get" "glob" "grid" "group"
+    "group-by" "hash" "headers" "histogram" "history" "http" "input" "insert" "inspect" "interleave"
+    "into" "is-empty" "is-not-empty" "is-terminal" "items" "join" "keybindings" "kill" "last"
+    "length" "let-env" "lines" "load-env" "ls" "math" "merge" "metadata" "mkdir" "mktemp" "move"
+    "mv" "nu-check" "nu-highlight" "open" "panic" "par-each" "parse" "path" "plugin" "port"
+    "prepend" "print" "ps" "query" "random" "range" "reduce" "reject" "rename" "reverse" "rm" "roll"
+    "rotate" "run-external" "save" "schema" "select" "seq" "shuffle" "skip" "sleep" "sort" "sort-by"
+    "split" "split-by" "start" "stor" "str" "sys" "table" "take" "tee" "term" "timeit" "to" "touch"
+    "transpose" "tutor" "ulimit" "uname" "uniq" "uniq-by" "update" "upsert" "url" "values" "view"
+    "watch" "where" "which" "whoami" "window" "with-env" "wrap" "zip"))
 
 (command
-  head: [
-    (cmd_identifier) @keyword.repeat
-    (#any-of? @keyword.repeat "break" "continue" "return")
-  ])
+  head: (cmd_identifier) @keyword.repeat
+  (#any-of? @keyword.repeat "break" "continue" "return"))
 
 (command
-  head: [
-    (cmd_identifier) @keyword
-    (#any-of? @keyword "do" "overlay" "error" "source" "source-env" "hide" "hide-env")
-  ])
+  head: (cmd_identifier) @keyword
+  (#any-of? @keyword "do" "source" "source-env" "hide" "hide-env"))
+
+(command
+  head: (cmd_identifier) @keyword
+  .
+  arg_str: (val_string) @keyword.import
+  (#any-of? @keyword "overlay" "error"))
+
+(command
+  head: (cmd_identifier) @cmd
+  arg_str: (val_string) @keyword
+  (#eq? @cmd "overlay")
+  (#eq? @keyword "as"))
 
 (command
   "^" @punctuation.delimiter
