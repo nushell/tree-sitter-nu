@@ -168,6 +168,7 @@ module.exports = grammar({
 
     decl_extern: ($) =>
       seq(
+        optional($.attribute_list),
         optional(modifier().visibility),
         keyword().extern,
         field('name', $._command_name),
