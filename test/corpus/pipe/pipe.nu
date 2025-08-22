@@ -269,8 +269,9 @@ do { [1] }
 (nu_script
   (pipeline
     (pipe_element
-      (ctrl_do
-        (block
+      (command
+        (cmd_identifier)
+        (val_closure
           (pipeline
             (pipe_element
               (val_list
@@ -443,8 +444,9 @@ do { [1] } |
 (nu_script
   (pipeline
     (pipe_element
-      (ctrl_do
-        (block
+      (command
+        (cmd_identifier)
+        (val_closure
           (pipeline
             (pipe_element
               (val_list
