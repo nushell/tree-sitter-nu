@@ -16011,7 +16011,7 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[\\p{XID_Continue}?@!%_-]+"
+        "value": "[\\p{XID_Continue}:?@!%_-]+"
       }
     },
     "long_flag": {
