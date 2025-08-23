@@ -1246,7 +1246,8 @@ module.exports = grammar({
         optional($._flag_equals_value),
       ),
 
-    short_flag_identifier: (_$) => token.immediate(/[\p{XID_Continue}?@!%_-]+/),
+    short_flag_identifier: (_$) =>
+      token.immediate(/[\p{XID_Continue}:?@!%_-]+/),
 
     long_flag: ($) =>
       seq(
