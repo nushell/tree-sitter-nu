@@ -308,11 +308,14 @@ module.exports = grammar({
         optional($._collection_annotation),
       ),
     _collection_body: ($) =>
-      general_body_rules(
-        '',
+      choice(
         $._collection_entry,
-        $._entry_separator,
-        $._newline,
+        general_body_rules(
+          '',
+          $._collection_entry,
+          $._entry_separator,
+          $._newline,
+        ),
       ),
     collection_type: ($) =>
       seq(

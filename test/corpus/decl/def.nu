@@ -1081,3 +1081,32 @@ oneof<int, bool>> {}
           type: (flat_type)
           type: (flat_type))))
     body: (block)))
+
+=====
+def-036-untyped-collection-body
+=====
+
+def test [name: record<name>] {}
+def test [name: record<name,>] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (flat_type)))
+      (ERROR))
+    (block))
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)))))
+    (block)))
