@@ -21,6 +21,7 @@ examples/nu_scripts/custom-completions/pytest/pytest-completions.nu
 examples/nu_scripts/custom-menus/current_session_history_menu.nu
 examples/nu_scripts/example-config/init.nu
 examples/nu_scripts/make_release/gen-ts-ext.nu
+examples/nu_scripts/make_release/notes/tools.nu
 examples/nu_scripts/modules/duplicates/example.nu
 examples/nu_scripts/modules/kubernetes/complete.nu
 examples/nu_scripts/modules/network/remoting/remoting.nu
