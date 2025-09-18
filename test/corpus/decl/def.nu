@@ -1089,6 +1089,7 @@ def-036-untyped-collection-body
 def test [name: record<name>] {}
 def test [name: record<name,>] {}
 def test [name: record<name, value>] {}
+def test [name: record<name, value,>] {}
 
 -----
 
@@ -1109,5 +1110,26 @@ def test [name: record<name, value>] {}
         (identifier)
         (param_type
           (collection_type
+            (identifier)))))
+    (block))
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (identifier)
+            (MISSING ">")))))
+    (block))
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
             (identifier)))))
     (block)))
