@@ -1086,10 +1086,10 @@ oneof<int, bool>> {}
 def-036-untyped-collection-body
 =====
 
-def test [name: record<name>] {}
-def test [name: record<name,>] {}
-def test [name: record<name, value>] {}
-def test [name: record<name, value,>] {}
+def test [name: record<name>, quoted: record<"name">] {}
+def test [name: record<name,>, quoted: record<"name",>] {}
+def test [name: record<name, value>, name: record<"name", "value">] {}
+def test [name: record<name, value,>, name: record<"name", "value",>] {}
 
 -----
 
@@ -1100,8 +1100,14 @@ def test [name: record<name, value,>] {}
       (parameter
         (identifier)
         (param_type
-          (flat_type)))
-      (ERROR))
+          (collection_type
+            (identifier))))
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier
+              (string_content))))))
     (block))
   (decl_def
     (cmd_identifier)
@@ -1110,7 +1116,13 @@ def test [name: record<name, value,>] {}
         (identifier)
         (param_type
           (collection_type
-            (identifier)))))
+            (identifier))))
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier
+              (string_content))))))
     (block))
   (decl_def
     (cmd_identifier)
@@ -1120,8 +1132,15 @@ def test [name: record<name, value,>] {}
         (param_type
           (collection_type
             (identifier)
-            (identifier)
-            (MISSING ">")))))
+            (identifier))))
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier
+              (string_content))
+            (identifier
+              (string_content))))))
     (block))
   (decl_def
     (cmd_identifier)
@@ -1131,5 +1150,13 @@ def test [name: record<name, value,>] {}
         (param_type
           (collection_type
             (identifier)
-            (identifier)))))
+            (identifier))))
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier
+              (string_content))
+            (identifier
+              (string_content))))))
     (block)))
