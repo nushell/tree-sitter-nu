@@ -24,7 +24,7 @@ subexpr-002-multiline-command
   echo
   one
   two
-  thre
+  three
 )
 
 -----
@@ -73,7 +73,7 @@ subexpr-004-pipeline-multiline
   echo
   one
   two
-  thre | str replace t T
+  three | str replace t T
 )
 
 -----

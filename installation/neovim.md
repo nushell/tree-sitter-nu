@@ -58,7 +58,7 @@ Extend your lazy config with treesitter and the nu parser.
 > 1. Override the `install_info` in the configuration of [nvim-treesitter].
 > 2. Download the compatible query files.
 
-### Override the intall_info
+### Override the install_info
 
 Add something similar to the following snippet to the lua code above:
 
