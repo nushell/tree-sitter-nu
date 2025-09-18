@@ -308,14 +308,11 @@ module.exports = grammar({
         optional($._collection_annotation),
       ),
     _collection_body: ($) =>
-      choice(
+      general_body_rules(
+        '',
         $._collection_entry,
-        general_body_rules(
-          '',
-          $._collection_entry,
-          $._entry_separator,
-          $._newline,
-        ),
+        $._entry_separator,
+        $._newline,
       ),
     collection_type: ($) =>
       seq(
@@ -1866,7 +1863,7 @@ function _unquoted_pattern_rule(type, first) {
       excluded += ',';
       break;
     case 'record':
-      excluded += ':,';
+      excluded += ':,>';
       break;
     case 'command':
       if (first) excluded += '-';
