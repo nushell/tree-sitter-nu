@@ -1088,6 +1088,7 @@ def-036-untyped-collection-body
 
 def test [name: record<name>] {}
 def test [name: record<name,>] {}
+def test [name: record<name, value>] {}
 
 -----
 
