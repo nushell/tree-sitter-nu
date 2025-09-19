@@ -1,7 +1,7 @@
 {
   "name": "tree-sitter-nu",
   "version": "0.0.1",
-  "description": "nu-lang",
+  "description": "nu grammar for the tree-sitter parsing library",
   "repository": "https://github.com/nushell/tree-sitter-nu",
   "license": "MIT",
   "author": {
@@ -35,7 +35,7 @@
     "prettier": "^3.6.2",
     "eslint-config-prettier": "^10.1.5",
     "prebuildify": "^6.0.1",
-    "tree-sitter-cli": "^0.25.4"
+    "tree-sitter-cli": "^0.25.9"
   },
   "peerDependencies": {
     "tree-sitter": "^0.25.0"

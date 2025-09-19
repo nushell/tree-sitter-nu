@@ -15,7 +15,7 @@
   "metadata": {
     "version": "0.0.1",
     "license": "MIT",
-    "description": "nu-lang",
+    "description": "nu grammar for the tree-sitter parsing library",
     "authors": [
       {
         "name": "The Nushell Contributors"

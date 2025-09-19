@@ -1,4 +1,4 @@
-"""nu-lang"""
+"""nu grammar for the tree-sitter parsing library"""
 
 from importlib.resources import files as _files
 
