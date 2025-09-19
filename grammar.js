@@ -159,6 +159,7 @@ module.exports = grammar({
         keyword().def,
         repeat($.long_flag),
         field('name', $._command_name),
+        repeat($.long_flag),
         field('parameters', choice($.parameter_parens, $.parameter_bracks)),
         field('return_type', optional($.returns)),
         field('body', $.block),

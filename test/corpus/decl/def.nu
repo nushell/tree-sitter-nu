@@ -48,6 +48,8 @@ def --env foo [] {}
 def --env --wrapped bar [...args] {}
 def --wrapped foo [...args] {}
 def --wrapped --env bar [...args] {}
+def bar --wrapped --env  [...args] {}
+def --wrapped bar --env  [...args] {}
 
 -----
 
@@ -84,6 +86,28 @@ def --wrapped --env bar [...args] {}
     (long_flag
       (long_flag_identifier))
     (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_rest
+          (identifier))))
+    (block))
+  (decl_def
+    (cmd_identifier)
+    (long_flag
+      (long_flag_identifier))
+    (long_flag
+      (long_flag_identifier))
+    (parameter_bracks
+      (parameter
+        (param_rest
+          (identifier))))
+    (block))
+  (decl_def
+    (long_flag
+      (long_flag_identifier))
+    (cmd_identifier)
+    (long_flag
+      (long_flag_identifier))
     (parameter_bracks
       (parameter
         (param_rest
