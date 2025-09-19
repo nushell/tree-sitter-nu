@@ -13,10 +13,8 @@ def list-tests-in-file [file: path] {
         | zip ($x | skip 2) # next line of target line
     } $in
     | each {|group| $group | flatten}
-    | filter {|g|
-        # check for test title surroundings on previous and next line
-        $g.1 =~ "=+$" and $g.2 =~ "=+$"
-    }
+    # check for test title surroundings on previous and next line
+    | where $it.1 =~ "=+$" and $it.2 =~ "=+$"
     | each {|g| $g.0}
 }
 
@@ -85,4 +83,24 @@ export def "ts parse" [    # -> string
 # Generates a default config file and prints out its path
 export def "ts config" [] {
     tree-sitter init-config
+}
+
+# Regenerates tree-sitter bindings and generated manifests
+export def "ts regen" [] {
+    # remove all top level files as defined below:
+    # https://github.com/tree-sitter/tree-sitter/blob/v0.25.9/docs/src/cli/init.md#binding-files
+    (
+      rm --force
+        CMakeLists.txt
+        Cargo.toml
+        Makefile
+        Package.swift
+        binding.gyp
+        go.mod
+        pyproject.toml
+        setup.py
+    )
+    rm -rf bindings/
+    tree-sitter init --update
+    return
 }
