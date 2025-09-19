@@ -5,6 +5,7 @@
       "camelcase": "Nu",
       "scope": "source.nu",
       "path": ".",
+      "injection-regex": "^(nushell|nu)$",
       "file-types": [
         "nu"
       ],
