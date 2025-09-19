@@ -2,11 +2,14 @@
 name = "tree-sitter-nu"
 description = "nu grammar for the tree-sitter parsing library"
 version = "0.0.1"
-keywords = ["incremental", "parsing", "nu"]
-categories = ["parsing", "text-editors"]
-repository = "https://github.com/nushell/tree-sitter-nu"
-edition = "2018"
+authors = ["The Nushell Contributors"]
 license = "MIT"
+readme = "README.md"
+keywords = ["incremental", "parsing", "tree-sitter", "nu"]
+categories = ["parser-implementations", "parsing", "text-editors"]
+repository = "https://github.com/nushell/tree-sitter-nu"
+edition = "2021"
+autoexamples = false
 
 build = "bindings/rust/build.rs"
 include = [
@@ -14,21 +17,18 @@ include = [
   "grammar.js",
   "queries/*",
   "src/*",
+  "tree-sitter.json",
+  "/LICENSE",
 ]
 
 [lib]
 path = "bindings/rust/lib.rs"
 
-# [[bin]]
-# name = "ts-test"
-# path = "src/main.rs"
-
-[dev-dependencies]
-cc = "1.1.30"
-
 [dependencies]
 tree-sitter-language = "0.1"
-tree-sitter = "0.25"
 
 [build-dependencies]
-cc = "1.1.30"
+cc = "1.2"
+
+[dev-dependencies]
+tree-sitter = "0.25.9"
