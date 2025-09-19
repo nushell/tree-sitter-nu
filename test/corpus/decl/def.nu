@@ -1081,3 +1081,82 @@ oneof<int, bool>> {}
           type: (flat_type)
           type: (flat_type))))
     body: (block)))
+
+=====
+def-036-untyped-collection-body
+=====
+
+def test [name: record<name>, quoted: record<"name">] {}
+def test [name: record<name,>, quoted: record<"name",>] {}
+def test [name: record<name, value>, name: record<"name", "value">] {}
+def test [name: record<name, value,>, name: record<"name", "value",>] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier))))
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier
+              (string_content))))))
+    (block))
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier))))
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier
+              (string_content))))))
+    (block))
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (identifier))))
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier
+              (string_content))
+            (identifier
+              (string_content))))))
+    (block))
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (identifier))))
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier
+              (string_content))
+            (identifier
+              (string_content))))))
+    (block)))

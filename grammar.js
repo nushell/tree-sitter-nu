@@ -1863,7 +1863,7 @@ function _unquoted_pattern_rule(type, first) {
       excluded += ',';
       break;
     case 'record':
-      excluded += ':,';
+      excluded += ':,>';
       break;
     case 'command':
       if (first) excluded += '-';

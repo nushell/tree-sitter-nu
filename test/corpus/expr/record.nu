@@ -232,7 +232,7 @@ record-009-duration
                   (val_string))))))))))
 
 =====
-record-010-key-value-seperation
+record-010-key-value-separation
 :error
 =====
 

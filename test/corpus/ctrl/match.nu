@@ -374,7 +374,7 @@ match [true] {}
               (val_bool))))))))
 
 =====
-match-011-seperator
+match-011-separator
 =====
 
 match null {
