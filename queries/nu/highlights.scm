@@ -18,6 +18,7 @@
 ] @keyword.repeat
 
 "def" @keyword.function
+(string_content) @string
 
 [
   "try"
@@ -62,7 +63,6 @@
   ] @number
   "[" @punctuation.bracket
   digit: [
-    "," @punctuation.delimiter
     (hex_digit) @number
   ]
   "]" @punctuation.bracket) @number
@@ -137,6 +137,7 @@ file_path: (val_string) @variable.parameter
   ] @operator)
 
 [
+  "..."
   "=>"
   "="
   "|"
@@ -170,9 +171,14 @@ file_path: (val_string) @variable.parameter
 ; ---
 ; punctuation
 [
-  ","
   ";"
 ] @punctuation.special
+
+[ "," ":" "->" ] @punctuation.delimiter
+[
+  "<"
+  ">"
+] @punctuation.bracket
 
 (param_long_flag
   "--" @punctuation.delimiter)
@@ -192,26 +198,22 @@ file_path: (val_string) @variable.parameter
 (param_short_flag
   "-" @punctuation.delimiter)
 
-(param_rest
-  "..." @punctuation.delimiter)
 
-(param_type
-  ":" @punctuation.special)
 
 (param_value
   "=" @punctuation.special)
 
 (param_cmd
-  "@" @punctuation.special)
+  "@" @constructor)
 
 (attribute
-  "@" @punctuation.special)
+  "@" @label)
 
 (param_opt
   "?" @punctuation.special)
 
 (returns
-  "->" @punctuation.special)
+  "->" @punctuation.delimiter)
 
 [
   "("
@@ -220,14 +222,7 @@ file_path: (val_string) @variable.parameter
   "}"
   "["
   "]"
-  "...["
-  "...("
-  "...{"
 ] @punctuation.bracket
-
-(val_record
-  (record_entry
-    ":" @punctuation.delimiter))
 
 key: (identifier) @property
 
@@ -308,7 +303,7 @@ key: (identifier) @property
   (#eq? @keyword "as"))
 
 (command
-  "^" @punctuation.delimiter
+  "^" @keyword.modifier
   head: (_) @function)
 
 "where" @function.builtin
@@ -331,7 +326,6 @@ key: (identifier) @property
 
 (val_variable
   "$"? @punctuation.special
-  "...$"? @punctuation.special
   [
     (identifier) @variable
     "in" @special
@@ -342,39 +336,23 @@ key: (identifier) @property
 (val_cellpath
   "$" @punctuation.special)
 
-(record_entry
-  ":" @punctuation.special)
 
 ; ---
 ; types
 (flat_type) @type
 
 (list_type
-  "list" @type.enum
-  [
-    "<"
-    ">"
-  ] @punctuation.bracket)
+  "list" @type)
 
 (collection_type
+  .
   [
     "record"
     "table"
-  ] @type.enum
-  "<" @punctuation.bracket
-  key: (_) @variable.parameter
-  [
-    ","
-    ":"
-  ] @punctuation.special
-  ">" @punctuation.bracket)
+  ] @type)
 
 (composite_type
-  "oneof" @type.enum
-  [
-    "<"
-    ">"
-  ] @punctuation.bracket)
+  "oneof" @type.enum)
 
 (shebang) @keyword.directive
 

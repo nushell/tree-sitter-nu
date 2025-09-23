@@ -2987,13 +2987,8 @@
                 "value": "identifier"
               },
               {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "val_string"
-                },
-                "named": true,
-                "value": "identifier"
+                "type": "SYMBOL",
+                "name": "val_string"
               }
             ]
           }

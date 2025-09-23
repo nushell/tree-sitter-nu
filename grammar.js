@@ -303,7 +303,7 @@ module.exports = grammar({
           'key',
           choice(
             alias($._unquoted_in_record, $.identifier),
-            alias($.val_string, $.identifier),
+            $.val_string,
           ),
         ),
         optional($._collection_annotation),
