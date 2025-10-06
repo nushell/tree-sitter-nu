@@ -3215,12 +3215,24 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "_command_name"
+              "type": "FIELD",
+              "name": "command",
+              "content": {
+                "type": "SYMBOL",
+                "name": "cmd_identifier"
+              }
             },
             {
               "type": "FIELD",
-              "name": "const",
+              "name": "command",
+              "content": {
+                "type": "SYMBOL",
+                "name": "val_string"
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "constant",
               "content": {
                 "type": "SYMBOL",
                 "name": "val_list"
@@ -3228,7 +3240,7 @@
             },
             {
               "type": "FIELD",
-              "name": "const",
+              "name": "constant",
               "content": {
                 "type": "SYMBOL",
                 "name": "val_record"
@@ -3236,7 +3248,7 @@
             },
             {
               "type": "FIELD",
-              "name": "const",
+              "name": "constant",
               "content": {
                 "type": "SYMBOL",
                 "name": "val_variable"

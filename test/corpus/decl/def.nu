@@ -1010,13 +1010,13 @@ def test [
         (param_type
           type: (flat_type)
           completion: (param_completer
-            unquoted_name: (cmd_identifier))))
+            command: (cmd_identifier))))
       (parameter
         param_name: (identifier)
         (param_type
           type: (flat_type)
           completion: (param_completer
-            quoted_name: (val_string
+            command: (val_string
               (string_content)))))
       (parameter
         param_long_flag: (param_long_flag
@@ -1028,7 +1028,7 @@ def test [
           type: (list_type
             type: (flat_type)
             completion: (param_completer
-              unquoted_name: (cmd_identifier))))
+              command: (cmd_identifier))))
         (param_value
           param_value: (val_string)))
       (parameter
@@ -1207,7 +1207,7 @@ def test [
         (param_type
           type: (flat_type)
           completion: (param_completer
-            const: (val_list
+            constant: (val_list
               (list_body
                 entry: (val_entry
                   item: (val_number))
@@ -1218,7 +1218,7 @@ def test [
         (param_type
           type: (flat_type)
           completion: (param_completer
-            const: (val_record
+            constant: (val_record
               (record_body
                 entry: (record_entry
                   key: (identifier)
@@ -1240,7 +1240,7 @@ def test [
           type: (list_type
             type: (flat_type)
             completion: (param_completer
-              const: (val_variable
+              constant: (val_variable
                 name: (identifier)
                 (cell_path
                   (path))))))

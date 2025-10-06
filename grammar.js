@@ -345,10 +345,13 @@ module.exports = grammar({
     param_completer: ($) =>
       seq(
         token.immediate(punc().at),
-        choice($._command_name,
-          field('const', $.val_list),
-          field('const', $.val_record),
-          field('const', $.val_variable)),
+        choice(
+          field('command', $.cmd_identifier),
+          field('command', $.val_string),
+          field('constant', $.val_list),
+          field('constant', $.val_record),
+          field('constant', $.val_variable),
+        ),
       ),
 
     param_rest: ($) =>
