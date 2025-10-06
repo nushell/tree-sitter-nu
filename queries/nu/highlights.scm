@@ -201,7 +201,7 @@ file_path: (val_string) @variable.parameter
 (param_value
   "=" @punctuation.special)
 
-(param_cmd
+(param_completer
   "@" @punctuation.special)
 
 (attribute
@@ -242,7 +242,7 @@ key: (identifier) @property
 (parameter
   param_name: (_) @variable.parameter)
 
-(param_cmd
+(param_completer
   (cmd_identifier) @string)
 
 (param_long_flag

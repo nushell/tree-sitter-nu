@@ -158,7 +158,7 @@ module.exports = grammar({
         optional(modifier().visibility),
         keyword().def,
         repeat($.long_flag),
-        field('name', $._command_name),
+        $._command_name,
         repeat($.long_flag),
         field('parameters', choice($.parameter_parens, $.parameter_bracks)),
         field('return_type', optional($.returns)),
@@ -172,7 +172,7 @@ module.exports = grammar({
         optional($.attribute_list),
         optional(modifier().visibility),
         keyword().extern,
-        field('name', $._command_name),
+        $._command_name,
         field('signature', choice($.parameter_parens, $.parameter_bracks)),
         field('body', optional($.block)),
       ),
@@ -181,7 +181,7 @@ module.exports = grammar({
       seq(
         optional(modifier().visibility),
         keyword().module,
-        field('name', $._command_name),
+        $._command_name,
         optional(field('body', $.block)),
       ),
 
@@ -259,7 +259,7 @@ module.exports = grammar({
         punc().colon,
         optional($._repeat_newline),
         $._type_annotation,
-        field('completion', optional($.param_cmd)),
+        field('completion', optional($.param_completer)),
       ),
 
     param_value: ($) =>
@@ -295,7 +295,7 @@ module.exports = grammar({
       seq(
         punc().colon,
         $._all_type,
-        field('completion', optional($.param_cmd)),
+        field('completion', optional($.param_completer)),
       ),
     _collection_entry: ($) =>
       seq(
@@ -328,7 +328,7 @@ module.exports = grammar({
         'list',
         token.immediate(brack().open_angle),
         field('inner', optional($._all_type)),
-        field('completion', optional($.param_cmd)),
+        field('completion', optional($.param_completer)),
         brack().close_angle,
       ),
 
@@ -342,8 +342,14 @@ module.exports = grammar({
         brack().close_angle,
       ),
 
-    param_cmd: ($) =>
-      seq(token.immediate(punc().at), field('name', $._command_name)),
+    param_completer: ($) =>
+      seq(
+        token.immediate(punc().at),
+        choice($._command_name,
+          field('const', $.val_list),
+          field('const', $.val_record),
+          field('const', $.val_variable)),
+      ),
 
     param_rest: ($) =>
       seq(punc().rest, optional(punc().dollar), field('name', $.identifier)),
@@ -556,7 +562,7 @@ module.exports = grammar({
     scope_pattern: ($) =>
       choice(
         field('wildcard', $.wild_card),
-        field('command', $._command_name),
+        $._command_name,
         field('command_list', $.command_list),
       ),
 
@@ -1451,7 +1457,7 @@ function _block_body_rules(suffix) {
       seq(
         optional(modifier().visibility),
         keyword().alias,
-        field('name', $._command_name),
+        $._command_name,
         punc().eq,
         field('value', alias_for_suffix($, 'pipeline', suffix)),
       ),
