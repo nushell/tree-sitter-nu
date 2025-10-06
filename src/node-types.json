@@ -318,7 +318,7 @@
         "required": false,
         "types": [
           {
-            "type": "param_cmd",
+            "type": "param_completer",
             "named": true
           }
         ]
@@ -562,7 +562,6 @@
   {
     "type": "comment",
     "named": true,
-    "extra": true,
     "fields": {}
   },
   {
@@ -1165,20 +1164,6 @@
     "type": "decl_alias",
     "named": true,
     "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
       "quoted_name": {
         "multiple": false,
         "required": false,
@@ -1221,20 +1206,6 @@
         "types": [
           {
             "type": "block",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          },
-          {
-            "type": "val_string",
             "named": true
           }
         ]
@@ -1329,20 +1300,6 @@
           }
         ]
       },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
       "quoted_name": {
         "multiple": false,
         "required": false,
@@ -1399,20 +1356,6 @@
         "types": [
           {
             "type": "block",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          },
-          {
-            "type": "val_string",
             "named": true
           }
         ]
@@ -2341,7 +2284,7 @@
         "required": false,
         "types": [
           {
-            "type": "param_cmd",
+            "type": "param_completer",
             "named": true
           }
         ]
@@ -2803,12 +2746,12 @@
     }
   },
   {
-    "type": "param_cmd",
+    "type": "param_completer",
     "named": true,
     "fields": {
-      "name": {
+      "command": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "cmd_identifier",
@@ -2820,22 +2763,20 @@
           }
         ]
       },
-      "quoted_name": {
+      "constant": {
         "multiple": false,
         "required": false,
         "types": [
           {
-            "type": "val_string",
+            "type": "val_list",
             "named": true
-          }
-        ]
-      },
-      "unquoted_name": {
-        "multiple": false,
-        "required": false,
-        "types": [
+          },
           {
-            "type": "cmd_identifier",
+            "type": "val_record",
+            "named": true
+          },
+          {
+            "type": "val_variable",
             "named": true
           }
         ]
@@ -2914,7 +2855,7 @@
         "required": false,
         "types": [
           {
-            "type": "param_cmd",
+            "type": "param_completer",
             "named": true
           }
         ]
@@ -3514,20 +3455,6 @@
     "type": "scope_pattern",
     "named": true,
     "fields": {
-      "command": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
       "command_list": {
         "multiple": false,
         "required": false,
