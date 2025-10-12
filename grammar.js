@@ -2116,7 +2116,9 @@ function operator() {
     has: 'has',
     not_has: 'not-has',
     starts_with: 'starts-with',
+    not_starts_with: 'not-starts-with',
     ends_with: 'ends-with',
+    not_ends_with: 'not-ends-with',
 
     // assignment
     assign_add: '+=',
@@ -2214,7 +2216,9 @@ function predicate() {
     operator().has,
     operator().not_has,
     operator().starts_with,
+    operator().not_starts_with,
     operator().ends_with,
+    operator().not_ends_with,
   ];
 
   const comparatives = [
