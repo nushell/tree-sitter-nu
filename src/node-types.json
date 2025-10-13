@@ -562,6 +562,7 @@
   {
     "type": "comment",
     "named": true,
+    "extra": true,
     "fields": {}
   },
   {
@@ -1743,6 +1744,10 @@
             "named": false
           },
           {
+            "type": "not-ends-with",
+            "named": false
+          },
+          {
             "type": "not-has",
             "named": false
           },
@@ -1752,6 +1757,10 @@
           },
           {
             "type": "not-like",
+            "named": false
+          },
+          {
+            "type": "not-starts-with",
             "named": false
           },
           {
@@ -4510,6 +4519,10 @@
             "named": false
           },
           {
+            "type": "not-ends-with",
+            "named": false
+          },
+          {
             "type": "not-has",
             "named": false
           },
@@ -4519,6 +4532,10 @@
           },
           {
             "type": "not-like",
+            "named": false
+          },
+          {
+            "type": "not-starts-with",
             "named": false
           },
           {
@@ -5175,6 +5192,10 @@
     "named": false
   },
   {
+    "type": "not-ends-with",
+    "named": false
+  },
+  {
     "type": "not-has",
     "named": false
   },
@@ -5184,6 +5205,10 @@
   },
   {
     "type": "not-like",
+    "named": false
+  },
+  {
+    "type": "not-starts-with",
     "named": false
   },
   {
