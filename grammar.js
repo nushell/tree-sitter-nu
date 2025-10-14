@@ -32,9 +32,14 @@ module.exports = grammar({
     [$._block_body],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
-    [$._match_pattern_record, $._value],
+    [$._match_pattern_list_body, $._table_head],
+    [$._match_pattern_list_body, $.list_body, $._table_head],
+    [$._match_pattern_list_body, $.list_body],
+    [$._match_pattern_list_body, $.val_entry],
+    [$._match_pattern_list_body],
     [$._match_pattern_record, $.val_record, $.val_closure],
     [$._match_pattern_record, $.val_record],
+    [$._match_pattern_record_body, $.record_body],
     [$._match_pattern_value, $._value],
     [$._parenthesized_body],
     [$.block, $.val_closure],
@@ -454,7 +459,10 @@ module.exports = grammar({
       choice(
         seq(punc().underscore, $.match_guard),
         seq($._match_pattern, optional($.match_guard)),
-        seq($._match_pattern, repeat(seq(punc().pipe, $._match_pattern))),
+        seq(
+          $._match_pattern,
+          repeat(seq(optional($._newline), punc().pipe, $._match_pattern)),
+        ),
       ),
 
     _match_pattern: ($) =>
@@ -481,21 +489,23 @@ module.exports = grammar({
         $.val_table,
       ),
 
+    _match_pattern_list_body: ($) =>
+      general_body_rules(
+        'entry',
+        choice(
+          $._match_pattern_expression,
+          alias($._unquoted_in_list, $.val_string),
+        ),
+        $._entry_separator,
+        $._newline,
+        null,
+        choice($._newline, punc().comma),
+      ),
+
     _match_pattern_list: ($) =>
       seq(
         brack().open_brack,
-        repeat(
-          seq(
-            field(
-              'entry',
-              choice(
-                $._match_pattern_expression,
-                alias($._unquoted_in_list, $.val_string),
-              ),
-            ),
-            optional(punc().comma),
-          ),
-        ),
+        optional(alias($._match_pattern_list_body, $.list_body)),
         optional(
           field(
             'rest',
@@ -514,15 +524,18 @@ module.exports = grammar({
         seq(token.immediate(punc().dollar), $.identifier),
       ),
 
+    _match_pattern_record_body: ($) =>
+      general_body_rules(
+        'entry',
+        choice($.record_entry, $.val_variable),
+        $._entry_separator,
+        $._newline,
+      ),
+
     _match_pattern_record: ($) =>
       seq(
         brack().open_brace,
-        repeat(
-          seq(
-            field('entry', choice($.record_entry, $.val_variable)),
-            optional(punc().comma),
-          ),
-        ),
+        optional(alias($._match_pattern_record_body, $.record_body)),
         brack().close_brace,
         optional($.cell_path),
       ),
