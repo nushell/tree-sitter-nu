@@ -48,10 +48,11 @@ match $x {
         (match_arm
           (match_pattern
             (val_record
-              (record_entry
-                (identifier)
-                (val_variable
-                  (identifier)))))
+              (record_body
+                (record_entry
+                  (identifier)
+                  (val_variable
+                    (identifier))))))
           (block
             (pipeline
               (pipe_element
@@ -93,19 +94,22 @@ match $xs {
         (match_arm
           (match_pattern
             (val_list
-              (val_number)))
+              (list_body
+                (val_number))))
           (block))
         (match_arm
           (match_pattern
             (val_list
-              (val_number)
-              (val_number)))
+              (list_body
+                (val_number)
+                (val_number))))
           (block))
         (match_arm
           (match_pattern
             (val_list
-              (val_variable
-                (identifier))))
+              (list_body
+                (val_variable
+                  (identifier)))))
           (block))
         (default_arm
           (block))))))
@@ -157,12 +161,13 @@ match $xs {
         (match_arm
           (match_pattern
             (val_list
-              (val_range
-                (val_number)
-                (val_number))
-              (val_range
-                (val_number)
-                (val_number))))
+              (list_body
+                (val_range
+                  (val_number)
+                  (val_number))
+                (val_range
+                  (val_number)
+                  (val_number)))))
           (block))
         (default_arm
           (block))))))
@@ -190,20 +195,23 @@ match $xs {
         (match_arm
           (match_pattern
             (val_list
-              (val_number)
+              (list_body
+                (val_number))
               (val_variable
                 (identifier))))
           (block))
         (match_arm
           (match_pattern
             (val_list
-              (val_number)))
+              (list_body
+                (val_number))))
           (block))
         (match_arm
           (match_pattern
             (val_list
-              (val_variable
-                (identifier))
+              (list_body
+                (val_variable
+                  (identifier)))
               (val_variable
                 (identifier)))
             (match_guard
@@ -247,10 +255,12 @@ match $xs {
         (match_arm
           (match_pattern
             (val_list
-              (val_number))
+              (list_body
+                (val_number)))
             (val_list
-              (val_number)
-              (val_number)))
+              (list_body
+                (val_number)
+                (val_number))))
           (block))
         (default_arm
           (block))))))
@@ -297,35 +307,39 @@ match $x {
         (match_arm
           (match_pattern
             (val_record
-              (val_variable
-                (identifier))))
+              (record_body
+                (val_variable
+                  (identifier)))))
           (block))
         (match_arm
           (match_pattern
             (val_record
-              (val_variable
-                (identifier))
-              (val_variable
-                (identifier))))
+              (record_body
+                (val_variable
+                  (identifier))
+                (val_variable
+                  (identifier)))))
           (block))
         (match_arm
           (match_pattern
             (val_record
-              (val_variable
-                (identifier))
-              (record_entry
-                (identifier)
-                (val_string))))
+              (record_body
+                (val_variable
+                  (identifier))
+                (record_entry
+                  (identifier)
+                  (val_string)))))
           (block))
         (match_arm
           (match_pattern
             (val_record
-              (record_entry
-                (identifier)
-                (val_string))
-              (record_entry
-                (identifier)
-                (val_string))))
+              (record_body
+                (record_entry
+                  (identifier)
+                  (val_string))
+                (record_entry
+                  (identifier)
+                  (val_string)))))
           (block))))))
 
 =====
@@ -467,3 +481,68 @@ match 1 {#comment
         (comment)
         (default_arm
           (val_number))))))
+
+=====
+match-015-multiline-pattern
+=====
+
+match [] {
+  [
+    $a
+    $b
+  ] => 1
+}
+
+match {} {
+  {
+    foo: $a
+    $b
+  } => 1
+}
+
+match  a {
+  a
+  |b|c => 42
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        scrutinee: (val_list)
+        (match_arm
+          pattern: (match_pattern
+            (val_list
+              (list_body
+                entry: (val_variable
+                  name: (identifier))
+                entry: (val_variable
+                  name: (identifier)))))
+          expression: (val_number)))))
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        scrutinee: (val_record)
+        (match_arm
+          pattern: (match_pattern
+            (val_record
+              (record_body
+                entry: (record_entry
+                  key: (identifier)
+                  value: (val_variable
+                    name: (identifier)))
+                entry: (val_variable
+                  name: (identifier)))))
+          expression: (val_number)))))
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        scrutinee: (val_string)
+        (match_arm
+          pattern: (match_pattern
+            (val_string)
+            (val_string)
+            (val_string))
+          expression: (val_number))))))

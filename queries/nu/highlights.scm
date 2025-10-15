@@ -225,10 +225,6 @@ file_path: (val_string) @variable.parameter
   "...{"
 ] @punctuation.bracket
 
-(val_record
-  (record_entry
-    ":" @punctuation.delimiter))
-
 key: (identifier) @property
 
 ; ---
