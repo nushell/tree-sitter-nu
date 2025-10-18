@@ -356,14 +356,19 @@ key: (identifier) @property
   [
     "record"
     "table"
-  ] @type.enum
-  "<" @punctuation.bracket
-  key: (_) @variable.parameter
+  ] @type.enum)
+
+(collection_type
+  key: (_) @variable.parameter)
+
+(collection_type
   [
-    ","
-    ":"
-  ] @punctuation.special
-  ">" @punctuation.bracket)
+    "<"
+    ">"
+  ] @punctuation.bracket)
+
+(collection_type
+  ":" @punctuation.special)
 
 (composite_type
   "oneof" @type.enum
