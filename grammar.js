@@ -82,7 +82,7 @@ module.exports = grammar({
     // probably needs an external scanner for cmd_identifier
     // to behave exactly the same as the nushell parser
     cmd_identifier: ($) => {
-      const excluded = '\\[\\]\\{}<>="`\':';
+      const excluded = '\\[\\]\\{}<>="`\':,';
       const pattern_repeat = repeat(none_of(excluded));
       const pattern_suffix = token.immediate(repeat1(none_of(excluded)));
       return choice(
