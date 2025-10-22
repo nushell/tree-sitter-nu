@@ -273,7 +273,19 @@ key: (identifier) @property
 (command
   head: (cmd_identifier) @function.builtin
   (#any-of? @function.builtin
-    "all" "ansi" "any" "append" "ast" "bits" "bytes" "cal" "cd" "char" "chunk-by" "chunks" "clear" "collect" "columns" "compact" "complete" "config" "cp" "date" "debug" "decode" "default" "detect" "drop" "du" "each" "encode" "enumerate" "every" "exec" "exit" "explain" "explore" "fill" "filter" "find" "first" "flatten" "format" "from" "generate" "get" "glob" "grid" "group-by" "hash" "headers" "histogram" "history" "http" "input" "insert" "inspect" "interleave" "into" "is-empty" "is-not-empty" "is-terminal" "items" "job" "join" "keybindings" "kill" "last" "length" "let-env" "lines" "load-env" "ls" "math" "merge" "metadata" "mkdir" "mktemp" "move" "mv" "nu-check" "nu-highlight" "open" "panic" "par-each" "parse" "path" "plugin" "port" "prepend" "print" "ps" "query" "random" "reduce" "reject" "rename" "reverse" "rm" "roll" "rotate" "run-external" "save" "schema" "select" "seq" "shuffle" "skip" "sleep" "slice" "sort" "sort-by" "split" "start" "stor" "str" "sys" "table" "take" "tee" "term" "timeit" "to" "touch" "transpose" "tutor" "ulimit" "uname" "uniq" "uniq-by" "update" "upsert" "url" "values" "version" "view" "watch" "which" "whoami" "window" "with-env" "wrap" "zip"))
+    "all" "ansi" "any" "append" "ast" "bits" "bytes" "cal" "cd" "char" "chunk-by" "chunks" "clear"
+    "collect" "columns" "compact" "complete" "config" "cp" "date" "debug" "decode" "default"
+    "detect" "drop" "du" "each" "encode" "enumerate" "every" "exec" "exit" "explain" "explore"
+    "fill" "filter" "find" "first" "flatten" "format" "from" "generate" "get" "glob" "grid"
+    "group-by" "hash" "headers" "histogram" "history" "http" "input" "insert" "inspect" "interleave"
+    "into" "is-empty" "is-not-empty" "is-terminal" "items" "job" "join" "keybindings" "kill" "last"
+    "length" "let-env" "lines" "load-env" "ls" "math" "merge" "metadata" "mkdir" "mktemp" "move"
+    "mv" "nu-check" "nu-highlight" "open" "panic" "par-each" "parse" "path" "plugin" "port"
+    "prepend" "print" "ps" "query" "random" "reduce" "reject" "rename" "reverse" "rm" "roll"
+    "rotate" "run-external" "save" "schema" "select" "seq" "shuffle" "skip" "sleep" "slice" "sort"
+    "sort-by" "split" "start" "stor" "str" "sys" "table" "take" "tee" "term" "timeit" "to" "touch"
+    "transpose" "tutor" "ulimit" "uname" "uniq" "uniq-by" "update" "upsert" "url" "values" "version"
+    "view" "watch" "which" "whoami" "window" "with-env" "wrap" "zip"))
 
 (command
   head: (cmd_identifier) @keyword.repeat
