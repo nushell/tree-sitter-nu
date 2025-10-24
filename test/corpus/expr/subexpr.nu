@@ -156,7 +156,8 @@ subexpr-007-path
             (command
               (cmd_identifier))))
         (cell_path
-          (path))))))
+          (path
+            (val_string)))))))
 
 =====
 subexpr-008-contains-statement

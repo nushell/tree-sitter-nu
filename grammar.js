@@ -1193,10 +1193,13 @@ module.exports = grammar({
 
     path: ($) => {
       const path = choice(
-        token.immediate(
-          prec(prec_map().low, repeat1(none_of('\\[\\]{}.,:?!'))),
+        alias(
+          token.immediate(
+            prec(prec_map().low, repeat(none_of('\\[\\]{}.,:?!'))),
+          ),
+          $.val_string,
         ),
-        alias($.val_string, 'quoted'),
+        $.val_string,
       );
 
       return seq(punc().dot, path, optional($._path_suffix));

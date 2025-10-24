@@ -14,7 +14,8 @@ let x = $list.4
         (val_variable
           (identifier)
           (cell_path
-            (path)))))))
+            (path
+              (val_string))))))))
 
 ======
 cellpath-002-str-access
@@ -31,7 +32,8 @@ let x = $env.PATH
       (pipe_element
         (val_variable
           (cell_path
-            (path)))))))
+            (path
+              (val_string))))))))
 
 ====
 cellpath-003-multiple-access
@@ -49,8 +51,10 @@ let x = $list.PATH.4
         (val_variable
           (identifier)
           (cell_path
-            (path)
-            (path)))))))
+            (path
+              (val_string))
+            (path
+              (val_string))))))))
 
 ====
 cellpath-004-underscore-in-path
@@ -67,7 +71,8 @@ let x = $env.LAST_EXIT_CODE
       (pipe_element
         (val_variable
           (cell_path
-            (path)))))))
+            (path
+              (val_string))))))))
 
 ====
 cellpath-005-hyphen-in-path
@@ -84,7 +89,8 @@ let x = $nu.home-path
       (pipe_element
         (val_variable
           (cell_path
-            (path)))))))
+            (path
+              (val_string))))))))
 
 ====
 cellpath-006-immediate-punctuation
@@ -106,7 +112,8 @@ cellpath-006-immediate-punctuation
           (pipe_element
             (val_variable
               (cell_path
-                (path))))))))
+                (path
+                  (val_string)))))))))
   (pipeline
     (pipe_element
       (val_list
@@ -114,7 +121,8 @@ cellpath-006-immediate-punctuation
           (val_entry
             (val_variable
               (cell_path
-                (path))))))))
+                (path
+                  (val_string)))))))))
   (pipeline
     (pipe_element
       (val_closure
@@ -122,7 +130,8 @@ cellpath-006-immediate-punctuation
           (pipe_element
             (val_variable
               (cell_path
-                (path))))))))
+                (path
+                  (val_string)))))))))
   (pipeline
     (pipe_element
       (val_record
@@ -130,7 +139,8 @@ cellpath-006-immediate-punctuation
           (record_entry
             (val_variable
               (cell_path
-                (path)))
+                (path
+                  (val_string))))
             (val_number))))))
   (pipeline
     (pipe_element
@@ -139,7 +149,8 @@ cellpath-006-immediate-punctuation
           (val_entry
             (val_variable
               (cell_path
-                (path)))))))))
+                (path
+                  (val_string))))))))))
 
 ====
 cellpath-007-allowed-punctuation
@@ -154,8 +165,10 @@ $env.$var.$@#% # comment
     (pipe_element
       (val_variable
         (cell_path
-          (path)
-          (path)))))
+          (path
+            (val_string))
+          (path
+            (val_string))))))
   (comment))
 
 ====
@@ -165,7 +178,7 @@ cellpath-008-cellpath-literal
 $varname.foo.bar?.baz!.qux?!
 $.aa."b b".0.-1.cc?.dd!.ee!?.'f f'!?.`g g`
 echo $.foo # arg
-[$.foo] # in list
+[$. $.foo] # in list
 {key: $.foo} # record value
 
 -----
@@ -176,33 +189,47 @@ echo $.foo # arg
       (val_variable
         name: (identifier)
         (cell_path
-          (path)
-          (path)
-          (path)
-          (path)))))
+          (path
+            (val_string))
+          (path
+            (val_string))
+          (path
+            (val_string))
+          (path
+            (val_string))))))
   (pipeline
     (pipe_element
       (val_cellpath
         (cell_path
-          (path)
           (path
-            (string_content))
-          (path)
-          (path)
-          (path)
-          (path)
-          (path)
+            (val_string))
           (path
-            (string_content))
+            (val_string
+              (string_content)))
           (path
-            (string_content))))))
+            (val_string))
+          (path
+            (val_string))
+          (path
+            (val_string))
+          (path
+            (val_string))
+          (path
+            (val_string))
+          (path
+            (val_string
+              (string_content)))
+          (path
+            (val_string
+              (string_content)))))))
   (pipeline
     (pipe_element
       (command
         head: (cmd_identifier)
         arg: (val_cellpath
           (cell_path
-            (path))))))
+            (path
+              (val_string)))))))
   (comment)
   (pipeline
     (pipe_element
@@ -211,7 +238,13 @@ echo $.foo # arg
           entry: (val_entry
             item: (val_cellpath
               (cell_path
-                (path))))))))
+                (path
+                  (val_string)))))
+          entry: (val_entry
+            item: (val_cellpath
+              (cell_path
+                (path
+                  (val_string)))))))))
   (comment)
   (pipeline
     (pipe_element
@@ -221,5 +254,6 @@ echo $.foo # arg
             key: (identifier)
             value: (val_cellpath
               (cell_path
-                (path))))))))
+                (path
+                  (val_string)))))))))
   (comment))

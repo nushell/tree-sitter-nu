@@ -423,8 +423,10 @@ match null {
           (val_variable
             (identifier)
             (cell_path
-              (path)
-              (path))))
+              (path
+                (val_string))
+              (path
+                (val_string)))))
         (match_arm
           (match_pattern
             (val_number))
@@ -434,7 +436,8 @@ match null {
                 (val_variable
                   (identifier)
                   (cell_path
-                    (path)))))))
+                    (path
+                      (val_string))))))))
         (comment)))))
 
 =====

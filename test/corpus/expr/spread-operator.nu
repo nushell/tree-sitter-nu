@@ -21,7 +21,8 @@ spread-001-list-literals
             spread: (val_variable
               name: (identifier)
               (cell_path
-                (path))))
+                (path
+                  (val_string)))))
           entry: (val_entry
             item: (val_string))
           entry: (val_entry
