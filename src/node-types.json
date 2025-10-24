@@ -3304,29 +3304,6 @@
     }
   },
   {
-    "type": "quoted",
-    "named": false,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "raw_string_begin",
-          "named": true
-        },
-        {
-          "type": "raw_string_end",
-          "named": true
-        },
-        {
-          "type": "string_content",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "record_body",
     "named": true,
     "fields": {

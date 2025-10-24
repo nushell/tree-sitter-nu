@@ -610,7 +610,7 @@ module.exports = grammar({
       seq(
         choice(
           token(prec(prec_map().low, repeat1(none_of('\\[\\]{}.,:?!')))),
-          alias($.val_string, 'quoted'),
+          $.val_string,
         ),
         optional($._path_suffix),
       ),

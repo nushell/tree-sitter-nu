@@ -4877,13 +4877,8 @@
               }
             },
             {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "val_string"
-              },
-              "named": false,
-              "value": "quoted"
+              "type": "SYMBOL",
+              "name": "val_string"
             }
           ]
         },
