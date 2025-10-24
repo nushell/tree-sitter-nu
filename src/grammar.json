@@ -4877,13 +4877,8 @@
               }
             },
             {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "val_string"
-              },
-              "named": false,
-              "value": "quoted"
+              "type": "SYMBOL",
+              "name": "val_string"
             }
           ]
         },
@@ -16052,27 +16047,27 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PREC",
-                "value": -1,
-                "content": {
-                  "type": "REPEAT1",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}.,:?!]"
-                  }
-                }
-              }
-            },
-            {
               "type": "ALIAS",
               "content": {
-                "type": "SYMBOL",
-                "name": "val_string"
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "PREC",
+                  "value": -1,
+                  "content": {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}.,:?!]"
+                    }
+                  }
+                }
               },
-              "named": false,
-              "value": "quoted"
+              "named": true,
+              "value": "val_string"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "val_string"
             }
           ]
         },

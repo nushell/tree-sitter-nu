@@ -562,6 +562,7 @@
   {
     "type": "comment",
     "named": true,
+    "extra": true,
     "fields": {}
   },
   {
@@ -3160,7 +3161,17 @@
   {
     "type": "path",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "val_string",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "pipe_element",
@@ -3287,29 +3298,6 @@
       "types": [
         {
           "type": "pipe_element",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "quoted",
-    "named": false,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "raw_string_begin",
-          "named": true
-        },
-        {
-          "type": "raw_string_end",
-          "named": true
-        },
-        {
-          "type": "string_content",
           "named": true
         }
       ]

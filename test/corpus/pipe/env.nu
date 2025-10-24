@@ -16,7 +16,8 @@ FOO=BAR foo
         value: (val_string))
       (val_variable
         (cell_path
-          (path)))))
+          (path
+            (val_string))))))
   (pipeline
     (pipe_element
       (env_var
@@ -25,10 +26,12 @@ FOO=BAR foo
       (expr_binary
         lhs: (val_variable
           (cell_path
-            (path)))
+            (path
+              (val_string))))
         rhs: (val_variable
           (cell_path
-            (path))))))
+            (path
+              (val_string)))))))
   (pipeline
     (pipe_element
       (env_var
@@ -103,11 +106,13 @@ $env.FOO
             (expr_binary
               lhs: (val_variable
                 (cell_path
-                  (path)))
+                  (path
+                    (val_string))))
               (comment)
               rhs: (val_variable
                 (cell_path
-                  (path))))))))))
+                  (path
+                    (val_string)))))))))))
 
 ====
 env-004-special-characters
