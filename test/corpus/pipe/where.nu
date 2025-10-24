@@ -78,8 +78,7 @@ ls | where {|x| $x.size > 10kb }
                 (val_variable
                   (identifier)
                   (cell_path
-                    (path
-                      (val_string))))
+                    (path)))
                 (val_filesize
                   (val_number)
                   (filesize_unit))))))))))
@@ -305,11 +304,9 @@ ls | where $foo.bar and $foo.baz
             (val_variable
               name: (identifier)
               (cell_path
-                (path
-                  (val_string)))))
+                (path))))
           rhs: (where_predicate
             (val_variable
               name: (identifier)
               (cell_path
-                (path
-                  (val_string))))))))))
+                (path)))))))))

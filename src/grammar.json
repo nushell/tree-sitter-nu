@@ -16047,23 +16047,18 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "ALIAS",
+              "type": "IMMEDIATE_TOKEN",
               "content": {
-                "type": "IMMEDIATE_TOKEN",
+                "type": "PREC",
+                "value": -1,
                 "content": {
-                  "type": "PREC",
-                  "value": -1,
+                  "type": "REPEAT",
                   "content": {
-                    "type": "REPEAT",
-                    "content": {
-                      "type": "PATTERN",
-                      "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}.,:?!]"
-                    }
+                    "type": "PATTERN",
+                    "value": "[^\\s\\r\\n\\t\\|();\\[\\]{}.,:?!]"
                   }
                 }
-              },
-              "named": true,
-              "value": "val_string"
+              }
             },
             {
               "type": "SYMBOL",
