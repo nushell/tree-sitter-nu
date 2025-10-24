@@ -1229,8 +1229,7 @@ def test [
                       entry: (val_entry
                         item: (val_string))))))
               (cell_path
-                (path
-                  (val_string)))))))
+                (path))))))
       (parameter
         param_long_flag: (param_long_flag
           (long_flag_identifier))
@@ -1244,8 +1243,7 @@ def test [
               constant: (val_variable
                 name: (identifier)
                 (cell_path
-                  (path
-                    (val_string)))))))
+                  (path))))))
         (param_value
           param_value: (val_list
             (list_body

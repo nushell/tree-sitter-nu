@@ -320,7 +320,7 @@ key: (identifier) @property
     "."
     "?"
     "!"
-  ]? @punctuation.delimiter) @variable.parameter
+  ]* @punctuation.delimiter) @variable.parameter
 
 (stmt_let
   (identifier) @variable)

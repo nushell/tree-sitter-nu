@@ -1193,12 +1193,7 @@ module.exports = grammar({
 
     path: ($) => {
       const path = choice(
-        alias(
-          token.immediate(
-            prec(prec_map().low, repeat(none_of('\\[\\]{}.,:?!'))),
-          ),
-          $.val_string,
-        ),
+        token.immediate(prec(prec_map().low, repeat(none_of('\\[\\]{}.,:?!')))),
         $.val_string,
       );
 
