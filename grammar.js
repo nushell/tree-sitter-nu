@@ -522,14 +522,14 @@ module.exports = grammar({
 
     _match_pattern_list_body_or_empty: ($) =>
       choice(
-        $._match_pattern_list_body,
+        alias($._match_pattern_list_body, $.list_body),
         repeat1(choice($._newline, punc().comma)),
       ),
 
     _match_pattern_list: ($) =>
       seq(
         brack().open_brack,
-        optional(alias($._match_pattern_list_body_or_empty, $.list_body)),
+        optional($._match_pattern_list_body_or_empty),
         optional(
           field(
             'rest',

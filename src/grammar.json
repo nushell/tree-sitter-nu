@@ -4187,8 +4187,13 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "_match_pattern_list_body"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_match_pattern_list_body"
+          },
+          "named": true,
+          "value": "list_body"
         },
         {
           "type": "REPEAT1",
@@ -4219,13 +4224,8 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_match_pattern_list_body_or_empty"
-              },
-              "named": true,
-              "value": "list_body"
+              "type": "SYMBOL",
+              "name": "_match_pattern_list_body_or_empty"
             },
             {
               "type": "BLANK"
