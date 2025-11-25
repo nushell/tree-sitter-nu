@@ -276,9 +276,11 @@ $foo | where 'foo-bar'?.'baz' == 'quz'
       (where_command
         predicate: (where_predicate
           lhs: (path
-            (string_content))
+            (val_string
+              (string_content)))
           lhs: (path
-            (string_content))
+            (val_string
+              (string_content)))
           rhs: (val_string
             (string_content)))))))
 

@@ -264,3 +264,44 @@ binary-expr-011-regex
           (string_content))
         rhs: (val_string
           (string_content))))))
+
+====
+binary-expr-012-startends
+====
+
+'foo' starts-with 'f'
+'foo' not-starts-with 'b'
+'foo' ends-with 'o'
+'foo' not-ends-with 'a'
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (expr_binary
+        lhs: (val_string
+          (string_content))
+        rhs: (val_string
+          (string_content)))))
+  (pipeline
+    (pipe_element
+      (expr_binary
+        lhs: (val_string
+          (string_content))
+        rhs: (val_string
+          (string_content)))))
+  (pipeline
+    (pipe_element
+      (expr_binary
+        lhs: (val_string
+          (string_content))
+        rhs: (val_string
+          (string_content)))))
+  (pipeline
+    (pipe_element
+      (expr_binary
+        lhs: (val_string
+          (string_content))
+        rhs: (val_string
+          (string_content))))))

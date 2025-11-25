@@ -318,7 +318,7 @@
         "required": false,
         "types": [
           {
-            "type": "param_cmd",
+            "type": "param_completer",
             "named": true
           }
         ]
@@ -1169,20 +1169,6 @@
     "type": "decl_alias",
     "named": true,
     "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
       "quoted_name": {
         "multiple": false,
         "required": false,
@@ -1225,20 +1211,6 @@
         "types": [
           {
             "type": "block",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          },
-          {
-            "type": "val_string",
             "named": true
           }
         ]
@@ -1333,20 +1305,6 @@
           }
         ]
       },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
       "quoted_name": {
         "multiple": false,
         "required": false,
@@ -1403,20 +1361,6 @@
         "types": [
           {
             "type": "block",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          },
-          {
-            "type": "val_string",
             "named": true
           }
         ]
@@ -1804,6 +1748,10 @@
             "named": false
           },
           {
+            "type": "not-ends-with",
+            "named": false
+          },
+          {
             "type": "not-has",
             "named": false
           },
@@ -1813,6 +1761,10 @@
           },
           {
             "type": "not-like",
+            "named": false
+          },
+          {
+            "type": "not-starts-with",
             "named": false
           },
           {
@@ -2311,7 +2263,63 @@
         "required": false,
         "types": [
           {
+            "type": "expr_parenthesized",
+            "named": true
+          },
+          {
+            "type": "val_binary",
+            "named": true
+          },
+          {
+            "type": "val_bool",
+            "named": true
+          },
+          {
+            "type": "val_date",
+            "named": true
+          },
+          {
+            "type": "val_duration",
+            "named": true
+          },
+          {
             "type": "val_entry",
+            "named": true
+          },
+          {
+            "type": "val_filesize",
+            "named": true
+          },
+          {
+            "type": "val_list",
+            "named": true
+          },
+          {
+            "type": "val_nothing",
+            "named": true
+          },
+          {
+            "type": "val_number",
+            "named": true
+          },
+          {
+            "type": "val_range",
+            "named": true
+          },
+          {
+            "type": "val_record",
+            "named": true
+          },
+          {
+            "type": "val_string",
+            "named": true
+          },
+          {
+            "type": "val_table",
+            "named": true
+          },
+          {
+            "type": "val_variable",
             "named": true
           }
         ]
@@ -2327,7 +2335,7 @@
         "required": false,
         "types": [
           {
-            "type": "param_cmd",
+            "type": "param_completer",
             "named": true
           }
         ]
@@ -2789,12 +2797,12 @@
     }
   },
   {
-    "type": "param_cmd",
+    "type": "param_completer",
     "named": true,
     "fields": {
-      "name": {
+      "command": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "cmd_identifier",
@@ -2806,22 +2814,20 @@
           }
         ]
       },
-      "quoted_name": {
+      "constant": {
         "multiple": false,
         "required": false,
         "types": [
           {
-            "type": "val_string",
+            "type": "val_list",
             "named": true
-          }
-        ]
-      },
-      "unquoted_name": {
-        "multiple": false,
-        "required": false,
-        "types": [
+          },
           {
-            "type": "cmd_identifier",
+            "type": "val_record",
+            "named": true
+          },
+          {
+            "type": "val_variable",
             "named": true
           }
         ]
@@ -2900,7 +2906,7 @@
         "required": false,
         "types": [
           {
-            "type": "param_cmd",
+            "type": "param_completer",
             "named": true
           }
         ]
@@ -3141,7 +3147,17 @@
   {
     "type": "path",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "val_string",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "pipe_element",
@@ -3274,29 +3290,6 @@
     }
   },
   {
-    "type": "quoted",
-    "named": false,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "raw_string_begin",
-          "named": true
-        },
-        {
-          "type": "raw_string_end",
-          "named": true
-        },
-        {
-          "type": "string_content",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "record_body",
     "named": true,
     "fields": {
@@ -3306,6 +3299,10 @@
         "types": [
           {
             "type": "record_entry",
+            "named": true
+          },
+          {
+            "type": "val_variable",
             "named": true
           }
         ]
@@ -3500,20 +3497,6 @@
     "type": "scope_pattern",
     "named": true,
     "fields": {
-      "command": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "cmd_identifier",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          }
-        ]
-      },
       "command_list": {
         "multiple": false,
         "required": false,
@@ -4153,68 +4136,6 @@
     "type": "val_list",
     "named": true,
     "fields": {
-      "entry": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "expr_parenthesized",
-            "named": true
-          },
-          {
-            "type": "val_binary",
-            "named": true
-          },
-          {
-            "type": "val_bool",
-            "named": true
-          },
-          {
-            "type": "val_date",
-            "named": true
-          },
-          {
-            "type": "val_duration",
-            "named": true
-          },
-          {
-            "type": "val_filesize",
-            "named": true
-          },
-          {
-            "type": "val_list",
-            "named": true
-          },
-          {
-            "type": "val_nothing",
-            "named": true
-          },
-          {
-            "type": "val_number",
-            "named": true
-          },
-          {
-            "type": "val_range",
-            "named": true
-          },
-          {
-            "type": "val_record",
-            "named": true
-          },
-          {
-            "type": "val_string",
-            "named": true
-          },
-          {
-            "type": "val_table",
-            "named": true
-          },
-          {
-            "type": "val_variable",
-            "named": true
-          }
-        ]
-      },
       "rest": {
         "multiple": false,
         "required": false,
@@ -4318,22 +4239,7 @@
   {
     "type": "val_record",
     "named": true,
-    "fields": {
-      "entry": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "record_entry",
-            "named": true
-          },
-          {
-            "type": "val_variable",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
@@ -4569,6 +4475,10 @@
             "named": false
           },
           {
+            "type": "not-ends-with",
+            "named": false
+          },
+          {
             "type": "not-has",
             "named": false
           },
@@ -4578,6 +4488,10 @@
           },
           {
             "type": "not-like",
+            "named": false
+          },
+          {
+            "type": "not-starts-with",
             "named": false
           },
           {
@@ -5234,6 +5148,10 @@
     "named": false
   },
   {
+    "type": "not-ends-with",
+    "named": false
+  },
+  {
     "type": "not-has",
     "named": false
   },
@@ -5243,6 +5161,10 @@
   },
   {
     "type": "not-like",
+    "named": false
+  },
+  {
+    "type": "not-starts-with",
     "named": false
   },
   {

@@ -32,9 +32,14 @@ module.exports = grammar({
     [$._block_body],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
-    [$._match_pattern_record, $._value],
+    [$._match_pattern_list_body, $._table_head],
+    [$._match_pattern_list_body, $.list_body, $._table_head],
+    [$._match_pattern_list_body, $.list_body],
+    [$._match_pattern_list_body, $.val_entry],
+    [$._match_pattern_list_body],
     [$._match_pattern_record, $.val_record, $.val_closure],
     [$._match_pattern_record, $.val_record],
+    [$._match_pattern_record_body, $.record_body],
     [$._match_pattern_value, $._value],
     [$._parenthesized_body],
     [$.block, $.val_closure],
@@ -77,7 +82,7 @@ module.exports = grammar({
     // probably needs an external scanner for cmd_identifier
     // to behave exactly the same as the nushell parser
     cmd_identifier: ($) => {
-      const excluded = '\\[\\]\\{}<>="`\':';
+      const excluded = '\\[\\]\\{}<>="`\':,';
       const pattern_repeat = repeat(none_of(excluded));
       const pattern_suffix = token.immediate(repeat1(none_of(excluded)));
       return choice(
@@ -158,7 +163,7 @@ module.exports = grammar({
         optional(modifier().visibility),
         keyword().def,
         repeat($.long_flag),
-        field('name', $._command_name),
+        $._command_name,
         repeat($.long_flag),
         field('parameters', choice($.parameter_parens, $.parameter_bracks)),
         field('return_type', optional($.returns)),
@@ -172,7 +177,7 @@ module.exports = grammar({
         optional($.attribute_list),
         optional(modifier().visibility),
         keyword().extern,
-        field('name', $._command_name),
+        $._command_name,
         field('signature', choice($.parameter_parens, $.parameter_bracks)),
         field('body', optional($.block)),
       ),
@@ -181,7 +186,7 @@ module.exports = grammar({
       seq(
         optional(modifier().visibility),
         keyword().module,
-        field('name', $._command_name),
+        $._command_name,
         optional(field('body', $.block)),
       ),
 
@@ -259,7 +264,7 @@ module.exports = grammar({
         punc().colon,
         optional($._repeat_newline),
         $._type_annotation,
-        field('completion', optional($.param_cmd)),
+        field('completion', optional($.param_completer)),
       ),
 
     param_value: ($) =>
@@ -295,7 +300,7 @@ module.exports = grammar({
       seq(
         punc().colon,
         $._all_type,
-        field('completion', optional($.param_cmd)),
+        field('completion', optional($.param_completer)),
       ),
     _collection_entry: ($) =>
       seq(
@@ -328,7 +333,7 @@ module.exports = grammar({
         'list',
         token.immediate(brack().open_angle),
         field('inner', optional($._all_type)),
-        field('completion', optional($.param_cmd)),
+        field('completion', optional($.param_completer)),
         brack().close_angle,
       ),
 
@@ -342,8 +347,17 @@ module.exports = grammar({
         brack().close_angle,
       ),
 
-    param_cmd: ($) =>
-      seq(token.immediate(punc().at), field('name', $._command_name)),
+    param_completer: ($) =>
+      seq(
+        token.immediate(punc().at),
+        choice(
+          field('command', $.cmd_identifier),
+          field('command', $.val_string),
+          field('constant', $.val_list),
+          field('constant', $.val_record),
+          field('constant', $.val_variable),
+        ),
+      ),
 
     param_rest: ($) =>
       seq(punc().rest, optional(punc().dollar), field('name', $.identifier)),
@@ -445,7 +459,10 @@ module.exports = grammar({
       choice(
         seq(punc().underscore, $.match_guard),
         seq($._match_pattern, optional($.match_guard)),
-        seq($._match_pattern, repeat(seq(punc().pipe, $._match_pattern))),
+        seq(
+          $._match_pattern,
+          repeat(seq(optional($._newline), punc().pipe, $._match_pattern)),
+        ),
       ),
 
     _match_pattern: ($) =>
@@ -472,21 +489,23 @@ module.exports = grammar({
         $.val_table,
       ),
 
+    _match_pattern_list_body: ($) =>
+      general_body_rules(
+        'entry',
+        choice(
+          $._match_pattern_expression,
+          alias($._unquoted_in_list, $.val_string),
+        ),
+        $._entry_separator,
+        $._newline,
+        null,
+        choice($._newline, punc().comma),
+      ),
+
     _match_pattern_list: ($) =>
       seq(
         brack().open_brack,
-        repeat(
-          seq(
-            field(
-              'entry',
-              choice(
-                $._match_pattern_expression,
-                alias($._unquoted_in_list, $.val_string),
-              ),
-            ),
-            optional(punc().comma),
-          ),
-        ),
+        optional(alias($._match_pattern_list_body, $.list_body)),
         optional(
           field(
             'rest',
@@ -505,15 +524,18 @@ module.exports = grammar({
         seq(token.immediate(punc().dollar), $.identifier),
       ),
 
+    _match_pattern_record_body: ($) =>
+      general_body_rules(
+        'entry',
+        choice($.record_entry, $.val_variable),
+        $._entry_separator,
+        $._newline,
+      ),
+
     _match_pattern_record: ($) =>
       seq(
         brack().open_brace,
-        repeat(
-          seq(
-            field('entry', choice($.record_entry, $.val_variable)),
-            optional(punc().comma),
-          ),
-        ),
+        optional(alias($._match_pattern_record_body, $.record_body)),
         brack().close_brace,
         optional($.cell_path),
       ),
@@ -556,7 +578,7 @@ module.exports = grammar({
     scope_pattern: ($) =>
       choice(
         field('wildcard', $.wild_card),
-        field('command', $._command_name),
+        $._command_name,
         field('command_list', $.command_list),
       ),
 
@@ -588,7 +610,7 @@ module.exports = grammar({
       seq(
         choice(
           token(prec(prec_map().low, repeat1(none_of('\\[\\]{}.,:?!')))),
-          alias($.val_string, 'quoted'),
+          $.val_string,
         ),
         optional($._path_suffix),
       ),
@@ -1171,10 +1193,8 @@ module.exports = grammar({
 
     path: ($) => {
       const path = choice(
-        token.immediate(
-          prec(prec_map().low, repeat1(none_of('\\[\\]{}.,:?!'))),
-        ),
-        alias($.val_string, 'quoted'),
+        token.immediate(prec(prec_map().low, repeat(none_of('\\[\\]{}.,:?!')))),
+        $.val_string,
       );
 
       return seq(punc().dot, path, optional($._path_suffix));
@@ -1451,7 +1471,7 @@ function _block_body_rules(suffix) {
       seq(
         optional(modifier().visibility),
         keyword().alias,
-        field('name', $._command_name),
+        $._command_name,
         punc().eq,
         field('value', alias_for_suffix($, 'pipeline', suffix)),
       ),
@@ -2107,7 +2127,9 @@ function operator() {
     has: 'has',
     not_has: 'not-has',
     starts_with: 'starts-with',
+    not_starts_with: 'not-starts-with',
     ends_with: 'ends-with',
+    not_ends_with: 'not-ends-with',
 
     // assignment
     assign_add: '+=',
@@ -2205,7 +2227,9 @@ function predicate() {
     operator().has,
     operator().not_has,
     operator().starts_with,
+    operator().not_starts_with,
     operator().ends_with,
+    operator().not_ends_with,
   ];
 
   const comparatives = [

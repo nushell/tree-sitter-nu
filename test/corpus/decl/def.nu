@@ -1009,14 +1009,14 @@ def test [
         param_name: (identifier)
         (param_type
           type: (flat_type)
-          completion: (param_cmd
-            unquoted_name: (cmd_identifier))))
+          completion: (param_completer
+            command: (cmd_identifier))))
       (parameter
         param_name: (identifier)
         (param_type
           type: (flat_type)
-          completion: (param_cmd
-            quoted_name: (val_string
+          completion: (param_completer
+            command: (val_string
               (string_content)))))
       (parameter
         param_long_flag: (param_long_flag
@@ -1027,8 +1027,8 @@ def test [
         (param_type
           type: (list_type
             type: (flat_type)
-            completion: (param_cmd
-              unquoted_name: (cmd_identifier))))
+            completion: (param_completer
+              command: (cmd_identifier))))
         (param_value
           param_value: (val_string)))
       (parameter
@@ -1184,3 +1184,71 @@ def test [name: record<name, value,>, name: record<"name", "value",>] {}
             (val_string
               (string_content))))))
     (block)))
+
+======
+def-037-constant-param-completer
+======
+
+def test [
+  x: int@[1 2],
+  y: string@{f: [a b]}.f,
+  --zero(-z): list<string@$var.cell?>
+= [a b],
+] {}
+
+-----
+
+(nu_script
+  (decl_def
+    unquoted_name: (cmd_identifier)
+    parameters: (parameter_bracks
+      (parameter
+        param_name: (identifier)
+        (param_type
+          type: (flat_type)
+          completion: (param_completer
+            constant: (val_list
+              (list_body
+                entry: (val_entry
+                  item: (val_number))
+                entry: (val_entry
+                  item: (val_number)))))))
+      (parameter
+        param_name: (identifier)
+        (param_type
+          type: (flat_type)
+          completion: (param_completer
+            constant: (val_record
+              (record_body
+                entry: (record_entry
+                  key: (identifier)
+                  value: (val_list
+                    (list_body
+                      entry: (val_entry
+                        item: (val_string))
+                      entry: (val_entry
+                        item: (val_string))))))
+              (cell_path
+                (path))))))
+      (parameter
+        param_long_flag: (param_long_flag
+          (long_flag_identifier))
+        flag_capsule: (flag_capsule
+          (param_short_flag
+            name: (param_short_flag_identifier)))
+        (param_type
+          type: (list_type
+            type: (flat_type)
+            completion: (param_completer
+              constant: (val_variable
+                name: (identifier)
+                (cell_path
+                  (path))))))
+        (param_value
+          param_value: (val_list
+            (list_body
+              entry: (val_entry
+                item: (val_string))
+              entry: (val_entry
+                item: (val_string)))))))
+    body: (block)))

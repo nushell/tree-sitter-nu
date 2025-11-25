@@ -165,7 +165,7 @@ cellpath-008-cellpath-literal
 $varname.foo.bar?.baz!.qux?!
 $.aa."b b".0.-1.cc?.dd!.ee!?.'f f'!?.`g g`
 echo $.foo # arg
-[$.foo] # in list
+[$. $.foo] # in list
 {key: $.foo} # record value
 
 -----
@@ -186,16 +186,19 @@ echo $.foo # arg
         (cell_path
           (path)
           (path
-            (string_content))
+            (val_string
+              (string_content)))
           (path)
           (path)
           (path)
           (path)
           (path)
           (path
-            (string_content))
+            (val_string
+              (string_content)))
           (path
-            (string_content))))))
+            (val_string
+              (string_content)))))))
   (pipeline
     (pipe_element
       (command
@@ -208,6 +211,10 @@ echo $.foo # arg
     (pipe_element
       (val_list
         (list_body
+          entry: (val_entry
+            item: (val_cellpath
+              (cell_path
+                (path))))
           entry: (val_entry
             item: (val_cellpath
               (cell_path
