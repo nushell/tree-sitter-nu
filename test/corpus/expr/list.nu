@@ -552,5 +552,4 @@ list-014-dummy-list
 (nu_script
   (pipeline
     (pipe_element
-      (val_list
-        (list_body)))))
+      (val_list))))

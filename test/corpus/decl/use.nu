@@ -81,3 +81,23 @@ use foo.nu [
         (cmd_identifier)
         (cmd_identifier)
         (cmd_identifier)))))
+
+=====
+use-006-dummpy-command-list
+=====
+
+use foo [
+
+,
+
+,,,
+
+]
+
+-----
+
+(nu_script
+  (decl_use
+    (unquoted)
+    (scope_pattern
+      (command_list))))

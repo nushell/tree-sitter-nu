@@ -30,11 +30,19 @@ module.exports = grammar({
     [$._block_body, $.shebang],
     [$._block_body, $.val_closure],
     [$._block_body],
+    [$._command_list_body],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
+    [$._match_pattern_list_body, $._list_body_or_empty],
     [$._match_pattern_list_body, $._table_head],
+    [
+      $._match_pattern_list_body,
+      $.list_body,
+      $._list_body_or_empty,
+      $._table_head,
+    ],
+    [$._match_pattern_list_body, $.list_body, $._list_body_or_empty],
     [$._match_pattern_list_body, $.list_body, $._table_head],
-    [$._match_pattern_list_body, $.list_body],
     [$._match_pattern_list_body, $.val_entry],
     [$._match_pattern_list_body],
     [$._match_pattern_record, $.val_record, $.val_closure],
@@ -48,8 +56,9 @@ module.exports = grammar({
     [$.ctrl_if_parenthesized],
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
+    [$.list_body, $._list_body_or_empty, $._table_head],
+    [$.list_body, $._list_body_or_empty],
     [$.list_body, $._table_head],
-    [$.list_body],
     [$.parameter, $.param_type, $.param_value],
     [$.pipeline],
     [$.pipeline_parenthesized],
@@ -590,6 +599,8 @@ module.exports = grammar({
         $._command_name,
         $._entry_separator,
         $._newline,
+        null,
+        choice($._newline, punc().comma),
       ),
 
     command_list: ($) =>
@@ -1024,7 +1035,7 @@ module.exports = grammar({
     val_list: ($) =>
       seq(
         brack().open_brack,
-        optional($.list_body),
+        optional($._list_body_or_empty),
         brack().close_brack,
         optional($.cell_path),
       ),
@@ -1032,7 +1043,7 @@ module.exports = grammar({
     _spread_list: ($) =>
       seq(
         brack().spread_open_brack,
-        optional($.list_body),
+        optional($._list_body_or_empty),
         brack().close_brack,
         optional($.cell_path),
       ),
@@ -1045,14 +1056,10 @@ module.exports = grammar({
       ),
 
     list_body: ($) =>
-      general_body_rules(
-        'entry',
-        $.val_entry,
-        $._entry_separator,
-        $._newline,
-        null,
-        choice($._newline, punc().comma),
-      ),
+      general_body_rules('entry', $.val_entry, $._entry_separator, $._newline),
+
+    _list_body_or_empty: ($) =>
+      choice($.list_body, repeat1(choice($._newline, punc().comma))),
 
     val_entry: ($) =>
       prec(
