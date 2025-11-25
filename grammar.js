@@ -33,18 +33,14 @@ module.exports = grammar({
     [$._command_list_body],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
-    [$._match_pattern_list_body, $._list_body_or_empty],
+    [$._match_pattern_list_body, $._match_pattern_list_body_or_empty, $._table_head],
+    [$._match_pattern_list_body, $._match_pattern_list_body_or_empty, $.list_body, $._list_body_or_empty, $._table_head, ],
+    [$._match_pattern_list_body, $._match_pattern_list_body_or_empty, $.list_body, $._list_body_or_empty],
+    [$._match_pattern_list_body, $._match_pattern_list_body_or_empty],
     [$._match_pattern_list_body, $._table_head],
-    [
-      $._match_pattern_list_body,
-      $.list_body,
-      $._list_body_or_empty,
-      $._table_head,
-    ],
-    [$._match_pattern_list_body, $.list_body, $._list_body_or_empty],
     [$._match_pattern_list_body, $.list_body, $._table_head],
     [$._match_pattern_list_body, $.val_entry],
-    [$._match_pattern_list_body],
+    [$._match_pattern_list_body_or_empty, $._list_body_or_empty],
     [$._match_pattern_record, $.val_record, $.val_closure],
     [$._match_pattern_record, $.val_record],
     [$._match_pattern_record_body, $.record_body],
@@ -507,14 +503,15 @@ module.exports = grammar({
         ),
         $._entry_separator,
         $._newline,
-        null,
-        choice($._newline, punc().comma),
       ),
+
+    _match_pattern_list_body_or_empty: ($) =>
+      choice($._match_pattern_list_body, repeat1(choice($._newline, punc().comma))),
 
     _match_pattern_list: ($) =>
       seq(
         brack().open_brack,
-        optional(alias($._match_pattern_list_body, $.list_body)),
+        optional(alias($._match_pattern_list_body_or_empty, $.list_body)),
         optional(
           field(
             'rest',

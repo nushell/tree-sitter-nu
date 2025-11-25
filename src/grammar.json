@@ -4102,8 +4102,94 @@
       ]
     },
     "_match_pattern_list_body": {
+      "type": "PREC",
+      "value": 20,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_newline"
+            }
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "entry",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_match_pattern_expression"
+                      },
+                      {
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_unquoted_in_list"
+                        },
+                        "named": true,
+                        "value": "val_string"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "REPEAT1",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_entry_separator"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "entry",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_match_pattern_expression"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_unquoted_in_list"
+                  },
+                  "named": true,
+                  "value": "val_string"
+                }
+              ]
+            }
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_entry_separator"
+            }
+          }
+        ]
+      }
+    },
+    "_match_pattern_list_body_or_empty": {
       "type": "CHOICE",
       "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_match_pattern_list_body"
+        },
         {
           "type": "REPEAT1",
           "content": {
@@ -4116,88 +4202,6 @@
               {
                 "type": "STRING",
                 "value": ","
-              }
-            ]
-          }
-        },
-        {
-          "type": "PREC",
-          "value": 20,
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "REPEAT",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_newline"
-                }
-              },
-              {
-                "type": "REPEAT",
-                "content": {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "FIELD",
-                      "name": "entry",
-                      "content": {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "_match_pattern_expression"
-                          },
-                          {
-                            "type": "ALIAS",
-                            "content": {
-                              "type": "SYMBOL",
-                              "name": "_unquoted_in_list"
-                            },
-                            "named": true,
-                            "value": "val_string"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "REPEAT1",
-                      "content": {
-                        "type": "SYMBOL",
-                        "name": "_entry_separator"
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "FIELD",
-                "name": "entry",
-                "content": {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "_match_pattern_expression"
-                    },
-                    {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "SYMBOL",
-                        "name": "_unquoted_in_list"
-                      },
-                      "named": true,
-                      "value": "val_string"
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "REPEAT",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_entry_separator"
-                }
               }
             ]
           }
@@ -4218,7 +4222,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "_match_pattern_list_body"
+                "name": "_match_pattern_list_body_or_empty"
               },
               "named": true,
               "value": "list_body"
@@ -17487,22 +17491,29 @@
     ],
     [
       "_match_pattern_list_body",
-      "_list_body_or_empty"
-    ],
-    [
-      "_match_pattern_list_body",
+      "_match_pattern_list_body_or_empty",
       "_table_head"
     ],
     [
       "_match_pattern_list_body",
+      "_match_pattern_list_body_or_empty",
       "list_body",
       "_list_body_or_empty",
       "_table_head"
     ],
     [
       "_match_pattern_list_body",
+      "_match_pattern_list_body_or_empty",
       "list_body",
       "_list_body_or_empty"
+    ],
+    [
+      "_match_pattern_list_body",
+      "_match_pattern_list_body_or_empty"
+    ],
+    [
+      "_match_pattern_list_body",
+      "_table_head"
     ],
     [
       "_match_pattern_list_body",
@@ -17514,7 +17525,8 @@
       "val_entry"
     ],
     [
-      "_match_pattern_list_body"
+      "_match_pattern_list_body_or_empty",
+      "_list_body_or_empty"
     ],
     [
       "_match_pattern_record",
