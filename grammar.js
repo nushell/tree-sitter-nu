@@ -33,9 +33,24 @@ module.exports = grammar({
     [$._command_list_body],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
-    [$._match_pattern_list_body, $._match_pattern_list_body_or_empty, $._table_head],
-    [$._match_pattern_list_body, $._match_pattern_list_body_or_empty, $.list_body, $._list_body_or_empty, $._table_head, ],
-    [$._match_pattern_list_body, $._match_pattern_list_body_or_empty, $.list_body, $._list_body_or_empty],
+    [
+      $._match_pattern_list_body,
+      $._match_pattern_list_body_or_empty,
+      $._table_head,
+    ],
+    [
+      $._match_pattern_list_body,
+      $._match_pattern_list_body_or_empty,
+      $.list_body,
+      $._list_body_or_empty,
+      $._table_head,
+    ],
+    [
+      $._match_pattern_list_body,
+      $._match_pattern_list_body_or_empty,
+      $.list_body,
+      $._list_body_or_empty,
+    ],
     [$._match_pattern_list_body, $._match_pattern_list_body_or_empty],
     [$._match_pattern_list_body, $._table_head],
     [$._match_pattern_list_body, $.list_body, $._table_head],
@@ -506,7 +521,10 @@ module.exports = grammar({
       ),
 
     _match_pattern_list_body_or_empty: ($) =>
-      choice($._match_pattern_list_body, repeat1(choice($._newline, punc().comma))),
+      choice(
+        $._match_pattern_list_body,
+        repeat1(choice($._newline, punc().comma)),
+      ),
 
     _match_pattern_list: ($) =>
       seq(
