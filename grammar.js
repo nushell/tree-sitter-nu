@@ -313,8 +313,7 @@ module.exports = grammar({
         ),
         optional($._collection_annotation),
       ),
-    _collection_body: ($) =>
-    seq(repeat1(choice( ',', $._collection_entry, '\n'))),
+    _collection_body: ($) => seq(repeat1(choice( ',', $._collection_entry, '\n'))),
 
     collection_type: ($) =>
       seq(
