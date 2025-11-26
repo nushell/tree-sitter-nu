@@ -2981,13 +2981,8 @@
                 "value": "identifier"
               },
               {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "val_string"
-                },
-                "named": true,
-                "value": "identifier"
+                "type": "SYMBOL",
+                "name": "val_string"
               }
             ]
           }
@@ -3007,47 +3002,21 @@
       ]
     },
     "_collection_body": {
-      "type": "PREC",
-      "value": 20,
+      "type": "REPEAT1",
       "content": {
-        "type": "SEQ",
+        "type": "CHOICE",
         "members": [
           {
-            "type": "REPEAT",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_newline"
-            }
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_collection_entry"
-                },
-                {
-                  "type": "REPEAT1",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_entry_separator"
-                  }
-                }
-              ]
-            }
+            "type": "STRING",
+            "value": ","
           },
           {
             "type": "SYMBOL",
             "name": "_collection_entry"
           },
           {
-            "type": "REPEAT",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_entry_separator"
-            }
+            "type": "STRING",
+            "value": "\n"
           }
         ]
       }

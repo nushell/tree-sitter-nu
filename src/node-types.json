@@ -330,6 +330,10 @@
           {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "val_string",
+            "named": true
           }
         ]
       },
@@ -2248,25 +2252,7 @@
   {
     "type": "identifier",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "raw_string_begin",
-          "named": true
-        },
-        {
-          "type": "raw_string_end",
-          "named": true
-        },
-        {
-          "type": "string_content",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "list_body",
@@ -4644,6 +4630,10 @@
     "type": "wild_card",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "\n",
+    "named": false
   },
   {
     "type": "!",
