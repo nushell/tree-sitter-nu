@@ -3002,29 +3002,24 @@
       ]
     },
     "_collection_body": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT1",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": ","
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_collection_entry"
-              },
-              {
-                "type": "STRING",
-                "value": "\n"
-              }
-            ]
+      "type": "REPEAT1",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": ","
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_collection_entry"
+          },
+          {
+            "type": "STRING",
+            "value": "\n"
           }
-        }
-      ]
+        ]
+      }
     },
     "collection_type": {
       "type": "SEQ",
