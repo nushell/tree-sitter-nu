@@ -137,35 +137,34 @@ file_path: (val_string) @variable.parameter
   ] @operator)
 
 [
-  "..."
   "=>"
   "="
   "|"
 ] @operator
 
 [
-  "o>"
-  "out>"
-  "e>"
-  "err>"
   "e+o>"
-  "err+out>"
-  "o+e>"
-  "out+err>"
-  "o>>"
-  "out>>"
-  "e>>"
-  "err>>"
   "e+o>>"
-  "err+out>>"
-  "o+e>>"
-  "out+err>>"
-  "e>|"
-  "err>|"
   "e+o>|"
+  "e>"
+  "e>>"
+  "e>|"
+  "err+out>"
+  "err+out>>"
   "err+out>|"
+  "err>"
+  "err>>"
+  "err>|"
+  "o+e>"
+  "o+e>>"
   "o+e>|"
+  "o>"
+  "o>>"
+  "out+err>"
+  "out+err>>"
   "out+err>|"
+  "out>"
+  "out>>"
 ] @operator
 
 ; ---
@@ -174,11 +173,11 @@ file_path: (val_string) @variable.parameter
   ";"
 ] @punctuation.special
 
-[ "," ":" "->" ] @punctuation.delimiter
 [
-  "<"
-  ">"
-] @punctuation.bracket
+  ","
+  ":"
+  "->"
+] @punctuation.delimiter
 
 (param_long_flag
   "--" @punctuation.delimiter)
@@ -198,7 +197,8 @@ file_path: (val_string) @variable.parameter
 (param_short_flag
   "-" @punctuation.delimiter)
 
-
+(param_rest
+  "..." @punctuation.delimiter)
 
 (param_value
   "=" @punctuation.special)
@@ -212,16 +212,18 @@ file_path: (val_string) @variable.parameter
 (param_opt
   "?" @punctuation.special)
 
-(returns
-  "->" @punctuation.delimiter)
-
 [
   "("
   ")"
-  "{"
-  "}"
+  "...("
+  "...["
+  "...{"
+  "<"
+  ">"
   "["
   "]"
+  "{"
+  "}"
 ] @punctuation.bracket
 
 key: (identifier) @property
@@ -326,6 +328,7 @@ key: (identifier) @property
 
 (val_variable
   "$"? @punctuation.special
+  "...$"? @punctuation.special
   [
     (identifier) @variable
     "in" @special
@@ -353,15 +356,6 @@ key: (identifier) @property
 
 (collection_type
   key: (_) @variable.parameter)
-
-(collection_type
-  [
-    "<"
-    ">"
-  ] @punctuation.bracket)
-
-(collection_type
-  ":" @punctuation.special)
 
 (composite_type
   "oneof" @type.enum)
