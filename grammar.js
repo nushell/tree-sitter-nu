@@ -138,20 +138,20 @@ module.exports = grammar({
     _repeat_newline: ($) => repeat1($._newline),
     _space: (_$) => /[ \t]+/,
     _separator: ($) => choice($._space, $._newline),
-    _terminator: ($) => choice(punc().semicolon, $._newline),
+    _terminator: ($) => choice(';', $._newline),
     _pipe_separator: ($) =>
       repeat1(
-        seq(optional($._repeat_newline), choice(punc().pipe, ...redir_pipe())),
+        seq(optional($._repeat_newline), choice('|', ...redir_pipe())),
       ),
 
     /// Attributes
     attribute_list: ($) =>
-      repeat1(seq($.attribute, choice(punc().semicolon, $._newline))),
+      repeat1(seq($.attribute, choice(';', $._newline))),
     attribute_identifier: (_$) =>
       token.immediate(/[0-9\p{XID_Start}][0-9\p{XID_Continue}_-]*/),
     attribute: ($) =>
       seq(
-        punc().at,
+        '@',
         field('type', $.attribute_identifier),
         repeat(seq($._space, optional($._cmd_arg))),
       ),
@@ -200,10 +200,10 @@ module.exports = grammar({
 
     /// Return types
     returns: ($) =>
-      seq(optional(punc().colon), choice($._multiple_types, $._one_type)),
+      seq(optional(':'), choice($._multiple_types, $._one_type)),
 
     _one_type: ($) =>
-      seq($._type_annotation, punc().thin_arrow, $._type_annotation),
+      seq($._type_annotation, '->', $._type_annotation),
 
     _types_body: ($) =>
       general_body_rules('', $._one_type, $._entry_separator, $._newline),
@@ -231,10 +231,10 @@ module.exports = grammar({
 
     parameter_pipes: ($) =>
       seq(
-        punc().pipe,
+        '|',
         optional($._repeat_newline),
         repeat($.parameter),
-        punc().pipe,
+        '|',
       ),
 
     parameter: ($) =>
@@ -247,7 +247,7 @@ module.exports = grammar({
           ),
         ),
         repeat(choice($.param_type, $.param_value)),
-        repeat(choice($._newline, punc().comma)),
+        repeat(choice($._newline, ',')),
       ),
 
     _param_name: ($) =>
@@ -261,7 +261,7 @@ module.exports = grammar({
     param_type: ($) =>
       seq(
         optional($._repeat_newline),
-        punc().colon,
+        ':',
         optional($._repeat_newline),
         $._type_annotation,
         field('completion', optional($.param_completer)),
@@ -270,7 +270,7 @@ module.exports = grammar({
     param_value: ($) =>
       seq(
         optional($._repeat_newline),
-        punc().eq,
+        '=',
         optional($._repeat_newline),
         field(
           'param_value',
@@ -298,7 +298,7 @@ module.exports = grammar({
 
     _collection_annotation: ($) =>
       seq(
-        punc().colon,
+        ':',
         $._all_type,
         field('completion', optional($.param_completer)),
       ),
@@ -349,7 +349,7 @@ module.exports = grammar({
 
     param_completer: ($) =>
       seq(
-        token.immediate(punc().at),
+        token.immediate('@'),
         choice(
           field('command', $.cmd_identifier),
           field('command', $.val_string),
@@ -360,10 +360,10 @@ module.exports = grammar({
       ),
 
     param_rest: ($) =>
-      seq(punc().rest, optional(punc().dollar), field('name', $.identifier)),
+      seq('...', optional('$'), field('name', $.identifier)),
 
     param_opt: ($) =>
-      seq(field('name', $.identifier), token.immediate(punc().question)),
+      seq(field('name', $.identifier), token.immediate('?')),
 
     param_long_flag: ($) => seq(operator().long_flag, $.long_flag_identifier),
 
@@ -441,14 +441,14 @@ module.exports = grammar({
     match_arm: ($) =>
       seq(
         field('pattern', $.match_pattern),
-        punc().fat_arrow,
+        '=>',
         field('expression', $._match_expression),
       ),
 
     default_arm: ($) =>
       seq(
-        field('default_pattern', punc().underscore),
-        punc().fat_arrow,
+        field('default_pattern', '_'),
+        '=>',
         field('expression', $._match_expression),
       ),
 
@@ -457,11 +457,11 @@ module.exports = grammar({
 
     match_pattern: ($) =>
       choice(
-        seq(punc().underscore, $.match_guard),
+        seq('_', $.match_guard),
         seq($._match_pattern, optional($.match_guard)),
         seq(
           $._match_pattern,
-          repeat(seq(optional($._newline), punc().pipe, $._match_pattern)),
+          repeat(seq(optional($._newline), '|', $._match_pattern)),
         ),
       ),
 
@@ -499,7 +499,7 @@ module.exports = grammar({
         $._entry_separator,
         $._newline,
         null,
-        choice($._newline, punc().comma),
+        choice($._newline, ','),
       ),
 
     _match_pattern_list: ($) =>
@@ -521,7 +521,7 @@ module.exports = grammar({
     _match_pattern_rest: ($) =>
       seq(
         operator().range_inclusive,
-        seq(token.immediate(punc().dollar), $.identifier),
+        seq(token.immediate('$'), $.identifier),
       ),
 
     _match_pattern_record_body: ($) =>
@@ -762,7 +762,7 @@ module.exports = grammar({
         $._terminator,
         null,
         [
-          repeat1(seq(optional($._repeat_newline), punc().semicolon)),
+          repeat1(seq(optional($._repeat_newline), ';')),
           optional($._repeat_newline),
         ],
         $._terminator,
@@ -805,19 +805,19 @@ module.exports = grammar({
 
     _spread_variable: ($) =>
       seq(
-        punc().spread_dollar,
+        '...$',
         field('name', $.identifier),
         optional($.cell_path),
       ),
 
     val_variable: ($) =>
       seq(
-        punc().dollar,
+        '$',
         field('name', choice('nu', 'in', 'env', $.identifier)),
         optional($.cell_path),
       ),
 
-    val_cellpath: ($) => seq(punc().dollar, $.cell_path),
+    val_cellpath: ($) => seq('$', $.cell_path),
 
     val_number: ($) => $._val_number,
 
@@ -881,7 +881,7 @@ module.exports = grammar({
       seq(
         choice('0b', '0o', '0x'),
         token.immediate(brack().open_brack),
-        repeat(field('digit', seq($.hex_digit, optional(punc().comma)))),
+        repeat(field('digit', seq($.hex_digit, optional(',')))),
         brack().close_brack,
       ),
 
@@ -1051,7 +1051,7 @@ module.exports = grammar({
         $._entry_separator,
         $._newline,
         null,
-        choice($._newline, punc().comma),
+        choice($._newline, ','),
       ),
 
     val_entry: ($) =>
@@ -1103,7 +1103,7 @@ module.exports = grammar({
       ),
 
     _entry_separator: (_$) =>
-      token(prec(prec_map().higher, choice(punc().comma, /\s/))),
+      token(prec(prec_map().higher, choice(',', /\s/))),
 
     record_entry: ($) =>
       choice(
@@ -1126,7 +1126,7 @@ module.exports = grammar({
               ...Object.values(modifier()).map((x) => alias(x, $.identifier)),
             ),
           ),
-          token(prec(prec_map().higher, punc().colon)),
+          token(prec(prec_map().higher, ':')),
           field(
             'value',
             choice(
@@ -1149,13 +1149,13 @@ module.exports = grammar({
     },
 
     _table_head_separator: (_$) =>
-      token(prec(prec_map().higher, seq(/\s*/, punc().semicolon))),
+      token(prec(prec_map().higher, seq(/\s*/, ';'))),
 
     _table_head: ($) =>
       seq(
         optional($._repeat_newline),
         field('head', $.val_list),
-        alias($._table_head_separator, punc().semicolon),
+        alias($._table_head_separator, ';'),
       ),
 
     _table_body: ($) =>
@@ -1185,10 +1185,10 @@ module.exports = grammar({
 
     _path_suffix: ($) =>
       choice(
-        punc().question,
-        punc().exclamation,
-        seq(punc().question, punc().exclamation),
-        seq(punc().exclamation, punc().question),
+        '?',
+        '!',
+        seq('?', '!'),
+        seq('!', '?'),
       ),
 
     path: ($) => {
@@ -1197,7 +1197,7 @@ module.exports = grammar({
         $.val_string,
       );
 
-      return seq(punc().dot, path, optional($._path_suffix));
+      return seq('.', path, optional($._path_suffix));
     },
 
     /// Single-use env variables: FOO=BAR cmd
@@ -1205,7 +1205,7 @@ module.exports = grammar({
     env_var: ($) =>
       seq(
         field('variable', alias($.cmd_identifier, $.identifier)),
-        token.immediate(punc().eq),
+        token.immediate('='),
         field(
           'value',
           choice(
@@ -1258,7 +1258,7 @@ module.exports = grammar({
       ),
 
     _flag_equals_value: ($) =>
-      seq(token.immediate(punc().eq), field('value', $._flag_value)),
+      seq(token.immediate('='), field('value', $._flag_value)),
 
     short_flag: ($) =>
       seq(
@@ -1325,7 +1325,7 @@ module.exports = grammar({
 
     /// Comments
 
-    comment: (_$) => seq(punc().hash, /.*/),
+    comment: (_$) => seq('#', /.*/),
   },
 });
 
@@ -1472,7 +1472,7 @@ function _block_body_rules(suffix) {
         optional(modifier().visibility),
         keyword().alias,
         $._command_name,
-        punc().eq,
+        '=',
         field('value', alias_for_suffix($, 'pipeline', suffix)),
       ),
 
@@ -1513,7 +1513,7 @@ function _block_body_rules(suffix) {
       seq(
         field('name', $._variable_name),
         field('type', optional($.param_type)),
-        punc().eq,
+        '=',
         field('value', alias_for_suffix($, 'pipeline', suffix)),
       ),
 
@@ -1525,7 +1525,7 @@ function _block_body_rules(suffix) {
         field(
           'opr',
           choice(
-            punc().eq,
+            '=',
             operator().assign_add,
             operator().assign_sub,
             operator().assign_mul,
@@ -1578,8 +1578,8 @@ function _command_rule(parenthesized) {
     return prec.right(
       seq(
         choice(
-          field('head', seq(optional(punc().caret), $.cmd_identifier)),
-          field('head', seq(punc().caret, $._stringish)),
+          field('head', seq(optional('^'), $.cmd_identifier)),
+          field('head', seq('^', $._stringish)),
         ),
         repeat(seq(sep, optional($._cmd_arg))),
       ),
@@ -1750,7 +1750,7 @@ function _decimal_rule(immediate) {
             digits,
           ),
         ),
-        seq(head_digits, token.immediate(punc().dot), optional(digits)),
+        seq(head_digits, token.immediate('.'), optional(digits)),
         seq(
           token(
             seq(
@@ -1758,15 +1758,15 @@ function _decimal_rule(immediate) {
               digits,
             ),
           ),
-          token.immediate(punc().dot),
+          token.immediate('.'),
           optional(digits),
         ),
-        token(seq(head_token(punc().dot), digits)),
+        token(seq(head_token('.'), digits)),
         token(
           seq(
             choice(head_token(operator().minus), head_token(operator().plus)),
             optional(token.immediate(/_+/)),
-            token.immediate(punc().dot),
+            token.immediate('.'),
             digits,
           ),
         ),
@@ -1817,7 +1817,7 @@ function _range_rule(anonymous) {
     }
     const common_choices = [
       // 1... works as range from 1 to infinity
-      seq(start, opr_step_imm, token.immediate(punc().dot)),
+      seq(start, opr_step_imm, token.immediate('.')),
       seq(opr, end),
       seq(opr_step, step, opr_imm, end),
     ];
@@ -2013,33 +2013,6 @@ function redir_append() {
  */
 function redir_pipe() {
   return redir().map((x) => x + '|');
-}
-
-// punctuation
-/**
- *
- */
-function punc() {
-  return {
-    at: '@',
-    dot: '.',
-    hash: '#',
-    pipe: '|',
-    rest: '...',
-    eq: '=',
-    colon: ':',
-    comma: ',',
-    caret: '^',
-    dollar: '$',
-    spread_dollar: '...$',
-    fat_arrow: '=>',
-    thin_arrow: '->',
-    question: '?',
-    exclamation: '!',
-    underscore: '_',
-
-    semicolon: ';',
-  };
 }
 
 // delimiters
