@@ -35,10 +35,10 @@
     "eslint-config-treesitter": "^1.0.2",
     "prebuildify": "^6.0.1",
     "prettier": "^3.6.2",
-    "tree-sitter-cli": "^0.22"
+    "tree-sitter-cli": "^0.25.9"
   },
   "peerDependencies": {
-    "tree-sitter": "^0.22"
+    "tree-sitter": "^0.25.0"
   },
   "peerDependenciesMeta": {
     "tree-sitter": {
@@ -49,7 +49,7 @@
     "install": "node-gyp-build",
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
-    "test": "node --version",
+    "test": "node --test bindings/node/*_test.js",
     "lint": "eslint grammar.js",
     "format": "prettier --check ."
   }
