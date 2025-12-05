@@ -140,13 +140,10 @@ module.exports = grammar({
     _separator: ($) => choice($._space, $._newline),
     _terminator: ($) => choice(';', $._newline),
     _pipe_separator: ($) =>
-      repeat1(
-        seq(optional($._repeat_newline), choice('|', ...redir_pipe())),
-      ),
+      repeat1(seq(optional($._repeat_newline), choice('|', ...redir_pipe()))),
 
     /// Attributes
-    attribute_list: ($) =>
-      repeat1(seq($.attribute, choice(';', $._newline))),
+    attribute_list: ($) => repeat1(seq($.attribute, choice(';', $._newline))),
     attribute_identifier: (_$) =>
       token.immediate(/[0-9\p{XID_Start}][0-9\p{XID_Continue}_-]*/),
     attribute: ($) =>
@@ -199,11 +196,9 @@ module.exports = grammar({
       ),
 
     /// Return types
-    returns: ($) =>
-      seq(optional(':'), choice($._multiple_types, $._one_type)),
+    returns: ($) => seq(optional(':'), choice($._multiple_types, $._one_type)),
 
-    _one_type: ($) =>
-      seq($._type_annotation, '->', $._type_annotation),
+    _one_type: ($) => seq($._type_annotation, '->', $._type_annotation),
 
     _types_body: ($) =>
       general_body_rules('', $._one_type, $._entry_separator, $._newline),
@@ -230,12 +225,7 @@ module.exports = grammar({
       ),
 
     parameter_pipes: ($) =>
-      seq(
-        '|',
-        optional($._repeat_newline),
-        repeat($.parameter),
-        '|',
-      ),
+      seq('|', optional($._repeat_newline), repeat($.parameter), '|'),
 
     parameter: ($) =>
       seq(
@@ -297,11 +287,7 @@ module.exports = grammar({
     flat_type: (_$) => field('flat_type', flat_types()),
 
     _collection_annotation: ($) =>
-      seq(
-        ':',
-        $._all_type,
-        field('completion', optional($.param_completer)),
-      ),
+      seq(':', $._all_type, field('completion', optional($.param_completer))),
     _collection_entry: ($) =>
       seq(
         field(
@@ -359,11 +345,9 @@ module.exports = grammar({
         ),
       ),
 
-    param_rest: ($) =>
-      seq('...', optional('$'), field('name', $.identifier)),
+    param_rest: ($) => seq('...', optional('$'), field('name', $.identifier)),
 
-    param_opt: ($) =>
-      seq(field('name', $.identifier), token.immediate('?')),
+    param_opt: ($) => seq(field('name', $.identifier), token.immediate('?')),
 
     param_long_flag: ($) => seq(operator().long_flag, $.long_flag_identifier),
 
@@ -519,10 +503,7 @@ module.exports = grammar({
       ),
 
     _match_pattern_rest: ($) =>
-      seq(
-        operator().range_inclusive,
-        seq(token.immediate('$'), $.identifier),
-      ),
+      seq(operator().range_inclusive, seq(token.immediate('$'), $.identifier)),
 
     _match_pattern_record_body: ($) =>
       general_body_rules(
@@ -804,11 +785,7 @@ module.exports = grammar({
     val_bool: (_$) => choice(special().true, special().false),
 
     _spread_variable: ($) =>
-      seq(
-        '...$',
-        field('name', $.identifier),
-        optional($.cell_path),
-      ),
+      seq('...$', field('name', $.identifier), optional($.cell_path)),
 
     val_variable: ($) =>
       seq(
@@ -1102,8 +1079,7 @@ module.exports = grammar({
         $._newline,
       ),
 
-    _entry_separator: (_$) =>
-      token(prec(prec_map().higher, choice(',', /\s/))),
+    _entry_separator: (_$) => token(prec(prec_map().higher, choice(',', /\s/))),
 
     record_entry: ($) =>
       choice(
@@ -1183,13 +1159,7 @@ module.exports = grammar({
 
     cell_path: ($) => repeat1($.path),
 
-    _path_suffix: ($) =>
-      choice(
-        '?',
-        '!',
-        seq('?', '!'),
-        seq('!', '?'),
-      ),
+    _path_suffix: ($) => choice('?', '!', seq('?', '!'), seq('!', '?')),
 
     path: ($) => {
       const path = choice(
