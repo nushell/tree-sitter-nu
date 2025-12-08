@@ -1130,7 +1130,7 @@ def test [name: record<name, value,>, name: record<"name", "value",>] {}
         (identifier)
         (param_type
           (collection_type
-            (identifier
+            (val_string
               (string_content))))))
     (block))
   (decl_def
@@ -1145,25 +1145,7 @@ def test [name: record<name, value,>, name: record<"name", "value",>] {}
         (identifier)
         (param_type
           (collection_type
-            (identifier
-              (string_content))))))
-    (block))
-  (decl_def
-    (cmd_identifier)
-    (parameter_bracks
-      (parameter
-        (identifier)
-        (param_type
-          (collection_type
-            (identifier)
-            (identifier))))
-      (parameter
-        (identifier)
-        (param_type
-          (collection_type
-            (identifier
-              (string_content))
-            (identifier
+            (val_string
               (string_content))))))
     (block))
   (decl_def
@@ -1179,9 +1161,27 @@ def test [name: record<name, value,>, name: record<"name", "value",>] {}
         (identifier)
         (param_type
           (collection_type
-            (identifier
+            (val_string
               (string_content))
-            (identifier
+            (val_string
+              (string_content))))))
+    (block))
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (identifier)
+            (identifier))))
+      (parameter
+        (identifier)
+        (param_type
+          (collection_type
+            (val_string
+              (string_content))
+            (val_string
               (string_content))))))
     (block)))
 

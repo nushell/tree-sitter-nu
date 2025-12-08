@@ -294,18 +294,13 @@ module.exports = grammar({
           'key',
           choice(
             alias($._unquoted_in_record, $.identifier),
-            alias($.val_string, $.identifier),
+            $.val_string,
           ),
         ),
         optional($._collection_annotation),
       ),
-    _collection_body: ($) =>
-      general_body_rules(
-        '',
-        $._collection_entry,
-        $._entry_separator,
-        $._newline,
-      ),
+    _collection_body: ($) => repeat1(choice( ',', $._collection_entry, '\n')),
+
     collection_type: ($) =>
       seq(
         choice('record', 'table'),
