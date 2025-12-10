@@ -284,7 +284,48 @@ module.exports = grammar({
         choice($.list_type, $.collection_type, $.flat_type, $.composite_type),
       ),
 
-    flat_type: (_$) => field('flat_type', flat_types()),
+    flat_type: (_$) =>
+      field(
+        'flat_type',
+        choice(
+          'any',
+          'binary',
+          'block',
+          'bool',
+          'cell-path',
+          'closure',
+          'cond',
+          'datetime',
+          'decimal',
+          'directory',
+          'directory',
+          'duration',
+          'duration',
+          'error',
+          'expr',
+          'filesize',
+          'float',
+          'full-cell-path',
+          'glob',
+          'import-pattern',
+          'int',
+          'keyword',
+          'list',
+          'math',
+          'nothing',
+          'number',
+          'one-of',
+          'operator',
+          'path',
+          'range',
+          'record',
+          'signature',
+          'string',
+          'table',
+          'var-with-opt-type',
+          'variable',
+        ),
+      ),
 
     _collection_annotation: ($) =>
       seq(':', $._all_type, field('completion', optional($.param_completer))),
@@ -2209,25 +2250,6 @@ function special() {
     neg_infinity: /-[iI][nN][fF]([iI][nN][iI][tT][yY])?/,
     not_a_number: /[nN][aA][nN]/,
   };
-}
-
-/// nushell flat types
-/// taken from `nu_parser::parser::parse_shape_name()`
-/**
- *
- */
-function flat_types() {
-  // prettier-ignore
-  const types = [
-    'any', 'binary', 'block', 'bool', 'cell-path', 'closure', 'cond',
-    'datetime', 'directory', 'duration', 'directory', 'duration',
-    'error', 'expr', 'float', 'decimal', 'filesize', 'full-cell-path',
-    'glob', 'int', 'import-pattern', 'keyword', 'math', 'nothing',
-    'number', 'one-of', 'operator', 'path', 'range', 'signature',
-    'string', 'table', 'variable', 'var-with-opt-type', 'record', 'list',
-  ];
-
-  return choice(...types);
 }
 
 /**

@@ -2820,15 +2820,19 @@
           },
           {
             "type": "STRING",
+            "value": "decimal"
+          },
+          {
+            "type": "STRING",
+            "value": "directory"
+          },
+          {
+            "type": "STRING",
             "value": "directory"
           },
           {
             "type": "STRING",
             "value": "duration"
-          },
-          {
-            "type": "STRING",
-            "value": "directory"
           },
           {
             "type": "STRING",
@@ -2844,15 +2848,11 @@
           },
           {
             "type": "STRING",
-            "value": "float"
-          },
-          {
-            "type": "STRING",
-            "value": "decimal"
-          },
-          {
-            "type": "STRING",
             "value": "filesize"
+          },
+          {
+            "type": "STRING",
+            "value": "float"
           },
           {
             "type": "STRING",
@@ -2864,15 +2864,19 @@
           },
           {
             "type": "STRING",
-            "value": "int"
-          },
-          {
-            "type": "STRING",
             "value": "import-pattern"
           },
           {
             "type": "STRING",
+            "value": "int"
+          },
+          {
+            "type": "STRING",
             "value": "keyword"
+          },
+          {
+            "type": "STRING",
+            "value": "list"
           },
           {
             "type": "STRING",
@@ -2904,6 +2908,10 @@
           },
           {
             "type": "STRING",
+            "value": "record"
+          },
+          {
+            "type": "STRING",
             "value": "signature"
           },
           {
@@ -2916,19 +2924,11 @@
           },
           {
             "type": "STRING",
-            "value": "variable"
-          },
-          {
-            "type": "STRING",
             "value": "var-with-opt-type"
           },
           {
             "type": "STRING",
-            "value": "record"
-          },
-          {
-            "type": "STRING",
-            "value": "list"
+            "value": "variable"
           }
         ]
       }
