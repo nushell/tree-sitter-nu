@@ -1,5 +1,6 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
+
 module.exports = grammar({
   name: 'nu',
 
@@ -911,12 +912,12 @@ module.exports = grammar({
 
     _str_single_quotes: ($) =>
       seq(
-        "'",
+        '\'',
         alias(
           token.immediate(prec(prec_map().string, /[^']*/)),
           $.string_content,
         ),
-        token.immediate("'"),
+        token.immediate('\''),
       ),
 
     _str_back_ticks: ($) =>
@@ -955,14 +956,14 @@ module.exports = grammar({
 
     _inter_single_quotes: ($) =>
       seq(
-        "$'",
+        '$\'',
         repeat(
           choice(
             field('expr', $.expr_interpolated),
             $.unescaped_interpolated_content,
           ),
         ),
-        token.immediate("'"),
+        token.immediate('\''),
       ),
 
     _inter_double_quotes: ($) =>
@@ -1579,14 +1580,14 @@ function _ctrl_try_rule(parenthesized) {
       keyword().try,
       field('try_branch', $.block),
       optional(
-        parenthesized
-          ? _insert_newline($, seq_catch_array, true, false)
-          : seq(...seq_catch_array),
+        parenthesized ?
+          _insert_newline($, seq_catch_array, true, false) :
+          seq(...seq_catch_array),
       ),
     ];
-    return parenthesized
-      ? _insert_newline($, seq_array, false, false)
-      : seq(...seq_array);
+    return parenthesized ?
+      _insert_newline($, seq_array, false, false) :
+      seq(...seq_array);
   };
 }
 
@@ -1611,14 +1612,14 @@ function _ctrl_if_rule(parenthesized) {
       field('condition', _expr),
       field('then_branch', $.block),
       optional(
-        parenthesized
-          ? _insert_newline($, seq_else_array, true, false)
-          : seq(...seq_else_array),
+        parenthesized ?
+          _insert_newline($, seq_else_array, true, false) :
+          seq(...seq_else_array),
       ),
     ];
-    return parenthesized
-      ? _insert_newline($, seq_array, false, false)
-      : seq(...seq_array);
+    return parenthesized ?
+      _insert_newline($, seq_array, false, false) :
+      seq(...seq_array);
   };
 }
 
@@ -1627,9 +1628,9 @@ function _ctrl_if_rule(parenthesized) {
  */
 function _expr_binary_rule(parenthesized) {
   return (/** @type {any} */ $) => {
-    const _expr = parenthesized
-      ? $._expr_binary_expression_parenthesized
-      : $._expr_binary_expression;
+    const _expr = parenthesized ?
+      $._expr_binary_expression_parenthesized :
+      $._expr_binary_expression;
     return choice(
       ...table().map(([precedence, opr]) => {
         const seq_array = [
@@ -1644,9 +1645,9 @@ function _expr_binary_rule(parenthesized) {
             ),
           ),
         ];
-        return parenthesized
-          ? prec.left(precedence, _insert_newline($, seq_array))
-          : prec.left(precedence, seq(...seq_array));
+        return parenthesized ?
+          prec.left(precedence, _insert_newline($, seq_array)) :
+          prec.left(precedence, seq(...seq_array));
       }),
     );
   };
@@ -1657,9 +1658,9 @@ function _expr_binary_rule(parenthesized) {
  */
 function _binary_predicate_rule(parenthesized) {
   return (/** @type {any} */ $) => {
-    const _expr = parenthesized
-      ? $._binary_predicate_parenthesized
-      : $._binary_predicate;
+    const _expr = parenthesized ?
+      $._binary_predicate_parenthesized :
+      $._binary_predicate;
     return choice(
       ...binary().map(([precedence, opr]) => {
         const seq_array = [
@@ -1667,9 +1668,9 @@ function _binary_predicate_rule(parenthesized) {
           field('opr', opr),
           field('rhs', choice($.where_predicate, _expr)),
         ];
-        return parenthesized
-          ? prec.left(precedence, _insert_newline($, seq_array))
-          : prec.left(precedence, seq(...seq_array));
+        return parenthesized ?
+          prec.left(precedence, _insert_newline($, seq_array)) :
+          prec.left(precedence, seq(...seq_array));
       }),
     );
   };
@@ -1688,17 +1689,17 @@ function _where_clause_rule(parenthesized) {
           $.where_predicate,
           $.val_closure,
           alias(
-            parenthesized
-              ? $._binary_predicate_parenthesized
-              : $._binary_predicate,
+            parenthesized ?
+              $._binary_predicate_parenthesized :
+              $._binary_predicate,
             $.where_predicate,
           ),
         ),
       ),
     ];
-    return parenthesized
-      ? prec.left(_insert_newline($, seq_array))
-      : seq(...seq_array);
+    return parenthesized ?
+      prec.left(_insert_newline($, seq_array)) :
+      seq(...seq_array);
   };
 }
 
@@ -1762,8 +1763,8 @@ function _range_rule(anonymous) {
     };
   };
 
-  const { opr, step: opr_step } = create_opr(false);
-  const { opr: opr_imm, step: opr_step_imm } = create_opr(true);
+  const {opr, step: opr_step} = create_opr(false);
+  const {opr: opr_imm, step: opr_step_imm} = create_opr(true);
 
   return (/** @type {any} */ $) => {
     const member = choice(
