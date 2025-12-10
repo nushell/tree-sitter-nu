@@ -1983,22 +1983,6 @@ function redir() {
   return ['err>', 'out>', 'e>', 'o>', 'err+out>', 'out+err>', 'o+e>', 'e+o>'];
 }
 
-/**
- *
- */
-function redir_append() {
-  const rewrite = redir();
-  const append = rewrite.map((x) => x + '>');
-  return rewrite.concat(append);
-}
-
-/**
- *
- */
-function redir_pipe() {
-  return redir().map((x) => x + '|');
-}
-
 // delimiters
 /**
  *
