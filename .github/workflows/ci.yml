@@ -43,6 +43,7 @@ jobs:
         with:
           generate: false
           test-rust: true
+          # TODO reenable after https://github.com/tree-sitter/node-tree-sitter/pull/258 resolution
           test-node: false
           test-python: true
           test-go: true
