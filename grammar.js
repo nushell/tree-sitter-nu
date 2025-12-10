@@ -1,11 +1,18 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
+
+const REDIR_OPERATOR_RE =  /(e(rr)?|o(ut)?)(\+(e(rr)?|o(ut)?))?>>?/;
+
 module.exports = grammar({
   name: 'nu',
 
   word: ($) => $.identifier,
 
-  extras: ($) => [/[ \t]/, $.comment],
+  extras: ($) => [/[ \t\r]/, $.comment],
+
+  supertypes: $ => [
+    $.expression
+  ],
 
   inline: ($) => [
     $._flag_value,
@@ -61,11 +68,29 @@ module.exports = grammar({
 
     nu_script: ($) => seq(optional($.shebang), optional($._block_body)),
 
-    shebang: ($) => seq(optional($._repeat_newline), '#!', /.*\r?\n?/),
+    shebang: ($) => seq(optional($._repeat_newline), '#!', /.*\n?/),
 
     ...block_body_rules(),
 
     ...parenthesized_body_rules(),
+
+    /// pipeline
+    pipeline: ($) =>
+      seq(
+        repeat(seq($.pipe_element, $._pipe_separator, optional($._newline))),
+        $.pipe_element,
+      ),
+    pipeline_parenthesized: ($) =>
+      seq(
+        repeat(
+          seq(
+            alias($.pipe_element_parenthesized, $.pipe_element),
+            $._pipe_separator,
+            optional($._repeat_newline),
+          ),
+        ),
+        alias($.pipe_element_parenthesized, $.pipe_element),
+      ),
 
     _block_body: ($) =>
       general_body_rules(
@@ -134,13 +159,12 @@ module.exports = grammar({
 
     // remove newline characters from extras to reduce ambiguity
     // manually controlled by adding the following to parenthesized rules
-    _newline: (_$) => /\r?\n/,
+    _newline: (_$) => /\n/,
     _repeat_newline: ($) => repeat1($._newline),
     _space: (_$) => /[ \t]+/,
     _separator: ($) => choice($._space, $._newline),
     _terminator: ($) => choice(';', $._newline),
-    _pipe_separator: ($) =>
-      repeat1(seq(optional($._repeat_newline), choice('|', ...redir_pipe()))),
+    _pipe_separator: ($) => seq(optional(token.immediate(REDIR_OPERATOR_RE)), '|'),
 
     /// Attributes
     attribute_list: ($) => repeat1(seq($.attribute, choice(';', $._newline))),
@@ -150,7 +174,7 @@ module.exports = grammar({
       seq(
         '@',
         field('type', $.attribute_identifier),
-        repeat(seq($._space, optional($._cmd_arg))),
+        repeat($._cmd_arg),
       ),
 
     /// Top Level Items
@@ -386,7 +410,7 @@ module.exports = grammar({
         keyword().for,
         field('looping_var', $._variable_name),
         keyword().in,
-        field('iterable', $._expression),
+        field('iterable', $.expression),
         field('body', $.block),
       ),
 
@@ -395,7 +419,7 @@ module.exports = grammar({
     ctrl_while: ($) =>
       seq(
         keyword().while,
-        field('condition', $._expression),
+        field('condition', $.expression),
         field('body', $.block),
       ),
 
@@ -452,7 +476,7 @@ module.exports = grammar({
     _match_pattern: ($) =>
       choice($._match_pattern_expression, alias($.unquoted, $.val_string)),
 
-    match_guard: ($) => seq(keyword().if, $._expression),
+    match_guard: ($) => seq(keyword().if, $.expression),
 
     _match_pattern_expression: ($) =>
       choice($._match_pattern_value, $.val_range, $.expr_parenthesized),
@@ -527,15 +551,17 @@ module.exports = grammar({
     /// Pipelines
 
     pipe_element: ($) =>
+      prec(10,
       choice(
         seq(
           _env_variable_rule(false, $),
-          $._expression,
+          $.expression,
           optional($.redirection),
         ),
         seq(_env_variable_rule(false, $), $.command),
         $._ctrl_expression,
         $.where_command,
+      ),
       ),
 
     pipe_element_parenthesized: ($) =>
@@ -644,13 +670,14 @@ module.exports = grammar({
 
     /// Expressions
 
-    _expression: ($) =>
+    expression: ($) =>
       choice(
         $._value,
         $.expr_binary,
         $.expr_unary,
         $.val_range,
         $.expr_parenthesized,
+        $.command,
       ),
 
     _expression_parenthesized: ($) =>
@@ -1188,7 +1215,11 @@ module.exports = grammar({
 
     /// Commands
 
-    command: _command_rule(false),
+    command: ($) => prec.left(10, seq(
+        field('head', seq(optional('^'), choice($.cmd_identifier, $._stringish))),
+        repeat($._cmd_arg)),
+    ),
+
     _command_parenthesized: _command_rule(true),
 
     _cmd_arg: ($) =>
@@ -1206,10 +1237,11 @@ module.exports = grammar({
 
     flag_value: ($) => choice($._value, $.val_string),
 
+    _redir_operator: _ => REDIR_OPERATOR_RE,
+
     redirection: ($) =>
       seq(
-        choice(...redir_append()),
-        $._space,
+        $._redir_operator,
         field(
           'file_path',
           choice(alias($._unquoted_naive, $.val_string), $._stringish),
@@ -1353,17 +1385,6 @@ function parenthesized_body_rules() {
 
     /// pipeline
 
-    pipeline_parenthesized: ($) =>
-      seq(
-        repeat(
-          seq(
-            alias($.pipe_element_parenthesized, $.pipe_element),
-            $._pipe_separator,
-            optional($._repeat_newline),
-          ),
-        ),
-        alias($.pipe_element_parenthesized, $.pipe_element),
-      ),
   };
 }
 
@@ -1374,13 +1395,6 @@ function block_body_rules() {
   return {
     ..._block_body_rules(''),
 
-    /// pipeline
-
-    pipeline: ($) =>
-      seq(
-        repeat(seq($.pipe_element, $._pipe_separator, optional($._newline))),
-        $.pipe_element,
-      ),
   };
 }
 
@@ -1595,7 +1609,7 @@ function _ctrl_try_rule(parenthesized) {
  */
 function _ctrl_if_rule(parenthesized) {
   return (/** @type {any} */ $) => {
-    const _expr = parenthesized ? $._expression_parenthesized : $._expression;
+    const _expr = parenthesized ? $._expression_parenthesized : $.expression;
     const seq_else_array = [
       keyword().else,
       choice(
@@ -1967,22 +1981,6 @@ function modifier() {
  */
 function redir() {
   return ['err>', 'out>', 'e>', 'o>', 'err+out>', 'out+err>', 'o+e>', 'e+o>'];
-}
-
-/**
- *
- */
-function redir_append() {
-  const rewrite = redir();
-  const append = rewrite.map((x) => x + '>');
-  return rewrite.concat(append);
-}
-
-/**
- *
- */
-function redir_pipe() {
-  return redir().map((x) => x + '|');
 }
 
 // delimiters
