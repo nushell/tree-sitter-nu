@@ -49,6 +49,6 @@
     "start": "tree-sitter playground",
     "test": "node --test bindings/node/*_test.js",
     "lint": "eslint grammar.js",
-    "format": "eslint --format grammar.js"
+    "format": "eslint --fix grammar.js"
   }
 }

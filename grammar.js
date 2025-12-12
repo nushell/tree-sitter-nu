@@ -665,7 +665,7 @@ module.exports = grammar({
 
     /// Composite Expressions
 
-    expr_unary: $ => {
+      expr_unary: $ => {
       const after_not = choice(
         $.val_bool,
         $.expr_parenthesized,
