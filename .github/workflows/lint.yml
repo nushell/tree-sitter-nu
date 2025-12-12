@@ -23,6 +23,6 @@ jobs:
       - name: Install modules
         run: npm ci --legacy-peer-deps
       - name: Run ESLint
-        run: npm run lint
-      - name: Run Prettier
+        run: npm run Eslint linter
+      - name: Run Eslint formatter
         run: npm run format
