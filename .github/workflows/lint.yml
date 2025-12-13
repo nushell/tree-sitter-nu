@@ -22,7 +22,7 @@ jobs:
           node-version: ${{vars.NODE_VERSION}}
       - name: Install modules
         run: npm ci --legacy-peer-deps
-      - name: Run ESLint
+      - name: Run ESLint linter
         run: npm run lint
-      - name: Run Prettier
+      - name: Run ESLint formatter
         run: npm run format
