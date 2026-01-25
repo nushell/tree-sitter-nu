@@ -3218,6 +3218,10 @@
           "named": true
         },
         {
+          "type": "stmt_let",
+          "named": true
+        },
+        {
           "type": "val_binary",
           "named": true
         },
@@ -3744,7 +3748,7 @@
       },
       "value": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "pipeline",

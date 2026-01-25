@@ -525,6 +525,14 @@ module.exports = grammar({
     ctrl_try: _ctrl_try_rule(false),
     ctrl_try_parenthesized: _ctrl_try_rule(true),
 
+    _stmt_let_shortcut: $ => prec.left(
+      seq(
+        keyword().let,
+        field('name', $._variable_name),
+        field('type', optional($.param_type)),
+      ),
+    ),
+
     /// Pipelines
 
     pipe_element: $ =>
@@ -537,6 +545,7 @@ module.exports = grammar({
         seq(_env_variable_rule(false, $), $.command),
         $._ctrl_expression,
         $.where_command,
+        alias($._stmt_let_shortcut, $.stmt_let),
       ),
 
     pipe_element_parenthesized: $ =>
@@ -553,6 +562,7 @@ module.exports = grammar({
 
         $._ctrl_expression_parenthesized,
         alias($.where_command_parenthesized, $.where_command),
+        alias($._stmt_let_shortcut, $.stmt_let),
       ),
 
     /// Scope Statements
