@@ -116,7 +116,9 @@ let bar
       (val_number))
     (pipe_element
       (stmt_let
-        var_name: (identifier))))
+        var_name: (identifier)
+        type: (param_type
+          type: (flat_type)))))
   (pipeline
     (pipe_element
       (stmt_let
