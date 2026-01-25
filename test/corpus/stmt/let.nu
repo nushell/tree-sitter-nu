@@ -100,3 +100,24 @@ let y: oneof<int, list<record>> = 1
     value: (pipeline
       (pipe_element
         (val_number)))))
+
+=====
+let-006-shortcut
+=====
+
+1 | let foo
+let bar
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_number))
+    (pipe_element
+      (stmt_let
+        var_name: (identifier))))
+  (pipeline
+    (pipe_element
+      (stmt_let
+        var_name: (identifier)))))

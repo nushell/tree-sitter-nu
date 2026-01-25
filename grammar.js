@@ -26,6 +26,8 @@ module.exports = grammar({
   ],
 
   conflicts: $ => [
+    [$._assignment_pattern, $._stmt_let_shortcut],
+    [$._assignment_pattern_parenthesized, $._stmt_let_shortcut],
     [$._binary_predicate_parenthesized],
     [$._block_body, $.record_body, $.val_closure],
     [$._block_body, $.shebang],
@@ -525,6 +527,8 @@ module.exports = grammar({
     ctrl_try: _ctrl_try_rule(false),
     ctrl_try_parenthesized: _ctrl_try_rule(true),
 
+    _stmt_let_shortcut: $ => seq(keyword().let, $._variable_name),
+
     /// Pipelines
 
     pipe_element: $ =>
@@ -537,6 +541,7 @@ module.exports = grammar({
         seq(_env_variable_rule(false, $), $.command),
         $._ctrl_expression,
         $.where_command,
+        alias($._stmt_let_shortcut, $.stmt_let),
       ),
 
     pipe_element_parenthesized: $ =>
@@ -553,6 +558,7 @@ module.exports = grammar({
 
         $._ctrl_expression_parenthesized,
         alias($.where_command_parenthesized, $.where_command),
+        alias($._stmt_let_shortcut, $.stmt_let),
       ),
 
     /// Scope Statements

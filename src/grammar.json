@@ -4535,6 +4535,19 @@
         }
       ]
     },
+    "_stmt_let_shortcut": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "let"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_variable_name"
+        }
+      ]
+    },
     "pipe_element": {
       "type": "CHOICE",
       "members": [
@@ -4613,6 +4626,15 @@
         {
           "type": "SYMBOL",
           "name": "where_command"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_stmt_let_shortcut"
+          },
+          "named": true,
+          "value": "stmt_let"
         }
       ]
     },
@@ -4704,6 +4726,15 @@
           },
           "named": true,
           "value": "where_command"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_stmt_let_shortcut"
+          },
+          "named": true,
+          "value": "stmt_let"
         }
       ]
     },
@@ -17430,6 +17461,14 @@
     }
   ],
   "conflicts": [
+    [
+      "_assignment_pattern",
+      "_stmt_let_shortcut"
+    ],
+    [
+      "_assignment_pattern_parenthesized",
+      "_stmt_let_shortcut"
+    ],
     [
       "_binary_predicate_parenthesized"
     ],
