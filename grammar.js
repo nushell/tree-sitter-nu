@@ -26,8 +26,6 @@ module.exports = grammar({
   ],
 
   conflicts: $ => [
-    [$._assignment_pattern, $._stmt_let_shortcut],
-    [$._assignment_pattern_parenthesized, $._stmt_let_shortcut],
     [$._binary_predicate_parenthesized],
     [$._block_body, $.record_body, $.val_closure],
     [$._block_body, $.shebang],
@@ -527,7 +525,13 @@ module.exports = grammar({
     ctrl_try: _ctrl_try_rule(false),
     ctrl_try_parenthesized: _ctrl_try_rule(true),
 
-    _stmt_let_shortcut: $ => seq(keyword().let, $._variable_name),
+    _stmt_let_shortcut: $ => prec.left(
+      seq(
+        keyword().let,
+        field('name', $._variable_name),
+        field('type', optional($.param_type)),
+      ),
+    ),
 
     /// Pipelines
 

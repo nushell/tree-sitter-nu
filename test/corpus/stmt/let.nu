@@ -105,7 +105,7 @@ let y: oneof<int, list<record>> = 1
 let-006-shortcut
 =====
 
-1 | let foo
+1 | let foo: int
 let bar
 
 -----
