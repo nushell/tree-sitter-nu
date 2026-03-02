@@ -1209,6 +1209,30 @@
               "type": "ALIAS",
               "content": {
                 "type": "STRING",
+                "value": "finally"
+              },
+              "named": false,
+              "value": "_prefix"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':,]"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
                 "value": "match"
               },
               "named": false,
@@ -4442,6 +4466,31 @@
               "type": "BLANK"
             }
           ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "finally"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "finally_branch",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_blosure"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -4521,6 +4570,67 @@
                 {
                   "type": "FIELD",
                   "name": "catch_branch",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_blosure"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_repeat_newline"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_repeat_newline"
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                },
+                {
+                  "type": "STRING",
+                  "value": "finally"
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_repeat_newline"
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                },
+                {
+                  "type": "FIELD",
+                  "name": "finally_branch",
                   "content": {
                     "type": "SYMBOL",
                     "name": "_blosure"
@@ -15737,6 +15847,15 @@
                     "type": "ALIAS",
                     "content": {
                       "type": "STRING",
+                      "value": "finally"
+                    },
+                    "named": true,
+                    "value": "identifier"
+                  },
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "STRING",
                       "value": "match"
                     },
                     "named": true,
@@ -17485,14 +17604,6 @@
     }
   ],
   "conflicts": [
-    [
-      "_assignment_pattern",
-      "_stmt_let_shortcut"
-    ],
-    [
-      "_assignment_pattern_parenthesized",
-      "_stmt_let_shortcut"
-    ],
     [
       "_binary_predicate_parenthesized"
     ],

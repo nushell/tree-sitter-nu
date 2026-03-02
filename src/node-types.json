@@ -1051,6 +1051,20 @@
           }
         ]
       },
+      "finally_branch": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "val_closure",
+            "named": true
+          }
+        ]
+      },
       "try_branch": {
         "multiple": false,
         "required": true,
@@ -5072,6 +5086,10 @@
   {
     "type": "filesize_unit",
     "named": true
+  },
+  {
+    "type": "finally",
+    "named": false
   },
   {
     "type": "float",
