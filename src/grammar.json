@@ -311,10 +311,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "assignment"
-        },
-        {
-          "type": "SYMBOL",
           "name": "stmt_let"
         },
         {
@@ -639,15 +635,6 @@
         {
           "type": "SYMBOL",
           "name": "_ctrl_statement"
-        },
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "assignment_parenthesized"
-          },
-          "named": true,
-          "value": "assignment"
         },
         {
           "type": "ALIAS",
@@ -4762,6 +4749,10 @@
           "name": "where_command"
         },
         {
+          "type": "SYMBOL",
+          "name": "assignment"
+        },
+        {
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
@@ -4851,6 +4842,15 @@
         {
           "type": "SYMBOL",
           "name": "_ctrl_expression_parenthesized"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "assignment_parenthesized"
+          },
+          "named": true,
+          "value": "assignment"
         },
         {
           "type": "ALIAS",

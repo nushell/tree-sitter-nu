@@ -545,6 +545,7 @@ module.exports = grammar({
         seq(_env_variable_rule(false, $), $.command),
         $._ctrl_expression,
         $.where_command,
+        $.assignment,
         alias($._stmt_let_shortcut, $.stmt_let),
       ),
 
@@ -561,6 +562,7 @@ module.exports = grammar({
         ),
 
         $._ctrl_expression_parenthesized,
+        alias($.assignment_parenthesized, $.assignment),
         alias($.where_command_parenthesized, $.where_command),
         alias($._stmt_let_shortcut, $.stmt_let),
       ),
@@ -1466,7 +1468,10 @@ function _block_body_rules(suffix) {
       ),
 
     ['stmt_mut' + suffix]: (/** @type {{ [x: string]: RuleOrLiteral; }} */ $) =>
-      prec.right(1, seq(keyword().mut, $['_assignment_pattern' + suffix])),
+      prec.right(
+        prec_map().assignment,
+        seq(keyword().mut, $['_assignment_pattern' + suffix])
+      ),
 
     ['stmt_const' + suffix]: (
       /** @type {{ [x: string]: RuleOrLiteral; }} */ $,
@@ -1522,7 +1527,6 @@ function _block_body_rules(suffix) {
     ['_statement' + suffix]: (/** @type {any} */ $) =>
       choice(
         $._ctrl_statement,
-        alias_for_suffix($, 'assignment', suffix),
         alias_for_suffix($, 'stmt_let', suffix),
         alias_for_suffix($, 'stmt_mut', suffix),
         alias_for_suffix($, 'stmt_const', suffix),
