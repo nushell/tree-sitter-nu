@@ -119,7 +119,7 @@ module.exports = grammar({
     identifier: _ => _identifier_rules(false),
 
     long_flag_identifier: _ =>
-      token.immediate(/[0-9\p{XID_Start}_][\p{XID_Continue}?_-]*/),
+      token.immediate(/[0-9\p{XID_Start}_][\p{XID_Continue}?_-]*/u),
 
     _command_name: $ =>
       choice(
@@ -146,7 +146,7 @@ module.exports = grammar({
     /// Attributes
     attribute_list: $ => repeat1(seq($.attribute, choice(';', $._newline))),
     attribute_identifier: _ =>
-      token.immediate(/[0-9\p{XID_Start}][0-9\p{XID_Continue}_-]*/),
+      token.immediate(/[0-9\p{XID_Start}][0-9\p{XID_Continue}_-]*/u),
     attribute: $ =>
       seq(
         '@',
@@ -359,7 +359,7 @@ module.exports = grammar({
       seq(operator().minus, field('name', $.param_short_flag_identifier)),
 
     param_short_flag_identifier: _ =>
-      token.immediate(/[\p{Punctuation}\p{Symbol}\p{XID_Continue}]/),
+      token.immediate(/[\p{Punctuation}\p{Symbol}\p{XID_Continue}]/u),
 
     /// Controls
 
@@ -1172,7 +1172,7 @@ module.exports = grammar({
 
     cell_path: $ => repeat1($.path),
 
-    _path_suffix: $ => choice('?', '!', seq('?', '!'), seq('!', '?')),
+    _path_suffix: _$ => choice('?', '!', seq('?', '!'), seq('!', '?')),
 
     path: $ => {
       const path = choice(
@@ -1251,7 +1251,7 @@ module.exports = grammar({
       ),
 
     short_flag_identifier: _ =>
-      token.immediate(/[\p{XID_Continue}:?@!%_-]+/),
+      token.immediate(/[\p{XID_Continue}:?@!%_-]+/u),
 
     long_flag: $ =>
       seq(
@@ -1329,7 +1329,7 @@ function _identifier_rules(immediate) {
  * @param {any} entry base build block
  * @param {any} separator separator between entries
  * @param {any} preceding separator before first entry, defaults to separator
- * @param {Array} alt_sep array of rules to override default separator
+ * @param {any} alt_sep array of rules to override default separator
  * @param {any} empty_unit optional for empty body
  */
 function general_body_rules(
@@ -1364,8 +1364,11 @@ function parenthesized_body_rules() {
   return {
     ..._block_body_rules('_parenthesized'),
 
-    /// pipeline
-
+    /**
+     * pipeline_parenthesized
+     *
+     * @param {GrammarSymbols<string>} $
+     */
     pipeline_parenthesized: $ =>
       seq(
         repeat(
@@ -1387,8 +1390,11 @@ function block_body_rules() {
   return {
     ..._block_body_rules(''),
 
-    /// pipeline
-
+    /**
+     * pipeline
+     *
+     * @param {GrammarSymbols<string>} $
+     */
     pipeline: $ =>
       seq(
         repeat(seq($.pipe_element, $._pipe_separator, optional($._newline))),
@@ -1539,7 +1545,7 @@ function _block_body_rules(suffix) {
  * Insert optional($._repeat_newline) in-between
  *
  * @param {any} $
- * @param {Array} sequence
+ * @param {Array<any>} sequence
  * @param {boolean} begin allow newline in beginning
  * @param {boolean} end allow newline in end
  */
@@ -1685,7 +1691,7 @@ function _binary_predicate_rule(parenthesized) {
       $._binary_predicate_parenthesized :
       $._binary_predicate;
     return choice(
-      ...binary().map(([precedence, opr]) => {
+      ...binary().map(({prec: precedence, name: opr}) => {
         const seq_array = [
           field('lhs', choice($.where_predicate, _expr)),
           field('opr', opr),
@@ -1830,6 +1836,9 @@ function _range_rule(anonymous) {
  * @param {string} type
  */
 function _unquoted_with_expr_rule(type) {
+  /**
+   * @param {GrammarSymbols<string>} $
+   */
   return $ => {
     let excluded = '';
     let unquoted_head = $.unquoted;
@@ -1897,10 +1906,14 @@ function _unquoted_rule(type) {
   const pattern = token(seq(none_of(excluded_first), repeat(pattern_once)));
   const pattern_repeat = token(repeat(pattern_once));
 
-  // because this catches almost anything, we want to ensure it is
-  // picked as the a last resort after everything else has failed.
-  // so we give it a ridiculously low precedence and place it at the
-  // very end
+  /**
+   * because this catches almost anything, we want to ensure it is
+   * picked as the a last resort after everything else has failed.
+   * so we give it a ridiculously low precedence and place it at the
+   * very end
+   *
+   * @param {GrammarSymbols<string>} $
+   */
   return $ => {
     let pattern_repeat1 = $._unquoted_pattern;
     switch (type) {
@@ -2171,7 +2184,7 @@ function table() {
     [prec_map().bit_and, operator().bit_and],
     [prec_map().bit_xor, operator().bit_xor],
     [prec_map().bit_or, operator().bit_or],
-  ].concat(binary(), predicate());
+  ].concat(binary().map(({prec, name}) => [prec, name]), predicate());
 }
 
 /**
@@ -2179,9 +2192,9 @@ function table() {
  */
 function binary() {
   return [
-    [prec_map().and, operator().and],
-    [prec_map().xor, operator().xor],
-    [prec_map().or, operator().or],
+    {prec: prec_map().and, name: operator().and},
+    {prec: prec_map().xor, name: operator().xor},
+    {prec: prec_map().or, name: operator().or},
   ];
 }
 

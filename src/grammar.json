@@ -1787,7 +1787,8 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[0-9\\p{XID_Start}_][\\p{XID_Continue}?_-]*"
+        "value": "[0-9\\p{XID_Start}_][\\p{XID_Continue}?_-]*",
+        "flags": "u"
       }
     },
     "_command_name": {
@@ -1963,7 +1964,8 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[0-9\\p{XID_Start}][0-9\\p{XID_Continue}_-]*"
+        "value": "[0-9\\p{XID_Start}][0-9\\p{XID_Continue}_-]*",
+        "flags": "u"
       }
     },
     "attribute": {
@@ -3383,7 +3385,8 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[\\p{Punctuation}\\p{Symbol}\\p{XID_Continue}]"
+        "value": "[\\p{Punctuation}\\p{Symbol}\\p{XID_Continue}]",
+        "flags": "u"
       }
     },
     "_ctrl_statement": {
@@ -16809,7 +16812,8 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[\\p{XID_Continue}:?@!%_-]+"
+        "value": "[\\p{XID_Continue}:?@!%_-]+",
+        "flags": "u"
       }
     },
     "long_flag": {
