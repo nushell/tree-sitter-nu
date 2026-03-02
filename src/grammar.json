@@ -311,10 +311,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "assignment"
-        },
-        {
-          "type": "SYMBOL",
           "name": "stmt_let"
         },
         {
@@ -639,15 +635,6 @@
         {
           "type": "SYMBOL",
           "name": "_ctrl_statement"
-        },
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "assignment_parenthesized"
-          },
-          "named": true,
-          "value": "assignment"
         },
         {
           "type": "ALIAS",
@@ -1800,7 +1787,8 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[0-9\\p{XID_Start}_][\\p{XID_Continue}?_-]*"
+        "value": "[0-9\\p{XID_Start}_][\\p{XID_Continue}?_-]*",
+        "flags": "u"
       }
     },
     "_command_name": {
@@ -1976,7 +1964,8 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[0-9\\p{XID_Start}][0-9\\p{XID_Continue}_-]*"
+        "value": "[0-9\\p{XID_Start}][0-9\\p{XID_Continue}_-]*",
+        "flags": "u"
       }
     },
     "attribute": {
@@ -3396,7 +3385,8 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[\\p{Punctuation}\\p{Symbol}\\p{XID_Continue}]"
+        "value": "[\\p{Punctuation}\\p{Symbol}\\p{XID_Continue}]",
+        "flags": "u"
       }
     },
     "_ctrl_statement": {
@@ -4762,6 +4752,10 @@
           "name": "where_command"
         },
         {
+          "type": "SYMBOL",
+          "name": "assignment"
+        },
+        {
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
@@ -4851,6 +4845,15 @@
         {
           "type": "SYMBOL",
           "name": "_ctrl_expression_parenthesized"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "assignment_parenthesized"
+          },
+          "named": true,
+          "value": "assignment"
         },
         {
           "type": "ALIAS",
@@ -16809,7 +16812,8 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[\\p{XID_Continue}:?@!%_-]+"
+        "value": "[\\p{XID_Continue}:?@!%_-]+",
+        "flags": "u"
       }
     },
     "long_flag": {

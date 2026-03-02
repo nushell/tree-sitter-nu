@@ -231,10 +231,6 @@
       "required": false,
       "types": [
         {
-          "type": "assignment",
-          "named": true
-        },
-        {
           "type": "ctrl_for",
           "named": true
         },
@@ -1884,10 +1880,6 @@
       "required": false,
       "types": [
         {
-          "type": "assignment",
-          "named": true
-        },
-        {
           "type": "ctrl_for",
           "named": true
         },
@@ -1950,10 +1942,6 @@
       "multiple": true,
       "required": false,
       "types": [
-        {
-          "type": "assignment",
-          "named": true
-        },
         {
           "type": "cell_path",
           "named": true
@@ -2021,10 +2009,6 @@
       "multiple": true,
       "required": false,
       "types": [
-        {
-          "type": "assignment",
-          "named": true
-        },
         {
           "type": "ctrl_for",
           "named": true
@@ -2762,10 +2746,6 @@
       "required": false,
       "types": [
         {
-          "type": "assignment",
-          "named": true
-        },
-        {
           "type": "ctrl_for",
           "named": true
         },
@@ -3195,6 +3175,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
         {
           "type": "command",
           "named": true
@@ -3921,10 +3905,6 @@
       "multiple": true,
       "required": false,
       "types": [
-        {
-          "type": "assignment",
-          "named": true
-        },
         {
           "type": "ctrl_for",
           "named": true
