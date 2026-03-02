@@ -34,6 +34,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up tree-sitter
         uses: tree-sitter/setup-action/cli@v2
+        with:
+          tree-sitter-ref: v0.25.10
       - name: Set up examples
         shell: bash
         run: |-

@@ -1586,6 +1586,10 @@ function _ctrl_try_rule(parenthesized) {
       keyword().catch,
       field('catch_branch', $._blosure),
     ];
+    const seq_finally_array = [
+      keyword().finally,
+      field('finally_branch', $._blosure),
+    ];
     const seq_array = [
       keyword().try,
       field('try_branch', $.block),
@@ -1593,6 +1597,11 @@ function _ctrl_try_rule(parenthesized) {
         parenthesized ?
           _insert_newline($, seq_catch_array, true, false) :
           seq(...seq_catch_array),
+      ),
+      optional(
+        parenthesized ?
+          _insert_newline($, seq_finally_array, true, false) :
+          seq(...seq_finally_array),
       ),
     ];
     return parenthesized ?
@@ -1956,6 +1965,7 @@ function keyword() {
     else: 'else',
     try: 'try',
     catch: 'catch',
+    finally: 'finally',
     match: 'match',
 
     in: 'in',

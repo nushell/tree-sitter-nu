@@ -22,6 +22,7 @@
 [
   "try"
   "catch"
+  "finally"
   "error"
 ] @keyword.exception
 
