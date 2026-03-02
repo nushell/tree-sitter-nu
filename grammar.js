@@ -1470,7 +1470,7 @@ function _block_body_rules(suffix) {
     ['stmt_mut' + suffix]: (/** @type {{ [x: string]: RuleOrLiteral; }} */ $) =>
       prec.right(
         prec_map().assignment,
-        seq(keyword().mut, $['_assignment_pattern' + suffix])
+        seq(keyword().mut, $['_assignment_pattern' + suffix]),
       ),
 
     ['stmt_const' + suffix]: (
