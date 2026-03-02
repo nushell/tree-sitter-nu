@@ -1782,8 +1782,8 @@ function _range_rule(anonymous) {
     };
   };
 
-  const { opr, step: opr_step } = create_opr(false);
-  const { opr: opr_imm, step: opr_step_imm } = create_opr(true);
+  const {opr, step: opr_step} = create_opr(false);
+  const {opr: opr_imm, step: opr_step_imm} = create_opr(true);
 
   return (/** @type {any} */ $) => {
     const member = choice(
