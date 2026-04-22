@@ -258,7 +258,7 @@ cmd-id-005-builtin
 ====
 
 %echo
-%str join
+%where
 %each
 
 -----
@@ -271,8 +271,7 @@ cmd-id-005-builtin
   (pipeline
     (pipe_element
       (command
-        (cmd_identifier)
-        (val_string))))
+        (cmd_identifier))))
   (pipeline
     (pipe_element
       (command
