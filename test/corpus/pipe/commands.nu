@@ -920,6 +920,21 @@ echo 1...()
           (expr_parenthesized))))))
 
 ======
+cmd-027-builtin-cmd
+======
+
+%cmd 42
+
+------
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_number)))))
+
+======
 cmd-026-unquoted-string-with-leading-plus
 ======
 
