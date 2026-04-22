@@ -1569,7 +1569,7 @@ function _command_rule(parenthesized) {
     return prec.right(
       seq(
         choice(
-          field('head', seq(optional('^'), $.cmd_identifier)),
+          field('head', seq(optional(choice('^', '%')), $.cmd_identifier)),
           field('head', seq('^', $._stringish)),
         ),
         repeat(seq(sep, optional($._cmd_arg))),
