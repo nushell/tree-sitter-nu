@@ -1,5 +1,4 @@
 {
-  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "nu",
   "word": "identifier",
   "rules": {
@@ -15202,8 +15201,16 @@
           "value": "("
         },
         {
-          "type": "SYMBOL",
-          "name": "_parenthesized_body"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_parenthesized_body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -17610,7 +17617,7 @@
         },
         {
           "type": "PATTERN",
-          "value": ".*"
+          "value": "[^)\\]}\\n]*"
         }
       ]
     }
@@ -17763,6 +17770,5 @@
     "_stringish",
     "_terminator"
   ],
-  "supertypes": [],
-  "reserved": {}
+  "supertypes": []
 }

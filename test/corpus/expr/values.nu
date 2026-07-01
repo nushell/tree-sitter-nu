@@ -290,3 +290,20 @@ values-009-dummy-parenthesized
   (pipeline
     (pipe_element
       (expr_parenthesized))))
+
+=====
+values-010-interpolated-comment-same-line
+=====
+
+$"foo (## this is a comment) bar"
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_interpolated
+        (escaped_interpolated_content)
+        (expr_interpolated
+          (comment))
+        (escaped_interpolated_content)))))
