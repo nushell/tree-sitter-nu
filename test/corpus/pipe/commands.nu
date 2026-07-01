@@ -217,6 +217,8 @@ cmd-010-long-flag
 ======
 
 cmd --long-flag --42
+# issue 249
+curl --tlsv1.2
 
 ------
 
@@ -227,6 +229,13 @@ cmd --long-flag --42
         (cmd_identifier)
         (long_flag
           (long_flag_identifier))
+        (long_flag
+          (long_flag_identifier)))))
+  (comment)
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
         (long_flag
           (long_flag_identifier))))))
 

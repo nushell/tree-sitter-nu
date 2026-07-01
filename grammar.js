@@ -119,7 +119,7 @@ module.exports = grammar({
     identifier: _ => _identifier_rules(false),
 
     long_flag_identifier: _ =>
-      token.immediate(/[0-9\p{XID_Start}_][\p{XID_Continue}?_-]*/u),
+      token.immediate(/[0-9\p{XID_Start}_][\p{XID_Continue}?._-]*/u),
 
     _command_name: $ =>
       choice(
