@@ -25,6 +25,8 @@ jobs:
   test:
     name: Test parser
     runs-on: ${{matrix.os}}
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     strategy:
       fail-fast: false
       matrix:
