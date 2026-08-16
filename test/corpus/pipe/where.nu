@@ -12,8 +12,8 @@ ls | where size > 10kb
       (command
         (cmd_identifier)))
     (pipe_element
-      (where_command
-        (where_predicate
+      (row_condition_command
+        (row_condition
           (path)
           (val_filesize
             (val_number)
@@ -39,8 +39,8 @@ where-002-parenthesized
             (val_string
               (string_content))))))
     (pipe_element
-      (where_command
-        (where_predicate
+      (row_condition_command
+        (row_condition
           (expr_parenthesized
             (pipeline
               (pipe_element
@@ -67,7 +67,7 @@ ls | where {|x| $x.size > 10kb }
       (command
         (cmd_identifier)))
     (pipe_element
-      (where_command
+      (row_condition_command
         (val_closure
           (parameter_pipes
             (parameter
@@ -97,14 +97,14 @@ ls | where size > 10kb and size < 100kb
       (command
         (cmd_identifier)))
     (pipe_element
-      (where_command
-        (where_predicate
-          (where_predicate
+      (row_condition_command
+        (row_condition
+          (row_condition
             (path)
             (val_filesize
               (val_number)
               (filesize_unit)))
-          (where_predicate
+          (row_condition
             (path)
             (val_filesize
               (val_number)
@@ -134,22 +134,22 @@ where
             (command
               (cmd_identifier)))
           (pipe_element
-            (where_command
-              (where_predicate
-                (where_predicate
+            (row_condition_command
+              (row_condition
+                (row_condition
                   (path)
                   (val_filesize
                     (val_number)
                     (filesize_unit)))
                 (comment)
                 (comment)
-                (where_predicate
+                (row_condition
                   (path)
                   (val_filesize
                     (val_number)
                     (filesize_unit)))
                 (comment)
-                (where_predicate
+                (row_condition
                   (path)
                   (val_string
                     (string_content)))))))))))
@@ -168,9 +168,9 @@ ls | where (size > 10kb) and true
       (command
         (cmd_identifier)))
     (pipe_element
-      (where_command
-        (where_predicate
-          (where_predicate
+      (row_condition_command
+        (row_condition
+          (row_condition
             (expr_parenthesized
               (pipeline
                 (pipe_element
@@ -180,7 +180,7 @@ ls | where (size > 10kb) and true
                     (val_filesize
                       (val_number)
                       (filesize_unit)))))))
-          (where_predicate
+          (row_condition
             (val_bool)))))))
 
 =====
@@ -201,13 +201,13 @@ name !~ foo
 (nu_script
   (pipeline
     (pipe_element
-      (where_command
-        (where_predicate
+      (row_condition_command
+        (row_condition
           (val_bool)))))
   (pipeline
     (pipe_element
-      (where_command
-        (where_predicate
+      (row_condition_command
+        (row_condition
           (expr_unary
             (expr_parenthesized
               (pipeline
@@ -218,11 +218,11 @@ name !~ foo
       (expr_parenthesized
         (pipeline
           (pipe_element
-            (where_command
-              (where_predicate
-                (where_predicate
+            (row_condition_command
+              (row_condition
+                (row_condition
                   (val_bool))
-                (where_predicate
+                (row_condition
                   (path)
                   (val_string))))))))))
 
@@ -243,8 +243,8 @@ $foo | where 'foo-bar'?.'baz' == 'quz'
       (command
         head: (cmd_identifier)))
     (pipe_element
-      (where_command
-        predicate: (where_predicate
+      (row_condition_command
+        predicate: (row_condition
           lhs: (path)
           rhs: (val_string
             (string_content))))))
@@ -253,8 +253,8 @@ $foo | where 'foo-bar'?.'baz' == 'quz'
       (command
         head: (cmd_identifier)))
     (pipe_element
-      (where_command
-        predicate: (where_predicate
+      (row_condition_command
+        predicate: (row_condition
           lhs: (path)
           rhs: (val_string
             (string_content))))))
@@ -263,8 +263,8 @@ $foo | where 'foo-bar'?.'baz' == 'quz'
       (val_variable
         name: (identifier)))
     (pipe_element
-      (where_command
-        predicate: (where_predicate
+      (row_condition_command
+        predicate: (row_condition
           lhs: (path)
           rhs: (val_string
             (string_content))))))
@@ -273,8 +273,8 @@ $foo | where 'foo-bar'?.'baz' == 'quz'
       (val_variable
         name: (identifier)))
     (pipe_element
-      (where_command
-        predicate: (where_predicate
+      (row_condition_command
+        predicate: (row_condition
           lhs: (path
             (val_string
               (string_content)))
@@ -298,15 +298,93 @@ ls | where $foo.bar and $foo.baz
       (command
         head: (cmd_identifier)))
     (pipe_element
-      (where_command
-        predicate: (where_predicate
-          lhs: (where_predicate
+      (row_condition_command
+        predicate: (row_condition
+          lhs: (row_condition
             (val_variable
               name: (identifier)
               (cell_path
                 (path))))
-          rhs: (where_predicate
+          rhs: (row_condition
             (val_variable
               name: (identifier)
               (cell_path
                 (path)))))))))
+
+=====
+row-condition-commands-001
+=====
+
+any name =~ foo
+all name =~ foo
+take until name =~ foo
+skip while name =~ foo
+chunk-by name =~ foo
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (row_condition_command
+        (row_condition
+          (path)
+          (val_string)))))
+  (pipeline
+    (pipe_element
+      (row_condition_command
+        (row_condition
+          (path)
+          (val_string)))))
+  (pipeline
+    (pipe_element
+      (row_condition_command
+        (row_condition
+          (path)
+          (val_string)))))
+  (pipeline
+    (pipe_element
+      (row_condition_command
+        (row_condition
+          (path)
+          (val_string)))))
+  (pipeline
+    (pipe_element
+      (row_condition_command
+        (row_condition
+          (path)
+          (val_string))))))
+
+=====
+row-condition-commands-002
+=====
+
+any-foo
+all-foo
+take-until-foo
+skip-while-foo
+chunk-by-foo
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))))
