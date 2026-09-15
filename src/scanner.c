@@ -113,7 +113,13 @@ bool tree_sitter_nu_external_scanner_scan(
     TSLexer *lexer,
     const bool *valid_symbols
 ) {
-    if (valid_symbols[ERROR_SENTINEL]) {
+    // During error recovery tree-sitter marks every real external token as
+    // valid; ERROR_SENTINEL is not a declared external token, so indexing
+    // valid_symbols[ERROR_SENTINEL] reads past the end of the array. Detect
+    // error recovery by checking only the valid, in-range token slots.
+    if (valid_symbols[RAW_STRING_BEGIN] &&
+        valid_symbols[RAW_STRING_CONTENT] &&
+        valid_symbols[RAW_STRING_END]) {
         return false;
     }
 
