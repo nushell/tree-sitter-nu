@@ -50,5 +50,13 @@
     "test": "node --test bindings/node/*_test.js",
     "lint": "eslint grammar.js",
     "format": "eslint --fix grammar.js"
-  }
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.nu",
+      "injection-regex": "^nu$",
+      "file-types": ["nu"],
+      "highlights": "queries/nu/highlights.scm"
+    }
+  ]
 }

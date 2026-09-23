@@ -1007,7 +1007,7 @@ module.exports = grammar({
       ),
 
     expr_interpolated: $ =>
-      seq(brack().open_paren, $._parenthesized_body, brack().close_paren),
+      seq(brack().open_paren, optional($._parenthesized_body), brack().close_paren),
 
     /// Collections
 
@@ -1308,7 +1308,7 @@ module.exports = grammar({
 
     /// Comments
 
-    comment: _ => seq('#', /.*/),
+    comment: _ => seq('#', /[^)\]}\n]*/),
   },
 });
 

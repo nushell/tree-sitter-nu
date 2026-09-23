@@ -562,7 +562,6 @@
   {
     "type": "comment",
     "named": true,
-    "extra": true,
     "fields": {}
   },
   {
@@ -2743,7 +2742,6 @@
   {
     "type": "nu_script",
     "named": true,
-    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
