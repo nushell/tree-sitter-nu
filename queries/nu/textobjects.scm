@@ -51,7 +51,7 @@
 (command
   head: (_) @call.inner) @call.outer
 
-(where_command
+(row_condition_command
   predicate: (_) @call.inner) @call.outer
 
 ; define pipeline first, because it should only match as a fallback

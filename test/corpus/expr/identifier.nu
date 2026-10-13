@@ -258,16 +258,11 @@ cmd-id-005-builtin
 ====
 
 %echo
-%where
 %each
 
 -----
 
 (nu_script
-  (pipeline
-    (pipe_element
-      (command
-        (cmd_identifier))))
   (pipeline
     (pipe_element
       (command

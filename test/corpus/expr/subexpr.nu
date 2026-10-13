@@ -58,8 +58,8 @@ subexpr-003-pipeline
             (command
               (cmd_identifier)))
           (pipe_element
-            (where_command
-              (where_predicate
+            (row_condition_command
+              (row_condition
                 (path)
                 (val_filesize
                   (val_number)

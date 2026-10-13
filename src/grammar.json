@@ -1433,6 +1433,198 @@
           "type": "SEQ",
           "members": [
             {
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "where"
+              },
+              "named": false,
+              "value": "_prefix"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':,]"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "any"
+              },
+              "named": false,
+              "value": "_prefix"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':,]"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "all"
+              },
+              "named": false,
+              "value": "_prefix"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':,]"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "take until"
+              },
+              "named": false,
+              "value": "_prefix"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':,]"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "take while"
+              },
+              "named": false,
+              "value": "_prefix"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':,]"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "skip until"
+              },
+              "named": false,
+              "value": "_prefix"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':,]"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "skip while"
+              },
+              "named": false,
+              "value": "_prefix"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':,]"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "chunk-by"
+              },
+              "named": false,
+              "value": "_prefix"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[^\\s\\r\\n\\t\\|();\\[\\]\\{}<>=\"`':,]"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
               "type": "SYMBOL",
               "name": "_val_number_decimal"
             },
@@ -4749,7 +4941,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "where_command"
+          "name": "row_condition_command"
         },
         {
           "type": "SYMBOL",
@@ -4859,10 +5051,10 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "where_command_parenthesized"
+            "name": "row_condition_command_parenthesized"
           },
           "named": true,
-          "value": "where_command"
+          "value": "row_condition_command"
         },
         {
           "type": "ALIAS",
@@ -5024,7 +5216,7 @@
         }
       ]
     },
-    "_where_predicate_lhs_path_head": {
+    "_row_condition_lhs_path_head": {
       "type": "SEQ",
       "members": [
         {
@@ -5064,14 +5256,14 @@
         }
       ]
     },
-    "_where_predicate_lhs": {
+    "_row_condition_lhs": {
       "type": "SEQ",
       "members": [
         {
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "_where_predicate_lhs_path_head"
+            "name": "_row_condition_lhs_path_head"
           },
           "named": true,
           "value": "path"
@@ -5085,12 +5277,45 @@
         }
       ]
     },
-    "where_command": {
+    "row_condition_command": {
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "where"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "where"
+            },
+            {
+              "type": "STRING",
+              "value": "any"
+            },
+            {
+              "type": "STRING",
+              "value": "all"
+            },
+            {
+              "type": "STRING",
+              "value": "take until"
+            },
+            {
+              "type": "STRING",
+              "value": "take while"
+            },
+            {
+              "type": "STRING",
+              "value": "skip until"
+            },
+            {
+              "type": "STRING",
+              "value": "skip while"
+            },
+            {
+              "type": "STRING",
+              "value": "chunk-by"
+            }
+          ]
         },
         {
           "type": "FIELD",
@@ -5100,7 +5325,7 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "where_predicate"
+                "name": "row_condition"
               },
               {
                 "type": "SYMBOL",
@@ -5113,22 +5338,55 @@
                   "name": "_binary_predicate"
                 },
                 "named": true,
-                "value": "where_predicate"
+                "value": "row_condition"
               }
             ]
           }
         }
       ]
     },
-    "where_command_parenthesized": {
+    "row_condition_command_parenthesized": {
       "type": "PREC_LEFT",
       "value": 0,
       "content": {
         "type": "SEQ",
         "members": [
           {
-            "type": "STRING",
-            "value": "where"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "where"
+              },
+              {
+                "type": "STRING",
+                "value": "any"
+              },
+              {
+                "type": "STRING",
+                "value": "all"
+              },
+              {
+                "type": "STRING",
+                "value": "take until"
+              },
+              {
+                "type": "STRING",
+                "value": "take while"
+              },
+              {
+                "type": "STRING",
+                "value": "skip until"
+              },
+              {
+                "type": "STRING",
+                "value": "skip while"
+              },
+              {
+                "type": "STRING",
+                "value": "chunk-by"
+              }
+            ]
           },
           {
             "type": "CHOICE",
@@ -5150,7 +5408,7 @@
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "where_predicate"
+                  "name": "row_condition"
                 },
                 {
                   "type": "SYMBOL",
@@ -5163,7 +5421,7 @@
                     "name": "_binary_predicate_parenthesized"
                   },
                   "named": true,
-                  "value": "where_predicate"
+                  "value": "row_condition"
                 }
               ]
             }
@@ -5200,7 +5458,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "where_predicate"
+                      "name": "row_condition"
                     },
                     {
                       "type": "SYMBOL",
@@ -5225,7 +5483,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "where_predicate"
+                      "name": "row_condition"
                     },
                     {
                       "type": "SYMBOL",
@@ -5251,7 +5509,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "where_predicate"
+                      "name": "row_condition"
                     },
                     {
                       "type": "SYMBOL",
@@ -5276,7 +5534,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "where_predicate"
+                      "name": "row_condition"
                     },
                     {
                       "type": "SYMBOL",
@@ -5302,7 +5560,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "where_predicate"
+                      "name": "row_condition"
                     },
                     {
                       "type": "SYMBOL",
@@ -5327,7 +5585,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "where_predicate"
+                      "name": "row_condition"
                     },
                     {
                       "type": "SYMBOL",
@@ -5358,7 +5616,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "where_predicate"
+                      "name": "row_condition"
                     },
                     {
                       "type": "SYMBOL",
@@ -5407,7 +5665,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "where_predicate"
+                      "name": "row_condition"
                     },
                     {
                       "type": "SYMBOL",
@@ -5445,7 +5703,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "where_predicate"
+                      "name": "row_condition"
                     },
                     {
                       "type": "SYMBOL",
@@ -5494,7 +5752,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "where_predicate"
+                      "name": "row_condition"
                     },
                     {
                       "type": "SYMBOL",
@@ -5532,7 +5790,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "where_predicate"
+                      "name": "row_condition"
                     },
                     {
                       "type": "SYMBOL",
@@ -5581,7 +5839,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "where_predicate"
+                      "name": "row_condition"
                     },
                     {
                       "type": "SYMBOL",
@@ -5607,7 +5865,7 @@
         }
       ]
     },
-    "where_predicate": {
+    "row_condition": {
       "type": "CHOICE",
       "members": [
         {
@@ -5640,7 +5898,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -5721,7 +5979,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -5802,7 +6060,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -5883,7 +6141,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -5964,7 +6222,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -6045,7 +6303,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -6126,7 +6384,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -6207,7 +6465,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -6288,7 +6546,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -6369,7 +6627,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -6450,7 +6708,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -6531,7 +6789,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -6612,7 +6870,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -6693,7 +6951,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -6774,7 +7032,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -6855,7 +7113,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -6936,7 +7194,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -7017,7 +7275,7 @@
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_where_predicate_lhs"
+                      "name": "_row_condition_lhs"
                     },
                     {
                       "type": "SYMBOL",
@@ -17641,9 +17899,6 @@
     [
       "_block_body",
       "val_closure"
-    ],
-    [
-      "_block_body"
     ],
     [
       "_expression_parenthesized",

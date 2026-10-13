@@ -111,7 +111,7 @@ file_path: (val_string) @variable.parameter
 (expr_binary
   opr: _ @operator)
 
-(where_predicate
+(row_condition
   opr: _ @operator)
 
 (assignment
@@ -270,7 +270,7 @@ key: (identifier) @property
 (command
   head: (cmd_identifier) @function.builtin
   (#any-of? @function.builtin
-    "all" "ansi" "any" "append" "ast" "bits" "bytes" "cal" "cd" "char" "chunk-by" "chunks" "clear"
+    "ansi" "append" "ast" "bits" "bytes" "cal" "cd" "char" "chunks" "clear"
     "collect" "columns" "compact" "complete" "config" "cp" "date" "debug" "decode" "default"
     "detect" "drop" "du" "each" "encode" "enumerate" "every" "exec" "exit" "explain" "explore"
     "fill" "filter" "find" "first" "flatten" "format" "from" "generate" "get" "glob" "grid"
@@ -279,8 +279,8 @@ key: (identifier) @property
     "length" "let-env" "lines" "load-env" "ls" "math" "merge" "metadata" "mkdir" "mktemp" "move"
     "mv" "nu-check" "nu-highlight" "open" "panic" "par-each" "parse" "path" "plugin" "port"
     "prepend" "print" "ps" "query" "random" "reduce" "reject" "rename" "reverse" "rm" "roll"
-    "rotate" "run-external" "save" "schema" "select" "seq" "shuffle" "skip" "sleep" "slice" "sort"
-    "sort-by" "split" "start" "stor" "str" "sys" "table" "take" "tee" "term" "timeit" "to" "touch"
+    "rotate" "run-external" "save" "schema" "select" "seq" "shuffle" "sleep" "slice" "sort"
+    "sort-by" "split" "start" "stor" "str" "sys" "table" "tee" "term" "timeit" "to" "touch"
     "transpose" "tutor" "ulimit" "uname" "uniq" "uniq-by" "update" "upsert" "url" "values" "version"
     "view" "watch" "which" "whoami" "window" "with-env" "wrap" "zip"))
 
@@ -311,9 +311,18 @@ key: (identifier) @property
   ] @punctuation.delimiter
   head: (_) @function)
 
-"where" @function.builtin
+[
+ "where"
+ "any"
+ "all"
+ "take until"
+ "take while"
+ "skip until"
+ "skip while"
+ "chunk-by"
+] @function.builtin
 
-(where_predicate
+(row_condition
   [
     "?"
     "!"

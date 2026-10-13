@@ -30,7 +30,6 @@ module.exports = grammar({
     [$._block_body, $.record_body, $.val_closure],
     [$._block_body, $.shebang],
     [$._block_body, $.val_closure],
-    [$._block_body],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
     [$._match_pattern_list, $.val_list],
     [$._match_pattern_list_body, $._table_head],
@@ -100,6 +99,9 @@ module.exports = grammar({
           seq(alias(x, '_prefix'), pattern_suffix),
         ),
         ...Object.values(special()).map((x) =>
+          seq(alias(x, '_prefix'), pattern_suffix),
+        ),
+        ...row_condition_command_names().map((x) =>
           seq(alias(x, '_prefix'), pattern_suffix),
         ),
         seq(
@@ -544,7 +546,7 @@ module.exports = grammar({
         ),
         seq(_env_variable_rule(false, $), $.command),
         $._ctrl_expression,
-        $.where_command,
+        $.row_condition_command,
         $.assignment,
         alias($._stmt_let_shortcut, $.stmt_let),
       ),
@@ -563,7 +565,7 @@ module.exports = grammar({
 
         $._ctrl_expression_parenthesized,
         alias($.assignment_parenthesized, $.assignment),
-        alias($.where_command_parenthesized, $.where_command),
+        alias($.row_condition_command_parenthesized, $.row_condition_command),
         alias($._stmt_let_shortcut, $.stmt_let),
       ),
 
@@ -600,7 +602,7 @@ module.exports = grammar({
 
     _blosure: $ => choice($.block, $.val_closure),
 
-    _where_predicate_lhs_path_head: $ =>
+    _row_condition_lhs_path_head: $ =>
       seq(
         choice(
           token(prec(prec_map().low, repeat1(none_of('\\[\\]{}.,:?!')))),
@@ -611,16 +613,16 @@ module.exports = grammar({
 
     // the where command has a unique argument pattern that breaks the
     // general command parsing, so we handle it separately
-    _where_predicate_lhs: $ =>
-      seq(alias($._where_predicate_lhs_path_head, $.path), repeat($.path)),
+    _row_condition_lhs: $ =>
+      seq(alias($._row_condition_lhs_path_head, $.path), repeat($.path)),
 
-    where_command: _where_clause_rule(false),
-    where_command_parenthesized: _where_clause_rule(true),
+    row_condition_command: _row_condition_command_rule(false),
+    row_condition_command_parenthesized: _row_condition_command_rule(true),
 
     _binary_predicate: _binary_predicate_rule(false),
     _binary_predicate_parenthesized: _binary_predicate_rule(true),
 
-    where_predicate: $ =>
+    row_condition: $ =>
       choice(
         $.val_bool,
         $.val_variable,
@@ -633,7 +635,7 @@ module.exports = grammar({
               field(
                 'lhs',
                 choice(
-                  $._where_predicate_lhs,
+                  $._row_condition_lhs,
                   $.val_variable,
                   $.expr_parenthesized,
                 ),
@@ -1693,9 +1695,9 @@ function _binary_predicate_rule(parenthesized) {
     return choice(
       ...binary().map(({prec: precedence, name: opr}) => {
         const seq_array = [
-          field('lhs', choice($.where_predicate, _expr)),
+          field('lhs', choice($.row_condition, _expr)),
           field('opr', opr),
-          field('rhs', choice($.where_predicate, _expr)),
+          field('rhs', choice($.row_condition, _expr)),
         ];
         return parenthesized ?
           prec.left(precedence, _insert_newline($, seq_array)) :
@@ -1708,20 +1710,20 @@ function _binary_predicate_rule(parenthesized) {
 /**
  * @param {boolean} parenthesized
  */
-function _where_clause_rule(parenthesized) {
+function _row_condition_command_rule(parenthesized) {
   return (/** @type {any} */ $) => {
     const seq_array = [
-      'where',
+      choice(...row_condition_command_names()),
       field(
         'predicate',
         choice(
-          $.where_predicate,
+          $.row_condition,
           $.val_closure,
           alias(
             parenthesized ?
               $._binary_predicate_parenthesized :
               $._binary_predicate,
-            $.where_predicate,
+            $.row_condition,
           ),
         ),
       ),
@@ -1987,6 +1989,13 @@ function keyword() {
 
     in: 'in',
   };
+}
+
+/**
+ *
+ */
+function row_condition_command_names() {
+  return ['where', 'any', 'all', 'take until', 'take while', 'skip until', 'skip while', 'chunk-by'];
 }
 
 // modifier keywords
