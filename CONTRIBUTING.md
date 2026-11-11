@@ -6,7 +6,8 @@ will take you through how to setup and contribute to `tree-sitter-nu`
 ## requirements
 
 - [`nushell`][001]
-- [`tree-sitter cli`][002]
+- [`tree-sitter cli`][002] 0.25 or newer (older versions can't load the
+generated parser)
 
 ## organization
 the most important sections of this repo and the ones which you will
@@ -32,6 +33,9 @@ the [`ts.nu`][104] module wraps the [`tree-sitter cli`][002]. to use the module,
 ```nu
 > use ts.nu * 
 ```
+
+`ts parse`, `ts hl` and `ts test` always use this checkout's grammar, even if
+the `parser-directories` in your tree-sitter config list another checkout.
 
 - `ts gen`   -> wraps `tree-sitter generate`, use this after making changes
 to the grammar to generate a new parser. 

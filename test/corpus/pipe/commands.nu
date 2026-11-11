@@ -529,9 +529,7 @@ bla --weird-that=this --behaved-differently=than-this --level=2 --expr=(1 + 1)
         head: (cmd_identifier)
         flag: (short_flag)
         flag: (long_flag)
-        flag: (short_flag
-          name: (short_flag_identifier)
-          value: (val_bool))))))
+        arg_str: (val_string)))))
 
 ======
 cmd-020-variable-external
@@ -1055,3 +1053,157 @@ echo +..1()
         (cmd_identifier)
         (val_string
           (expr_parenthesized))))))
+
+=====
+cmd-028-dynamic-builtin
+=====
+
+[3 1 2] | %$sorter --reverse
+%($cmd) hi
+%$r.c x
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_list
+        (list_body
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number)))))
+    (pipe_element
+      (command
+        (val_variable
+          (identifier))
+        (long_flag
+          (long_flag_identifier)))))
+  (pipeline
+    (pipe_element
+      (command
+        (expr_parenthesized
+          (pipeline
+            (pipe_element
+              (val_variable
+                (identifier)))))
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (val_variable
+          (identifier)
+          (cell_path
+            (path)))
+        (val_string)))))
+
+=====
+cmd-029-record-spread-flags
+=====
+
+f ...{x: 1, y: true} ...$rest
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_record
+          (record_body
+            (record_entry
+              (identifier)
+              (val_number))
+            (record_entry
+              (identifier)
+              (val_bool))))
+        (val_variable
+          (identifier))))))
+
+=====
+cmd-030-negated-flag-value
+=====
+
+f --n -$x 1
+f --n=-$x 1
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (long_flag
+          (long_flag_identifier))
+        (expr_unary
+          (val_variable
+            (identifier)))
+        (val_number))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (long_flag
+          (long_flag_identifier)
+          (expr_unary
+            (val_variable
+              (identifier))))
+        (val_number)))))
+
+=====
+cmd-031-end-of-options
+=====
+
+process -- --verbose -x foo
+ls -a -- -b -$x -
+^git checkout -- file.txt
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (long_flag)
+        (val_string)
+        (val_string)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (short_flag
+          (short_flag_identifier))
+        (long_flag)
+        (val_string)
+        (expr_unary
+          (val_variable
+            (identifier)))
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)
+        (long_flag)
+        (val_string)))))
+
+=====
+cmd-032-keyword-external
+=====
+
+^type foo.txt
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))

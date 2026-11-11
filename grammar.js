@@ -32,6 +32,7 @@ module.exports = grammar({
     [$._block_body, $.val_closure],
     [$._block_body],
     [$._expression_parenthesized, $._expr_binary_expression_parenthesized],
+    [$._expr_unary_not_parenthesized, $.expr_binary_parenthesized],
     [$._match_pattern_list, $.val_list],
     [$._match_pattern_list_body, $._table_head],
     [$._match_pattern_list_body, $.list_body, $._table_head],
@@ -45,7 +46,7 @@ module.exports = grammar({
     [$._parenthesized_body],
     [$.block, $.val_closure],
     [$.block, $.val_record, $.val_closure],
-    [$.command, $.record_entry],
+    [$._command_head, $.record_entry],
     [$.ctrl_if_parenthesized],
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
@@ -160,6 +161,13 @@ module.exports = grammar({
         optional($.attribute_list),
         optional(modifier().visibility),
         keyword().def,
+        $._decl_def_tail,
+      ),
+
+    // everything after the keyword is one rule, so the optional attributes
+    // and `export` before it don't each get a copy of its states
+    _decl_def_tail: $ =>
+      seq(
         repeat($.long_flag),
         $._command_name,
         repeat($.long_flag),
@@ -175,6 +183,12 @@ module.exports = grammar({
         optional($.attribute_list),
         optional(modifier().visibility),
         keyword().extern,
+        $._decl_extern_tail,
+      ),
+
+    _decl_extern_tail: $ =>
+      seq(
+        repeat($.long_flag),
         $._command_name,
         field('signature', choice($.parameter_parens, $.parameter_bracks)),
         field('body', optional($.block)),
@@ -186,6 +200,15 @@ module.exports = grammar({
         keyword().module,
         $._command_name,
         optional(field('body', $.block)),
+      ),
+
+    decl_type: $ =>
+      seq(
+        optional(modifier().visibility),
+        keyword().type,
+        field('name', alias($._type_name, $.flat_type)),
+        '=',
+        $._type_annotation,
       ),
 
     decl_use: $ =>
@@ -265,11 +288,7 @@ module.exports = grammar({
         optional($._repeat_newline),
         field(
           'param_value',
-          choice(
-            $._item_expression,
-            alias($._unquoted_in_record, $.val_string),
-            alias($._unquoted_in_record_with_expr, $.val_string),
-          ),
+          choice($._item_expression, $._bare_record_item),
         ),
       ),
 
@@ -285,7 +304,22 @@ module.exports = grammar({
         choice($.list_type, $.collection_type, $.flat_type, $.composite_type),
       ),
 
-    flat_type: _ => field('flat_type', flat_types()),
+    // One regex covers builtin names (`int`, `cell-path`), custom value types
+    // (`semver`) and `type` aliases (`my-alias`). Listing every builtin as a
+    // string instead adds hundreds of states to the main lexer, which
+    // dominates wasm compile time. Nushell requires spaces around `->`, so
+    // `int->string` is a single (unknown) name there too. Same precedence as
+    // the `list`/`record`/`table`/`oneof` strings so `listing` is one name.
+    _type_name: _ => token(/[\p{XID_Start}_][\p{XID_Continue}-]*/u),
+
+    // `list`, `record` and `table` are strings because they also start
+    // `list<...>` and friends. `error` stays a string because editor queries
+    // (nvim-treesitter, zed) match the `"error"` node.
+    flat_type: $ =>
+      field(
+        'flat_type',
+        choice('list', 'record', 'table', 'error', $._type_name),
+      ),
 
     _collection_annotation: $ =>
       seq(':', $._all_type, field('completion', optional($.param_completer))),
@@ -402,6 +436,8 @@ module.exports = grammar({
 
     ctrl_if: _ctrl_if_rule(false),
     ctrl_if_parenthesized: _ctrl_if_rule(true),
+    _ctrl_else_parenthesized: $ =>
+      _insert_newline($, _ctrl_else_clause($, true), true, false),
 
     _ctrl_match_body: $ =>
       general_body_rules(
@@ -443,10 +479,10 @@ module.exports = grammar({
     match_pattern: $ =>
       choice(
         seq('_', $.match_guard),
-        seq($._match_pattern, optional($.match_guard)),
         seq(
           $._match_pattern,
           repeat(seq(optional($._newline), '|', $._match_pattern)),
+          optional($.match_guard),
         ),
       ),
 
@@ -477,26 +513,33 @@ module.exports = grammar({
     _match_pattern_list_body: $ =>
       general_body_rules(
         'entry',
-        choice(
-          $._match_pattern_expression,
-          alias($._unquoted_in_list, $.val_string),
-        ),
+        choice($._match_pattern_expression, $._bare_list_item),
         $._entry_separator,
         $._newline,
         null,
         choice($._newline, ','),
       ),
 
+    // the rest pattern may appear once, anywhere: `[$first, ..$mid, $last]`;
+    // entries after it must be separated from it
     _match_pattern_list: $ =>
       seq(
         brack().open_brack,
         optional(alias($._match_pattern_list_body, $.list_body)),
         optional(
-          field(
-            'rest',
-            choice(
-              alias($._match_pattern_rest, $.val_variable),
-              operator().range_inclusive,
+          seq(
+            field(
+              'rest',
+              choice(
+                alias($._match_pattern_rest, $.val_variable),
+                operator().range_inclusive,
+              ),
+            ),
+            optional(
+              seq(
+                repeat1($._entry_separator),
+                optional(alias($._match_pattern_list_body, $.list_body)),
+              ),
             ),
           ),
         ),
@@ -524,6 +567,10 @@ module.exports = grammar({
 
     ctrl_try: _ctrl_try_rule(false),
     ctrl_try_parenthesized: _ctrl_try_rule(true),
+    _ctrl_catch_parenthesized: $ =>
+      _insert_newline($, _ctrl_try_clause($, 'catch'), true, false),
+    _ctrl_finally_parenthesized: $ =>
+      _insert_newline($, _ctrl_try_clause($, 'finally'), true, false),
 
     _stmt_let_shortcut: $ => prec.left(
       seq(
@@ -614,18 +661,71 @@ module.exports = grammar({
     _where_predicate_lhs: $ =>
       seq(alias($._where_predicate_lhs_path_head, $.path), repeat($.path)),
 
+    // Commands that take a row condition. Each head includes the whitespace
+    // after it, like `not`, so `whereis` or `anything` stay ordinary commands.
+    // `take while`, `skip until`, `chunk-by` and `record where` also take one
+    // but are rare enough that their main-lexer cost (~55 cases) isn't worth
+    // it; with a closure they parse fine as ordinary commands. Only inside
+    // parentheses may a `where` condition start on the next line; elsewhere
+    // that would take the next statement as the condition.
+    _row_condition_head: _ => _row_condition_head_rule(/[ \t]/),
+    _row_condition_head_parenthesized: _ => _row_condition_head_rule(/\s/),
+
+    // `--help`/`-h` in place of the condition: `any --help`
+    _row_condition_flag: $ =>
+      choice(
+        alias($._row_condition_long_flag, $.long_flag),
+        alias($._row_condition_short_flag, $.short_flag),
+      ),
+    _row_condition_long_flag: $ =>
+      seq(operator().long_flag, field('name', $.long_flag_identifier)),
+    _row_condition_short_flag: $ =>
+      seq(operator().minus, field('name', $.short_flag_identifier)),
+
     where_command: _where_clause_rule(false),
     where_command_parenthesized: _where_clause_rule(true),
 
     _binary_predicate: _binary_predicate_rule(false),
     _binary_predicate_parenthesized: _binary_predicate_rule(true),
 
-    where_predicate: $ =>
+    // `not` in a row condition negates a whole predicate, so `where not a`
+    // can test a bare column
+    _where_not: $ =>
+      prec.right(
+        prec_map().not,
+        seq(
+          $._not,
+          choice(
+            $._where_operand,
+            alias($._where_comparison, $.where_predicate),
+          ),
+        ),
+      ),
+
+    _where_operand: $ =>
       choice(
         $.val_bool,
         $.val_variable,
+        alias($._where_not, $.expr_unary),
+        $.expr_parenthesized,
+        // a bare column is truthy: `where enabled and size > 1kb`
+        prec(prec_map().low, $._where_predicate_lhs),
+      ),
+
+    where_predicate: $ => choice($._where_operand, $._where_comparison),
+
+    // one rule per side, so the sides aren't repeated for every operator
+    _where_comparison_rhs: $ =>
+      choice(
+        $._value,
+        $.val_range,
         $.expr_unary,
         $.expr_parenthesized,
+        $._binary_rhs_string,
+      ),
+
+    _where_comparison: $ =>
+      choice(
         ...predicate().map(([precedence, opr]) =>
           prec.left(
             precedence,
@@ -641,14 +741,7 @@ module.exports = grammar({
               field('opr', opr),
               field(
                 'rhs',
-                choice(
-                  $._value,
-                  $.val_range,
-                  $.expr_unary,
-                  $.expr_parenthesized,
-                  alias($.unquoted, $.val_string),
-                  alias($._unquoted_with_expr, $.val_string),
-                ),
+                $._where_comparison_rhs,
               ),
             ),
           ),
@@ -669,7 +762,7 @@ module.exports = grammar({
     _expression_parenthesized: $ =>
       choice(
         $._value,
-        $.expr_unary,
+        alias($._expr_unary_parenthesized, $.expr_unary),
         $.val_range,
         $.expr_parenthesized,
         alias($.expr_binary_parenthesized, $.expr_binary),
@@ -677,35 +770,52 @@ module.exports = grammar({
 
     /// Composite Expressions
 
-    expr_unary: $ => {
-      const after_not = choice(
-        $.val_bool,
-        $.expr_parenthesized,
-        $.val_variable,
-        $.expr_unary,
-      );
+    expr_unary: $ => choice($._expr_unary_not, $._expr_unary_minus),
+    _expr_unary_parenthesized: $ =>
+      choice($._expr_unary_not_parenthesized, $._expr_unary_minus),
 
-      return choice(
-        // "not" should be followed by space
-        // to distinguish from unquoted e.g. $foo == nothing
-        seq(alias(token(seq(operator().not, /\s/)), operator().not), after_not),
-        $._expr_unary_minus,
-      );
-    },
+    _expr_unary_not: _expr_unary_not_rule(false),
+    _expr_unary_not_parenthesized: _expr_unary_not_rule(true),
+
+    // "not" should be followed by space
+    // to distinguish from unquoted e.g. $foo == nothing
+    _not: _ => alias(token(seq(operator().not, /\s/)), operator().not),
 
     _expr_unary_minus: $ =>
+      seq(token(operator().minus), $._expr_unary_minus_operand),
+
+    // In lists and record values `-foo` and a lone `-` are strings, so the
+    // minus ranks below the unquoted string tokens there. Those tokens never
+    // start with `-$` and never are a lone `-`, which leaves `-$x` to this.
+    _minus_item: _ => token(prec(prec_map().lowest - 1, operator().minus)),
+
+    _expr_unary_minus_item: $ =>
+      seq(alias($._minus_item, operator().minus), $._expr_unary_minus_operand),
+
+    _expr_unary_minus_operand: $ =>
+      choice(
+        $._expr_unary_minus_parenthesized,
+        alias($._val_variable_immediate, $.val_variable),
+      ),
+
+    // `-(expr)foo` strings share this, so the choice waits until after `)`
+    _expr_unary_minus_parenthesized: $ =>
       seq(
-        token(operator().minus),
-        seq(
-          // ensure the expression immediately follows the
-          // opening paren
-          token.immediate(brack().open_paren),
-          $._block_body,
-          brack().close_paren,
-        ),
+        // ensure the expression immediately follows the
+        // opening paren
+        token.immediate(brack().open_paren),
+        optional($._block_body),
+        brack().close_paren,
       ),
 
     expr_binary: _expr_binary_rule(false),
+    // an unquoted right-hand side can't be followed by another operator, so
+    // sharing it doesn't affect precedence
+    _binary_rhs_string: $ =>
+      choice(
+        alias($.unquoted, $.val_string),
+        alias($._unquoted_with_expr, $.val_string),
+      ),
     expr_binary_parenthesized: _expr_binary_rule(true),
 
     _expr_binary_expression: $ =>
@@ -722,7 +832,7 @@ module.exports = grammar({
         $._value,
         $.val_range,
         alias($.expr_binary_parenthesized, $.expr_binary),
-        $.expr_unary,
+        alias($._expr_unary_parenthesized, $.expr_unary),
         $.expr_parenthesized,
       ),
 
@@ -765,7 +875,9 @@ module.exports = grammar({
     val_range: _range_rule(false),
     _val_range: _range_rule(true),
 
-    _immediate_decimal: _decimal_rule(true),
+    _immediate_decimal: $ =>
+      seq($._immediate_decimal_mantissa, optional($._decimal_exponent)),
+    _immediate_decimal_mantissa: _decimal_rule(true),
 
     /// Simple Expressions
 
@@ -800,27 +912,27 @@ module.exports = grammar({
     _spread_variable: $ =>
       seq('...$', field('name', $.identifier), optional($.cell_path)),
 
-    val_variable: $ =>
-      seq(
-        '$',
-        field('name', choice('nu', 'in', 'env', $.identifier)),
-        optional($.cell_path),
-      ),
+    val_variable: _variable_rule(false),
+    // `-$x` negation: the variable must touch the minus sign
+    _val_variable_immediate: _variable_rule(true),
 
     val_cellpath: $ => seq('$', $.cell_path),
 
     val_number: $ => $._val_number,
 
-    _val_number_decimal: _decimal_rule(false),
+    // the exponent is shared, so each mantissa form isn't repeated with and
+    // without it
+    _val_number_decimal: $ =>
+      seq($._val_number_decimal_mantissa, optional($._decimal_exponent)),
+    _val_number_decimal_mantissa: _decimal_rule(false),
+    _decimal_exponent: _ => token.immediate(/[eE][-+]?[\d_]*\d[\d_]*/),
 
     // separating floats from integers does not end well
     // especially when it comes to incorporation with ranges.
     _val_number: $ =>
       choice(
         $._val_number_decimal,
-        /0x[0-9a-fA-F_]+/,
-        /0b[01_]+/,
-        /0o[0-7_]+/,
+        /[+-]?0(x[0-9a-fA-F_]+|b[01_]+|o[0-7_]+)/,
         special().pos_infinity,
         special().neg_infinity,
         special().not_a_number,
@@ -1052,14 +1164,31 @@ module.exports = grammar({
           choice(
             $._item_expression,
             field('spread', $._spread_listish),
-            alias($._unquoted_in_list, $.val_string),
-            alias($._unquoted_in_list_with_expr, $.val_string),
+            $._bare_list_item,
           ),
         ),
       ),
 
     _item_expression: $ =>
       choice($._value, $.val_range, $.expr_parenthesized),
+
+    // In lists, records, match patterns and parameter defaults `-$x` and
+    // `-(expr)` negate, while `-`, `-foo` and `-(expr)foo` are strings
+    _bare_list_item: $ =>
+      choice(
+        alias($._expr_unary_minus_item, $.expr_unary),
+        alias($._minus_item, $.val_string),
+        alias($._unquoted_in_list, $.val_string),
+        alias($._unquoted_in_list_with_expr, $.val_string),
+      ),
+
+    _bare_record_item: $ =>
+      choice(
+        alias($._expr_unary_minus_item, $.expr_unary),
+        alias($._minus_item, $.val_string),
+        alias($._unquoted_in_record, $.val_string),
+        alias($._unquoted_in_record_with_expr, $.val_string),
+      ),
 
     val_record: $ =>
       seq(
@@ -1113,17 +1242,13 @@ module.exports = grammar({
               // This distinguish between record keys and keywords
               ...Object.values(keyword()).map((x) => alias(x, $.identifier)),
               ...Object.values(modifier()).map((x) => alias(x, $.identifier)),
+              ...[special().true, special().false, special().null].map((x) =>
+                alias(x, $.identifier),
+              ),
             ),
           ),
           token(prec(prec_map().higher, ':')),
-          field(
-            'value',
-            choice(
-              $._item_expression,
-              alias($._unquoted_in_record, $.val_string),
-              alias($._unquoted_in_record_with_expr, $.val_string),
-            ),
-          ),
+          field('value', choice($._item_expression, $._bare_record_item)),
         ),
       ),
 
@@ -1201,21 +1326,33 @@ module.exports = grammar({
 
     /// Commands
 
+    // one rule for every head form, so the argument states after it are
+    // shared; `^type` runs an external whose name is a keyword
+    _command_head: $ =>
+      choice(
+        seq(optional(choice('^', '%')), $.cmd_identifier),
+        seq(
+          choice('^', '%'),
+          choice(
+            $._stringish,
+            ...Object.values(keyword()).map((x) => alias(x, $.cmd_identifier)),
+          ),
+        ),
+      ),
+
     command: _command_rule(false),
     _command_parenthesized: _command_rule(true),
 
-    _cmd_arg: $ =>
-      choice(
-        field('redir', prec.right(10, $.redirection)),
-        field('flag', prec.right(9, $._flag)),
-        field('arg', prec.right(8, $._value)),
-        field('arg', prec.right(8, $.val_range)),
-        field('arg', prec.right(7, $.expr_parenthesized)),
-        field('arg_spread', $._spread_listish),
-        // lowest precedence to make it a last resort
-        field('arg_str', alias($.unquoted, $.val_string)),
-        field('arg_str', alias($._unquoted_with_expr, $.val_string)),
-      ),
+    // wins over a bare `--` long flag
+    _end_of_options: _ => prec(1, operator().long_flag),
+
+    _cmd_arg: _cmd_arg_rule(false),
+    _cmd_positional_arg: _cmd_arg_rule(true),
+
+    // `-x`, `--y`, `--` as plain strings, built from existing tokens; the
+    // immediate `$` outranks the low-precedence pattern, leaving `-$x` to
+    // negation
+    _dash_word: $ => seq($._minus_item, $._unquoted_pattern),
 
     flag_value: $ => choice($._value, $.val_string),
 
@@ -1238,6 +1375,7 @@ module.exports = grammar({
         $._value,
         alias($.unquoted, $.val_string),
         alias($._expr_parenthesized_immediate, $.expr_parenthesized),
+        alias($._expr_unary_minus, $.expr_unary),
       ),
 
     _flag_equals_value: $ =>
@@ -1451,6 +1589,7 @@ function _block_body_rules(suffix) {
         $.decl_export,
         $.decl_extern,
         $.decl_module,
+        $.decl_type,
         $.decl_use,
       ),
 
@@ -1568,14 +1707,54 @@ function _command_rule(parenthesized) {
     const sep = parenthesized ? $._separator : $._space;
     return prec.right(
       seq(
-        choice(
-          field('head', seq(optional(choice('^', '%')), $.cmd_identifier)),
-          field('head', seq('^', $._stringish)),
-        ),
+        field('head', $._command_head),
         repeat(seq(sep, optional($._cmd_arg))),
+        // after `--` every argument is positional, even `-x` and `--y`
+        optional(
+          seq(
+            sep,
+            field('flag', alias($._end_of_options, $.long_flag)),
+            repeat(seq(sep, optional($._cmd_positional_arg))),
+          ),
+        ),
       ),
     );
   };
+}
+
+/**
+ * Command arguments. After `--` every argument is positional: there are no
+ * flags, and `-x`, `--y` and a lone `-` are strings.
+ *
+ * @param {boolean} positional
+ */
+function _cmd_arg_rule(positional) {
+  return (/** @type {any} */ $) =>
+    choice(
+      field('redir', prec.right(10, $.redirection)),
+      ...(positional ? [] : [field('flag', prec.right(9, $._flag))]),
+      field('arg', prec.right(8, $._value)),
+      field('arg', prec.right(8, $.val_range)),
+      field('arg', prec.right(7, $.expr_parenthesized)),
+      // `-$x` / `-(expr)`, e.g. as the value of a preceding flag
+      field(
+        'arg',
+        positional ?
+          alias($._expr_unary_minus_item, $.expr_unary) :
+          prec.right(9, alias($._expr_unary_minus, $.expr_unary)),
+      ),
+      field('arg_spread', $._spread_listish),
+      field('arg_spread', alias($._spread_record, $.val_record)),
+      ...(positional ?
+        [
+          field('arg_str', alias($._minus_item, $.val_string)),
+          field('arg_str', alias($._dash_word, $.val_string)),
+        ] :
+        []),
+      // lowest precedence to make it a last resort
+      field('arg_str', alias($.unquoted, $.val_string)),
+      field('arg_str', alias($._unquoted_with_expr, $.val_string)),
+    );
 }
 
 /**
@@ -1588,68 +1767,77 @@ function _env_variable_rule(parenthesized, $) {
 }
 
 /**
+ * In parentheses each `catch`/`finally` clause, with the newlines around it,
+ * is its own rule, so its optional newlines don't multiply the whole `try`.
+ *
  * @param {boolean} parenthesized
  */
 function _ctrl_try_rule(parenthesized) {
   return (/** @type {any} */ $) => {
-    const seq_catch_array = [
-      keyword().catch,
-      field('catch_branch', $._blosure),
-    ];
-    const seq_finally_array = [
-      keyword().finally,
-      field('finally_branch', $._blosure),
-    ];
-    const seq_array = [
-      keyword().try,
-      field('try_branch', $.block),
-      optional(
-        parenthesized ?
-          _insert_newline($, seq_catch_array, true, false) :
-          seq(...seq_catch_array),
-      ),
-      optional(
-        parenthesized ?
-          _insert_newline($, seq_finally_array, true, false) :
-          seq(...seq_finally_array),
-      ),
-    ];
-    return parenthesized ?
-      _insert_newline($, seq_array, false, false) :
-      seq(...seq_array);
+    const head = [keyword().try, field('try_branch', $.block)];
+    if (!parenthesized) {
+      return seq(
+        ...head,
+        optional(seq(..._ctrl_try_clause($, 'catch'))),
+        optional(seq(..._ctrl_try_clause($, 'finally'))),
+      );
+    }
+    return seq(
+      _insert_newline($, head, false, false),
+      optional($._ctrl_catch_parenthesized),
+      optional($._ctrl_finally_parenthesized),
+    );
   };
 }
 
 /**
+ * @param {any} $
+ * @param {'catch' | 'finally'} name
+ */
+function _ctrl_try_clause($, name) {
+  return [keyword()[name], field(name + '_branch', $._blosure)];
+}
+
+/**
+ * In parentheses the `else` clause, with the newlines around it, is its own
+ * rule, so its optional newlines don't multiply the whole `if`.
+ *
  * @param {boolean} parenthesized
  */
 function _ctrl_if_rule(parenthesized) {
   return (/** @type {any} */ $) => {
     const _expr = parenthesized ? $._expression_parenthesized : $._expression;
-    const seq_else_array = [
-      keyword().else,
-      choice(
-        field('else_block', choice($.block, _expr, $.command)),
-        field(
-          'else_branch',
-          parenthesized ? alias($.ctrl_if_parenthesized, $.ctrl_if) : $.ctrl_if,
-        ),
-      ),
-    ];
-    const seq_array = [
+    const head = [
       keyword().if,
       field('condition', _expr),
       field('then_branch', $.block),
-      optional(
-        parenthesized ?
-          _insert_newline($, seq_else_array, true, false) :
-          seq(...seq_else_array),
-      ),
     ];
-    return parenthesized ?
-      _insert_newline($, seq_array, false, false) :
-      seq(...seq_array);
+    if (!parenthesized) {
+      return seq(...head, optional(seq(..._ctrl_else_clause($, false))));
+    }
+    return seq(
+      _insert_newline($, head, false, false),
+      optional($._ctrl_else_parenthesized),
+    );
   };
+}
+
+/**
+ * @param {any} $
+ * @param {boolean} parenthesized
+ */
+function _ctrl_else_clause($, parenthesized) {
+  const _expr = parenthesized ? $._expression_parenthesized : $._expression;
+  return [
+    keyword().else,
+    choice(
+      field('else_block', choice($.block, _expr, $.command)),
+      field(
+        'else_branch',
+        parenthesized ? alias($.ctrl_if_parenthesized, $.ctrl_if) : $.ctrl_if,
+      ),
+    ),
+  ];
 }
 
 /**
@@ -1667,11 +1855,7 @@ function _expr_binary_rule(parenthesized) {
           field('opr', opr),
           field(
             'rhs',
-            choice(
-              _expr,
-              alias($.unquoted, $.val_string),
-              alias($._unquoted_with_expr, $.val_string),
-            ),
+            choice(_expr, $._binary_rhs_string),
           ),
         ];
         return parenthesized ?
@@ -1680,6 +1864,37 @@ function _expr_binary_rule(parenthesized) {
       }),
     );
   };
+}
+
+/**
+ * `not` binds looser than comparisons and bit operators but tighter than
+ * `and`/`xor`/`or`: `not $a == $b` is `not ($a == $b)`
+ *
+ * @param {boolean} parenthesized
+ */
+function _expr_unary_not_rule(parenthesized) {
+  return (/** @type {any} */ $) =>
+    prec.right(
+      prec_map().not,
+      parenthesized ?
+        seq(
+          $._not,
+          $._expr_binary_expression_parenthesized,
+          optional($._repeat_newline),
+        ) :
+        seq($._not, $._expr_binary_expression),
+    );
+}
+
+/**
+ * @param {RegExp} after_where what must follow `where`; `any` and `all` always
+ * need a space or tab
+ */
+function _row_condition_head_rule(after_where) {
+  return choice(
+    alias(token(seq('where', after_where)), 'where'),
+    ...['any', 'all'].map((name) => alias(token(seq(name, /[ \t]/)), name)),
+  );
 }
 
 /**
@@ -1711,19 +1926,24 @@ function _binary_predicate_rule(parenthesized) {
 function _where_clause_rule(parenthesized) {
   return (/** @type {any} */ $) => {
     const seq_array = [
-      'where',
-      field(
-        'predicate',
-        choice(
-          $.where_predicate,
-          $.val_closure,
-          alias(
-            parenthesized ?
-              $._binary_predicate_parenthesized :
-              $._binary_predicate,
+      parenthesized ?
+        $._row_condition_head_parenthesized :
+        $._row_condition_head,
+      choice(
+        field(
+          'predicate',
+          choice(
             $.where_predicate,
+            $.val_closure,
+            alias(
+              parenthesized ?
+                $._binary_predicate_parenthesized :
+                $._binary_predicate,
+              $.where_predicate,
+            ),
           ),
         ),
+        field('flag', $._row_condition_flag),
       ),
     ];
     return parenthesized ?
@@ -1733,45 +1953,55 @@ function _where_clause_rule(parenthesized) {
 }
 
 /**
+ * @param {boolean} immediate the `$` must touch the previous token
+ */
+function _variable_rule(immediate) {
+  return (/** @type {any} */ $) =>
+    seq(
+      immediate ? token.immediate('$') : '$',
+      field('name', choice('nu', 'in', 'env', $.identifier)),
+      optional($.cell_path),
+    );
+}
+
+/**
+ * The digits of a decimal number; the exponent is `_decimal_exponent`.
+ *
  * @param {boolean} immediate
  */
 function _decimal_rule(immediate) {
-  const exponent = token.immediate(/[eE][-+]?[\d_]*\d[\d_]*/);
   const digits = token.immediate(/[\d_]*\d[\d_]*/);
   const head_token = immediate ? token.immediate : token;
   const head_digits = head_token(/[\d_]*\d[\d_]*/);
   return (/** @type {any} */ _$) =>
-    seq(
-      choice(
-        head_digits,
-        token(
-          seq(
-            choice(head_token(operator().minus), head_token(operator().plus)),
-            digits,
-          ),
-        ),
-        seq(head_digits, token.immediate('.'), optional(digits)),
+    choice(
+      head_digits,
+      token(
         seq(
-          token(
-            seq(
-              choice(head_token(operator().minus), head_token(operator().plus)),
-              digits,
-            ),
-          ),
-          token.immediate('.'),
-          optional(digits),
-        ),
-        token(seq(head_token('.'), digits)),
-        token(
-          seq(
-            choice(head_token(operator().minus), head_token(operator().plus)),
-            optional(token.immediate(/_+/)),
-            token.immediate('.'),
-            digits,
-          ),
+          choice(head_token(operator().minus), head_token(operator().plus)),
+          digits,
         ),
       ),
-      optional(exponent),
+      seq(head_digits, token.immediate('.'), optional(digits)),
+      seq(
+        token(
+          seq(
+            choice(head_token(operator().minus), head_token(operator().plus)),
+            digits,
+          ),
+        ),
+        token.immediate('.'),
+        optional(digits),
+      ),
+      token(seq(head_token('.'), digits)),
+      token(
+        seq(
+          choice(head_token(operator().minus), head_token(operator().plus)),
+          optional(token.immediate(/_+/)),
+          token.immediate('.'),
+          digits,
+        ),
+      ),
     );
 }
 
@@ -1800,6 +2030,8 @@ function _range_rule(anonymous) {
       $.expr_parenthesized,
       alias($._val_number_decimal, $.val_number),
       $.val_variable,
+      // `[-$x..5]`
+      alias($._expr_unary_minus_item, $.expr_unary),
     );
     const step_or_end = choice(
       alias($._expr_parenthesized_immediate, $.expr_parenthesized),
@@ -1852,26 +2084,33 @@ function _unquoted_with_expr_rule(type) {
         unquoted_head = $._unquoted_in_record;
         break;
     }
+    const expr = alias($._expr_parenthesized_immediate, $.expr_parenthesized);
     const pattern_repeat = token.immediate(repeat(none_of(excluded)));
-    return prec(
-      prec_map().low,
-      seq(
-        choice(
-          $._unquoted_anonymous_prefix,
-          $._val_number_decimal,
-          $._val_range,
-          alias(unquoted_head, '_head'),
-        ),
-        alias($._expr_parenthesized_immediate, $.expr_parenthesized),
-        repeat(
-          seq(
-            pattern_repeat,
-            alias($._expr_parenthesized_immediate, $.expr_parenthesized),
-          ),
-        ),
-        pattern_repeat,
+    const with_head = seq(
+      choice(
+        $._unquoted_anonymous_prefix,
+        $._val_number_decimal,
+        $._val_range,
+        alias(unquoted_head, '_head'),
       ),
+      expr,
+      repeat(seq(pattern_repeat, expr)),
+      pattern_repeat,
     );
+    if (type == 'command') return prec(prec_map().low, with_head);
+    // In lists and records `-(expr)` negates, so `-(expr)foo` and `-(a)(b)`
+    // need a non-empty suffix. The unquoted-string tokens are non-empty and
+    // their low precedence leaves `..` to ranges.
+    const suffix =
+      type == 'list' ?
+        $._unquoted_pattern_in_list :
+        $._unquoted_pattern_in_record;
+    const with_minus = seq(
+      $._minus_item,
+      alias($._expr_unary_minus_parenthesized, $.expr_parenthesized),
+      repeat1(choice(suffix, expr)),
+    );
+    return prec(prec_map().low, choice(with_head, with_minus));
   };
 }
 
@@ -1903,7 +2142,17 @@ function _unquoted_rule(type) {
   const excluded_common = _unquoted_pattern_rule(type, false);
   const excluded_first = _unquoted_pattern_rule(type, true);
   const pattern_once = none_of(excluded_common);
-  const pattern = token(seq(none_of(excluded_first), repeat(pattern_once)));
+  // in lists and records a leading `-` needs a next character other than `$`,
+  // so `-$x` (negation) and a lone `-` are left to `_minus_item`
+  const pattern =
+    type == 'command' ?
+      token(seq(none_of(excluded_first), repeat(pattern_once))) :
+      token(
+        choice(
+          seq(none_of(excluded_first + '\\-'), repeat(pattern_once)),
+          seq('-', none_of(excluded_common + '$'), repeat(pattern_once)),
+        ),
+      );
   const pattern_repeat = token(repeat(pattern_once));
 
   /**
@@ -1969,6 +2218,7 @@ function keyword() {
     export_env: 'export-env',
     extern: 'extern',
     module: 'module',
+    type: 'type',
 
     let: 'let',
     mut: 'mut',
@@ -2082,6 +2332,8 @@ function operator() {
     less_than_equal: '<=',
     greater_than: '>',
     greater_than_equal: '>=',
+    older_than: 'older-than',
+    newer_than: 'newer-than',
 
     // regex matching
     regex_match: '=~',
@@ -2145,6 +2397,9 @@ function prec_map() {
     bit_and: 7,
     bit_xor: 6,
     bit_or: 5,
+    // nushell puts `not` between `bit-or` and `and`; sharing `bit-or`'s level
+    // with right associativity gives the same grouping
+    not: 5,
     and: 4,
     xor: 3,
     or: 2,
@@ -2220,6 +2475,8 @@ function predicate() {
     operator().less_than_equal,
     operator().greater_than,
     operator().greater_than_equal,
+    operator().older_than,
+    operator().newer_than,
   ];
 
   return [
@@ -2243,29 +2500,10 @@ function special() {
     false: 'false',
     null: 'null',
 
-    pos_infinity: /[iI][nN][fF]([iI][nN][iI][tT][yY])?/,
-    neg_infinity: /-[iI][nN][fF]([iI][nN][iI][tT][yY])?/,
-    not_a_number: /[nN][aA][nN]/,
+    pos_infinity: /\+?inf/,
+    neg_infinity: /-inf/,
+    not_a_number: /[+-]?(nan|NaN)/,
   };
-}
-
-/// nushell flat types
-/// taken from `nu_parser::parser::parse_shape_name()`
-/**
- *
- */
-function flat_types() {
-  // prettier-ignore
-  const types = [
-    'any', 'binary', 'block', 'bool', 'cell-path', 'closure', 'cond',
-    'datetime', 'directory', 'duration', 'directory', 'duration',
-    'error', 'expr', 'float', 'decimal', 'filesize', 'full-cell-path',
-    'glob', 'int', 'import-pattern', 'keyword', 'math', 'nothing',
-    'number', 'one-of', 'operator', 'path', 'range', 'signature',
-    'string', 'table', 'variable', 'var-with-opt-type', 'record', 'list',
-  ];
-
-  return choice(...types);
 }
 
 /**

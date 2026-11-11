@@ -440,8 +440,7 @@ k4.9: 1...()}
               (expr_parenthesized)))
           (record_entry
             (identifier)
-            (val_string
-              (expr_parenthesized)))
+            (expr_unary))
           (record_entry
             (identifier)
             (val_string
@@ -531,3 +530,66 @@ record-016-interpolated-key
                   (pipe_element
                     (val_number)))))
             value: (val_string)))))))
+
+=====
+record-017-keyword-keys
+=====
+
+{true: 1, false: 2, null: 3, type: 4}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (val_number))
+          (record_entry
+            (identifier)
+            (val_number))
+          (record_entry
+            (identifier)
+            (val_number))
+          (record_entry
+            (identifier)
+            (val_number)))))))
+
+=====
+record-018-minus-values
+=====
+
+{a: -, b: -(1)foo, c: -(1), d: -$x..5}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_number))))))
+          (record_entry
+            (identifier)
+            (expr_unary
+              (pipeline
+                (pipe_element
+                  (val_number)))))
+          (record_entry
+            (identifier)
+            (val_range
+              (expr_unary
+                (val_variable
+                  (identifier)))
+              (val_number))))))))
