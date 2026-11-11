@@ -161,6 +161,13 @@ module.exports = grammar({
         optional($.attribute_list),
         optional(modifier().visibility),
         keyword().def,
+        $._decl_def_tail,
+      ),
+
+    // everything after the keyword is one rule, so the optional attributes
+    // and `export` before it don't each get a copy of its states
+    _decl_def_tail: $ =>
+      seq(
         repeat($.long_flag),
         $._command_name,
         repeat($.long_flag),
@@ -176,6 +183,11 @@ module.exports = grammar({
         optional($.attribute_list),
         optional(modifier().visibility),
         keyword().extern,
+        $._decl_extern_tail,
+      ),
+
+    _decl_extern_tail: $ =>
+      seq(
         repeat($.long_flag),
         $._command_name,
         field('signature', choice($.parameter_parens, $.parameter_bracks)),
@@ -424,6 +436,8 @@ module.exports = grammar({
 
     ctrl_if: _ctrl_if_rule(false),
     ctrl_if_parenthesized: _ctrl_if_rule(true),
+    _ctrl_else_parenthesized: $ =>
+      _insert_newline($, _ctrl_else_clause($, true), true, false),
 
     _ctrl_match_body: $ =>
       general_body_rules(
@@ -553,6 +567,10 @@ module.exports = grammar({
 
     ctrl_try: _ctrl_try_rule(false),
     ctrl_try_parenthesized: _ctrl_try_rule(true),
+    _ctrl_catch_parenthesized: $ =>
+      _insert_newline($, _ctrl_try_clause($, 'catch'), true, false),
+    _ctrl_finally_parenthesized: $ =>
+      _insert_newline($, _ctrl_try_clause($, 'finally'), true, false),
 
     _stmt_let_shortcut: $ => prec.left(
       seq(
@@ -696,6 +714,16 @@ module.exports = grammar({
 
     where_predicate: $ => choice($._where_operand, $._where_comparison),
 
+    // one rule per side, so the sides aren't repeated for every operator
+    _where_comparison_rhs: $ =>
+      choice(
+        $._value,
+        $.val_range,
+        $.expr_unary,
+        $.expr_parenthesized,
+        $._binary_rhs_string,
+      ),
+
     _where_comparison: $ =>
       choice(
         ...predicate().map(([precedence, opr]) =>
@@ -713,14 +741,7 @@ module.exports = grammar({
               field('opr', opr),
               field(
                 'rhs',
-                choice(
-                  $._value,
-                  $.val_range,
-                  $.expr_unary,
-                  $.expr_parenthesized,
-                  alias($.unquoted, $.val_string),
-                  alias($._unquoted_with_expr, $.val_string),
-                ),
+                $._where_comparison_rhs,
               ),
             ),
           ),
@@ -788,6 +809,13 @@ module.exports = grammar({
       ),
 
     expr_binary: _expr_binary_rule(false),
+    // an unquoted right-hand side can't be followed by another operator, so
+    // sharing it doesn't affect precedence
+    _binary_rhs_string: $ =>
+      choice(
+        alias($.unquoted, $.val_string),
+        alias($._unquoted_with_expr, $.val_string),
+      ),
     expr_binary_parenthesized: _expr_binary_rule(true),
 
     _expr_binary_expression: $ =>
@@ -847,7 +875,9 @@ module.exports = grammar({
     val_range: _range_rule(false),
     _val_range: _range_rule(true),
 
-    _immediate_decimal: _decimal_rule(true),
+    _immediate_decimal: $ =>
+      seq($._immediate_decimal_mantissa, optional($._decimal_exponent)),
+    _immediate_decimal_mantissa: _decimal_rule(true),
 
     /// Simple Expressions
 
@@ -890,16 +920,19 @@ module.exports = grammar({
 
     val_number: $ => $._val_number,
 
-    _val_number_decimal: _decimal_rule(false),
+    // the exponent is shared, so each mantissa form isn't repeated with and
+    // without it
+    _val_number_decimal: $ =>
+      seq($._val_number_decimal_mantissa, optional($._decimal_exponent)),
+    _val_number_decimal_mantissa: _decimal_rule(false),
+    _decimal_exponent: _ => token.immediate(/[eE][-+]?[\d_]*\d[\d_]*/),
 
     // separating floats from integers does not end well
     // especially when it comes to incorporation with ranges.
     _val_number: $ =>
       choice(
         $._val_number_decimal,
-        /[+-]?0x[0-9a-fA-F_]+/,
-        /[+-]?0b[01_]+/,
-        /[+-]?0o[0-7_]+/,
+        /[+-]?0(x[0-9a-fA-F_]+|b[01_]+|o[0-7_]+)/,
         special().pos_infinity,
         special().neg_infinity,
         special().not_a_number,
@@ -1316,18 +1349,10 @@ module.exports = grammar({
     _cmd_arg: _cmd_arg_rule(false),
     _cmd_positional_arg: _cmd_arg_rule(true),
 
-    // `-x`, `--y`, `--` as plain strings; `-$x` is left to negation
-    _dash_word: _ =>
-      token(
-        prec(
-          prec_map().lowest,
-          seq(
-            operator().minus,
-            none_of(_unquoted_pattern_rule('command', false) + '$'),
-            repeat(none_of(_unquoted_pattern_rule('command', false))),
-          ),
-        ),
-      ),
+    // `-x`, `--y`, `--` as plain strings, built from existing tokens; the
+    // immediate `$` outranks the low-precedence pattern, leaving `-$x` to
+    // negation
+    _dash_word: $ => seq($._minus_item, $._unquoted_pattern),
 
     flag_value: $ => choice($._value, $.val_string),
 
@@ -1742,68 +1767,77 @@ function _env_variable_rule(parenthesized, $) {
 }
 
 /**
+ * In parentheses each `catch`/`finally` clause, with the newlines around it,
+ * is its own rule, so its optional newlines don't multiply the whole `try`.
+ *
  * @param {boolean} parenthesized
  */
 function _ctrl_try_rule(parenthesized) {
   return (/** @type {any} */ $) => {
-    const seq_catch_array = [
-      keyword().catch,
-      field('catch_branch', $._blosure),
-    ];
-    const seq_finally_array = [
-      keyword().finally,
-      field('finally_branch', $._blosure),
-    ];
-    const seq_array = [
-      keyword().try,
-      field('try_branch', $.block),
-      optional(
-        parenthesized ?
-          _insert_newline($, seq_catch_array, true, false) :
-          seq(...seq_catch_array),
-      ),
-      optional(
-        parenthesized ?
-          _insert_newline($, seq_finally_array, true, false) :
-          seq(...seq_finally_array),
-      ),
-    ];
-    return parenthesized ?
-      _insert_newline($, seq_array, false, false) :
-      seq(...seq_array);
+    const head = [keyword().try, field('try_branch', $.block)];
+    if (!parenthesized) {
+      return seq(
+        ...head,
+        optional(seq(..._ctrl_try_clause($, 'catch'))),
+        optional(seq(..._ctrl_try_clause($, 'finally'))),
+      );
+    }
+    return seq(
+      _insert_newline($, head, false, false),
+      optional($._ctrl_catch_parenthesized),
+      optional($._ctrl_finally_parenthesized),
+    );
   };
 }
 
 /**
+ * @param {any} $
+ * @param {'catch' | 'finally'} name
+ */
+function _ctrl_try_clause($, name) {
+  return [keyword()[name], field(name + '_branch', $._blosure)];
+}
+
+/**
+ * In parentheses the `else` clause, with the newlines around it, is its own
+ * rule, so its optional newlines don't multiply the whole `if`.
+ *
  * @param {boolean} parenthesized
  */
 function _ctrl_if_rule(parenthesized) {
   return (/** @type {any} */ $) => {
     const _expr = parenthesized ? $._expression_parenthesized : $._expression;
-    const seq_else_array = [
-      keyword().else,
-      choice(
-        field('else_block', choice($.block, _expr, $.command)),
-        field(
-          'else_branch',
-          parenthesized ? alias($.ctrl_if_parenthesized, $.ctrl_if) : $.ctrl_if,
-        ),
-      ),
-    ];
-    const seq_array = [
+    const head = [
       keyword().if,
       field('condition', _expr),
       field('then_branch', $.block),
-      optional(
-        parenthesized ?
-          _insert_newline($, seq_else_array, true, false) :
-          seq(...seq_else_array),
-      ),
     ];
-    return parenthesized ?
-      _insert_newline($, seq_array, false, false) :
-      seq(...seq_array);
+    if (!parenthesized) {
+      return seq(...head, optional(seq(..._ctrl_else_clause($, false))));
+    }
+    return seq(
+      _insert_newline($, head, false, false),
+      optional($._ctrl_else_parenthesized),
+    );
   };
+}
+
+/**
+ * @param {any} $
+ * @param {boolean} parenthesized
+ */
+function _ctrl_else_clause($, parenthesized) {
+  const _expr = parenthesized ? $._expression_parenthesized : $._expression;
+  return [
+    keyword().else,
+    choice(
+      field('else_block', choice($.block, _expr, $.command)),
+      field(
+        'else_branch',
+        parenthesized ? alias($.ctrl_if_parenthesized, $.ctrl_if) : $.ctrl_if,
+      ),
+    ),
+  ];
 }
 
 /**
@@ -1821,11 +1855,7 @@ function _expr_binary_rule(parenthesized) {
           field('opr', opr),
           field(
             'rhs',
-            choice(
-              _expr,
-              alias($.unquoted, $.val_string),
-              alias($._unquoted_with_expr, $.val_string),
-            ),
+            choice(_expr, $._binary_rhs_string),
           ),
         ];
         return parenthesized ?
@@ -1935,45 +1965,43 @@ function _variable_rule(immediate) {
 }
 
 /**
+ * The digits of a decimal number; the exponent is `_decimal_exponent`.
+ *
  * @param {boolean} immediate
  */
 function _decimal_rule(immediate) {
-  const exponent = token.immediate(/[eE][-+]?[\d_]*\d[\d_]*/);
   const digits = token.immediate(/[\d_]*\d[\d_]*/);
   const head_token = immediate ? token.immediate : token;
   const head_digits = head_token(/[\d_]*\d[\d_]*/);
   return (/** @type {any} */ _$) =>
-    seq(
-      choice(
-        head_digits,
-        token(
-          seq(
-            choice(head_token(operator().minus), head_token(operator().plus)),
-            digits,
-          ),
-        ),
-        seq(head_digits, token.immediate('.'), optional(digits)),
+    choice(
+      head_digits,
+      token(
         seq(
-          token(
-            seq(
-              choice(head_token(operator().minus), head_token(operator().plus)),
-              digits,
-            ),
-          ),
-          token.immediate('.'),
-          optional(digits),
-        ),
-        token(seq(head_token('.'), digits)),
-        token(
-          seq(
-            choice(head_token(operator().minus), head_token(operator().plus)),
-            optional(token.immediate(/_+/)),
-            token.immediate('.'),
-            digits,
-          ),
+          choice(head_token(operator().minus), head_token(operator().plus)),
+          digits,
         ),
       ),
-      optional(exponent),
+      seq(head_digits, token.immediate('.'), optional(digits)),
+      seq(
+        token(
+          seq(
+            choice(head_token(operator().minus), head_token(operator().plus)),
+            digits,
+          ),
+        ),
+        token.immediate('.'),
+        optional(digits),
+      ),
+      token(seq(head_token('.'), digits)),
+      token(
+        seq(
+          choice(head_token(operator().minus), head_token(operator().plus)),
+          optional(token.immediate(/_+/)),
+          token.immediate('.'),
+          digits,
+        ),
+      ),
     );
 }
 
