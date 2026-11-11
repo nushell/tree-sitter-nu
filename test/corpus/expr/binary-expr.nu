@@ -305,3 +305,31 @@ binary-expr-012-startends
           (string_content))
         rhs: (val_string
           (string_content))))))
+
+=====
+binary-expr-013-date-age
+=====
+
+ls | where modified older-than 2wk
+$d newer-than 2020-01-01
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))
+    (pipe_element
+      (where_command
+        (where_predicate
+          (path)
+          (val_duration
+            (val_number)
+            (duration_unit))))))
+  (pipeline
+    (pipe_element
+      (expr_binary
+        (val_variable
+          (identifier))
+        (val_date)))))

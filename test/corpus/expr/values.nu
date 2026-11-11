@@ -163,23 +163,23 @@ values-006-infinity-number
           (val_entry
             (val_number))
           (val_entry
-            (val_number))
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
           (val_entry
             (val_number))
           (val_entry
-            (val_number))
+            (val_string))
           (val_entry
-            (val_number))
+            (val_string))
           (val_entry
-            (val_number))
+            (val_string))
           (val_entry
-            (val_number))
-          (val_entry
-            (val_number))
-          (val_entry
-            (val_number))
-          (val_entry
-            (val_number)))))))
+            (val_string)))))))
 
 =====
 values-006-not-a-number
@@ -204,9 +204,9 @@ values-006-not-a-number
           (val_entry
             (val_number))
           (val_entry
-            (val_number))
+            (val_string))
           (val_entry
-            (val_number)))))))
+            (val_string)))))))
 
 =====
 values-007-interpolated-string
@@ -290,3 +290,23 @@ values-009-dummy-parenthesized
   (pipeline
     (pipe_element
       (expr_parenthesized))))
+
+=====
+values-010-signed-radix
+=====
+
+[-0x10 +0b11 -0o17]
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_list
+        (list_body
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number))
+          (val_entry
+            (val_number)))))))

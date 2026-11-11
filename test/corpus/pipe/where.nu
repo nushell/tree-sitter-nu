@@ -310,3 +310,46 @@ ls | where $foo.bar and $foo.baz
               name: (identifier)
               (cell_path
                 (path)))))))))
+
+=====
+where-010-bare-columns
+=====
+
+ls | where enabled
+ls | where a and not b
+ls | where not name == foo
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))
+    (pipe_element
+      (where_command
+        (where_predicate
+          (path)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))
+    (pipe_element
+      (where_command
+        (where_predicate
+          (where_predicate
+            (path))
+          (where_predicate
+            (expr_unary
+              (path)))))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))
+    (pipe_element
+      (where_command
+        (where_predicate
+          (expr_unary
+            (where_predicate
+              (path)
+              (val_string))))))))

@@ -1252,3 +1252,36 @@ def test [
               entry: (val_entry
                 item: (val_string)))))))
     body: (block)))
+
+=====
+def-038-custom-types
+=====
+
+def f [v: semver, x: external_arg]: semver -> list<semver> { [$v] }
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (identifier)
+        (param_type
+          (flat_type)))
+      (parameter
+        (identifier)
+        (param_type
+          (flat_type))))
+    (returns
+      (flat_type)
+      (list_type
+        (flat_type)))
+    (block
+      (pipeline
+        (pipe_element
+          (val_list
+            (list_body
+              (val_entry
+                (val_variable
+                  (identifier))))))))))

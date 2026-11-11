@@ -546,3 +546,80 @@ match  a {
             (val_string)
             (val_string))
           expression: (val_number))))))
+
+=====
+match-016-rest-anywhere
+=====
+
+match $l {
+  [$first, ..$middle, $last] => $middle
+  [.., 1] => 1
+  [$a .. $c] => $c
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_variable
+          (identifier))
+        (match_arm
+          (match_pattern
+            (val_list
+              (list_body
+                (val_variable
+                  (identifier)))
+              (val_variable
+                (identifier))
+              (list_body
+                (val_variable
+                  (identifier)))))
+          (val_variable
+            (identifier)))
+        (match_arm
+          (match_pattern
+            (val_list
+              (list_body
+                (val_number))))
+          (val_number))
+        (match_arm
+          (match_pattern
+            (val_list
+              (list_body
+                (val_variable
+                  (identifier)))
+              (list_body
+                (val_variable
+                  (identifier)))))
+          (val_variable
+            (identifier)))))))
+
+=====
+match-017-alternatives-with-guard
+=====
+
+match $x { 1 | 2 | 3 if $y => "small", _ => "other" }
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_variable
+          (identifier))
+        (match_arm
+          (match_pattern
+            (val_number)
+            (val_number)
+            (val_number)
+            (match_guard
+              (val_variable
+                (identifier))))
+          (val_string
+            (string_content)))
+        (default_arm
+          (val_string
+            (string_content)))))))

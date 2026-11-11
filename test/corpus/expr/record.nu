@@ -531,3 +531,29 @@ record-016-interpolated-key
                   (pipe_element
                     (val_number)))))
             value: (val_string)))))))
+
+=====
+record-017-keyword-keys
+=====
+
+{true: 1, false: 2, null: 3, type: 4}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (val_number))
+          (record_entry
+            (identifier)
+            (val_number))
+          (record_entry
+            (identifier)
+            (val_number))
+          (record_entry
+            (identifier)
+            (val_number)))))))
