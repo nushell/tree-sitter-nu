@@ -1,5 +1,10 @@
 [
   {
+    "type": "-",
+    "named": false,
+    "fields": {}
+  },
+  {
     "type": "_head",
     "named": false,
     "fields": {}
@@ -2313,6 +2318,10 @@
             "named": true
           },
           {
+            "type": "expr_unary",
+            "named": true
+          },
+          {
             "type": "val_binary",
             "named": true
           },
@@ -2998,6 +3007,10 @@
             "named": true
           },
           {
+            "type": "expr_unary",
+            "named": true
+          },
+          {
             "type": "val_binary",
             "named": true
           },
@@ -3425,6 +3438,10 @@
         "types": [
           {
             "type": "expr_parenthesized",
+            "named": true
+          },
+          {
+            "type": "expr_unary",
             "named": true
           },
           {
@@ -4049,6 +4066,10 @@
             "named": true
           },
           {
+            "type": "expr_unary",
+            "named": true
+          },
+          {
             "type": "val_binary",
             "named": true
           },
@@ -4269,6 +4290,10 @@
             "named": true
           },
           {
+            "type": "expr_unary",
+            "named": true
+          },
+          {
             "type": "val_number",
             "named": true
           },
@@ -4426,9 +4451,23 @@
     "type": "where_command",
     "named": true,
     "fields": {
+      "flag": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "long_flag",
+            "named": true
+          },
+          {
+            "type": "short_flag",
+            "named": true
+          }
+        ]
+      },
       "predicate": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "val_closure",
@@ -4946,7 +4985,15 @@
     "named": false
   },
   {
+    "type": "all",
+    "named": false
+  },
+  {
     "type": "and",
+    "named": false
+  },
+  {
+    "type": "any",
     "named": false
   },
   {

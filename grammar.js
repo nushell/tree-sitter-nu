@@ -46,7 +46,7 @@ module.exports = grammar({
     [$._parenthesized_body],
     [$.block, $.val_closure],
     [$.block, $.val_record, $.val_closure],
-    [$.command, $.record_entry],
+    [$._command_head, $.record_entry],
     [$.ctrl_if_parenthesized],
     [$.ctrl_try_parenthesized],
     [$.expr_binary_parenthesized],
@@ -276,11 +276,7 @@ module.exports = grammar({
         optional($._repeat_newline),
         field(
           'param_value',
-          choice(
-            $._item_expression,
-            alias($._unquoted_in_record, $.val_string),
-            alias($._unquoted_in_record_with_expr, $.val_string),
-          ),
+          choice($._item_expression, $._bare_record_item),
         ),
       ),
 
@@ -503,10 +499,7 @@ module.exports = grammar({
     _match_pattern_list_body: $ =>
       general_body_rules(
         'entry',
-        choice(
-          $._match_pattern_expression,
-          alias($._unquoted_in_list, $.val_string),
-        ),
+        choice($._match_pattern_expression, $._bare_list_item),
         $._entry_separator,
         $._newline,
         null,
@@ -530,8 +523,8 @@ module.exports = grammar({
             ),
             optional(
               seq(
-                $._entry_separator,
-                alias($._match_pattern_list_body, $.list_body),
+                repeat1($._entry_separator),
+                optional(alias($._match_pattern_list_body, $.list_body)),
               ),
             ),
           ),
@@ -650,6 +643,27 @@ module.exports = grammar({
     _where_predicate_lhs: $ =>
       seq(alias($._where_predicate_lhs_path_head, $.path), repeat($.path)),
 
+    // Commands that take a row condition. Each head includes the whitespace
+    // after it, like `not`, so `whereis` or `anything` stay ordinary commands.
+    // `take while`, `skip until`, `chunk-by` and `record where` also take one
+    // but are rare enough that their main-lexer cost (~55 cases) isn't worth
+    // it; with a closure they parse fine as ordinary commands. Only inside
+    // parentheses may a `where` condition start on the next line; elsewhere
+    // that would take the next statement as the condition.
+    _row_condition_head: _ => _row_condition_head_rule(/[ \t]/),
+    _row_condition_head_parenthesized: _ => _row_condition_head_rule(/\s/),
+
+    // `--help`/`-h` in place of the condition: `any --help`
+    _row_condition_flag: $ =>
+      choice(
+        alias($._row_condition_long_flag, $.long_flag),
+        alias($._row_condition_short_flag, $.short_flag),
+      ),
+    _row_condition_long_flag: $ =>
+      seq(operator().long_flag, field('name', $.long_flag_identifier)),
+    _row_condition_short_flag: $ =>
+      seq(operator().minus, field('name', $.short_flag_identifier)),
+
     where_command: _where_clause_rule(false),
     where_command_parenthesized: _where_clause_rule(true),
 
@@ -675,7 +689,6 @@ module.exports = grammar({
         $.val_bool,
         $.val_variable,
         alias($._where_not, $.expr_unary),
-        alias($._expr_unary_minus, $.expr_unary),
         $.expr_parenthesized,
         // a bare column is truthy: `where enabled and size > 1kb`
         prec(prec_map().low, $._where_predicate_lhs),
@@ -748,18 +761,30 @@ module.exports = grammar({
     _not: _ => alias(token(seq(operator().not, /\s/)), operator().not),
 
     _expr_unary_minus: $ =>
+      seq(token(operator().minus), $._expr_unary_minus_operand),
+
+    // In lists and record values `-foo` and a lone `-` are strings, so the
+    // minus ranks below the unquoted string tokens there. Those tokens never
+    // start with `-$` and never are a lone `-`, which leaves `-$x` to this.
+    _minus_item: _ => token(prec(prec_map().lowest - 1, operator().minus)),
+
+    _expr_unary_minus_item: $ =>
+      seq(alias($._minus_item, operator().minus), $._expr_unary_minus_operand),
+
+    _expr_unary_minus_operand: $ =>
+      choice(
+        $._expr_unary_minus_parenthesized,
+        alias($._val_variable_immediate, $.val_variable),
+      ),
+
+    // `-(expr)foo` strings share this, so the choice waits until after `)`
+    _expr_unary_minus_parenthesized: $ =>
       seq(
-        token(operator().minus),
-        choice(
-          seq(
-            // ensure the expression immediately follows the
-            // opening paren
-            token.immediate(brack().open_paren),
-            $._block_body,
-            brack().close_paren,
-          ),
-          alias($._val_variable_immediate, $.val_variable),
-        ),
+        // ensure the expression immediately follows the
+        // opening paren
+        token.immediate(brack().open_paren),
+        optional($._block_body),
+        brack().close_paren,
       ),
 
     expr_binary: _expr_binary_rule(false),
@@ -857,20 +882,9 @@ module.exports = grammar({
     _spread_variable: $ =>
       seq('...$', field('name', $.identifier), optional($.cell_path)),
 
-    val_variable: $ =>
-      seq(
-        '$',
-        field('name', choice('nu', 'in', 'env', $.identifier)),
-        optional($.cell_path),
-      ),
-
+    val_variable: _variable_rule(false),
     // `-$x` negation: the variable must touch the minus sign
-    _val_variable_immediate: $ =>
-      seq(
-        token.immediate('$'),
-        field('name', choice('nu', 'in', 'env', $.identifier)),
-        optional($.cell_path),
-      ),
+    _val_variable_immediate: _variable_rule(true),
 
     val_cellpath: $ => seq('$', $.cell_path),
 
@@ -1117,14 +1131,31 @@ module.exports = grammar({
           choice(
             $._item_expression,
             field('spread', $._spread_listish),
-            alias($._unquoted_in_list, $.val_string),
-            alias($._unquoted_in_list_with_expr, $.val_string),
+            $._bare_list_item,
           ),
         ),
       ),
 
     _item_expression: $ =>
       choice($._value, $.val_range, $.expr_parenthesized),
+
+    // In lists, records, match patterns and parameter defaults `-$x` and
+    // `-(expr)` negate, while `-`, `-foo` and `-(expr)foo` are strings
+    _bare_list_item: $ =>
+      choice(
+        alias($._expr_unary_minus_item, $.expr_unary),
+        alias($._minus_item, $.val_string),
+        alias($._unquoted_in_list, $.val_string),
+        alias($._unquoted_in_list_with_expr, $.val_string),
+      ),
+
+    _bare_record_item: $ =>
+      choice(
+        alias($._expr_unary_minus_item, $.expr_unary),
+        alias($._minus_item, $.val_string),
+        alias($._unquoted_in_record, $.val_string),
+        alias($._unquoted_in_record_with_expr, $.val_string),
+      ),
 
     val_record: $ =>
       seq(
@@ -1184,14 +1215,7 @@ module.exports = grammar({
             ),
           ),
           token(prec(prec_map().higher, ':')),
-          field(
-            'value',
-            choice(
-              $._item_expression,
-              alias($._unquoted_in_record, $.val_string),
-              alias($._unquoted_in_record_with_expr, $.val_string),
-            ),
-          ),
+          field('value', choice($._item_expression, $._bare_record_item)),
         ),
       ),
 
@@ -1269,23 +1293,40 @@ module.exports = grammar({
 
     /// Commands
 
+    // one rule for every head form, so the argument states after it are
+    // shared; `^type` runs an external whose name is a keyword
+    _command_head: $ =>
+      choice(
+        seq(optional(choice('^', '%')), $.cmd_identifier),
+        seq(
+          choice('^', '%'),
+          choice(
+            $._stringish,
+            ...Object.values(keyword()).map((x) => alias(x, $.cmd_identifier)),
+          ),
+        ),
+      ),
+
     command: _command_rule(false),
     _command_parenthesized: _command_rule(true),
 
-    _cmd_arg: $ =>
-      choice(
-        field('redir', prec.right(10, $.redirection)),
-        field('flag', prec.right(9, $._flag)),
-        field('arg', prec.right(8, $._value)),
-        field('arg', prec.right(8, $.val_range)),
-        field('arg', prec.right(7, $.expr_parenthesized)),
-        // `-$x` / `-(expr)`, e.g. as the value of a preceding flag
-        field('arg', prec.right(9, alias($._expr_unary_minus, $.expr_unary))),
-        field('arg_spread', $._spread_listish),
-        field('arg_spread', alias($._spread_record, $.val_record)),
-        // lowest precedence to make it a last resort
-        field('arg_str', alias($.unquoted, $.val_string)),
-        field('arg_str', alias($._unquoted_with_expr, $.val_string)),
+    // wins over a bare `--` long flag
+    _end_of_options: _ => prec(1, operator().long_flag),
+
+    _cmd_arg: _cmd_arg_rule(false),
+    _cmd_positional_arg: _cmd_arg_rule(true),
+
+    // `-x`, `--y`, `--` as plain strings; `-$x` is left to negation
+    _dash_word: _ =>
+      token(
+        prec(
+          prec_map().lowest,
+          seq(
+            operator().minus,
+            none_of(_unquoted_pattern_rule('command', false) + '$'),
+            repeat(none_of(_unquoted_pattern_rule('command', false))),
+          ),
+        ),
       ),
 
     flag_value: $ => choice($._value, $.val_string),
@@ -1641,14 +1682,54 @@ function _command_rule(parenthesized) {
     const sep = parenthesized ? $._separator : $._space;
     return prec.right(
       seq(
-        choice(
-          field('head', seq(optional(choice('^', '%')), $.cmd_identifier)),
-          field('head', seq(choice('^', '%'), $._stringish)),
-        ),
+        field('head', $._command_head),
         repeat(seq(sep, optional($._cmd_arg))),
+        // after `--` every argument is positional, even `-x` and `--y`
+        optional(
+          seq(
+            sep,
+            field('flag', alias($._end_of_options, $.long_flag)),
+            repeat(seq(sep, optional($._cmd_positional_arg))),
+          ),
+        ),
       ),
     );
   };
+}
+
+/**
+ * Command arguments. After `--` every argument is positional: there are no
+ * flags, and `-x`, `--y` and a lone `-` are strings.
+ *
+ * @param {boolean} positional
+ */
+function _cmd_arg_rule(positional) {
+  return (/** @type {any} */ $) =>
+    choice(
+      field('redir', prec.right(10, $.redirection)),
+      ...(positional ? [] : [field('flag', prec.right(9, $._flag))]),
+      field('arg', prec.right(8, $._value)),
+      field('arg', prec.right(8, $.val_range)),
+      field('arg', prec.right(7, $.expr_parenthesized)),
+      // `-$x` / `-(expr)`, e.g. as the value of a preceding flag
+      field(
+        'arg',
+        positional ?
+          alias($._expr_unary_minus_item, $.expr_unary) :
+          prec.right(9, alias($._expr_unary_minus, $.expr_unary)),
+      ),
+      field('arg_spread', $._spread_listish),
+      field('arg_spread', alias($._spread_record, $.val_record)),
+      ...(positional ?
+        [
+          field('arg_str', alias($._minus_item, $.val_string)),
+          field('arg_str', alias($._dash_word, $.val_string)),
+        ] :
+        []),
+      // lowest precedence to make it a last resort
+      field('arg_str', alias($.unquoted, $.val_string)),
+      field('arg_str', alias($._unquoted_with_expr, $.val_string)),
+    );
 }
 
 /**
@@ -1765,13 +1846,25 @@ function _expr_unary_not_rule(parenthesized) {
   return (/** @type {any} */ $) =>
     prec.right(
       prec_map().not,
-      seq(
-        $._not,
-        parenthesized ?
-          $._expr_binary_expression_parenthesized :
-          $._expr_binary_expression,
-      ),
+      parenthesized ?
+        seq(
+          $._not,
+          $._expr_binary_expression_parenthesized,
+          optional($._repeat_newline),
+        ) :
+        seq($._not, $._expr_binary_expression),
     );
+}
+
+/**
+ * @param {RegExp} after_where what must follow `where`; `any` and `all` always
+ * need a space or tab
+ */
+function _row_condition_head_rule(after_where) {
+  return choice(
+    alias(token(seq('where', after_where)), 'where'),
+    ...['any', 'all'].map((name) => alias(token(seq(name, /[ \t]/)), name)),
+  );
 }
 
 /**
@@ -1803,25 +1896,42 @@ function _binary_predicate_rule(parenthesized) {
 function _where_clause_rule(parenthesized) {
   return (/** @type {any} */ $) => {
     const seq_array = [
-      'where',
-      field(
-        'predicate',
-        choice(
-          $.where_predicate,
-          $.val_closure,
-          alias(
-            parenthesized ?
-              $._binary_predicate_parenthesized :
-              $._binary_predicate,
+      parenthesized ?
+        $._row_condition_head_parenthesized :
+        $._row_condition_head,
+      choice(
+        field(
+          'predicate',
+          choice(
             $.where_predicate,
+            $.val_closure,
+            alias(
+              parenthesized ?
+                $._binary_predicate_parenthesized :
+                $._binary_predicate,
+              $.where_predicate,
+            ),
           ),
         ),
+        field('flag', $._row_condition_flag),
       ),
     ];
     return parenthesized ?
       prec.left(_insert_newline($, seq_array)) :
       seq(...seq_array);
   };
+}
+
+/**
+ * @param {boolean} immediate the `$` must touch the previous token
+ */
+function _variable_rule(immediate) {
+  return (/** @type {any} */ $) =>
+    seq(
+      immediate ? token.immediate('$') : '$',
+      field('name', choice('nu', 'in', 'env', $.identifier)),
+      optional($.cell_path),
+    );
 }
 
 /**
@@ -1892,6 +2002,8 @@ function _range_rule(anonymous) {
       $.expr_parenthesized,
       alias($._val_number_decimal, $.val_number),
       $.val_variable,
+      // `[-$x..5]`
+      alias($._expr_unary_minus_item, $.expr_unary),
     );
     const step_or_end = choice(
       alias($._expr_parenthesized_immediate, $.expr_parenthesized),
@@ -1944,26 +2056,33 @@ function _unquoted_with_expr_rule(type) {
         unquoted_head = $._unquoted_in_record;
         break;
     }
+    const expr = alias($._expr_parenthesized_immediate, $.expr_parenthesized);
     const pattern_repeat = token.immediate(repeat(none_of(excluded)));
-    return prec(
-      prec_map().low,
-      seq(
-        choice(
-          $._unquoted_anonymous_prefix,
-          $._val_number_decimal,
-          $._val_range,
-          alias(unquoted_head, '_head'),
-        ),
-        alias($._expr_parenthesized_immediate, $.expr_parenthesized),
-        repeat(
-          seq(
-            pattern_repeat,
-            alias($._expr_parenthesized_immediate, $.expr_parenthesized),
-          ),
-        ),
-        pattern_repeat,
+    const with_head = seq(
+      choice(
+        $._unquoted_anonymous_prefix,
+        $._val_number_decimal,
+        $._val_range,
+        alias(unquoted_head, '_head'),
       ),
+      expr,
+      repeat(seq(pattern_repeat, expr)),
+      pattern_repeat,
     );
+    if (type == 'command') return prec(prec_map().low, with_head);
+    // In lists and records `-(expr)` negates, so `-(expr)foo` and `-(a)(b)`
+    // need a non-empty suffix. The unquoted-string tokens are non-empty and
+    // their low precedence leaves `..` to ranges.
+    const suffix =
+      type == 'list' ?
+        $._unquoted_pattern_in_list :
+        $._unquoted_pattern_in_record;
+    const with_minus = seq(
+      $._minus_item,
+      alias($._expr_unary_minus_parenthesized, $.expr_parenthesized),
+      repeat1(choice(suffix, expr)),
+    );
+    return prec(prec_map().low, choice(with_head, with_minus));
   };
 }
 
@@ -1995,7 +2114,17 @@ function _unquoted_rule(type) {
   const excluded_common = _unquoted_pattern_rule(type, false);
   const excluded_first = _unquoted_pattern_rule(type, true);
   const pattern_once = none_of(excluded_common);
-  const pattern = token(seq(none_of(excluded_first), repeat(pattern_once)));
+  // in lists and records a leading `-` needs a next character other than `$`,
+  // so `-$x` (negation) and a lone `-` are left to `_minus_item`
+  const pattern =
+    type == 'command' ?
+      token(seq(none_of(excluded_first), repeat(pattern_once))) :
+      token(
+        choice(
+          seq(none_of(excluded_first + '\\-'), repeat(pattern_once)),
+          seq('-', none_of(excluded_common + '$'), repeat(pattern_once)),
+        ),
+      );
   const pattern_repeat = token(repeat(pattern_once));
 
   /**

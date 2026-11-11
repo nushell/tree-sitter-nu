@@ -1285,3 +1285,41 @@ def f [v: semver, x: external_arg]: semver -> list<semver> { [$v] }
               (val_entry
                 (val_variable
                   (identifier))))))))))
+
+=====
+def-039-minus-defaults
+=====
+
+def f [--sep: string = -, --n: int = -$x, --s = -(1)] {}
+
+-----
+
+(nu_script
+  (decl_def
+    (cmd_identifier)
+    (parameter_bracks
+      (parameter
+        (param_long_flag
+          (long_flag_identifier))
+        (param_type
+          (flat_type))
+        (param_value
+          (val_string)))
+      (parameter
+        (param_long_flag
+          (long_flag_identifier))
+        (param_type
+          (flat_type))
+        (param_value
+          (expr_unary
+            (val_variable
+              (identifier)))))
+      (parameter
+        (param_long_flag
+          (long_flag_identifier))
+        (param_value
+          (expr_unary
+            (pipeline
+              (pipe_element
+                (val_number)))))))
+    (block)))

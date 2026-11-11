@@ -529,9 +529,7 @@ bla --weird-that=this --behaved-differently=than-this --level=2 --expr=(1 + 1)
         head: (cmd_identifier)
         flag: (short_flag)
         flag: (long_flag)
-        flag: (short_flag
-          name: (short_flag_identifier)
-          value: (val_bool))))))
+        arg_str: (val_string)))))
 
 ======
 cmd-020-variable-external
@@ -1155,3 +1153,57 @@ f --n=-$x 1
             (val_variable
               (identifier))))
         (val_number)))))
+
+=====
+cmd-031-end-of-options
+=====
+
+process -- --verbose -x foo
+ls -a -- -b -$x -
+^git checkout -- file.txt
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (long_flag)
+        (val_string)
+        (val_string)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (short_flag
+          (short_flag_identifier))
+        (long_flag)
+        (val_string)
+        (expr_unary
+          (val_variable
+            (identifier)))
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)
+        (long_flag)
+        (val_string)))))
+
+=====
+cmd-032-keyword-external
+=====
+
+^type foo.txt
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))

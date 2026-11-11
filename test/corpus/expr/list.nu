@@ -554,3 +554,104 @@ list-014-dummy-list
     (pipe_element
       (val_list
         (list_body)))))
+
+=====
+list-015-negation-vs-unquoted
+=====
+
+[-foo -$x -(1) - --bar -5]
+{a: -$x, b: -foo, c: -}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_list
+        (list_body
+          (val_entry
+            (val_string))
+          (val_entry
+            (expr_unary
+              (val_variable
+                (identifier))))
+          (val_entry
+            (expr_unary
+              (pipeline
+                (pipe_element
+                  (val_number)))))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_number))))))
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (expr_unary
+              (val_variable
+                (identifier))))
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_string)))))))
+
+=====
+list-016-minus-with-expr
+=====
+
+[-(1)foo -(1) -(1)(2) -$x..5 -(1)..5 -(1)a:b]
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_list
+        (list_body
+          (val_entry
+            (val_string
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_number))))))
+          (val_entry
+            (expr_unary
+              (pipeline
+                (pipe_element
+                  (val_number)))))
+          (val_entry
+            (val_string
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_number))))
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_number))))))
+          (val_entry
+            (val_range
+              (expr_unary
+                (val_variable
+                  (identifier)))
+              (val_number)))
+          (val_entry
+            (val_range
+              (expr_unary
+                (pipeline
+                  (pipe_element
+                    (val_number))))
+              (val_number)))
+          (val_entry
+            (val_string
+              (expr_parenthesized
+                (pipeline
+                  (pipe_element
+                    (val_number)))))))))))

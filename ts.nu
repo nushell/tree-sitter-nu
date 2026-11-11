@@ -1,7 +1,7 @@
 # | A bunch of commands for developing `tree-sitter-nu`
 #
 # # requirements
-# - tree-sitter cli
+# - tree-sitter cli 0.25 or newer
 
 def list-tests-in-file [file: path] {
     open --raw $file
@@ -35,6 +35,31 @@ def "completion ts test" [] {
     list-tests-in-dir ./corpus | sort
 }
 
+const ROOT = path self .
+
+# `tree-sitter parse` and `tree-sitter highlight` take their grammar from the
+# `parser-directories` in the user's config, which may hold another
+# tree-sitter-nu checkout, and all checkouts share one compiled-library cache
+# that is only rebuilt when the sources look newer. Point both at this
+# checkout and return the config to pass as `--config-path`. The directory is
+# outside the checkout so its link back to the checkout makes no cycle.
+def --env isolate []: nothing -> path {
+    let dir = $nu.temp-dir | path join $"tree-sitter-nu-($ROOT | hash md5 | str substring 0..<12)"
+    let parsers = $dir | path join parsers
+    let link = $parsers | path join tree-sitter-nu
+    if not ($link | path exists) {
+        mkdir $parsers
+        if $nu.os-info.name == windows {
+            ^cmd /c mklink /J $link $ROOT
+        } else {
+            ^ln -s $ROOT $link
+        }
+    }
+    $env.TREE_SITTER_LIBDIR = $dir | path join lib
+    let config = $dir | path join config.json
+    {parser-directories: [$parsers]} | save --force $config
+    $config
+}
 
 # Generates a parser from the grammar
 export def "ts gen" [] {   # -> nothing
@@ -48,7 +73,8 @@ export def "ts hl" [       # -> string
     glob: string           # the file(s) to highlight
 ] {
     clear
-    tree-sitter highlight $glob
+    let config = isolate
+    tree-sitter highlight --config-path $config $glob
 }
 
 # Runs all tests in the repo
@@ -56,10 +82,11 @@ export def "ts test" [    # -> string
     test_name?: string@"completion ts test"     # specific test name to run
 ] {
     clear
+    isolate | ignore
     if ($test_name == null) {
         tree-sitter test
     } else {
-        tree-sitter test -f $test_name
+        tree-sitter test --include $test_name
     }
 }
 
@@ -71,12 +98,13 @@ export def "ts parse" [    # -> string
     --stat(-s),            # only print success stats instead of the AST
 ] {
     clear
+    let config = isolate
     if $debug {
-        tree-sitter parse $glob -d
+        tree-sitter parse --config-path $config $glob -d
     } else if $stat {
-        tree-sitter parse $glob -sq
+        tree-sitter parse --config-path $config $glob -sq
     } else {
-        tree-sitter parse $glob
+        tree-sitter parse --config-path $config $glob
     }
 }
 

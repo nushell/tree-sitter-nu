@@ -353,3 +353,105 @@ ls | where not name == foo
             (where_predicate
               (path)
               (val_string))))))))
+
+=====
+where-011-row-condition-commands
+=====
+
+ls | any size > 10kb
+ls | all {|f| $f.size > 0 }
+whereis foo
+anything x
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))
+    (pipe_element
+      (where_command
+        (where_predicate
+          (path)
+          (val_filesize
+            (val_number)
+            (filesize_unit))))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))
+    (pipe_element
+      (where_command
+        (val_closure
+          (parameter_pipes
+            (parameter
+              (identifier)))
+          (pipeline
+            (pipe_element
+              (expr_binary
+                (val_variable
+                  (identifier)
+                  (cell_path
+                    (path)))
+                (val_number))))))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))
+
+=====
+where-012-head-at-end-of-line
+=====
+
+ls | where
+print done
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))
+    (pipe_element
+      (command
+        (cmd_identifier))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)))))
+
+=====
+where-013-help-flag
+=====
+
+ls | any --help
+ls | all -h
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))
+    (pipe_element
+      (where_command
+        (long_flag
+          (long_flag_identifier)))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))
+    (pipe_element
+      (where_command
+        (short_flag
+          (short_flag_identifier))))))

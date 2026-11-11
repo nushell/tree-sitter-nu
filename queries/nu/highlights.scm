@@ -314,7 +314,12 @@ key: (identifier) @property
   ] @punctuation.delimiter
   head: (_) @function)
 
-"where" @function.builtin
+(where_command
+  [
+    "where"
+    "any"
+    "all"
+  ] @function.builtin)
 
 (where_predicate
   [

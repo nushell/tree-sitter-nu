@@ -138,6 +138,8 @@ unary-expr-006-not-parenthesized-multiline
 
 (not $a ==
   $b)
+(not $a
+  and $b)
 
 -----
 
@@ -152,4 +154,15 @@ unary-expr-006-not-parenthesized-multiline
                 (val_variable
                   (identifier))
                 (val_variable
-                  (identifier))))))))))
+                  (identifier)))))))))
+  (pipeline
+    (pipe_element
+      (expr_parenthesized
+        (pipeline
+          (pipe_element
+            (expr_binary
+              (expr_unary
+                (val_variable
+                  (identifier)))
+              (val_variable
+                (identifier)))))))))

@@ -623,3 +623,111 @@ match $x { 1 | 2 | 3 if $y => "small", _ => "other" }
         (default_arm
           (val_string
             (string_content)))))))
+
+=====
+match-018-rest-then-separator
+=====
+
+match $l {
+  [ ..$r ] => $r
+  [ $a, ..$r ] => $r
+  [$a, .. ] => $a
+  [..$r, ] => $r
+  [
+    $a
+    ..$r
+  ] => $r
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_variable
+          (identifier))
+        (match_arm
+          (match_pattern
+            (val_list
+              (val_variable
+                (identifier))))
+          (val_variable
+            (identifier)))
+        (match_arm
+          (match_pattern
+            (val_list
+              (list_body
+                (val_variable
+                  (identifier)))
+              (val_variable
+                (identifier))))
+          (val_variable
+            (identifier)))
+        (match_arm
+          (match_pattern
+            (val_list
+              (list_body
+                (val_variable
+                  (identifier)))))
+          (val_variable
+            (identifier)))
+        (match_arm
+          (match_pattern
+            (val_list
+              (val_variable
+                (identifier))))
+          (val_variable
+            (identifier)))
+        (match_arm
+          (match_pattern
+            (val_list
+              (list_body
+                (val_variable
+                  (identifier)))
+              (val_variable
+                (identifier))))
+          (val_variable
+            (identifier)))))))
+
+=====
+match-019-minus-entries
+=====
+
+match $l {
+  [-] => 1
+  [-$y] => 2
+  [-(3)] => 3
+}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (ctrl_match
+        (val_variable
+          (identifier))
+        (match_arm
+          (match_pattern
+            (val_list
+              (list_body
+                (val_string))))
+          (val_number))
+        (match_arm
+          (match_pattern
+            (val_list
+              (list_body
+                (expr_unary
+                  (val_variable
+                    (identifier))))))
+          (val_number))
+        (match_arm
+          (match_pattern
+            (val_list
+              (list_body
+                (expr_unary
+                  (pipeline
+                    (pipe_element
+                      (val_number)))))))
+          (val_number))))))
