@@ -84,3 +84,46 @@ r#''#
         (raw_string_begin)
         (string_content)
         (raw_string_end)))))
+
+=====
+raw-strings-006-comment-inside-raw-string
+=====
+
+r#'
+# it's all just a string
+
+some other stuff
+'#
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_string
+        (raw_string_begin)
+        (string_content)
+        (raw_string_end)))))
+
+=====
+raw-strings-007-hash-inside-raw-string
+=====
+
+r#'a#b'#
+r##'x##y'##
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_string
+        (raw_string_begin)
+        (string_content)
+        (raw_string_end))))
+  (pipeline
+    (pipe_element
+      (val_string
+        (raw_string_begin)
+        (string_content)
+        (raw_string_end)))))

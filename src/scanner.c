@@ -86,10 +86,15 @@ static bool scan_raw_string_begin(TSLexer *lexer, Scanner *s) {
 
 static bool scan_raw_string_content(TSLexer *lexer, Scanner *s) {
     while (!eof) {
+        // Only `'` followed by the opening's `#` count closes the string;
+        // a `#` run after any other character is content.
+        if (lexer->lookahead != '\'') {
+            adv;
+            continue;
+        }
         lexer->mark_end(lexer);
         adv;
-        uint8_t level = consume_chars(lexer, '#');
-        if (level == s->level) {
+        if (consume_chars(lexer, '#') == s->level) {
             return true;
         }
     }
