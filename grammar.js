@@ -1422,9 +1422,28 @@ module.exports = grammar({
 
     _unquoted_naive: _ =>
       token(prec(prec_map().low, repeat1(none_of('{}')))),
-    unquoted: _unquoted_rule('command'),
-    _unquoted_in_list: _unquoted_rule('list'),
-    _unquoted_in_record: _unquoted_rule('record'),
+    unquoted: $ => _bare_word_rule($, $._unquoted_head, $._unquoted_pattern),
+    _unquoted_in_list: $ =>
+      _bare_word_rule(
+        $,
+        $._unquoted_head_in_list,
+        $._unquoted_pattern_in_list,
+      ),
+    _unquoted_in_record: $ =>
+      _bare_word_rule(
+        $,
+        $._unquoted_head_in_record,
+        $._unquoted_pattern_in_record,
+      ),
+    _unquoted_head: _unquoted_rule('command'),
+    _unquoted_head_in_list: _unquoted_rule('list'),
+    _unquoted_head_in_record: _unquoted_rule('record'),
+
+    // Like nushell, `a'b c'd` is one bare word that keeps its quotes. The
+    // quoted part is a token of its own: folding it into the bare-word
+    // patterns nearly doubled the wasm compile time of parser.c.
+    _bare_word_quoted: _ =>
+      token.immediate(choice(/'[^']*'/, /"([^"\\]|\\.)*"/, /`[^`]*`/)),
 
     _unquoted_with_expr: _unquoted_with_expr_rule('command'),
     _unquoted_in_list_with_expr: _unquoted_with_expr_rule('list'),
@@ -2133,6 +2152,21 @@ function _unquoted_pattern_rule(type, first) {
       break;
   }
   return excluded;
+}
+
+/**
+ * A bare word with quoted parts, each optionally followed by more bare text,
+ * e.g. `a'b c'd"e"`.
+ *
+ * @param {GrammarSymbols<string>} $
+ * @param {RuleOrLiteral} head the word up to its first quote
+ * @param {RuleOrLiteral} text the bare text after a quoted part
+ */
+function _bare_word_rule($, head, text) {
+  return prec.left(
+    prec_map().lowest,
+    seq(head, repeat(seq($._bare_word_quoted, optional(text)))),
+  );
 }
 
 /**

@@ -455,3 +455,22 @@ ls | all -h
       (where_command
         (short_flag
           (short_flag_identifier))))))
+
+=====
+where-014-quotes-inside-bare-word
+=====
+
+ls | where name == x'y z'
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)))
+    (pipe_element
+      (where_command
+        (where_predicate
+          (path)
+          (val_string))))))

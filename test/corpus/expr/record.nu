@@ -593,3 +593,23 @@ record-018-minus-values
                 (val_variable
                   (identifier)))
               (val_number))))))))
+
+=====
+record-019-quotes-inside-bare-word-values
+=====
+
+{k: b'c d', j: 1}
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_record
+        (record_body
+          (record_entry
+            (identifier)
+            (val_string))
+          (record_entry
+            (identifier)
+            (val_number)))))))
