@@ -75,21 +75,28 @@ static bool scan_raw_string_begin(TSLexer *lexer, Scanner *s) {
         return false;
     }
     adv;
+    // Nushell needs at least one `#`: `r'abc'` is a bare word.
     uint8_t level = consume_chars(lexer, '#');
-    if (lexer->lookahead == '\'') {
-        adv;
-        s->level = level;
-        return true;
+    if (level == 0 || lexer->lookahead != '\'') {
+        return false;
     }
-    return false;
+    adv;
+    s->level = level;
+    return true;
 }
 
 static bool scan_raw_string_content(TSLexer *lexer, Scanner *s) {
     while (!eof) {
+        // Like Nushell, the first `'` followed by at least the opening's `#`
+        // count closes the string; scan_raw_string_end takes only that many
+        // `#`, so any extra ones are lexed after the string.
+        if (lexer->lookahead != '\'') {
+            adv;
+            continue;
+        }
         lexer->mark_end(lexer);
         adv;
-        uint8_t level = consume_chars(lexer, '#');
-        if (level == s->level) {
+        if (consume_chars(lexer, '#') >= s->level) {
             return true;
         }
     }

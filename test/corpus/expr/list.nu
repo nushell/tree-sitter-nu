@@ -655,3 +655,23 @@ list-016-minus-with-expr
                 (pipeline
                   (pipe_element
                     (val_number)))))))))))
+
+=====
+list-017-quotes-inside-bare-words
+=====
+
+[a'b c' d x"y, z"]
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (val_list
+        (list_body
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string))
+          (val_entry
+            (val_string)))))))

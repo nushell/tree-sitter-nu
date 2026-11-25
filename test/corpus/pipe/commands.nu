@@ -1207,3 +1207,31 @@ cmd-032-keyword-external
       (command
         (cmd_identifier)
         (val_string)))))
+
+=====
+cmd-033-quotes-inside-bare-words
+=====
+
+echo r'abc' x'a b' a'b'c"d e" x`f g`
+gh api x -f body='Hi there'
+
+-----
+
+(nu_script
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)
+        (val_string)
+        (val_string)
+        (val_string))))
+  (pipeline
+    (pipe_element
+      (command
+        (cmd_identifier)
+        (val_string)
+        (val_string)
+        (short_flag
+          (short_flag_identifier))
+        (val_string)))))
